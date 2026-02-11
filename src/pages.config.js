@@ -53,6 +53,7 @@ import Mentors from './pages/Mentors';
 import Resources from './pages/Resources';
 import Messages from './pages/Messages';
 import Profile from './pages/Profile';
+import utils from './pages/utils';
 import __Layout from './Layout.jsx';
 
 
@@ -63,6 +64,7 @@ export const PAGES = {
     "Resources": Resources,
     "Messages": Messages,
     "Profile": Profile,
+    "utils": utils,
 }
 
 export const pagesConfig = {
