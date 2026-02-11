@@ -58,6 +58,7 @@ import MentorOnboarding from './pages/MentorOnboarding';
 import FacilitySignup from './pages/FacilitySignup';
 import FacilityDashboard from './pages/FacilityDashboard';
 import PlatformAdmin from './pages/PlatformAdmin';
+import SavedResources from './pages/SavedResources';
 import __Layout from './Layout.jsx';
 
 
@@ -73,6 +74,7 @@ export const PAGES = {
     "FacilitySignup": FacilitySignup,
     "FacilityDashboard": FacilityDashboard,
     "PlatformAdmin": PlatformAdmin,
+    "SavedResources": SavedResources,
 }
 
 export const pagesConfig = {

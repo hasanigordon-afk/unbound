@@ -83,6 +83,20 @@ export default function ResourceDetail({ resource, onClose, onSave, onReport }) 
             </div>
           )}
 
+          {resource.hours && (
+            <div>
+              <p className="font-medium text-slate-900 mb-2">Hours</p>
+              <div className="bg-slate-50 rounded-lg p-3 space-y-1">
+                {Object.entries(resource.hours).map(([day, hours]) => (
+                  <div key={day} className="flex justify-between text-sm">
+                    <span className="capitalize text-slate-700">{day}</span>
+                    <span className="text-slate-600">{hours || 'Closed'}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {resource.notes && (
             <div>
               <p className="font-medium text-slate-900 mb-2">Notes</p>

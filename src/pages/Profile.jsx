@@ -1,9 +1,11 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "./utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { LogOut, Loader2, User, MapPin } from "lucide-react";
+import { LogOut, Loader2, User, MapPin, Bookmark } from "lucide-react";
 
 export default function Profile() {
   const { data: user, isLoading: loadingUser } = useQuery({
@@ -89,6 +91,15 @@ export default function Profile() {
             </div>
           </div>
         )}
+
+        <Link to={createPageUrl("SavedResources")}>
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 text-teal-600">
+              <Bookmark className="w-5 h-5" />
+              <span className="font-medium">Saved Resources</span>
+            </div>
+          </div>
+        </Link>
 
         <Button
           variant="outline"
