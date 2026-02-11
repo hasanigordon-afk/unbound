@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
+import { createPageUrl } from "@/pages/utils";
 
 import StepSafety from "../components/onboarding/StepSafety";
 import StepGoals from "../components/onboarding/StepGoals";
@@ -53,7 +54,7 @@ export default function Onboarding() {
         onboarding_complete: true,
         role: "member",
       });
-      window.location.href = "/Home";
+      window.location.href = createPageUrl("Home");
       return;
     }
 
