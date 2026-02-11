@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { LogOut, Loader2, User, Shield, MapPin } from "lucide-react";
+import { LogOut, Loader2, User, MapPin } from "lucide-react";
 
 export default function Profile() {
   const { data: user, isLoading: loadingUser } = useQuery({
