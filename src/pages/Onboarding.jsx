@@ -49,8 +49,19 @@ export default function Onboarding() {
     if (stepIndex === steps.length - 1) {
       // Last step — save to DB
       setSaving(true);
+
+      // Check referral code if provided
+      let facility_id = null;
+      if (merged.referral_code) {
+        const codes = await base44.entities.ReferralCode.filter({ code: merged.referral_code });
+        if (codes.length > 0) {
+          facility_id = codes[0].facility_id;
+        }
+      }
+
       await base44.entities.MemberProfile.create({
         ...merged,
+        facility_id,
         onboarding_complete: true,
         role: "member",
       });

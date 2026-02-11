@@ -55,6 +55,9 @@ import Profile from './pages/Profile';
 import Resources from './pages/Resources';
 import utils from './pages/utils';
 import MentorOnboarding from './pages/MentorOnboarding';
+import FacilitySignup from './pages/FacilitySignup';
+import FacilityDashboard from './pages/FacilityDashboard';
+import PlatformAdmin from './pages/PlatformAdmin';
 import __Layout from './Layout.jsx';
 
 
@@ -67,6 +70,9 @@ export const PAGES = {
     "Resources": Resources,
     "utils": utils,
     "MentorOnboarding": MentorOnboarding,
+    "FacilitySignup": FacilitySignup,
+    "FacilityDashboard": FacilityDashboard,
+    "PlatformAdmin": PlatformAdmin,
 }
 
 export const pagesConfig = {

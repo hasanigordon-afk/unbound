@@ -3,10 +3,56 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Users, MapPin, Loader2 } from "lucide-react";
+import { Users, MapPin, Loader2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import QuickCheckin from "../components/home/QuickCheckin";
 import TrackToggle from "../components/home/TrackToggle";
+
+function NearbyResources({ profile }) {
+  const { data: resources = [] } = useQuery({
+    queryKey: ["nearby-resources", profile?.location_city],
+    queryFn: () => {
+      if (!profile?.location_city) return [];
+      return base44.entities.Resource.filter({ city: profile.location_city });
+    },
+    enabled: !!profile?.location_city,
+  });
+
+  if (!resources.length) return null;
+
+  const topResources = resources.slice(0, 3);
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 p-5">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-semibold text-slate-900">Nearby Resources</h3>
+        <Link to={createPageUrl("Resources")} className="text-xs text-teal-600 hover:text-teal-700">
+          See all
+        </Link>
+      </div>
+      <div className="space-y-3">
+        {topResources.map(resource => (
+          <div key={resource.id} className="flex items-start gap-3 pb-3 border-b border-slate-100 last:border-0">
+            <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+              <MapPin className="w-4 h-4 text-amber-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm text-slate-900 truncate">{resource.name}</p>
+              <p className="text-xs text-slate-500 capitalize">{resource.category?.replace(/_/g, " ")}</p>
+              {resource.phone && (
+                <a href={`tel:${resource.phone}`} className="text-xs text-teal-600 hover:text-teal-700 flex items-center gap-1 mt-1">
+                  <Phone className="w-3 h-3" />
+                  {resource.phone}
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const { data: profiles, isLoading } = useQuery({
@@ -94,6 +140,9 @@ export default function Home() {
             </div>
           </Link>
         </div>
+
+        {/* Nearby resources quick list */}
+        <NearbyResources profile={profile} />
 
         {/* Quick check-in */}
         <QuickCheckin />
