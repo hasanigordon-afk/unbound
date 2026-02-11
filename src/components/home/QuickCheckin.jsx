@@ -23,35 +23,36 @@ export default function QuickCheckin() {
   if (saved) {
     return (
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-        className="bg-teal-50 border border-teal-200 rounded-2xl p-6 text-center"
+        className="rounded-2xl p-6 text-center" style={{ background: 'rgba(47,243,224,0.15)', border: '1px solid rgba(47,243,224,0.2)' }}
       >
-        <CheckCircle className="w-8 h-8 text-teal-600 mx-auto mb-2" />
-        <p className="font-medium text-teal-700">Check-in saved!</p>
+        <CheckCircle className="w-8 h-8 mx-auto mb-2" style={{ color: '#2FF3E0' }} />
+        <p className="font-medium" style={{ color: '#2FF3E0' }}>Check-in saved!</p>
       </motion.div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-      <p className="font-semibold text-slate-800">Quick Check-in</p>
+    <div className="glass-card p-5 space-y-4">
+      <p className="font-semibold" style={{ color: '#FFFFFF' }}>Quick Check-in</p>
       <div>
-        <p className="text-sm text-slate-500 mb-3">Craving level right now?</p>
+        <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>Craving level right now?</p>
         <div className="flex gap-1.5">
-          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-            <button
-              key={n}
-              onClick={() => setScore(n)}
-              className={`flex-1 aspect-square rounded-lg text-xs font-bold transition-all ${
-                score >= n
-                  ? n <= 3 ? "bg-teal-500 text-white"
-                  : n <= 6 ? "bg-amber-500 text-white"
-                  : "bg-rose-500 text-white"
-                  : "bg-slate-100 text-slate-400 hover:bg-slate-200"
-              }`}
-            >
-              {n}
-            </button>
-          ))}
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
+            const isActive = score >= n;
+            const bgColor = isActive 
+              ? n <= 3 ? "#2FF3E0" : n <= 6 ? "#F4D35E" : "#FF4FD8"
+              : "rgba(255,255,255,0.08)";
+            return (
+              <button
+                key={n}
+                onClick={() => setScore(n)}
+                className="flex-1 aspect-square rounded-lg text-xs font-bold transition-all"
+                style={{ background: bgColor, color: isActive ? '#0B0F1F' : 'rgba(255,255,255,0.3)' }}
+              >
+                {n}
+              </button>
+            );
+          })}
         </div>
       </div>
       <Textarea
@@ -59,11 +60,13 @@ export default function QuickCheckin() {
         value={note}
         onChange={(e) => setNote(e.target.value)}
         className="rounded-xl resize-none h-20"
+        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: '#FFFFFF' }}
       />
       <Button
-        className="w-full h-12 bg-teal-600 hover:bg-teal-700 rounded-xl"
+        className="w-full h-12 rounded-xl font-medium transition-all"
         disabled={score === 0 || saving}
         onClick={handleSave}
+        style={{ background: score === 0 ? 'rgba(47,243,224,0.1)' : '#2FF3E0', color: score === 0 ? 'rgba(255,255,255,0.3)' : '#0B0F1F' }}
       >
         {saving ? "Saving..." : "Save Check-in"}
       </Button>

@@ -24,24 +24,24 @@ function NearbyResources({ profile }) {
   const topResources = resources.slice(0, 3);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5">
+    <div className="glass-card p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-slate-900">Nearby Resources</h3>
-        <Link to={createPageUrl("Resources")} className="text-xs text-teal-600 hover:text-teal-700">
+        <h3 className="font-semibold" style={{ color: '#FFFFFF' }}>Nearby Resources</h3>
+        <Link to={createPageUrl("Resources")} className="text-xs hover:opacity-80" style={{ color: '#2FF3E0' }}>
           See all
         </Link>
       </div>
       <div className="space-y-3">
         {topResources.map(resource => (
-          <div key={resource.id} className="flex items-start gap-3 pb-3 border-b border-slate-100 last:border-0">
-            <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-4 h-4 text-amber-600" />
+          <div key={resource.id} className="flex items-start gap-3 pb-3 last:border-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(244,213,94,0.15)' }}>
+              <MapPin className="w-4 h-4" style={{ color: '#F4D35E' }} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm text-slate-900 truncate">{resource.name}</p>
-              <p className="text-xs text-slate-500 capitalize">{resource.category?.replace(/_/g, " ")}</p>
+              <p className="font-medium text-sm truncate" style={{ color: '#FFFFFF' }}>{resource.name}</p>
+              <p className="text-xs capitalize" style={{ color: 'rgba(255,255,255,0.5)' }}>{resource.category?.replace(/_/g, " ")}</p>
               {resource.phone && (
-                <a href={`tel:${resource.phone}`} className="text-xs text-teal-600 hover:text-teal-700 flex items-center gap-1 mt-1">
+                <a href={`tel:${resource.phone}`} className="text-xs flex items-center gap-1 mt-1 hover:opacity-80" style={{ color: '#2FF3E0' }}>
                   <Phone className="w-3 h-3" />
                   {resource.phone}
                 </a>
