@@ -102,12 +102,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24">
-      <div className="bg-gradient-to-br from-teal-600 to-teal-700 px-5 pt-8 pb-10 rounded-b-3xl">
-        <p className="text-teal-100 text-sm mb-1">Welcome back</p>
-        <h1 className="text-2xl font-bold text-white">RecoveryLink</h1>
-        <div className="mt-3 inline-flex items-center px-3 py-1.5 bg-white/20 backdrop-blur rounded-full">
-          <span className="text-xs font-medium text-teal-50">
+    <div className="min-h-screen pb-24" style={{ background: '#0B0F1F' }}>
+      <div className="px-5 pt-8 pb-10 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, rgba(123,92,255,0.2), rgba(47,243,224,0.1))' }}>
+        <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.75)' }}>Welcome back</p>
+        <h1 className="text-2xl font-bold" style={{ color: '#2FF3E0' }}>RecoveryLink</h1>
+        <div className="mt-3 inline-flex items-center px-3 py-1.5 backdrop-blur rounded-full" style={{ background: 'rgba(47,243,224,0.15)', border: '1px solid rgba(47,243,224,0.2)' }}>
+          <span className="text-xs font-medium" style={{ color: '#2FF3E0' }}>
             {stageLabels[profile.stage] || profile.stage}
           </span>
         </div>
@@ -122,21 +122,21 @@ export default function Home() {
         {/* Action buttons */}
         <div className="grid grid-cols-2 gap-3">
           <Link to={createPageUrl("Mentors")}>
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow h-full">
-              <div className="w-11 h-11 rounded-xl bg-teal-50 flex items-center justify-center mb-3">
-                <Users className="w-5 h-5 text-teal-600" />
+            <div className="glass-card p-5 hover:shadow-md transition-all h-full">
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(47,243,224,0.15)' }}>
+                <Users className="w-5 h-5" style={{ color: '#2FF3E0' }} />
               </div>
-              <p className="font-semibold text-slate-800 text-sm">Talk to a Mentor</p>
-              <p className="text-xs text-slate-400 mt-1">Get matched now</p>
+              <p className="font-semibold text-sm" style={{ color: '#FFFFFF' }}>Talk to a Mentor</p>
+              <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Get matched now</p>
             </div>
-          </Link>
-          <Link to={createPageUrl("Resources")}>
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-md transition-shadow h-full">
-              <div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center mb-3">
-                <MapPin className="w-5 h-5 text-amber-600" />
+            </Link>
+            <Link to={createPageUrl("Resources")}>
+            <div className="glass-card p-5 hover:shadow-md transition-all h-full">
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(244,213,94,0.15)' }}>
+                <MapPin className="w-5 h-5" style={{ color: '#F4D35E' }} />
               </div>
-              <p className="font-semibold text-slate-800 text-sm">Find Help Near Me</p>
-              <p className="text-xs text-slate-400 mt-1">Local resources</p>
+              <p className="font-semibold text-sm" style={{ color: '#FFFFFF' }}>Find Help Near Me</p>
+              <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Local resources</p>
             </div>
           </Link>
         </div>
