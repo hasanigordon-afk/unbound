@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 export default function StepSafety({ data, onNext }) {
   const [answer, setAnswer] = useState(data.safety_flagged || false);
   const [showCrisis, setShowCrisis] = useState(false);
+  const [referralCode, setReferralCode] = useState(data.referral_code || "");
+  const [showReferral, setShowReferral] = useState(false);
 
   const handleYes = () => {
     setAnswer(true);
@@ -13,7 +15,7 @@ export default function StepSafety({ data, onNext }) {
   };
 
   const handleContinue = () => {
-    onNext({ safety_flagged: answer });
+    onNext({ safety_flagged: answer, referral_code: referralCode });
   };
 
   return (
@@ -41,9 +43,27 @@ export default function StepSafety({ data, onNext }) {
           >
             Yes, I need help now
           </Button>
+          
+          <button
+            onClick={() => setShowReferral(!showReferral)}
+            className="text-sm text-teal-600 hover:text-teal-700 underline -mt-1"
+          >
+            {showReferral ? "Hide" : "I have a referral code"}
+          </button>
+
+          {showReferral && (
+            <input
+              type="text"
+              placeholder="Enter referral code"
+              value={referralCode}
+              onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+              className="w-full h-10 px-3 border border-slate-200 rounded-lg"
+            />
+          )}
+          
           <Button
             className="h-14 text-base bg-teal-600 hover:bg-teal-700"
-            onClick={() => onNext({ safety_flagged: false })}
+            onClick={() => onNext({ safety_flagged: false, referral_code: referralCode })}
           >
             No, I'm okay to continue
           </Button>
