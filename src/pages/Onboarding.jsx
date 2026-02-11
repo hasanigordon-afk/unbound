@@ -59,12 +59,36 @@ export default function Onboarding() {
         }
       }
 
-      await base44.entities.MemberProfile.create({
-        ...merged,
-        facility_id,
+      // Ensure required fields are present
+      const profileData = {
+        track: merged.track || "alcohol",
+        stage: merged.stage,
+        who_to_talk_to: merged.who_to_talk_to,
+        goals: merged.goals || [],
+        support_needs: merged.support_needs || [],
+        challenges: merged.challenges || [],
+        comm_mode: merged.comm_mode,
+        time_need: merged.time_need,
+        gender_preference: merged.gender_preference || "none",
+        style: merged.style || "gentle",
+        program_preference: merged.program_preference || "no_preference",
+        lgbtq_friendly: merged.lgbtq_friendly || "no_preference",
+        location_city: merged.location_city,
+        location_state: merged.location_state,
+        location_zip: merged.location_zip,
+        location_lat: merged.location_lat,
+        location_lng: merged.location_lng,
         onboarding_complete: true,
         role: "member",
-      });
+      };
+
+      // Add optional fields if present
+      if (merged.default_track) profileData.default_track = merged.default_track;
+      if (merged.substances) profileData.substances = merged.substances;
+      if (merged.primary_substance) profileData.primary_substance = merged.primary_substance;
+      if (facility_id) profileData.facility_id = facility_id;
+
+      await base44.entities.MemberProfile.create(profileData);
       window.location.href = createPageUrl("Home");
       return;
     }
