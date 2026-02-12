@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import QuickCheckin from "../components/home/QuickCheckin";
 import TrackToggle from "../components/home/TrackToggle";
+import ProgressCard from "../components/gamification/ProgressCard";
+import BadgesCard from "../components/gamification/BadgesCard";
 
 function NearbyResources({ profile }) {
   const { data: resources = [] } = useQuery({
@@ -55,12 +57,29 @@ function NearbyResources({ profile }) {
 }
 
 export default function Home() {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => base44.auth.me(),
+  });
+
   const { data: profiles, isLoading } = useQuery({
     queryKey: ["my-profile"],
     queryFn: async () => {
-      const user = await base44.auth.me();
       return base44.entities.MemberProfile.filter({ created_by: user.email });
     },
+    enabled: !!user,
+  });
+
+  const { data: progressData = [] } = useQuery({
+    queryKey: ["user-progress", user?.email],
+    queryFn: () => base44.entities.UserProgress.filter({ created_by: user.email }),
+    enabled: !!user,
+  });
+
+  const { data: userBadges = [] } = useQuery({
+    queryKey: ["user-badges", user?.email],
+    queryFn: () => base44.entities.UserBadge.filter({ created_by: user.email }),
+    enabled: !!user,
   });
 
   const profile = profiles?.[0];
@@ -118,6 +137,12 @@ export default function Home() {
         {profile.track === "both" && activeTrack && (
           <TrackToggle activeTrack={activeTrack} onToggle={setActiveTrack} />
         )}
+
+        {/* Progress Card */}
+        <ProgressCard progress={progressData[0]} />
+
+        {/* Badges Card */}
+        <BadgesCard badges={userBadges} />
 
         {/* Action buttons */}
         <div className="grid grid-cols-2 gap-3">

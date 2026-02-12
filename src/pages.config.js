@@ -47,34 +47,36 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import FacilityDashboard from './pages/FacilityDashboard';
+import FacilitySignup from './pages/FacilitySignup';
 import Home from './pages/Home';
+import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
 import Onboarding from './pages/Onboarding';
+import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import Resources from './pages/Resources';
-import utils from './pages/utils';
-import MentorOnboarding from './pages/MentorOnboarding';
-import FacilitySignup from './pages/FacilitySignup';
-import FacilityDashboard from './pages/FacilityDashboard';
-import PlatformAdmin from './pages/PlatformAdmin';
 import SavedResources from './pages/SavedResources';
+import utils from './pages/utils';
+import Achievements from './pages/Achievements';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "FacilityDashboard": FacilityDashboard,
+    "FacilitySignup": FacilitySignup,
     "Home": Home,
+    "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
     "Onboarding": Onboarding,
+    "PlatformAdmin": PlatformAdmin,
     "Profile": Profile,
     "Resources": Resources,
-    "utils": utils,
-    "MentorOnboarding": MentorOnboarding,
-    "FacilitySignup": FacilitySignup,
-    "FacilityDashboard": FacilityDashboard,
-    "PlatformAdmin": PlatformAdmin,
     "SavedResources": SavedResources,
+    "utils": utils,
+    "Achievements": Achievements,
 }
 
 export const pagesConfig = {
