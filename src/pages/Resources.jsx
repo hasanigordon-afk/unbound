@@ -65,12 +65,47 @@ export default function Resources() {
     },
   });
 
+  const { data: progressData = [] } = useQuery({
+    queryKey: ["user-progress", user?.email],
+    queryFn: () => base44.entities.UserProgress.filter({ created_by: user.email }),
+    enabled: !!user,
+  });
+
   const saveMutation = useMutation({
-    mutationFn: (resourceId) =>
-      base44.entities.SavedResource.create({ resource_id: resourceId }),
-    onSuccess: () => {
-      toast.success("Resource saved");
+    mutationFn: async (resourceId) => {
+      await base44.entities.SavedResource.create({ resource_id: resourceId });
+      
+      const progress = progressData[0];
+      const points = 5;
+      const newResourcesSaved = (progress?.resources_saved || 0) + 1;
+      const newTotalPoints = (progress?.total_points || 0) + points;
+      const newLevel = Math.floor(newTotalPoints / 100) + 1;
+
+      const updateData = {
+        total_points: newTotalPoints,
+        level: newLevel,
+        resources_saved: newResourcesSaved,
+      };
+
+      if (progress?.id) {
+        await base44.entities.UserProgress.update(progress.id, updateData);
+      } else {
+        await base44.entities.UserProgress.create({ 
+          ...updateData, 
+          current_streak: 0, 
+          longest_streak: 0, 
+          total_checkins: 0,
+          resources_viewed: 0,
+          journal_entries: 0
+        });
+      }
+
+      return points;
+    },
+    onSuccess: (points) => {
+      toast.success(`Resource saved! +${points} XP`);
       queryClient.invalidateQueries(["saved-resources"]);
+      queryClient.invalidateQueries(["user-progress"]);
     },
   });
 

@@ -42,15 +42,25 @@ export default function JournalEntryForm({ prompt, onClose }) {
       const newTotalPoints = (progress?.total_points || 0) + points;
       const newLevel = Math.floor(newTotalPoints / 100) + 1;
 
+      const newJournalEntries = (progress?.journal_entries || 0) + 1;
+
       const updateData = {
         total_points: newTotalPoints,
         level: newLevel,
+        journal_entries: newJournalEntries,
       };
 
       if (progress?.id) {
         await base44.entities.UserProgress.update(progress.id, updateData);
       } else {
-        await base44.entities.UserProgress.create({ ...updateData, current_streak: 0, longest_streak: 0, total_checkins: 0 });
+        await base44.entities.UserProgress.create({ 
+          ...updateData, 
+          current_streak: 0, 
+          longest_streak: 0, 
+          total_checkins: 0,
+          resources_viewed: 0,
+          resources_saved: 0
+        });
       }
 
       return points;

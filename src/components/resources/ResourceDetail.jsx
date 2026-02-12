@@ -1,10 +1,62 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { X, Phone, Globe, MapPin, Flag, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { base44 } from "@/api/base44Client";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function ResourceDetail({ resource, onClose, onSave, onReport }) {
+  const queryClient = useQueryClient();
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => base44.auth.me(),
+  });
+
+  const { data: progressData = [] } = useQuery({
+    queryKey: ["user-progress", user?.email],
+    queryFn: () => base44.entities.UserProgress.filter({ created_by: user.email }),
+    enabled: !!user,
+  });
+
+  const viewMutation = useMutation({
+    mutationFn: async () => {
+      const progress = progressData[0];
+      const points = 3;
+      const newResourcesViewed = (progress?.resources_viewed || 0) + 1;
+      const newTotalPoints = (progress?.total_points || 0) + points;
+      const newLevel = Math.floor(newTotalPoints / 100) + 1;
+
+      const updateData = {
+        total_points: newTotalPoints,
+        level: newLevel,
+        resources_viewed: newResourcesViewed,
+      };
+
+      if (progress?.id) {
+        await base44.entities.UserProgress.update(progress.id, updateData);
+      } else {
+        await base44.entities.UserProgress.create({ 
+          ...updateData, 
+          current_streak: 0, 
+          longest_streak: 0, 
+          total_checkins: 0,
+          resources_saved: 0,
+          journal_entries: 0
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user-progress"]);
+    },
+  });
+
+  useEffect(() => {
+    if (user && progressData) {
+      viewMutation.mutate();
+    }
+  }, [resource.id]);
   const categoryLabels = {
     detox: "Detox",
     inpatient: "Inpatient",
