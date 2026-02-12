@@ -1,11 +1,11 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Trophy, Award, Loader2, Lock, Star, Target, Flame, Heart } from "lucide-react";
+import { Trophy, Award, Loader2, Lock, Star, Target, Flame, Heart, MapPin, Map, Bookmark, BookMarked, Library, BookOpen, Feather } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const ICON_MAP = {
-  Award, Star, Target, Flame, Trophy, Heart
+  Award, Star, Target, Flame, Trophy, Heart, MapPin, Map, Bookmark, BookMarked, Library, BookOpen, Feather
 };
 
 export default function Achievements() {
@@ -74,16 +74,24 @@ export default function Achievements() {
               <p className="font-bold text-xl mt-1" style={{ color: '#F4D35E' }}>{progress?.current_streak || 0} days</p>
             </div>
             <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <p style={{ color: 'rgba(255,255,255,0.5)' }}>Longest Streak</p>
-              <p className="font-bold text-xl mt-1" style={{ color: '#2FF3E0' }}>{progress?.longest_streak || 0} days</p>
+              <p style={{ color: 'rgba(255,255,255,0.5)' }}>Badges Earned</p>
+              <p className="font-bold text-xl mt-1" style={{ color: '#2FF3E0' }}>{userBadges.length}</p>
+            </div>
+            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <p style={{ color: 'rgba(255,255,255,0.5)' }}>Resources Viewed</p>
+              <p className="font-bold text-xl mt-1" style={{ color: '#2FF3E0' }}>{progress?.resources_viewed || 0}</p>
+            </div>
+            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <p style={{ color: 'rgba(255,255,255,0.5)' }}>Resources Saved</p>
+              <p className="font-bold text-xl mt-1" style={{ color: '#7B5CFF' }}>{progress?.resources_saved || 0}</p>
+            </div>
+            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <p style={{ color: 'rgba(255,255,255,0.5)' }}>Journal Entries</p>
+              <p className="font-bold text-xl mt-1" style={{ color: '#F4D35E' }}>{progress?.journal_entries || 0}</p>
             </div>
             <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <p style={{ color: 'rgba(255,255,255,0.5)' }}>Total Check-ins</p>
               <p className="font-bold text-xl mt-1" style={{ color: '#7B5CFF' }}>{progress?.total_checkins || 0}</p>
-            </div>
-            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <p style={{ color: 'rgba(255,255,255,0.5)' }}>Badges Earned</p>
-              <p className="font-bold text-xl mt-1" style={{ color: '#2FF3E0' }}>{userBadges.length}</p>
             </div>
           </div>
         </div>
