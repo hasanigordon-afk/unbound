@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Users, MapPin, Loader2, Phone } from "lucide-react";
+import { Users, MapPin, Loader2, Phone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import QuickCheckin from "../components/home/QuickCheckin";
@@ -154,8 +154,8 @@ export default function Home() {
               <p className="font-semibold text-sm" style={{ color: '#FFFFFF' }}>Talk to a Mentor</p>
               <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Get matched now</p>
             </div>
-            </Link>
-            <Link to={createPageUrl("Resources")}>
+          </Link>
+          <Link to={createPageUrl("Resources")}>
             <div className="glass-card p-5 hover:shadow-md transition-all h-full">
               <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(244,213,94,0.15)' }}>
                 <MapPin className="w-5 h-5" style={{ color: '#F4D35E' }} />
@@ -165,6 +165,21 @@ export default function Home() {
             </div>
           </Link>
         </div>
+
+        {/* Meditation Card */}
+        <Link to={createPageUrl("Meditation")}>
+          <div className="glass-card p-5 hover:shadow-md transition-all">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(123,92,255,0.2), rgba(47,243,224,0.2))' }}>
+                <Sparkles className="w-6 h-6" style={{ color: '#7B5CFF' }} />
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-sm" style={{ color: '#FFFFFF' }}>Meditation & Relaxation</p>
+                <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Binaural beats & calming visuals</p>
+              </div>
+            </div>
+          </div>
+        </Link>
 
         {/* Nearby resources quick list */}
         <NearbyResources profile={profile} />

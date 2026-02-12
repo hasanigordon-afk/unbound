@@ -63,6 +63,7 @@ import Achievements from './pages/Achievements';
 import Journal from './pages/Journal';
 import SupportChat from './pages/SupportChat';
 import Community from './pages/Community';
+import Meditation from './pages/Meditation';
 import __Layout from './Layout.jsx';
 
 
@@ -83,6 +84,7 @@ export const PAGES = {
     "Journal": Journal,
     "SupportChat": SupportChat,
     "Community": Community,
+    "Meditation": Meditation,
 }
 
 export const pagesConfig = {
