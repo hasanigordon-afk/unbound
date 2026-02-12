@@ -5,9 +5,9 @@ import { Home, Users, MapPin, MessageCircle, User, BookOpen, Bot } from "lucide-
 
 const NAV_ITEMS = [
   { name: "Home", icon: Home, page: "Home" },
-  { name: "Support", icon: Bot, page: "SupportChat" },
+  { name: "Community", icon: Users, page: "Community" },
   { name: "Resources", icon: MapPin, page: "Resources" },
-  { name: "Mentors", icon: Users, page: "Mentors" },
+  { name: "Support", icon: Bot, page: "SupportChat" },
   { name: "Profile", icon: User, page: "Profile" },
 ];
 
