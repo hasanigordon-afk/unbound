@@ -64,6 +64,8 @@ import Resources from './pages/Resources';
 import SavedResources from './pages/SavedResources';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
+import Goals from './pages/Goals';
+import Discover from './pages/Discover';
 import __Layout from './Layout.jsx';
 
 
@@ -85,6 +87,8 @@ export const PAGES = {
     "SavedResources": SavedResources,
     "SupportChat": SupportChat,
     "utils": utils,
+    "Goals": Goals,
+    "Discover": Discover,
 }
 
 export const pagesConfig = {
