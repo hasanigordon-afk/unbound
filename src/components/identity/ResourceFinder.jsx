@@ -44,8 +44,12 @@ export default function ResourceFinder() {
   });
 
   const openDirections = (resource) => {
-    const query = encodeURIComponent(`${resource.address}, ${resource.city}, ${resource.state}`);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    if (resource.location_lat && resource.location_lng) {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${resource.location_lat},${resource.location_lng}`, '_blank');
+    } else {
+      const query = encodeURIComponent(`${resource.address}, ${resource.city}, ${resource.state}`);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    }
   };
 
   return (
@@ -114,7 +118,7 @@ export default function ResourceFinder() {
                 </Button>
                 {resource.website && (
                   <Button
-                    onClick={() => window.open(resource.website, '_blank')}
+                    onClick={() => window.open(resource.website.startsWith('http') ? resource.website : `https://${resource.website}`, '_blank')}
                     size="sm"
                     variant="outline"
                   >
