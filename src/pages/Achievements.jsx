@@ -56,6 +56,39 @@ export default function Achievements() {
       </div>
 
       <div className="px-5 -mt-5 space-y-5 max-w-lg mx-auto">
+        {/* All Badges */}
+        <div className="glass-card p-5">
+          <h3 className="font-semibold mb-4" style={{ color: '#FFFFFF' }}>All Badges</h3>
+          <div className="space-y-3">
+            {allBadges.map((badge) => {
+              const isEarned = earnedBadgeIds.has(badge.id);
+              const canEarn = canEarnBadge(badge);
+              const IconComponent = ICON_MAP[badge.icon] || Award;
+
+              return (
+                <div key={badge.id} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: isEarned ? 'rgba(47,243,224,0.1)' : 'rgba(255,255,255,0.05)', border: isEarned ? '1px solid rgba(47,243,224,0.2)' : '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${!isEarned && 'opacity-40'}`} style={{ background: `${badge.color || '#7B5CFF'}20` }}>
+                    {isEarned ? (
+                      <IconComponent className="w-6 h-6" style={{ color: badge.color || '#7B5CFF' }} />
+                    ) : (
+                      <Lock className="w-6 h-6" style={{ color: 'rgba(255,255,255,0.3)' }} />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium" style={{ color: isEarned ? '#FFFFFF' : 'rgba(255,255,255,0.5)' }}>{badge.name}</h4>
+                    <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{badge.description}</p>
+                    {!isEarned && canEarn && (
+                      <Badge className="mt-2 text-xs" style={{ background: 'rgba(244,213,94,0.2)', color: '#F4D35E' }}>
+                        Ready to claim!
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Progress Stats */}
         <div className="glass-card p-5">
           <div className="flex items-center gap-3 mb-4">
@@ -93,39 +126,6 @@ export default function Achievements() {
               <p style={{ color: 'rgba(255,255,255,0.5)' }}>Total Check-ins</p>
               <p className="font-bold text-xl mt-1" style={{ color: '#7B5CFF' }}>{progress?.total_checkins || 0}</p>
             </div>
-          </div>
-        </div>
-
-        {/* All Badges */}
-        <div className="glass-card p-5">
-          <h3 className="font-semibold mb-4" style={{ color: '#FFFFFF' }}>All Badges</h3>
-          <div className="space-y-3">
-            {allBadges.map((badge) => {
-              const isEarned = earnedBadgeIds.has(badge.id);
-              const canEarn = canEarnBadge(badge);
-              const IconComponent = ICON_MAP[badge.icon] || Award;
-
-              return (
-                <div key={badge.id} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: isEarned ? 'rgba(47,243,224,0.1)' : 'rgba(255,255,255,0.05)', border: isEarned ? '1px solid rgba(47,243,224,0.2)' : '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${!isEarned && 'opacity-40'}`} style={{ background: `${badge.color || '#7B5CFF'}20` }}>
-                    {isEarned ? (
-                      <IconComponent className="w-6 h-6" style={{ color: badge.color || '#7B5CFF' }} />
-                    ) : (
-                      <Lock className="w-6 h-6" style={{ color: 'rgba(255,255,255,0.3)' }} />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium" style={{ color: isEarned ? '#FFFFFF' : 'rgba(255,255,255,0.5)' }}>{badge.name}</h4>
-                    <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{badge.description}</p>
-                    {!isEarned && canEarn && (
-                      <Badge className="mt-2 text-xs" style={{ background: 'rgba(244,213,94,0.2)', color: '#F4D35E' }}>
-                        Ready to claim!
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
