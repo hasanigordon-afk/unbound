@@ -57,7 +57,6 @@ import Meditation from './pages/Meditation';
 import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
-import Onboarding from './pages/Onboarding';
 import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import Resources from './pages/Resources';
@@ -81,7 +80,6 @@ export const PAGES = {
     "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
-    "Onboarding": Onboarding,
     "PlatformAdmin": PlatformAdmin,
     "Profile": Profile,
     "Resources": Resources,
@@ -94,7 +92,7 @@ export const PAGES = {
 }
 
 export const pagesConfig = {
-    mainPage: "Onboarding",
+    mainPage: "Achievements",
     Pages: PAGES,
     Layout: __Layout,
 };

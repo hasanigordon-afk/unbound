@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { name: "Profile", icon: User, page: "Profile" },
 ];
 
-const HIDE_NAV_PAGES = ["Onboarding"];
+const HIDE_NAV_PAGES = [];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
