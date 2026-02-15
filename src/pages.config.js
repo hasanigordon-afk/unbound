@@ -66,6 +66,7 @@ import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import Goals from './pages/Goals';
 import Discover from './pages/Discover';
+import IdentityBridge from './pages/IdentityBridge';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +90,7 @@ export const PAGES = {
     "utils": utils,
     "Goals": Goals,
     "Discover": Discover,
+    "IdentityBridge": IdentityBridge,
 }
 
 export const pagesConfig = {
