@@ -45,7 +45,13 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       <div className="px-5 pt-8 pb-4">
-        <h1 className="text-2xl font-bold text-slate-900 mb-6">Profile</h1>
+        <div className="flex items-center gap-3 mb-6">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698cbbdc830161c35d66ad0e/f15d68acb_image.png" 
+            alt="Unbound" 
+            className="h-10 w-auto"
+          />
+        </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4">
           <div className="flex items-center gap-4 mb-4">

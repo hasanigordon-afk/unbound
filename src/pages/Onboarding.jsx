@@ -131,6 +131,17 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* Logo Header */}
+      {stepIndex === 0 && (
+        <div className="flex justify-center pt-8 pb-4">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698cbbdc830161c35d66ad0e/f15d68acb_image.png" 
+            alt="Unbound" 
+            className="h-24 w-auto"
+          />
+        </div>
+      )}
+      
       {/* Header */}
       <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-xl border-b border-slate-100 px-4 pt-4 pb-3">
         <div className="flex items-center justify-between max-w-lg mx-auto mb-3">

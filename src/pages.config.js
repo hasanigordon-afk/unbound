@@ -47,9 +47,13 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Achievements from './pages/Achievements';
+import Community from './pages/Community';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
 import Home from './pages/Home';
+import Journal from './pages/Journal';
+import Meditation from './pages/Meditation';
 import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
@@ -58,19 +62,19 @@ import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import Resources from './pages/Resources';
 import SavedResources from './pages/SavedResources';
-import utils from './pages/utils';
-import Achievements from './pages/Achievements';
-import Journal from './pages/Journal';
 import SupportChat from './pages/SupportChat';
-import Community from './pages/Community';
-import Meditation from './pages/Meditation';
+import utils from './pages/utils';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "Achievements": Achievements,
+    "Community": Community,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
     "Home": Home,
+    "Journal": Journal,
+    "Meditation": Meditation,
     "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
@@ -79,12 +83,8 @@ export const PAGES = {
     "Profile": Profile,
     "Resources": Resources,
     "SavedResources": SavedResources,
-    "utils": utils,
-    "Achievements": Achievements,
-    "Journal": Journal,
     "SupportChat": SupportChat,
-    "Community": Community,
-    "Meditation": Meditation,
+    "utils": utils,
 }
 
 export const pagesConfig = {
