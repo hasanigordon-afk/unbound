@@ -23,15 +23,68 @@ export default function CreatePostDialog({ onClose }) {
   const queryClient = useQueryClient();
 
   const createPost = useMutation({
-    mutationFn: () =>
-      base44.entities.CommunityPost.create({
+    mutationFn: async () => {
+      // AI Moderation
+      const moderationResult = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a content moderator for a recovery support community. Analyze this post for violations of community guidelines.
+
+Community Guidelines:
+- No hate speech, harassment, or personal attacks
+- No spam or promotional content
+- No graphic descriptions of substance use or self-harm
+- No sharing of contact information or solicitation
+- Content should be supportive and recovery-focused
+
+Post Title: ${title}
+Post Content: ${content}
+Category: ${category}
+
+Respond with:
+1. Is this content safe? (yes/no)
+2. Violation type if unsafe (hate_speech, harassment, spam, graphic_content, solicitation, or none)
+3. Confidence level (high/medium/low)
+4. Brief reason if flagged`,
+        response_json_schema: {
+          type: "object",
+          properties: {
+            is_safe: { type: "boolean" },
+            violation_type: { type: "string" },
+            confidence: { type: "string" },
+            reason: { type: "string" }
+          }
+        }
+      });
+
+      let moderationStatus = "approved";
+      let moderationReason = null;
+
+      if (!moderationResult.is_safe) {
+        if (moderationResult.confidence === "high") {
+          moderationStatus = "flagged";
+          moderationReason = moderationResult.reason;
+        } else {
+          moderationStatus = "pending";
+          moderationReason = moderationResult.reason;
+        }
+      }
+
+      return base44.entities.CommunityPost.create({
         title,
         content,
         category,
         is_anonymous: isAnonymous,
-      }),
-    onSuccess: () => {
-      toast.success("Post shared with the community!");
+        moderation_status: moderationStatus,
+        moderation_reason: moderationReason,
+      });
+    },
+    onSuccess: (data) => {
+      if (data.moderation_status === "flagged") {
+        toast.error("Post flagged for review: " + data.moderation_reason);
+      } else if (data.moderation_status === "pending") {
+        toast("Post submitted for review");
+      } else {
+        toast.success("Post shared with the community!");
+      }
       queryClient.invalidateQueries(["community-posts"]);
       onClose();
     },
