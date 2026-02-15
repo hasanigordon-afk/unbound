@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, CheckCircle2, MapPin, ExternalLink } from "lucide-react";
+import { ArrowLeft, CheckCircle2, MapPin, ExternalLink, Phone } from "lucide-react";
 import { toast } from "sonner";
 
 const WORKFLOWS = {
@@ -46,6 +46,64 @@ const WORKFLOWS = {
       "Receive permanent ID by mail in 2-3 weeks"
     ],
     applyUrl: "https://www.dmv.org/"
+  },
+  drivers_license: {
+    title: "Obtain Driver's License",
+    importance: "A driver's license serves as both identification and driving authorization.",
+    required: ["Birth certificate", "Social Security card", "Proof of residency", "Application fee ($20-$90)", "Vision test", "Written test", "Road test"],
+    steps: [
+      "Study your state's driver's manual",
+      "Visit your local DMV with required documents",
+      "Pass vision screening",
+      "Pass written knowledge test",
+      "Schedule and pass road skills test",
+      "Pay licensing fee and have photo taken",
+      "Receive temporary license and wait for permanent one by mail"
+    ],
+    applyUrl: "https://www.dmv.org/drivers-license.php"
+  },
+  snap: {
+    title: "Apply for SNAP Benefits (Food Assistance)",
+    importance: "SNAP provides monthly benefits to help you afford nutritious food. Most people qualify if income is below certain limits.",
+    required: ["Photo ID or birth certificate", "Social Security number", "Proof of income (pay stubs, if any)", "Proof of expenses (rent/mortgage, utilities)", "Proof of assets (bank statements, if any)"],
+    steps: [
+      "Apply online at your state's SNAP portal or visit local office",
+      "Complete application with household size, income, and expenses",
+      "Gather and submit all required documents",
+      "Attend eligibility interview (phone or in-person)",
+      "Receive decision within 30 days (7 days for expedited cases)",
+      "If approved, receive EBT card and monthly benefits"
+    ],
+    applyUrl: "https://www.fns.usda.gov/snap/state-directory"
+  },
+  medicaid: {
+    title: "Apply for Medicaid (Health Insurance)",
+    importance: "Medicaid provides free or low-cost health coverage including doctor visits, prescriptions, and hospital care.",
+    required: ["Photo ID or birth certificate", "Social Security number", "Proof of income (if any)", "Proof of residency", "Proof of citizenship or legal status"],
+    steps: [
+      "Apply at Healthcare.gov, your state's Medicaid office, or local hospital",
+      "Complete application with personal and income information",
+      "Submit required documents (can often upload online)",
+      "Wait for eligibility determination (usually 45-90 days)",
+      "If approved, receive Medicaid card and choose a health plan",
+      "Schedule preventive care and needed medical appointments"
+    ],
+    applyUrl: "https://www.medicaid.gov/medicaid/index.html"
+  },
+  housing_assistance: {
+    title: "Apply for Housing Assistance",
+    importance: "Housing assistance programs help cover rent costs, find affordable housing, or provide emergency shelter.",
+    required: ["Photo ID", "Social Security number", "Proof of income (if any)", "Proof of homelessness or housing instability", "Birth certificates for all household members"],
+    steps: [
+      "Contact your local Public Housing Authority (PHA) office",
+      "Complete preliminary application for waiting list",
+      "Gather required documentation",
+      "Attend eligibility interview when called from waiting list",
+      "Submit verification documents (income, assets, family composition)",
+      "Receive housing voucher or placement if approved",
+      "Work with case manager to find approved housing"
+    ],
+    applyUrl: "https://www.hud.gov/program_offices/public_indian_housing"
   }
 };
 
@@ -73,7 +131,11 @@ export default function DocumentWorkflow({ item, onBack }) {
       const typeMap = {
         birth_certificate: "vital_records",
         social_security_card: "social_security",
-        state_id: "dmv"
+        state_id: "dmv",
+        drivers_license: "dmv",
+        snap: "snap",
+        medicaid: "medicaid",
+        housing_assistance: "housing"
       };
       const resourceType = typeMap[item.document_type];
       if (!resourceType) return [];
@@ -190,11 +252,38 @@ export default function DocumentWorkflow({ item, onBack }) {
                 <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   {resource.address}, {resource.city}, {resource.state}
                 </p>
-                {resource.phone && (
-                  <a href={`tel:${resource.phone}`} className="text-xs" style={{ color: '#2FF3E0' }}>
-                    {resource.phone}
-                  </a>
-                )}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {resource.phone && (
+                    <a href={`tel:${resource.phone}`} className="text-xs flex items-center gap-1" style={{ color: '#2FF3E0' }}>
+                      <Phone className="w-3 h-3" />
+                      Call
+                    </a>
+                  )}
+                  {resource.location_lat && resource.location_lng && (
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${resource.location_lat},${resource.location_lng}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs flex items-center gap-1"
+                      style={{ color: '#2FF3E0' }}
+                    >
+                      <MapPin className="w-3 h-3" />
+                      Directions
+                    </a>
+                  )}
+                  {resource.website && (
+                    <a
+                      href={resource.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs flex items-center gap-1"
+                      style={{ color: '#2FF3E0' }}
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      Website
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
