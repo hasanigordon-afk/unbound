@@ -84,12 +84,6 @@ export default function Home() {
 
   const profile = profiles?.[0];
 
-  useEffect(() => {
-    if (!isLoading && !profile) {
-      window.location.href = createPageUrl("Onboarding");
-    }
-  }, [isLoading, profile]);
-
   const [activeTrack, setActiveTrack] = useState(null);
 
   useEffect(() => {
@@ -102,7 +96,7 @@ export default function Home() {
     }
   }, [profile]);
 
-  if (isLoading || !profile) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
@@ -132,11 +126,13 @@ export default function Home() {
         </div>
         <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.75)' }}>Welcome back</p>
         <h1 className="text-2xl font-bold" style={{ color: '#2FF3E0' }}>Unbound</h1>
-        <div className="mt-3 inline-flex items-center px-3 py-1.5 backdrop-blur rounded-full" style={{ background: 'rgba(47,243,224,0.15)', border: '1px solid rgba(47,243,224,0.2)' }}>
-          <span className="text-xs font-medium" style={{ color: '#2FF3E0' }}>
-            {stageLabels[profile.stage] || profile.stage}
-          </span>
-        </div>
+        {profile?.stage && (
+          <div className="mt-3 inline-flex items-center px-3 py-1.5 backdrop-blur rounded-full" style={{ background: 'rgba(47,243,224,0.15)', border: '1px solid rgba(47,243,224,0.2)' }}>
+            <span className="text-xs font-medium" style={{ color: '#2FF3E0' }}>
+              {stageLabels[profile.stage] || profile.stage}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="px-5 -mt-5 space-y-5 max-w-lg mx-auto">
