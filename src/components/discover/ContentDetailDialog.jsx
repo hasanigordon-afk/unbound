@@ -56,10 +56,21 @@ export default function ContentDetailDialog({ content, onClose, isCompleted }) {
   };
 
   const submitFeedback = () => {
+    if (!rating) {
+      toast.error("Please rate this content");
+      return;
+    }
     markCompleteMutation.mutate({
       completed: true,
-      rating: rating || undefined,
+      rating,
       notes: notes || undefined
+    });
+  };
+
+  const handleQuickFeedback = (feedbackRating) => {
+    markCompleteMutation.mutate({
+      completed: false,
+      rating: feedbackRating
     });
   };
 
@@ -116,6 +127,28 @@ export default function ContentDetailDialog({ content, onClose, isCompleted }) {
             </div>
           )}
 
+          {!existingProgress && (
+            <div className="p-4 rounded-lg" style={{ background: 'rgba(123,92,255,0.1)' }}>
+              <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                Help us personalize your feed - rate this recommendation:
+              </p>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => handleQuickFeedback(star)}
+                    disabled={markCompleteMutation.isPending}
+                  >
+                    <Star
+                      className="w-6 h-6"
+                      style={{ color: '#FFB800', opacity: 0.3 }}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {!showFeedback ? (
             <Button
               onClick={handleComplete}
@@ -134,16 +167,17 @@ export default function ContentDetailDialog({ content, onClose, isCompleted }) {
           ) : (
             <div className="space-y-3 p-4 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
               <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>How was this content?</p>
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Your feedback helps us recommend better content for you</p>
               
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     onClick={() => setRating(star)}
-                    className="transition-all"
+                    className="transition-all hover:scale-110"
                   >
                     <Star
-                      className="w-6 h-6"
+                      className="w-7 h-7"
                       fill={star <= rating ? '#FFB800' : 'none'}
                       style={{ color: star <= rating ? '#FFB800' : 'rgba(255,255,255,0.2)' }}
                     />

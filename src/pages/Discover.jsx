@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Sparkles, BookOpen, Headphones, Dumbbell, Video, CheckCircle2, Loader2 } from "lucide-react";
+import { Sparkles, BookOpen, Headphones, Dumbbell, Video, CheckCircle2, Loader2, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import ContentDetailDialog from "../components/discover/ContentDetailDialog";
@@ -58,18 +58,41 @@ export default function Discover() {
       const stage = profile?.stage || "early_recovery_15_90";
       const track = profile?.track || "both";
       const activeGoals = goals.map(g => g.title).join(", ");
+      
+      // Get highly rated content for preference learning
+      const highRatedContent = progress
+        .filter(p => p.rating >= 4 && p.completed)
+        .slice(0, 5);
+      const highRatedIds = highRatedContent.map(p => p.content_id);
+      const likedContent = content.filter(c => highRatedIds.includes(c.id));
+      const likedTypes = [...new Set(likedContent.map(c => c.type))];
+      const likedTags = [...new Set(likedContent.flatMap(c => c.tags || []))];
 
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `Generate 5 personalized recovery content recommendations for someone in this situation:
-        - Recovery Stage: ${stage}
+        prompt: `Generate 5 highly personalized recovery content recommendations for someone with this profile:
+        
+        Recovery Context:
+        - Current Stage: ${stage}
         - Recovery Track: ${track}
         - Active Goals: ${activeGoals || "None set yet"}
         
-        For each recommendation, provide:
-        1. Title (engaging and relevant)
+        User Preferences (based on highly-rated content):
+        - Preferred Content Types: ${likedTypes.length > 0 ? likedTypes.join(", ") : "No preferences yet"}
+        - Liked Topics: ${likedTags.length > 0 ? likedTags.slice(0, 10).join(", ") : "No preferences yet"}
+        
+        ${likedContent.length > 0 ? `Recently Loved Content:\n${likedContent.map(c => `- ${c.title} (${c.type})`).join('\n')}` : ''}
+        
+        Create recommendations that:
+        1. Match their recovery stage and goals
+        2. Align with their demonstrated preferences
+        3. Introduce gentle variety to expand their journey
+        4. Are actionable and immediately useful
+        
+        For each recommendation provide:
+        1. Title (compelling and specific to their needs)
         2. Type (article, meditation, exercise, or video)
-        3. Description (2-3 sentences about what they'll learn/do)
-        4. Content body (detailed content - for articles write 3-4 paragraphs, for meditations/exercises write step-by-step guidance)
+        3. Description (2-3 sentences explaining why THIS person will benefit)
+        4. Content body (rich, detailed content - articles 3-4 paragraphs, meditations/exercises step-by-step with guidance)
         5. Duration in minutes
         6. Difficulty (beginner/intermediate/advanced)
         7. Relevant stages (array)
@@ -113,12 +136,62 @@ export default function Discover() {
     }
   };
 
-  const filteredContent = selectedType === "all" 
-    ? content 
-    : content.filter(c => c.type === selectedType);
+  // Smart content filtering and sorting
+  const getPersonalizedContent = () => {
+    let filtered = selectedType === "all" 
+      ? content 
+      : content.filter(c => c.type === selectedType);
+
+    // Score each piece of content based on personalization
+    const scoredContent = filtered.map(item => {
+      let score = 0;
+      
+      // Match recovery stage
+      if (item.relevant_stages?.includes(profile?.stage)) score += 10;
+      
+      // Match recovery track
+      if (item.relevant_tracks?.includes(profile?.track)) score += 8;
+      
+      // Prefer content aligned with active goals
+      goals.forEach(goal => {
+        if (item.tags?.some(tag => goal.title.toLowerCase().includes(tag.toLowerCase()))) {
+          score += 5;
+        }
+      });
+      
+      // Boost content similar to highly-rated items
+      const highRated = progress.filter(p => p.rating >= 4 && p.completed);
+      highRated.forEach(p => {
+        const ratedItem = content.find(c => c.id === p.content_id);
+        if (ratedItem) {
+          if (ratedItem.type === item.type) score += 3;
+          const sharedTags = item.tags?.filter(t => ratedItem.tags?.includes(t)) || [];
+          score += sharedTags.length * 2;
+        }
+      });
+      
+      // Slight penalty for completed content
+      const isCompleted = progress.some(p => p.content_id === item.id && p.completed);
+      if (isCompleted) score -= 5;
+      
+      return { ...item, score };
+    });
+
+    // Sort by score (highest first), then by creation date (newest first)
+    return scoredContent.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return new Date(b.created_date) - new Date(a.created_date);
+    });
+  };
+
+  const filteredContent = getPersonalizedContent();
 
   const isCompleted = (contentId) => {
     return progress.some(p => p.content_id === contentId && p.completed);
+  };
+
+  const getProgressData = (contentId) => {
+    return progress.find(p => p.content_id === contentId);
   };
 
   if (isLoading) {
@@ -199,9 +272,11 @@ export default function Discover() {
             </motion.div>
           ) : (
             <div className="grid gap-4">
-              {filteredContent.map(item => {
+              {filteredContent.map((item, index) => {
                 const Icon = TYPE_ICONS[item.type] || BookOpen;
                 const completed = isCompleted(item.id);
+                const progressData = getProgressData(item.id);
+                const isRecommended = index < 3 && item.score > 10; // Top 3 with good scores
                 return (
                   <motion.div
                     key={item.id}
@@ -212,6 +287,12 @@ export default function Discover() {
                     className="glass-card p-4 cursor-pointer hover:shadow-lg transition-all"
                     onClick={() => setSelectedContent(item)}
                   >
+                    {isRecommended && (
+                      <div className="flex items-center gap-1 mb-2 text-xs" style={{ color: '#FFB800' }}>
+                        <Sparkles className="w-3 h-3" />
+                        <span>Recommended for you</span>
+                      </div>
+                    )}
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(123,92,255,0.2)' }}>
                         <Icon className="w-5 h-5" style={{ color: '#7B5CFF' }} />
@@ -238,6 +319,13 @@ export default function Discover() {
                             <span className="text-xs px-2 py-0.5 rounded-full capitalize" style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)' }}>
                               {item.difficulty}
                             </span>
+                          )}
+                          {progressData?.rating && (
+                            <div className="flex items-center gap-0.5">
+                              {[...Array(progressData.rating)].map((_, i) => (
+                                <Star key={i} className="w-3 h-3 fill-current" style={{ color: '#FFB800' }} />
+                              ))}
+                            </div>
                           )}
                         </div>
                       </div>
