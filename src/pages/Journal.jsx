@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2, BookOpen, Calendar } from "lucide-react";
 import PromptsGenerator from "../components/journaling/PromptsGenerator";
 import JournalEntryForm from "../components/journaling/JournalEntryForm";
+import JournalInsights from "../components/journaling/JournalInsights";
 import moment from "moment";
 
 export default function Journal() {
@@ -58,6 +59,11 @@ export default function Journal() {
             profile={profile} 
             onSelectPrompt={setSelectedPrompt} 
           />
+        )}
+
+        {/* AI Insights */}
+        {!selectedPrompt && entries.length >= 3 && (
+          <JournalInsights entries={entries} />
         )}
 
         {/* Recent Entries */}
