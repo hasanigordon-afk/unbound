@@ -123,8 +123,15 @@ export default function Home() {
   return (
     <div className="min-h-screen pb-24" style={{ background: '#0B0F1F' }}>
       <div className="px-5 pt-8 pb-10 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, rgba(123,92,255,0.2), rgba(47,243,224,0.1))' }}>
+        <div className="flex items-center gap-3 mb-4">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698cbbdc830161c35d66ad0e/f15d68acb_image.png" 
+            alt="Unbound" 
+            className="h-12 w-auto"
+          />
+        </div>
         <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.75)' }}>Welcome back</p>
-        <h1 className="text-2xl font-bold" style={{ color: '#2FF3E0' }}>RecoveryLink</h1>
+        <h1 className="text-2xl font-bold" style={{ color: '#2FF3E0' }}>Unbound</h1>
         <div className="mt-3 inline-flex items-center px-3 py-1.5 backdrop-blur rounded-full" style={{ background: 'rgba(47,243,224,0.15)', border: '1px solid rgba(47,243,224,0.2)' }}>
           <span className="text-xs font-medium" style={{ color: '#2FF3E0' }}>
             {stageLabels[profile.stage] || profile.stage}
