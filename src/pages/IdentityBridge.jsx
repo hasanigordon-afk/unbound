@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, Shield, CheckCircle2, MapPin, FolderLock } from "lucide-react";
+import { Loader2, Shield, CheckCircle2, MapPin, FolderLock, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import IdentityAssessment from "../components/identity/IdentityAssessment";
@@ -9,6 +9,7 @@ import IdentityProgress from "../components/identity/IdentityProgress";
 import ChecklistView from "../components/identity/ChecklistView";
 import ResourceFinder from "../components/identity/ResourceFinder";
 import DocumentVault from "../components/identity/DocumentVault";
+import ReentryResources from "../components/identity/ReentryResources";
 
 export default function IdentityBridge() {
   const { data: user } = useQuery({
@@ -55,17 +56,21 @@ export default function IdentityBridge() {
 
       <div className="px-5 -mt-3 max-w-lg mx-auto">
         <Tabs defaultValue="checklist" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 glass-card p-1 mb-4">
+          <TabsList className="grid w-full grid-cols-4 glass-card p-1 mb-4 text-xs">
             <TabsTrigger value="checklist" className="data-[state=active]:bg-teal-500/20">
-              <CheckCircle2 className="w-4 h-4 mr-2" />
+              <CheckCircle2 className="w-3 h-3 mr-1" />
               Checklist
             </TabsTrigger>
             <TabsTrigger value="resources" className="data-[state=active]:bg-teal-500/20">
-              <MapPin className="w-4 h-4 mr-2" />
-              Resources
+              <MapPin className="w-3 h-3 mr-1" />
+              Offices
+            </TabsTrigger>
+            <TabsTrigger value="reentry" className="data-[state=active]:bg-teal-500/20">
+              <Briefcase className="w-3 h-3 mr-1" />
+              Reentry
             </TabsTrigger>
             <TabsTrigger value="vault" className="data-[state=active]:bg-teal-500/20">
-              <FolderLock className="w-4 h-4 mr-2" />
+              <FolderLock className="w-3 h-3 mr-1" />
               Vault
             </TabsTrigger>
           </TabsList>
@@ -76,6 +81,10 @@ export default function IdentityBridge() {
 
           <TabsContent value="resources">
             <ResourceFinder />
+          </TabsContent>
+
+          <TabsContent value="reentry">
+            <ReentryResources />
           </TabsContent>
 
           <TabsContent value="vault">
