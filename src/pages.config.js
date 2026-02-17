@@ -49,9 +49,12 @@
  */
 import Achievements from './pages/Achievements';
 import Community from './pages/Community';
+import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
+import Goals from './pages/Goals';
 import Home from './pages/Home';
+import IdentityBridge from './pages/IdentityBridge';
 import Journal from './pages/Journal';
 import Meditation from './pages/Meditation';
 import MentorOnboarding from './pages/MentorOnboarding';
@@ -63,18 +66,18 @@ import Resources from './pages/Resources';
 import SavedResources from './pages/SavedResources';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import Goals from './pages/Goals';
-import Discover from './pages/Discover';
-import IdentityBridge from './pages/IdentityBridge';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "Achievements": Achievements,
     "Community": Community,
+    "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
+    "Goals": Goals,
     "Home": Home,
+    "IdentityBridge": IdentityBridge,
     "Journal": Journal,
     "Meditation": Meditation,
     "MentorOnboarding": MentorOnboarding,
@@ -86,9 +89,6 @@ export const PAGES = {
     "SavedResources": SavedResources,
     "SupportChat": SupportChat,
     "utils": utils,
-    "Goals": Goals,
-    "Discover": Discover,
-    "IdentityBridge": IdentityBridge,
 }
 
 export const pagesConfig = {

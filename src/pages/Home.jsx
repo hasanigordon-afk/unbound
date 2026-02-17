@@ -3,7 +3,20 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Users, MapPin, Loader2, Phone, Sparkles } from "lucide-react";
+import { Users, MapPin, Loader2, Phone, Sparkles, Quote } from "lucide-react";
+
+const QUOTES = [
+  "Every day is a new beginning. Take a deep breath and start again.",
+  "Recovery is not a race. You don't have to feel guilty if it takes you longer than you thought it would.",
+  "Fall seven times, stand up eight.",
+  "You are braver than you believe, stronger than you seem, and smarter than you think.",
+  "The only way out is through.",
+  "Your story isn't over yet.",
+  "One day at a time.",
+  "Progress, not perfection.",
+  "You are worthy of recovery.",
+  "The comeback is always stronger than the setback."
+];
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import QuickCheckin from "../components/home/QuickCheckin";
@@ -85,6 +98,7 @@ export default function Home() {
   const profile = profiles?.[0];
 
   const [activeTrack, setActiveTrack] = useState(null);
+  const [currentQuote, setCurrentQuote] = useState(QUOTES[Math.floor(Math.random() * QUOTES.length)]);
 
   useEffect(() => {
     if (profile) {
@@ -136,6 +150,21 @@ export default function Home() {
       </div>
 
       <div className="px-5 -mt-5 space-y-5 max-w-lg mx-auto">
+        {/* Daily Quote */}
+        <div className="glass-card p-5 text-center relative overflow-hidden">
+          <Quote className="absolute top-3 right-3 w-8 h-8 opacity-10" style={{ color: '#2FF3E0' }} />
+          <p className="text-base leading-relaxed italic mb-2" style={{ color: '#FFFFFF' }}>
+            "{currentQuote}"
+          </p>
+          <button
+            onClick={() => setCurrentQuote(QUOTES[Math.floor(Math.random() * QUOTES.length)])}
+            className="text-xs hover:opacity-80 transition-opacity"
+            style={{ color: '#2FF3E0' }}
+          >
+            New Quote
+          </button>
+        </div>
+
         {/* Track toggle if both */}
         {profile.track === "both" && activeTrack && (
           <TrackToggle activeTrack={activeTrack} onToggle={setActiveTrack} />
