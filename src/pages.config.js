@@ -67,6 +67,7 @@ import SavedResources from './pages/SavedResources';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import Splash from './pages/Splash';
+import AdminResources from './pages/AdminResources';
 import __Layout from './Layout.jsx';
 
 
@@ -91,6 +92,7 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "utils": utils,
     "Splash": Splash,
+    "AdminResources": AdminResources,
 }
 
 export const pagesConfig = {
