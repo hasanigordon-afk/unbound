@@ -22,7 +22,6 @@ import { Badge } from "@/components/ui/badge";
 import QuickCheckin from "../components/home/QuickCheckin";
 import TrackToggle from "../components/home/TrackToggle";
 import ProgressCard from "../components/gamification/ProgressCard";
-import BadgesCard from "../components/gamification/BadgesCard";
 
 function NearbyResources({ profile }) {
   const { data: resources = [] } = useQuery({
@@ -89,11 +88,7 @@ export default function Home() {
     enabled: !!user,
   });
 
-  const { data: userBadges = [] } = useQuery({
-    queryKey: ["user-badges", user?.email],
-    queryFn: () => base44.entities.UserBadge.filter({ created_by: user.email }),
-    enabled: !!user,
-  });
+
 
   const profile = profiles?.[0];
 
@@ -172,9 +167,6 @@ export default function Home() {
 
         {/* Progress Card */}
         <ProgressCard progress={progressData[0]} />
-
-        {/* Badges Card */}
-        <BadgesCard badges={userBadges} />
 
         {/* Action buttons */}
         <div className="grid grid-cols-2 gap-3">

@@ -47,7 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Achievements from './pages/Achievements';
+import AdminResources from './pages/AdminResources';
 import Community from './pages/Community';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
@@ -64,15 +64,14 @@ import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import Resources from './pages/Resources';
 import SavedResources from './pages/SavedResources';
+import Splash from './pages/Splash';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import Splash from './pages/Splash';
-import AdminResources from './pages/AdminResources';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Achievements": Achievements,
+    "AdminResources": AdminResources,
     "Community": Community,
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
@@ -89,14 +88,13 @@ export const PAGES = {
     "Profile": Profile,
     "Resources": Resources,
     "SavedResources": SavedResources,
+    "Splash": Splash,
     "SupportChat": SupportChat,
     "utils": utils,
-    "Splash": Splash,
-    "AdminResources": AdminResources,
 }
 
 export const pagesConfig = {
-    mainPage: "Achievements",
+    mainPage: "AdminResources",
     Pages: PAGES,
     Layout: __Layout,
 };
