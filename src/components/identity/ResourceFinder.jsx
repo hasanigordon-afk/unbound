@@ -13,6 +13,8 @@ const FILTER_CHIPS = [
   { value: "benefits", label: "Benefits (SNAP/Medicaid/WFNJ)" },
   { value: "housing", label: "Housing" },
   { value: "employment", label: "Employment" },
+  { value: "health", label: "Health" },
+  { value: "legal", label: "Legal" },
   { value: "reentry", label: "Reentry Support" },
   { value: "saved", label: "Saved" }
 ];
@@ -254,6 +256,10 @@ export default function ResourceFinder() {
         filterMatch = r.category === "Housing";
       } else if (activeFilter === "employment") {
         filterMatch = r.category === "Employment";
+      } else if (activeFilter === "health") {
+        filterMatch = r.category === "Health";
+      } else if (activeFilter === "legal") {
+        filterMatch = r.category === "Legal";
       } else if (activeFilter === "reentry") {
         filterMatch = r.category === "Reentry";
       } else if (activeFilter === "saved") {
