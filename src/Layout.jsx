@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { name: "Profile", icon: User, page: "Profile" },
 ];
 
-const HIDE_NAV_PAGES = [];
+const HIDE_NAV_PAGES = ["Splash"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
