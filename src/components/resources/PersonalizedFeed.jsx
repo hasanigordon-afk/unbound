@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Sparkles, Loader2, TrendingUp, BookOpen, Users, ExternalLink } from "lucide-react";
+import { Sparkles, Loader2, TrendingUp, BookOpen, Users, ExternalLink, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default function PersonalizedFeed({ profile }) {
-  const [suggestions, setSuggestions] = useState(null);
+  const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => base44.auth.me(),
+  });
 
   const { data: recentCheckins = [] } = useQuery({
     queryKey: ["recent-checkins"],
@@ -17,76 +23,128 @@ export default function PersonalizedFeed({ profile }) {
     },
   });
 
-  const generateSuggestions = async () => {
+  const { data: savedResources = [] } = useQuery({
+    queryKey: ["saved-resources", user?.email],
+    queryFn: () => base44.entities.SavedResource.filter({ created_by: user.email }),
+    enabled: !!user,
+  });
+
+  const { data: allResources = [] } = useQuery({
+    queryKey: ["all-resources-for-ai"],
+    queryFn: () => base44.entities.Resource.list(),
+  });
+
+  const { data: progressData = [] } = useQuery({
+    queryKey: ["user-progress", user?.email],
+    queryFn: () => base44.entities.UserProgress.filter({ created_by: user.email }),
+    enabled: !!user,
+  });
+
+  const generateRecommendations = async () => {
     setLoading(true);
     
+    const progress = progressData[0];
     const avgCraving = recentCheckins.length > 0 
       ? recentCheckins.reduce((sum, c) => sum + c.craving_score, 0) / recentCheckins.length 
       : 0;
     
     const recentNotes = recentCheckins
       .filter(c => c.note)
-      .slice(0, 3)
+      .slice(0, 5)
       .map(c => c.note)
       .join(" | ");
 
-    const prompt = `Based on the following recovery profile, suggest 4-5 highly relevant resources:
+    const savedResourceCategories = savedResources.map(sr => sr.resource_category);
+    const savedCategorySummary = savedResourceCategories.length > 0 
+      ? [...new Set(savedResourceCategories)].join(", ") 
+      : "None yet";
 
-Profile:
+    // Create a concise resource list for the AI
+    const resourceSummary = allResources.map(r => ({
+      id: r.id,
+      name: r.name,
+      category: r.category,
+      city: r.city,
+      state: r.state,
+      tags: r.tags,
+      notes: r.notes
+    }));
+
+    const prompt = `You are an AI recovery support assistant. Analyze this user's profile and recommend the TOP 5 most relevant resources from the database.
+
+USER PROFILE:
 - Recovery Track: ${profile.track}
 - Primary Substance: ${profile.primary_substance || "Not specified"}
-- Stage: ${profile.stage}
+- Recovery Stage: ${profile.stage}
 - Goals: ${profile.goals?.join(", ") || "Not specified"}
-- Challenges: ${profile.challenges?.join(", ") || "Not specified"}
+- Current Challenges: ${profile.challenges?.join(", ") || "Not specified"}
 - Location: ${profile.location_city}, ${profile.location_state}
-- Average Craving (last 10): ${avgCraving.toFixed(1)}/10
+- Support Needs: ${profile.support_needs?.join(", ") || "Not specified"}
+
+RECENT ACTIVITY:
+- Average Craving Level (0-10): ${avgCraving.toFixed(1)}
+- Total Check-ins: ${progress?.total_checkins || 0}
+- Current Streak: ${progress?.current_streak || 0} days
+- Resources Previously Saved: ${savedCategorySummary}
 - Recent Notes: ${recentNotes || "None"}
 
-Provide a JSON array of suggestions. Each should have:
-- type: "article", "resource", or "group"
-- title: string (concise)
-- description: string (1-2 sentences)
-- relevance_reason: string (why this helps them right now)
-- url: string (real URL if possible, or placeholder)
-- priority: "high", "medium", or "low"
+AVAILABLE RESOURCES (${resourceSummary.length} total):
+${JSON.stringify(resourceSummary.slice(0, 100), null, 2)}
 
-Focus on:
-1. Their current stage and challenges
-2. Recent craving patterns
-3. Local resources in their city/state when possible
-4. Substance-specific support
+TASK:
+1. Analyze the user's stage, challenges, and recent activity
+2. Select the 5 MOST RELEVANT resources from the database
+3. Prioritize based on:
+   - Urgency (higher cravings = immediate support needs)
+   - Stage appropriateness (detox/early recovery vs long-term)
+   - Location proximity (same city/state)
+   - Gap analysis (what they haven't explored yet)
+   - Recent patterns in check-in notes
 
-Return ONLY valid JSON array, no markdown.`;
+Return a JSON object with:
+- recommended_resource_ids: array of 5 resource IDs from the database
+- reasoning: object mapping each resource_id to why it's recommended (1 sentence)
+- priority_order: array of resource IDs in priority order (most urgent first)
+
+Be specific about why EACH resource helps THIS user right now.`;
 
     try {
       const response = await base44.integrations.Core.InvokeLLM({
         prompt,
-        add_context_from_internet: true,
+        add_context_from_internet: false,
         response_json_schema: {
           type: "object",
           properties: {
-            suggestions: {
+            recommended_resource_ids: {
               type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  type: { type: "string" },
-                  title: { type: "string" },
-                  description: { type: "string" },
-                  relevance_reason: { type: "string" },
-                  url: { type: "string" },
-                  priority: { type: "string" }
-                }
-              }
+              items: { type: "string" }
+            },
+            reasoning: {
+              type: "object",
+              additionalProperties: { type: "string" }
+            },
+            priority_order: {
+              type: "array",
+              items: { type: "string" }
             }
           }
         }
       });
       
-      setSuggestions(response.suggestions || []);
+      // Map resource IDs to actual resource objects
+      const recommendedResources = (response.priority_order || response.recommended_resource_ids || [])
+        .map(id => allResources.find(r => r.id === id))
+        .filter(Boolean)
+        .slice(0, 5)
+        .map(resource => ({
+          ...resource,
+          ai_reasoning: response.reasoning?.[resource.id] || "Recommended based on your profile"
+        }));
+      
+      setRecommendations(recommendedResources);
     } catch (error) {
-      console.error("Failed to generate suggestions:", error);
-      setSuggestions([]);
+      console.error("Failed to generate recommendations:", error);
+      setRecommendations([]);
     } finally {
       setLoading(false);
     }
@@ -110,16 +168,16 @@ Return ONLY valid JSON array, no markdown.`;
     low: { bg: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)", text: "Optional" },
   };
 
-  if (!suggestions) {
+  if (!recommendations) {
     return (
       <div className="glass-card p-6 text-center">
         <Sparkles className="w-10 h-10 mx-auto mb-3" style={{ color: '#7B5CFF' }} />
-        <h3 className="font-semibold mb-2" style={{ color: '#FFFFFF' }}>Get Personalized Suggestions</h3>
+        <h3 className="font-semibold mb-2" style={{ color: '#FFFFFF' }}>AI-Powered Resource Matching</h3>
         <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>
-          AI-powered recommendations based on your profile, check-ins, and goals
+          Get personalized recommendations based on your recovery stage, challenges, recent check-ins, and location
         </p>
         <Button
-          onClick={generateSuggestions}
+          onClick={generateRecommendations}
           disabled={loading}
           className="rounded-xl font-medium"
           style={{ background: '#7B5CFF', color: '#FFFFFF' }}
@@ -127,15 +185,25 @@ Return ONLY valid JSON array, no markdown.`;
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Analyzing...
+              Analyzing Your Needs...
             </>
           ) : (
             <>
               <Sparkles className="w-4 h-4 mr-2" />
-              Show My Feed
+              Match Me With Resources
             </>
           )}
         </Button>
+      </div>
+    );
+  }
+
+  if (recommendations.length === 0) {
+    return (
+      <div className="glass-card p-6 text-center">
+        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          No recommendations available. Try adding more resources to the database.
+        </p>
       </div>
     );
   }
@@ -145,64 +213,86 @@ Return ONLY valid JSON array, no markdown.`;
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5" style={{ color: '#7B5CFF' }} />
-          <h3 className="font-semibold" style={{ color: '#FFFFFF' }}>For You</h3>
+          <h3 className="font-semibold" style={{ color: '#FFFFFF' }}>AI-Matched For You</h3>
         </div>
         <button
-          onClick={generateSuggestions}
-          className="text-xs hover:opacity-80"
+          onClick={generateRecommendations}
+          disabled={loading}
+          className="text-xs hover:opacity-80 disabled:opacity-40"
           style={{ color: '#7B5CFF' }}
         >
-          Refresh
+          {loading ? "..." : "Refresh"}
         </button>
       </div>
 
-      {suggestions.map((item, idx) => {
-        const Icon = typeIcons[item.type] || BookOpen;
-        const colors = typeColors[item.type] || typeColors.article;
-        const badge = priorityBadges[item.priority] || priorityBadges.medium;
-
-        return (
-          <div key={idx} className="glass-card p-4 space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: colors.bg }}>
-                <Icon className="w-5 h-5" style={{ color: colors.color }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <h4 className="font-semibold text-sm" style={{ color: '#FFFFFF' }}>{item.title}</h4>
-                  <span 
-                    className="text-[10px] font-medium px-2 py-0.5 rounded-full flex-shrink-0"
-                    style={{ background: badge.bg, color: badge.color }}
-                  >
-                    {badge.text}
-                  </span>
-                </div>
-                <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                  {item.description}
-                </p>
-                <div className="flex items-start gap-2 mb-3">
-                  <TrendingUp className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: '#2FF3E0' }} />
-                  <p className="text-xs italic" style={{ color: '#2FF3E0' }}>
-                    {item.relevance_reason}
-                  </p>
-                </div>
-                {item.url && item.url !== "placeholder" && (
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs hover:opacity-80"
-                    style={{ color: '#7B5CFF' }}
-                  >
-                    Learn More
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
+      {recommendations.map((resource, idx) => (
+        <div key={resource.id} className="glass-card p-4">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(47,243,224,0.15)' }}>
+              <span className="text-sm font-bold" style={{ color: '#2FF3E0' }}>#{idx + 1}</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-semibold text-sm mb-1" style={{ color: '#FFFFFF' }}>
+                {resource.name}
+              </h4>
+              <Badge 
+                className="text-[10px] mb-2" 
+                style={{ background: 'rgba(123,92,255,0.2)', color: '#7B5CFF', border: 'none' }}
+              >
+                {resource.category}
+              </Badge>
             </div>
           </div>
-        );
-      })}
+
+          <div className="flex items-start gap-2 mb-3 p-2 rounded-lg" style={{ background: 'rgba(47,243,224,0.08)' }}>
+            <TrendingUp className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: '#2FF3E0' }} />
+            <p className="text-xs italic" style={{ color: '#2FF3E0' }}>
+              {resource.ai_reasoning}
+            </p>
+          </div>
+
+          <div className="space-y-2 text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-3 h-3 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.5)' }} />
+              <span>{resource.address || `${resource.city}, ${resource.state}`}</span>
+            </div>
+            {resource.phone && (
+              <div className="flex items-center gap-2">
+                <Phone className="w-3 h-3 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.5)' }} />
+                <a href={`tel:${resource.phone}`} style={{ color: '#2FF3E0' }}>
+                  {resource.phone}
+                </a>
+              </div>
+            )}
+            {resource.tags && resource.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {resource.tags.slice(0, 3).map((tag, i) => (
+                  <span 
+                    key={i}
+                    className="px-2 py-0.5 rounded text-[10px]"
+                    style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {resource.website && (
+            <a
+              href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs mt-3 hover:opacity-80"
+              style={{ color: '#7B5CFF' }}
+            >
+              Visit Website
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
