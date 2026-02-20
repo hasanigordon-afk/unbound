@@ -48,7 +48,9 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AdminResources from './pages/AdminResources';
+import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Community from './pages/Community';
+import ComplianceReports from './pages/ComplianceReports';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
@@ -65,22 +67,22 @@ import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
+import ReintegrationMap from './pages/ReintegrationMap';
+import ResourceDirectory from './pages/ResourceDirectory';
 import Resources from './pages/Resources';
 import SavedResources from './pages/SavedResources';
 import Splash from './pages/Splash';
+import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import ReintegrationMap from './pages/ReintegrationMap';
-import ResourceDirectory from './pages/ResourceDirectory';
-import ComplianceReports from './pages/ComplianceReports';
-import StateManagement from './pages/StateManagement';
-import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AdminResources": AdminResources,
+    "AnalyticsDashboard": AnalyticsDashboard,
     "Community": Community,
+    "ComplianceReports": ComplianceReports,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
@@ -97,16 +99,14 @@ export const PAGES = {
     "ParticipantDashboard": ParticipantDashboard,
     "PlatformAdmin": PlatformAdmin,
     "Profile": Profile,
+    "ReintegrationMap": ReintegrationMap,
+    "ResourceDirectory": ResourceDirectory,
     "Resources": Resources,
     "SavedResources": SavedResources,
     "Splash": Splash,
+    "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "ReintegrationMap": ReintegrationMap,
-    "ResourceDirectory": ResourceDirectory,
-    "ComplianceReports": ComplianceReports,
-    "StateManagement": StateManagement,
-    "AnalyticsDashboard": AnalyticsDashboard,
 }
 
 export const pagesConfig = {
