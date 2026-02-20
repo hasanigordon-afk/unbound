@@ -60,6 +60,7 @@ import Meditation from './pages/Meditation';
 import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
+import Onboarding from './pages/Onboarding';
 import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import Resources from './pages/Resources';
@@ -67,7 +68,8 @@ import SavedResources from './pages/SavedResources';
 import Splash from './pages/Splash';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import Onboarding from './pages/Onboarding';
+import ParticipantDashboard from './pages/ParticipantDashboard';
+import DailyCheckIn from './pages/DailyCheckIn';
 import __Layout from './Layout.jsx';
 
 
@@ -85,6 +87,7 @@ export const PAGES = {
     "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
+    "Onboarding": Onboarding,
     "PlatformAdmin": PlatformAdmin,
     "Profile": Profile,
     "Resources": Resources,
@@ -92,7 +95,8 @@ export const PAGES = {
     "Splash": Splash,
     "SupportChat": SupportChat,
     "utils": utils,
-    "Onboarding": Onboarding,
+    "ParticipantDashboard": ParticipantDashboard,
+    "DailyCheckIn": DailyCheckIn,
 }
 
 export const pagesConfig = {
