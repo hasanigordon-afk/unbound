@@ -228,76 +228,80 @@ export default function FacilityDashboard() {
           style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.15)' }}>
-              <Settings className="w-6 h-6" style={{ color: '#8b5cf6' }} />
+            <div className="w-12 h-12 flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.15)', borderRadius: 'var(--radius)' }}>
+              <Settings className="w-6 h-6" style={{ color: 'var(--secondary)' }} strokeWidth={2} />
             </div>
             <div>
-              <p className="font-semibold" style={{ color: '#ffffff' }}>Facility Settings</p>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Configure features and preferences</p>
+              <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>Facility Settings</p>
+              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Configure features and preferences</p>
             </div>
           </div>
         </button>
 
         {/* At Risk Alerts */}
         {alerts.length > 0 && (
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold flex items-center gap-2" style={{ color: '#ef4444' }}>
-              <AlertTriangle className="w-4 h-4" />
-              At Risk Participants
+          <div>
+            <h3 className="text-sm font-semibold flex items-center gap-2 mb-3" style={{ color: '#ef4444' }}>
+              <AlertTriangle className="w-4 h-4" strokeWidth={2} />
+              At-Risk Participants
             </h3>
-            {alerts.map(alert => (
-              <div key={alert.id} className="p-4 rounded-xl" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
-                <p className="text-sm font-medium mb-1" style={{ color: '#ffffff' }}>{alert.participant_email}</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{alert.alert_type.replace(/_/g, ' ')}</p>
-              </div>
-            ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {alerts.map(alert => (
+                <div key={alert.id} className="p-4" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 'var(--radius)' }}>
+                  <p className="text-sm font-medium mb-1" style={{ color: 'var(--text-primary)' }}>{alert.participant_email}</p>
+                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{alert.alert_type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
         {/* Communication & Task Management Tabs */}
-        <div className="space-y-4">
+        <div>
           <Tabs defaultValue="participants" className="w-full">
-            <TabsList className="grid w-full grid-cols-4" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <TabsTrigger value="participants" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                <Users className="w-4 h-4 mr-2" />
+            <TabsList className="grid w-full grid-cols-4" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+              <TabsTrigger value="participants" style={{ color: 'var(--text-secondary)' }}>
+                <Users className="w-4 h-4 mr-2" strokeWidth={2} />
                 Participants
               </TabsTrigger>
-              <TabsTrigger value="messages" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                <MessageSquare className="w-4 h-4 mr-2" />
+              <TabsTrigger value="messages" style={{ color: 'var(--text-secondary)' }}>
+                <MessageSquare className="w-4 h-4 mr-2" strokeWidth={2} />
                 Messages
               </TabsTrigger>
-              <TabsTrigger value="meetings" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                <Calendar className="w-4 h-4 mr-2" />
+              <TabsTrigger value="meetings" style={{ color: 'var(--text-secondary)' }}>
+                <Calendar className="w-4 h-4 mr-2" strokeWidth={2} />
                 Meetings
               </TabsTrigger>
-              <TabsTrigger value="tasks" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                <Target className="w-4 h-4 mr-2" />
+              <TabsTrigger value="tasks" style={{ color: 'var(--text-secondary)' }}>
+                <Target className="w-4 h-4 mr-2" strokeWidth={2} />
                 Tasks
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="participants" className="space-y-3 mt-4">
-              <h3 className="text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.7)' }}>Recent Participants</h3>
-              {participants.slice(0, 10).map(participant => {
-                const lastCheckIn = allCheckIns.find(c => c.participant_email === participant.participant_email);
-                const daysSince = lastCheckIn ? Math.floor((Date.now() - new Date(lastCheckIn.created_date)) / (1000 * 60 * 60 * 24)) : null;
-                
-                return (
-                  <div key={participant.id} className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium" style={{ color: '#ffffff' }}>{participant.participant_email}</p>
-                        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                          {lastCheckIn ? `Last check-in: ${daysSince} days ago` : 'No check-ins yet'}
-                        </p>
+            <TabsContent value="participants" style={{ marginTop: '16px' }}>
+              <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Recent Participants</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {participants.slice(0, 10).map(participant => {
+                  const lastCheckIn = allCheckIns.find(c => c.participant_email === participant.participant_email);
+                  const daysSince = lastCheckIn ? Math.floor((Date.now() - new Date(lastCheckIn.created_date)) / (1000 * 60 * 60 * 24)) : null;
+                  
+                  return (
+                    <div key={participant.id} className="card">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{participant.participant_email}</p>
+                          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                            {lastCheckIn ? `Last check-in: ${daysSince} ${daysSince === 1 ? 'day' : 'days'} ago` : 'No check-ins'}
+                          </p>
+                        </div>
+                        <div className={`w-3 h-3 rounded-full`} style={{ 
+                          background: !daysSince || daysSince > 3 ? '#ef4444' : daysSince > 1 ? 'var(--accent)' : '#22c55e'
+                        }} />
                       </div>
-                      <div className={`w-3 h-3 rounded-full`} style={{ 
-                        background: !daysSince || daysSince > 3 ? '#ef4444' : daysSince > 1 ? '#fbbf24' : '#22c55e'
-                      }} />
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </TabsContent>
 
             <TabsContent value="messages" className="mt-4">

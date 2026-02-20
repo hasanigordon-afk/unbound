@@ -238,19 +238,19 @@ export default function ParticipantDashboard() {
         </div>
 
         {/* Security Notice */}
-        <div className="p-4 rounded-lg text-xs" style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)', color: 'rgba(255,255,255,0.7)' }}>
+        <div className="p-4 text-xs" style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)', color: 'var(--text-secondary)', borderRadius: 'var(--radius)' }}>
           <p className="font-semibold mb-2" style={{ color: '#60a5fa' }}>Security & Privacy</p>
           <ul className="space-y-1">
             <li>• Data encrypted in transit and at rest</li>
-            <li>• Secure login with consent tracking</li>
-            <li>• Audit trail for all activities</li>
+            <li>• Secure authentication with consent tracking</li>
+            <li>• Complete audit trail for all activities</li>
             <li>• HIPAA-aligned infrastructure</li>
           </ul>
         </div>
 
         {/* Footer */}
         {facility && (
-          <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="text-center text-xs" style={{ color: 'var(--text-muted)', marginTop: 'var(--spacing-section)' }}>
             Powered by Unbound
           </p>
         )}

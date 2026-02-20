@@ -154,59 +154,55 @@ export default function Resources() {
   });
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: '#0B0F1F' }}>
+    <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
       <div className="px-5 pt-8 pb-4">
-        <h1 className="text-2xl font-bold mb-1" style={{ color: '#FFFFFF' }}>Resources</h1>
-        <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.75)' }}>Find local support services</p>
+        <h1 style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Resources</h1>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-section)' }}>Local support services and contacts</p>
 
         {profile && (
-          <div className="mb-6">
+          <div style={{ marginBottom: 'var(--spacing-section)' }}>
             <PersonalizedFeed profile={profile} />
           </div>
         )}
 
-        <div className="h-px my-6" style={{ background: 'rgba(255,255,255,0.1)' }} />
+        <div className="h-px" style={{ background: 'var(--border)', marginBottom: 'var(--spacing-section)' }} />
 
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(255,255,255,0.5)' }} />
+        <div className="relative" style={{ marginBottom: '16px' }}>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-muted)' }} strokeWidth={2} />
           <Input
             placeholder="Search resources..."
-            className="pl-10 h-12 rounded-xl"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: '#FFFFFF' }}
+            className="pl-10 h-12"
+            style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2" style={{ marginBottom: '16px' }}>
           {CATEGORIES.map(cat => (
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all"
+              className="px-4 py-2 text-sm font-medium whitespace-nowrap"
               style={{
-                background: categoryFilter === cat ? '#2FF3E0' : 'rgba(255,255,255,0.05)',
-                color: categoryFilter === cat ? '#0B0F1F' : 'rgba(255,255,255,0.75)',
-                border: categoryFilter === cat ? 'none' : '1px solid rgba(255,255,255,0.08)'
+                background: categoryFilter === cat ? 'var(--primary)' : 'transparent',
+                color: categoryFilter === cat ? 'var(--bg-primary)' : 'var(--text-secondary)',
+                border: `1px solid ${categoryFilter === cat ? 'var(--primary)' : 'var(--border)'}`,
+                borderRadius: 'var(--radius)'
               }}
             >
-              {cat === "all" ? "All" : cat.replace(/_/g, " ")}
+              {cat === "all" ? "All Categories" : cat.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2" style={{ marginBottom: '16px' }}>
           <Button
-            variant="outline"
+            className="btn-secondary"
             size="sm"
             onClick={() => setShowFilters(!showFilters)}
-            style={{
-              background: showFilters ? 'rgba(123,92,255,0.15)' : 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              color: '#FFFFFF'
-            }}
           >
-            <Filter className="w-4 h-4 mr-2" />
+            <Filter className="w-4 h-4 mr-2" strokeWidth={2} />
             Filters
           </Button>
           
@@ -215,90 +211,56 @@ export default function Resources() {
               <button
                 key={track}
                 onClick={() => setTrackFilter(track)}
-                className="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap"
+                className="px-3 py-1 text-xs font-medium whitespace-nowrap"
                 style={{
-                  background: trackFilter === track ? 'rgba(123,92,255,0.2)' : 'rgba(255,255,255,0.05)',
-                  color: trackFilter === track ? '#7B5CFF' : 'rgba(255,255,255,0.75)'
+                  background: trackFilter === track ? 'rgba(123,92,255,0.2)' : 'transparent',
+                  color: trackFilter === track ? 'var(--secondary)' : 'var(--text-secondary)',
+                  border: `1px solid ${trackFilter === track ? 'var(--secondary)' : 'var(--border)'}`,
+                  borderRadius: 'var(--radius)'
                 }}
               >
-                {track === "all" ? "All Tracks" : track}
+                {track === "all" ? "All" : track.charAt(0).toUpperCase() + track.slice(1)}
               </button>
             ))}
           </div>
         </div>
 
         {showFilters && (
-          <div className="glass-card p-4 mb-4 space-y-3">
+          <div className="card" style={{ marginBottom: '16px' }}>
             <div className="grid grid-cols-2 gap-2">
-              <label className="flex items-center gap-2 text-sm" style={{ color: '#FFFFFF' }}>
+              <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-primary)' }}>
                 <input
                   type="checkbox"
                   checked={filters.open_now}
                   onChange={(e) => setFilters({...filters, open_now: e.target.checked})}
                   className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
+                  style={{ borderColor: 'var(--border)' }}
                 />
                 Open Now
               </label>
-              <label className="flex items-center gap-2 text-sm" style={{ color: '#FFFFFF' }}>
-                <input
-                  type="checkbox"
-                  checked={filters.free_or_medicaid}
-                  onChange={(e) => setFilters({...filters, free_or_medicaid: e.target.checked})}
-                  className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-                />
+              <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-primary)' }}>
+                <input type="checkbox" checked={filters.free_or_medicaid} onChange={(e) => setFilters({...filters, free_or_medicaid: e.target.checked})} className="rounded" style={{ borderColor: 'var(--border)' }} />
                 Free/Medicaid
               </label>
-              <label className="flex items-center gap-2 text-sm" style={{ color: '#FFFFFF' }}>
-                <input
-                  type="checkbox"
-                  checked={filters.walk_in}
-                  onChange={(e) => setFilters({...filters, walk_in: e.target.checked})}
-                  className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-                />
+              <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-primary)' }}>
+                <input type="checkbox" checked={filters.walk_in} onChange={(e) => setFilters({...filters, walk_in: e.target.checked})} className="rounded" style={{ borderColor: 'var(--border)' }} />
                 Walk-In
               </label>
-              <label className="flex items-center gap-2 text-sm" style={{ color: '#FFFFFF' }}>
-                <input
-                  type="checkbox"
-                  checked={filters.same_day_intake}
-                  onChange={(e) => setFilters({...filters, same_day_intake: e.target.checked})}
-                  className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-                />
-                Same Day
+              <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-primary)' }}>
+                <input type="checkbox" checked={filters.same_day_intake} onChange={(e) => setFilters({...filters, same_day_intake: e.target.checked})} className="rounded" style={{ borderColor: 'var(--border)' }} />
+                Same-Day Intake
               </label>
-              <label className="flex items-center gap-2 text-sm" style={{ color: '#FFFFFF' }}>
-                <input
-                  type="checkbox"
-                  checked={filters.men}
-                  onChange={(e) => setFilters({...filters, men: e.target.checked})}
-                  className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-                />
+              <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-primary)' }}>
+                <input type="checkbox" checked={filters.men} onChange={(e) => setFilters({...filters, men: e.target.checked})} className="rounded" style={{ borderColor: 'var(--border)' }} />
                 Men
               </label>
-              <label className="flex items-center gap-2 text-sm" style={{ color: '#FFFFFF' }}>
-                <input
-                  type="checkbox"
-                  checked={filters.women}
-                  onChange={(e) => setFilters({...filters, women: e.target.checked})}
-                  className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-                />
+              <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-primary)' }}>
+                <input type="checkbox" checked={filters.women} onChange={(e) => setFilters({...filters, women: e.target.checked})} className="rounded" style={{ borderColor: 'var(--border)' }} />
                 Women
               </label>
-              <label className="flex items-center gap-2 text-sm col-span-2" style={{ color: '#FFFFFF' }}>
-                <input
-                  type="checkbox"
-                  checked={filters.family}
-                  onChange={(e) => setFilters({...filters, family: e.target.checked})}
-                  className="rounded"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)' }}
-                />
-                Family Friendly
+              <label className="flex items-center gap-2 text-sm col-span-2" style={{ color: 'var(--text-primary)' }}>
+                <input type="checkbox" checked={filters.family} onChange={(e) => setFilters({...filters, family: e.target.checked})} className="rounded" style={{ borderColor: 'var(--border)' }} />
+                Family-Friendly
               </label>
             </div>
           </div>
@@ -306,10 +268,10 @@ export default function Resources() {
 
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#2FF3E0' }} />
+            <Loader2 className="w-6 h-6" style={{ color: 'var(--primary)' }} />
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {filteredResources.map(resource => (
               <ResourceCard
                 key={resource.id}
@@ -321,7 +283,7 @@ export default function Resources() {
             ))}
             {filteredResources.length === 0 && (
               <div className="text-center py-12">
-                <p style={{ color: 'rgba(255,255,255,0.5)' }}>No resources found</p>
+                <p style={{ color: 'var(--text-muted)' }}>No resources found</p>
               </div>
             )}
           </div>

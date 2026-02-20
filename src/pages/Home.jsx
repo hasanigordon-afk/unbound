@@ -126,8 +126,8 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0B0F1F' }}>
-        <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#2FF3E0' }} />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
+        <Loader2 className="w-6 h-6" style={{ color: 'var(--primary)' }} />
       </div>
     );
   }
@@ -135,7 +135,7 @@ export default function Home() {
   const currentQuote = QUOTES[currentQuoteIndex];
 
   return (
-    <div className="min-h-screen pb-24 flex flex-col" style={{ background: '#0B0F1F' }}>
+    <div className="min-h-screen pb-24 flex flex-col" style={{ background: 'var(--bg-primary)' }}>
       <div className="px-5 pt-6 pb-4">
         <div className="flex items-center justify-center mb-2">
           <img 
@@ -147,23 +147,19 @@ export default function Home() {
       </div>
 
       <div className="flex-1 flex items-center justify-center px-5">
-        <div className="max-w-2xl w-full space-y-8">
-          {/* Main Quote Display */}
-          <div className="glass-card p-8 text-center relative overflow-hidden">
-            <Quote className="absolute top-6 right-6 w-16 h-16 opacity-5" style={{ color: '#2FF3E0' }} />
-            <Quote className="absolute bottom-6 left-6 w-16 h-16 opacity-5 rotate-180" style={{ color: '#7B5CFF' }} />
-            
-            <div className="relative z-10">
-              <p className="text-2xl md:text-3xl leading-relaxed mb-6" style={{ color: '#FFFFFF', fontWeight: 300 }}>
+        <div className="max-w-2xl w-full" style={{ marginTop: '-40px' }}>
+          <div style={{ marginBottom: 'var(--spacing-section)' }}>
+            {/* Main Quote Display */}
+            <div className="card p-8 text-center">
+              <p className="text-2xl leading-relaxed mb-4" style={{ color: 'var(--text-primary)', fontWeight: 400 }}>
                 "{currentQuote.text}"
               </p>
-              <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
                 — {currentQuote.author}
               </p>
               <button
                 onClick={getNewQuote}
-                className="px-6 py-3 rounded-full font-medium transition-all hover:scale-105"
-                style={{ background: '#2FF3E0', color: '#0B0F1F' }}
+                className="btn-primary px-6 py-3"
               >
                 Next Quote
               </button>
@@ -171,32 +167,36 @@ export default function Home() {
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3" style={{ marginBottom: 'var(--spacing-section)' }}>
             <Link to={createPageUrl("Discover")}>
-              <div className="glass-card p-4 hover:shadow-md transition-all text-center">
-                <Sparkles className="w-6 h-6 mx-auto mb-2" style={{ color: '#2FF3E0' }} />
-                <p className="font-medium text-sm" style={{ color: '#FFFFFF' }}>Discover</p>
+              <div className="card text-center">
+                <Sparkles className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} strokeWidth={2} />
+                <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>Discover</p>
               </div>
             </Link>
             <Link to={createPageUrl("Community")}>
-              <div className="glass-card p-4 hover:shadow-md transition-all text-center">
-                <Users className="w-6 h-6 mx-auto mb-2" style={{ color: '#2FF3E0' }} />
-                <p className="font-medium text-sm" style={{ color: '#FFFFFF' }}>Community</p>
+              <div className="card text-center">
+                <Users className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} strokeWidth={2} />
+                <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>Community</p>
               </div>
             </Link>
           </div>
 
-          {/* Progress indicator if available */}
+          {/* Progress Indicator */}
           {progressData[0] && (
             <div className="text-center">
               <Link 
                 to={createPageUrl("Profile")}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full hover:opacity-80 transition-opacity"
-                style={{ background: 'rgba(47,243,224,0.1)', color: '#2FF3E0' }}
+                className="inline-flex items-center gap-2 px-4 py-2"
+                style={{ 
+                  background: 'rgba(47,243,224,0.1)', 
+                  color: 'var(--primary)',
+                  borderRadius: 'var(--radius)'
+                }}
               >
                 <span className="text-sm">Level {progressData[0].level}</span>
-                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  • {progressData[0].current_streak} day streak
+                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                  • {progressData[0].current_streak}-day streak
                 </span>
               </Link>
             </div>
