@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Users, TrendingUp, AlertTriangle, Settings, UserPlus, FileText } from "lucide-react";
+import { Users, TrendingUp, AlertTriangle, Settings, UserPlus, FileText, MessageSquare, Calendar, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
+import MessagingPanel from "../components/counselor/MessagingPanel";
+import MeetingScheduler from "../components/counselor/MeetingScheduler";
+import CustomTaskManager from "../components/counselor/CustomTaskManager";
 
 export default function FacilityDashboard() {
   const queryClient = useQueryClient();
