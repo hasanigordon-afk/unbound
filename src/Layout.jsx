@@ -15,25 +15,26 @@ const HIDE_NAV_PAGES = ["Splash"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
+  const showFooter = !HIDE_NAV_PAGES.includes(currentPageName);
 
   return (
-    <div className="min-h-screen" style={{ background: '#0B0F1F' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#F5F5F7' }}>
       <style>{`
         :root {
-          --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-          --primary: #2FF3E0;
-          --secondary: #7B5CFF;
-          --accent: #F4D35E;
-          --text-primary: #FFFFFF;
-          --text-secondary: rgba(255,255,255,0.7);
-          --text-muted: rgba(255,255,255,0.5);
-          --bg-primary: #0B0F1F;
-          --bg-secondary: #1A1F3A;
-          --bg-card: #0F1628;
-          --border: rgba(255,255,255,0.1);
-          --radius: 12px;
-          --spacing-section: 24px;
-          --spacing-card: 20px;
+          --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+          --primary: #4A90E2;
+          --accent: #D4A574;
+          --text-primary: #1E1E1E;
+          --text-secondary: #5A5A5A;
+          --text-muted: #8E8E93;
+          --bg-primary: #F5F5F7;
+          --bg-secondary: #FFFFFF;
+          --bg-card: #FFFFFF;
+          --border: #D1D1D6;
+          --radius: 6px;
+          --spacing-section: 32px;
+          --spacing-card: 24px;
+          --shadow-subtle: 0 1px 3px rgba(0,0,0,0.04);
         }
         
         * {
@@ -49,10 +50,10 @@ export default function Layout({ children, currentPageName }) {
         }
         
         /* Typography Scale */
-        h1 { font-size: 28px; font-weight: 700; line-height: 1.2; }
-        h2 { font-size: 22px; font-weight: 600; line-height: 1.3; }
-        h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
-        h4 { font-size: 16px; font-weight: 600; line-height: 1.4; }
+        h1 { font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--text-primary); }
+        h2 { font-size: 20px; font-weight: 600; line-height: 1.3; color: var(--text-primary); }
+        h3 { font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
+        h4 { font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
         
         /* Card Styles */
         .card {
@@ -60,18 +61,47 @@ export default function Layout({ children, currentPageName }) {
           border: 1px solid var(--border);
           border-radius: var(--radius);
           padding: var(--spacing-card);
+          box-shadow: var(--shadow-subtle);
+        }
+        
+        /* Metric Card */
+        .metric-card {
+          background: var(--bg-card);
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
+          padding: 20px;
+          box-shadow: var(--shadow-subtle);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .metric-card .metric-value {
+          font-size: 32px;
+          font-weight: 700;
+          color: var(--text-primary);
+          line-height: 1;
+        }
+        .metric-card .metric-label {
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
         
         /* Button Styles */
         .btn-primary {
           background: var(--primary);
-          color: var(--bg-primary);
+          color: #FFFFFF;
           border: none;
           border-radius: var(--radius);
           font-weight: 500;
+          font-size: 14px;
+          padding: 10px 20px;
           transition: opacity 0.15s ease;
+          box-shadow: none;
         }
-        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-primary:hover:not(:disabled) { opacity: 0.85; }
         
         .btn-secondary {
           background: transparent;
@@ -79,18 +109,36 @@ export default function Layout({ children, currentPageName }) {
           border: 1px solid var(--border);
           border-radius: var(--radius);
           font-weight: 500;
+          font-size: 14px;
+          padding: 10px 20px;
           transition: background 0.15s ease;
+          box-shadow: none;
         }
-        .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.05); }
+        .btn-secondary:hover:not(:disabled) { background: rgba(0,0,0,0.03); }
         
         /* Remove animations */
         *, *::before, *::after {
           animation-duration: 0s !important;
           transition-duration: 0.15s !important;
         }
+        
+        /* Icon standardization */
+        svg {
+          stroke-width: 1.5;
+        }
       `}</style>
 
-      {children}
+      <div className="flex-1">
+        {children}
+      </div>
+
+      {showFooter && (
+        <footer className="border-t py-4 px-6 text-center" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', marginTop: 'auto' }}>
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+            Unbound is a behavioral engagement platform. It does not provide medical treatment.
+          </p>
+        </footer>
+      )}
 
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 border-t z-50 pb-safe" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
@@ -104,7 +152,7 @@ export default function Layout({ children, currentPageName }) {
                   className="flex-1 flex flex-col items-center gap-1 py-3"
                   style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}
                 >
-                  <Icon className="w-5 h-5" strokeWidth={2} />
+                  <Icon className="w-5 h-5" strokeWidth={1.5} />
                   <span className="text-[10px] font-medium">{name}</span>
                 </Link>
               );
