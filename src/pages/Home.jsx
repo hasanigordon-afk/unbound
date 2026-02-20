@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Users, MapPin, Loader2, Phone, Sparkles, Quote } from "lucide-react";
 
@@ -74,6 +74,8 @@ function NearbyResources({ profile }) {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
+  
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
@@ -92,8 +94,6 @@ export default function Home() {
     queryFn: () => base44.entities.UserProgress.filter({ created_by: user.email }),
     enabled: !!user,
   });
-
-
 
   const profile = profiles?.[0];
 
@@ -118,10 +118,16 @@ export default function Home() {
     }
   }, [profile]);
 
+  useEffect(() => {
+    if (!isLoading && user && (!profile || !profile.onboarding_complete)) {
+      navigate(createPageUrl("Onboarding"));
+    }
+  }, [isLoading, user, profile, navigate]);
+
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0B0F1F' }}>
+        <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#2FF3E0' }} />
       </div>
     );
   }
