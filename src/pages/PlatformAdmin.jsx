@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Building2, Users, Settings, TrendingUp, Edit, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createPageUrl } from "./utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -168,14 +169,32 @@ export default function PlatformAdmin() {
           </div>
         </div>
 
-        {/* Create Facility Button */}
+        {/* Quick Links */}
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            onClick={() => setShowCreateDialog(true)}
+            style={{ background: '#fbbf24', color: '#0f1628' }}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Create Facility
+          </Button>
+          <Button
+            onClick={() => window.location.href = createPageUrl("StateManagement")}
+            variant="outline"
+            style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#ffffff' }}
+          >
+            <Settings className="w-4 h-4 mr-2" />
+            State Config
+          </Button>
+        </div>
         <Button
-          onClick={() => setShowCreateDialog(true)}
+          onClick={() => window.location.href = createPageUrl("AnalyticsDashboard")}
           className="w-full"
-          style={{ background: '#fbbf24', color: '#0f1628' }}
+          variant="outline"
+          style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#ffffff' }}
         >
-          <Plus className="w-4 h-4 mr-2" />
-          Create New Facility
+          <TrendingUp className="w-4 h-4 mr-2" />
+          View Analytics Dashboard
         </Button>
 
         {/* Facilities List */}

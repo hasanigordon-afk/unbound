@@ -205,6 +205,17 @@ export default function FacilityDashboard() {
             Export Report
           </Button>
         </div>
+        
+        <Link to={createPageUrl("ComplianceReports")}>
+          <Button
+            className="w-full"
+            variant="outline"
+            style={{ borderColor: 'rgba(96,165,250,0.3)', color: '#60a5fa' }}
+          >
+            <FileText className="w-4 h-4 mr-2" />
+            Generate Compliance Reports
+          </Button>
+        </Link>
 
         {/* Settings Link */}
         <button
