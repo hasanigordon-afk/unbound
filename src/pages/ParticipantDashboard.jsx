@@ -22,6 +22,16 @@ export default function ParticipantDashboard() {
     enabled: !!user,
   });
 
+  const { data: facility } = useQuery({
+    queryKey: ["facility", profile?.facility_id],
+    queryFn: async () => {
+      if (!profile?.facility_id) return null;
+      const facilities = await base44.entities.Facility.filter({ id: profile.facility_id });
+      return facilities[0];
+    },
+    enabled: !!profile?.facility_id,
+  });
+
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins", user?.email],
     queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 30),
@@ -212,11 +222,23 @@ export default function ParticipantDashboard() {
             <a href="tel:988" className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
               Call 988 - Crisis Lifeline
             </a>
+            {facility?.crisis_phone && (
+              <a href={`tel:${facility.crisis_phone}`} className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
+                Call {facility.crisis_phone} - {facility.facility_name}
+              </a>
+            )}
             <a href="sms:741741" className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
               Text HOME to 741741 - Crisis Text Line
             </a>
           </div>
         </div>
+
+        {/* Footer */}
+        {facility && (
+          <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            Powered by Unbound
+          </p>
+        )}
       </div>
     </div>
   );
