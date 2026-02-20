@@ -76,6 +76,7 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import CounselorPortal from './pages/CounselorPortal';
+import ForwardPlan from './pages/ForwardPlan';
 import __Layout from './Layout.jsx';
 
 
@@ -109,6 +110,7 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "utils": utils,
     "CounselorPortal": CounselorPortal,
+    "ForwardPlan": ForwardPlan,
 }
 
 export const pagesConfig = {
