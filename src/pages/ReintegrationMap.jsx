@@ -205,112 +205,157 @@ export default function ReintegrationMap() {
   }
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: '#1a1f3a' }}>
+    <div className="min-h-screen pb-24" style={{ background: 'var(--bg-secondary)' }}>
       {/* Header */}
-      <div className="px-6 pt-8 pb-6" style={{ background: '#0f1628', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <Link to={createPageUrl("ParticipantDashboard")} className="text-sm mb-3 inline-block" style={{ color: '#60a5fa' }}>
+      <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
+        <Link to={createPageUrl("ParticipantDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
           ← Back to Dashboard
         </Link>
-        <h1 className="text-2xl font-bold mb-2" style={{ color: '#ffffff' }}>90-Day Reintegration Map</h1>
-        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-          Structured guidance for your first 90 days
+        <h1 style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>90-Day Reintegration Framework</h1>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+          Structured task progression and compliance tracking
         </p>
       </div>
 
-      <div className="px-6 py-6 space-y-6">
+      <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
         {/* Overall Progress */}
-        <div className="p-6 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <div className="flex items-center justify-between mb-4">
+        <div className="card">
+          <div className="flex items-center justify-between mb-3">
             <div>
-              <h3 className="font-semibold mb-1" style={{ color: '#ffffff' }}>Overall Progress</h3>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>Overall Completion</h3>
+              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                 {completions.length} of {allTasks.length} tasks completed
               </p>
             </div>
-            <div className="text-3xl font-bold" style={{ color: '#fbbf24' }}>{overallProgress}%</div>
+            <div className="text-right">
+              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{overallProgress}%</p>
+            </div>
           </div>
-          <Progress value={overallProgress} className="h-3" />
-          
-          <Button
-            onClick={generateSummary}
-            variant="outline"
-            className="w-full mt-4"
-            style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#ffffff' }}
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Generate Progress Summary
-          </Button>
+          <div className="w-full h-2" style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+            <div style={{ width: `${overallProgress}%`, height: '100%', background: 'var(--primary)' }} />
+          </div>
         </div>
 
-        {/* Phases */}
-        {[1, 2, 3].map(phaseNum => {
-          const phaseInfo = PHASE_INFO[phaseNum];
-          const phaseTasks = allTasks.filter(t => t.phase === phaseNum);
-          const progress = calculatePhaseProgress(phaseNum);
-          const isCompleted = phaseCompletions.some(pc => pc.phase === phaseNum);
+        {/* Export Summary */}
+        <Button onClick={generateSummary} className="btn-secondary w-full">
+          <FileText className="w-4 h-4 mr-2" strokeWidth={2} />
+          Export Progress Report
+        </Button>
 
-          return (
-            <div key={phaseNum} className="p-6 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold" style={{ color: phaseInfo.color }}>
-                      Phase {phaseNum}: {phaseInfo.name}
-                    </h3>
-                    {isCompleted && (
-                      <Award className="w-6 h-6" style={{ color: '#fbbf24' }} />
-                    )}
+        {/* Vertical Timeline */}
+        <div className="relative">
+          {[1, 2, 3].map((phase, phaseIndex) => {
+            const phaseTasks = allTasks.filter(t => t.phase === phase);
+            const phaseProgress = calculatePhaseProgress(phase);
+            const phaseStartDate = getPhaseStartDate(phase);
+            const phaseEndDate = getPhaseEndDate(phase);
+
+            return (
+              <div key={phase} className="relative" style={{ marginBottom: phaseIndex < 2 ? 'var(--spacing-section)' : '0' }}>
+                {/* Timeline Line */}
+                {phaseIndex < 2 && (
+                  <div 
+                    className="absolute left-[19px] top-0 w-0.5 h-full" 
+                    style={{ background: 'var(--border)', zIndex: 0, transform: 'translateY(100%)' }} 
+                  />
+                )}
+
+                {/* Phase Header */}
+                <div className="card" style={{ marginBottom: '16px' }}>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(47,243,224,0.15)', border: '2px solid var(--primary)' }}>
+                      <span className="text-sm font-bold" style={{ color: 'var(--primary)' }}>{phase}</span>
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{PHASE_INFO[phase].name}</h2>
+                      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                        {phaseStartDate && phaseEndDate ? `${phaseStartDate} — ${phaseEndDate}` : PHASE_INFO[phase].days}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{phaseProgress}%</p>
+                    </div>
                   </div>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{phaseInfo.days}</p>
+                  <div className="w-full h-1.5" style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ width: `${phaseProgress}%`, height: '100%', background: 'var(--primary)' }} />
+                  </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold" style={{ color: phaseInfo.color }}>{progress}%</div>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                    {phaseTasks.filter(t => isTaskCompleted(t.id)).length}/{phaseTasks.length}
-                  </p>
+
+                {/* Tasks */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '40px' }}>
+                  {phaseTasks.map((task, taskIndex) => {
+                    const taskCompletion = getTaskCompletion(task.id);
+                    const completed = !!taskCompletion;
+                    const completedDate = taskCompletion ? new Date(taskCompletion.completed_date).toLocaleString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric', 
+                      hour: 'numeric', 
+                      minute: '2-digit',
+                      hour12: true 
+                    }) : null;
+
+                    return (
+                      <button
+                        key={task.id}
+                        onClick={() => !completed && setSelectedTask(task)}
+                        disabled={completed}
+                        className="w-full text-left p-4"
+                        style={{
+                          background: completed ? 'rgba(34,197,94,0.05)' : 'var(--bg-card)',
+                          border: `1px solid ${completed ? 'rgba(34,197,94,0.3)' : 'var(--border)'}`,
+                          borderRadius: 'var(--radius)',
+                          cursor: completed ? 'default' : 'pointer',
+                          opacity: completed ? 0.85 : 1,
+                        }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 mt-0.5">
+                            {completed ? (
+                              <Lock className="w-4 h-4" style={{ color: '#22c55e' }} strokeWidth={2} />
+                            ) : (
+                              <Circle className="w-4 h-4" style={{ color: 'var(--text-muted)' }} strokeWidth={2} />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2 mb-1">
+                              <p className="font-medium text-sm" style={{ color: completed ? '#22c55e' : 'var(--text-primary)' }}>
+                                {task.task_name}
+                              </p>
+                              {completed && (
+                                <span className="px-2 py-0.5 text-[10px] font-medium flex-shrink-0" style={{ 
+                                  background: 'rgba(34,197,94,0.15)', 
+                                  color: '#22c55e',
+                                  borderRadius: 'var(--radius)'
+                                }}>
+                                  ✓ DONE
+                                </span>
+                              )}
+                            </div>
+                            {task.task_description && (
+                              <p className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>
+                                {task.task_description}
+                              </p>
+                            )}
+                            {completed && completedDate && (
+                              <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                                Completed: {completedDate}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
+            );
+          })}
+        </div>
 
-              <Progress value={progress} className="h-2 mb-4" />
-
-              <div className="space-y-3">
-                {phaseTasks.map(task => {
-                  const completed = isTaskCompleted(task.id);
-                  return (
-                    <button
-                      key={task.id}
-                      onClick={() => !completed && setSelectedTask(task)}
-                      disabled={completed}
-                      className="w-full p-4 rounded-lg flex items-start gap-3 text-left transition-all disabled:opacity-60"
-                      style={{
-                        background: completed ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.03)',
-                        border: `1px solid ${completed ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.1)'}`,
-                      }}
-                    >
-                      {completed ? (
-                        <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#22c55e' }} />
-                      ) : (
-                        <Circle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }} />
-                      )}
-                      <div className="flex-1">
-                        <p className="font-medium text-sm mb-1" style={{ color: '#ffffff' }}>{task.task_name}</p>
-                        {task.task_description && (
-                          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{task.task_description}</p>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Legal Footer */}
-        <div className="p-4 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <p className="text-xs text-center" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            This roadmap provides structured engagement guidance. It does not provide medical or legal advice. 
-            Users remain responsible for seeking professional assistance when needed.
+        {/* Footer Disclaimer */}
+        <div className="p-4 text-xs" style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)', borderRadius: 'var(--radius)', color: 'var(--text-secondary)' }}>
+          <p className="text-center">
+            This roadmap supports structured reintegration. It does not provide medical or legal advice.
           </p>
         </div>
       </div>
@@ -318,28 +363,28 @@ export default function ReintegrationMap() {
       {/* Task Completion Dialog */}
       {selectedTask && (
         <Dialog open={!!selectedTask} onOpenChange={() => setSelectedTask(null)}>
-          <DialogContent className="max-w-md" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <DialogContent className="max-w-md" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
             <DialogHeader>
-              <DialogTitle style={{ color: '#ffffff' }}>Complete Task</DialogTitle>
+              <DialogTitle style={{ color: 'var(--text-primary)' }}>Complete Task</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <p className="font-semibold mb-2" style={{ color: '#ffffff' }}>{selectedTask.task_name}</p>
+                <p className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>{selectedTask.task_name}</p>
                 {selectedTask.task_description && (
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{selectedTask.task_description}</p>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{selectedTask.task_description}</p>
                 )}
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                  Notes (Optional)
+                <label className="text-sm font-medium mb-2 block" style={{ color: 'var(--text-primary)' }}>
+                  Completion Notes (Optional)
                 </label>
                 <Textarea
                   value={completionNotes}
                   onChange={(e) => setCompletionNotes(e.target.value)}
-                  placeholder="Add any notes about completing this task..."
+                  placeholder="Add any notes..."
                   rows={3}
-                  style={{ background: '#1a1f3a', border: '1px solid rgba(255,255,255,0.1)', color: '#ffffff' }}
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}
                 />
               </div>
 
