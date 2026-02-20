@@ -34,14 +34,25 @@ export default function ParticipantDashboard() {
 
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins", user?.email],
-    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 30),
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 90),
     enabled: !!user,
+  });
+
+  const { data: phaseCompletions = [] } = useQuery({
+    queryKey: ["phase-completions", user?.email],
+    queryFn: () => base44.entities.PhaseCompletion.filter({ participant_email: user.email }),
+    enabled: !!user,
+  });
+
+  const { data: allTasks = [] } = useQuery({
+    queryKey: ["all-tasks"],
+    queryFn: () => base44.entities.ReintegrationTask.list(),
   });
 
   const today = new Date().toISOString().split('T')[0];
   const hasCheckedInToday = checkIns.some(c => c.check_in_date === today);
 
-  // Calculate streak
+  // Calculate engagement streak
   const calculateStreak = () => {
     if (!checkIns.length) return 0;
     let streak = 0;
@@ -62,195 +73,225 @@ export default function ParticipantDashboard() {
     return streak;
   };
 
-  // Calculate sobriety days
-  const calculateSobrietyDays = () => {
-    if (!profile?.sobriety_start_date) return 0;
-    const start = new Date(profile.sobriety_start_date);
-    const now = new Date();
-    return Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  // Calculate 7-day engagement compliance
+  const calculateEngagementCompliance = () => {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const last7DaysCheckIns = checkIns.filter(c => new Date(c.check_in_date) >= sevenDaysAgo);
+    return Math.round((last7DaysCheckIns.length / 7) * 100);
   };
 
-  // This week's stats
-  const getWeekStats = () => {
+  // Calculate 90-day phase progress
+  const calculatePhaseProgress = () => {
+    const totalTasks = allTasks.length;
+    const completedPhases = phaseCompletions.length;
+    if (totalTasks === 0) return 0;
+    const tasksPerPhase = Math.ceil(totalTasks / 3);
+    const estimatedCompleted = completedPhases * tasksPerPhase;
+    return Math.min(Math.round((estimatedCompleted / totalTasks) * 100), 100);
+  };
+
+  // This week's meeting count
+  const getWeekMeetingCount = () => {
     const weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
     const thisWeekCheckIns = checkIns.filter(c => new Date(c.check_in_date) >= weekAgo);
-    
-    return {
-      meetings: thisWeekCheckIns.filter(c => c.attended_meeting).length,
-      sponsorConnections: thisWeekCheckIns.filter(c => c.connected_with_sponsor).length,
-    };
+    return thisWeekCheckIns.filter(c => c.attended_meeting).length;
+  };
+
+  // Calculate days since last check-in for status indicator
+  const getDaysSinceLastCheckIn = () => {
+    if (!checkIns.length) return 999;
+    const mostRecent = checkIns.sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date))[0];
+    const daysDiff = Math.floor((new Date() - new Date(mostRecent.check_in_date)) / (1000 * 60 * 60 * 24));
+    return daysDiff;
   };
 
   const streak = calculateStreak();
-  const sobrietyDays = calculateSobrietyDays();
-  const weekStats = getWeekStats();
+  const engagementCompliance = calculateEngagementCompliance();
+  const phaseProgress = calculatePhaseProgress();
+  const meetingCount = getWeekMeetingCount();
+  const daysSinceLastCheckIn = getDaysSinceLastCheckIn();
   const accentColor = facility?.primary_color || '#fbbf24';
 
-  return (
-    <div className="min-h-screen pb-24" style={{ background: '#1a1f3a' }}>
-      {/* Header */}
-      <div className="px-6 pt-8 pb-6" style={{ background: '#0f1628', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        {facility?.logo_url && (
-          <img src={facility.logo_url} alt={facility.facility_name} className="h-10 mb-4" />
-        )}
-        <h1 className="text-2xl font-bold mb-1" style={{ color: '#ffffff' }}>Dashboard</h1>
-        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>Track your daily engagement</p>
-      </div>
+  // Status indicator
+  const getStatusColor = () => {
+    if (daysSinceLastCheckIn === 0) return '#22c55e'; // Green - Active
+    if (daysSinceLastCheckIn === 1) return '#fbbf24'; // Yellow - Missed 1 day
+    return '#ef4444'; // Red - Missed 3+ days
+  };
 
-      {/* Legal Disclaimer Banner */}
-      <div className="mx-6 mt-6 p-4 rounded-lg" style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)' }}>
-        <div className="flex gap-3">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#fbbf24' }} />
+  const getStatusText = () => {
+    if (daysSinceLastCheckIn === 0) return 'Active';
+    if (daysSinceLastCheckIn === 1) return 'Missed 1 Day';
+    return `Missed ${daysSinceLastCheckIn} Days`;
+  };
+
+  const lastUpdated = new Date().toLocaleString('en-US', { 
+    month: 'short', 
+    day: 'numeric', 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  });
+
+  return (
+    <div className="min-h-screen pb-24" style={{ background: 'var(--bg-secondary)' }}>
+      {/* Header */}
+      <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-sm font-medium mb-1" style={{ color: '#fbbf24' }}>Important Notice</p>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              Unbound does not provide medical advice or treatment. In case of emergency, call 911 immediately.
-            </p>
+            <h1 style={{ color: 'var(--text-primary)' }}>Engagement Dashboard</h1>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Behavioral tracking and compliance</p>
           </div>
+          {facility?.logo_url && (
+            <img src={facility.logo_url} alt={facility.facility_name} className="h-10 w-auto" />
+          )}
+        </div>
+
+        {/* Status Indicator */}
+        <div className="flex items-center gap-2 mt-4">
+          <div className="w-3 h-3 rounded-full" style={{ background: getStatusColor() }} />
+          <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+            Status: {getStatusText()}
+          </span>
         </div>
       </div>
 
-      <div className="px-6 py-6 space-y-6">
+      <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
+        {/* Engagement Metrics */}
+        <div>
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <div className="card">
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Engagement Streak</p>
+              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{streak}</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Days Consecutive</p>
+            </div>
+
+            <div className="card">
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Compliance Rate</p>
+              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{engagementCompliance}%</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Last 7 Days</p>
+            </div>
+
+            <div className="card">
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Phase Progress</p>
+              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{phaseProgress}%</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>90-Day Map</p>
+            </div>
+
+            <div className="card">
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Meetings Attended</p>
+              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{meetingCount}</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>This Week</p>
+            </div>
+          </div>
+          <p className="text-xs text-right" style={{ color: 'var(--text-muted)' }}>Last Updated: {lastUpdated}</p>
+        </div>
+
         {/* Daily Check-In CTA */}
-        {!hasCheckedInToday && (
+        {!hasCheckedInToday ? (
           <Link to={createPageUrl("DailyCheckIn")}>
-            <div className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', boxShadow: '0 4px 20px rgba(251,191,36,0.3)' }}>
-              <Calendar className="w-12 h-12 mx-auto mb-3" style={{ color: '#0f1628' }} />
-              <h2 className="text-xl font-bold mb-2" style={{ color: '#0f1628' }}>Complete Daily Check-In</h2>
-              <p className="text-sm" style={{ color: 'rgba(15,22,40,0.8)' }}>Track your progress today</p>
+            <div className="card text-center" style={{ borderColor: 'var(--primary)', borderWidth: '2px' }}>
+              <Calendar className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--primary)' }} strokeWidth={2} />
+              <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>Complete Daily Check-In</h3>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Required for compliance tracking</p>
             </div>
           </Link>
-        )}
-
-        {hasCheckedInToday && (
-          <div className="p-6 rounded-xl text-center" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)' }}>
-            <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.2)' }}>
-              <Calendar className="w-6 h-6" style={{ color: '#22c55e' }} />
-            </div>
-            <h2 className="text-lg font-bold mb-1" style={{ color: '#22c55e' }}>Check-In Complete</h2>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>Great job staying engaged today!</p>
+        ) : (
+          <div className="card text-center" style={{ background: 'rgba(34,197,94,0.1)', borderColor: 'rgba(34,197,94,0.3)' }}>
+            <Calendar className="w-10 h-10 mx-auto mb-3" style={{ color: '#22c55e' }} strokeWidth={2} />
+            <h3 style={{ color: '#22c55e', marginBottom: '4px' }}>Check-In Completed</h3>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Next check-in available tomorrow</p>
           </div>
         )}
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Sobriety Streak</p>
-            <p className="text-3xl font-bold" style={{ color: '#fbbf24' }}>{sobrietyDays}</p>
-            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>days</p>
-          </div>
-
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Check-In Streak</p>
-            <p className="text-3xl font-bold" style={{ color: '#22c55e' }}>{streak}</p>
-            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>days</p>
-          </div>
-
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Meetings This Week</p>
-            <p className="text-3xl font-bold" style={{ color: '#60a5fa' }}>{weekStats.meetings}</p>
-          </div>
-
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Sponsor Connections</p>
-            <p className="text-3xl font-bold" style={{ color: '#60a5fa' }}>{weekStats.sponsorConnections}</p>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold px-2" style={{ color: 'rgba(255,255,255,0.7)' }}>Quick Access</h3>
-          
-          <Link to={createPageUrl("ReintegrationMap")}>
-            <div className="p-5 rounded-xl hover:opacity-90 transition-opacity" style={{ background: 'linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.2))', border: '1px solid rgba(251,191,36,0.3)' }}>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.3)' }}>
-                  <Calendar className="w-6 h-6" style={{ color: '#fbbf24' }} />
+        {/* Quick Access */}
+        <div>
+          <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Quick Access</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <Link to={createPageUrl("ReintegrationMap")}>
+              <div className="card flex items-center gap-4">
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.15)', borderRadius: 'var(--radius)' }}>
+                  <Calendar className="w-5 h-5" style={{ color: 'var(--accent)' }} strokeWidth={2} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold" style={{ color: '#ffffff' }}>90-Day Reintegration Map</p>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Track your structured progress</p>
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>90-Day Reintegration Map</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>View structured task progression</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
 
-          <Link to={createPageUrl("ParticipantProgress")}>
-            <div className="p-4 rounded-xl flex items-center gap-4 hover:opacity-90 transition-opacity" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)' }}>
-                <TrendingUp className="w-6 h-6" style={{ color: '#60a5fa' }} />
+            <Link to={createPageUrl("ParticipantProgress")}>
+              <div className="card flex items-center gap-4">
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)', borderRadius: 'var(--radius)' }}>
+                  <TrendingUp className="w-5 h-5" style={{ color: '#60a5fa' }} strokeWidth={2} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>View Progress Report</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Engagement trends and history</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-sm" style={{ color: '#ffffff' }}>View Progress</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>See your trends and history</p>
-              </div>
-            </div>
-          </Link>
+            </Link>
 
-          <Link to={createPageUrl("ResourceDirectory")}>
-            <div className="p-4 rounded-xl flex items-center gap-4 hover:opacity-90 transition-opacity" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)' }}>
-                <MapPin className="w-6 h-6" style={{ color: '#60a5fa' }} />
+            <Link to={createPageUrl("ResourceDirectory")}>
+              <div className="card flex items-center gap-4">
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)', borderRadius: 'var(--radius)' }}>
+                  <MapPin className="w-5 h-5" style={{ color: '#60a5fa' }} strokeWidth={2} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Resource Directory</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Employment, housing, benefits</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-sm" style={{ color: '#ffffff' }}>Resource Directory</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Jobs, housing, food, meetings</p>
-              </div>
-            </div>
-          </Link>
+            </Link>
 
-          <Link to={createPageUrl("ParticipantMessages")}>
-            <div className="p-4 rounded-xl flex items-center gap-4 hover:opacity-90 transition-opacity" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.15)' }}>
-                <MessageCircle className="w-6 h-6" style={{ color: '#22c55e' }} />
+            <Link to={createPageUrl("ParticipantMessages")}>
+              <div className="card flex items-center gap-4">
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.15)', borderRadius: 'var(--radius)' }}>
+                  <MessageCircle className="w-5 h-5" style={{ color: '#22c55e' }} strokeWidth={2} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Counselor Messages</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>View communications</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-sm" style={{ color: '#ffffff' }}>Messages</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Connect with your counselor</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Emergency Help */}
-        <div className="p-5 rounded-xl" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
-          <h3 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#ef4444' }}>
-            <AlertCircle className="w-5 h-5" />
-            Emergency Help
-          </h3>
-          <div className="space-y-2 text-sm">
-            <a href="tel:911" className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
-              Call 911 - Emergency
-            </a>
-            <a href="tel:988" className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
-              Call 988 - Crisis Lifeline
-            </a>
-            {facility?.crisis_phone && (
-              <a href={`tel:${facility.crisis_phone}`} className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
-                Call {facility.crisis_phone} - {facility.facility_name}
-              </a>
-            )}
-            <a href="sms:741741" className="block p-3 rounded-lg font-medium" style={{ background: 'rgba(239,68,68,0.15)', color: '#ffffff' }}>
-              Text HOME to 741741 - Crisis Text Line
-            </a>
+            </Link>
           </div>
         </div>
 
-        {/* Security Notice */}
-        <div className="p-4 text-xs" style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)', color: 'var(--text-secondary)', borderRadius: 'var(--radius)' }}>
-          <p className="font-semibold mb-2" style={{ color: '#60a5fa' }}>Security & Privacy</p>
-          <ul className="space-y-1">
-            <li>• Data encrypted in transit and at rest</li>
-            <li>• Secure authentication with consent tracking</li>
-            <li>• Complete audit trail for all activities</li>
-            <li>• HIPAA-aligned infrastructure</li>
-          </ul>
+        {/* Emergency Resources */}
+        <div className="p-5" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 'var(--radius)' }}>
+          <h3 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#ef4444' }}>
+            <AlertCircle className="w-5 h-5" strokeWidth={2} />
+            Emergency Contacts
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <a href="tel:911" className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
+              911 — Emergency Services
+            </a>
+            <a href="tel:988" className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
+              988 — Crisis Lifeline
+            </a>
+            {facility?.crisis_phone && (
+              <a href={`tel:${facility.crisis_phone}`} className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
+                {facility.crisis_phone} — {facility.facility_name}
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Legal Disclaimer */}
+        <div className="p-4 text-xs" style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 'var(--radius)' }}>
+          <p className="font-semibold mb-2" style={{ color: 'var(--accent)' }}>Important Notice</p>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            This platform tracks behavioral engagement only. It does not provide medical advice, treatment, or clinical services. For medical emergencies, call 911 immediately.
+          </p>
         </div>
 
         {/* Footer */}
         {facility && (
-          <p className="text-center text-xs" style={{ color: 'var(--text-muted)', marginTop: 'var(--spacing-section)' }}>
+          <p className="text-center text-xs" style={{ color: 'var(--text-muted)' }}>
             Powered by Unbound
           </p>
         )}
