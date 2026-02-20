@@ -222,6 +222,18 @@ export default function ParticipantDashboard() {
               </div>
             </Link>
 
+            <Link to={createPageUrl("ForwardPlan")}>
+              <div className="card flex items-center gap-4">
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(74,144,226,0.15)', borderRadius: 'var(--radius)' }}>
+                  <TrendingUp className="w-5 h-5" style={{ color: 'var(--primary)' }} strokeWidth={2} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Forward Plan</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>5-Year Stability Roadmap</p>
+                </div>
+              </div>
+            </Link>
+
             <Link to={createPageUrl("ParticipantProgress")}>
               <div className="card flex items-center gap-4">
                 <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)', borderRadius: 'var(--radius)' }}>

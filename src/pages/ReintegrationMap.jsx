@@ -52,6 +52,12 @@ export default function ReintegrationMap() {
     enabled: !!user,
   });
 
+  const { data: forwardPlanMilestones = [] } = useQuery({
+    queryKey: ["forward-milestones", user?.email],
+    queryFn: () => base44.entities.ForwardPlanMilestone.filter({ participant_email: user.email, timeline: "90_day" }),
+    enabled: !!user,
+  });
+
   useEffect(() => {
     const accepted = localStorage.getItem("reintegration_disclaimer_accepted");
     if (accepted === "true") setDisclaimerAccepted(true);
@@ -173,6 +179,13 @@ export default function ReintegrationMap() {
 
   const getTaskCompletion = (taskId) => {
     return completions.find(c => c.task_id === taskId);
+  };
+
+  const isAlignedWithForwardPlan = (taskName) => {
+    return forwardPlanMilestones.some(m => 
+      m.milestone_text.toLowerCase().includes(taskName.toLowerCase().split(' ')[0]) ||
+      taskName.toLowerCase().includes(m.category)
+    );
   };
 
   if (!disclaimerAccepted) {
@@ -334,6 +347,15 @@ export default function ReintegrationMap() {
                             {task.task_description && (
                               <p className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>
                                 {task.task_description}
+                              </p>
+                            )}
+                            {!completed && isAlignedWithForwardPlan(task.task_name) && (
+                              <p className="text-[10px] px-2 py-1 inline-block" style={{ 
+                                background: 'rgba(74,144,226,0.1)', 
+                                color: 'var(--primary)',
+                                borderRadius: 'var(--radius)' 
+                              }}>
+                                ↗ Aligned with Long-Term Plan
                               </p>
                             )}
                             {completed && completedDate && (

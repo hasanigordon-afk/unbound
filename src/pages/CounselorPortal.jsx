@@ -72,6 +72,16 @@ export default function CounselorPortal() {
     enabled: !!facility?.id && participants.length > 0,
   });
 
+  const { data: forwardPlans = [] } = useQuery({
+    queryKey: ["all-forward-plans", facility?.id],
+    queryFn: async () => {
+      const allPlans = await base44.entities.ForwardPlan.list();
+      const participantEmails = participants.map(p => p.participant_email);
+      return allPlans.filter(p => participantEmails.includes(p.participant_email));
+    },
+    enabled: !!facility?.id && participants.length > 0,
+  });
+
   const calculateEngagement = (participantEmail) => {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -104,12 +114,21 @@ export default function CounselorPortal() {
     return "low";
   };
 
+  const getForwardPlanData = (participantEmail) => {
+    const plan = forwardPlans.find(fp => fp.participant_email === participantEmail);
+    return plan ? {
+      completion: plan.overall_completion_percentage || 0,
+      hasGoals: !!(plan.housing_goal || plan.employment_goal || plan.education_goal)
+    } : { completion: 0, hasGoals: false };
+  };
+
   const participantsWithMetrics = participants.map(p => ({
     ...p,
     engagement: calculateEngagement(p.participant_email),
     lastCheckIn: getLastCheckIn(p.participant_email),
     phase: getPhaseStatus(p.participant_email),
     risk: getRiskLevel(p.participant_email),
+    forwardPlan: getForwardPlanData(p.participant_email),
   }));
 
   const filteredParticipants = participantsWithMetrics.filter(p => {
@@ -320,7 +339,7 @@ export default function CounselorPortal() {
                       )}
                     </div>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-1 text-sm">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-x-4 gap-y-1 text-sm">
                       <div>
                         <span style={{ color: 'var(--text-muted)' }}>Engagement: </span>
                         <span 
@@ -351,6 +370,13 @@ export default function CounselorPortal() {
                         <span style={{ color: 'var(--text-muted)' }}>Phase: </span>
                         <span className="font-medium" style={{ color: 'var(--text-primary)' }}>
                           {participant.phase}
+                        </span>
+                      </div>
+                      
+                      <div>
+                        <span style={{ color: 'var(--text-muted)' }}>Forward Plan: </span>
+                        <span className="font-medium" style={{ color: participant.forwardPlan.hasGoals ? 'var(--primary)' : 'var(--text-muted)' }}>
+                          {participant.forwardPlan.hasGoals ? `${participant.forwardPlan.completion}%` : "Not started"}
                         </span>
                       </div>
                       
