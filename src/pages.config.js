@@ -72,6 +72,9 @@ import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
+import ComplianceReports from './pages/ComplianceReports';
+import StateManagement from './pages/StateManagement';
+import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -101,6 +104,9 @@ export const PAGES = {
     "utils": utils,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
+    "ComplianceReports": ComplianceReports,
+    "StateManagement": StateManagement,
+    "AnalyticsDashboard": AnalyticsDashboard,
 }
 
 export const pagesConfig = {
