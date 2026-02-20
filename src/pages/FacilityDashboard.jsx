@@ -254,29 +254,76 @@ export default function FacilityDashboard() {
           </div>
         )}
 
-        {/* Recent Participants */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.7)' }}>Recent Participants</h3>
-          {participants.slice(0, 10).map(participant => {
-            const lastCheckIn = allCheckIns.find(c => c.participant_email === participant.participant_email);
-            const daysSince = lastCheckIn ? Math.floor((Date.now() - new Date(lastCheckIn.created_date)) / (1000 * 60 * 60 * 24)) : null;
-            
-            return (
-              <div key={participant.id} className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: '#ffffff' }}>{participant.participant_email}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      {lastCheckIn ? `Last check-in: ${daysSince} days ago` : 'No check-ins yet'}
-                    </p>
+        {/* Communication & Task Management Tabs */}
+        <div className="space-y-4">
+          <Tabs defaultValue="participants" className="w-full">
+            <TabsList className="grid w-full grid-cols-4" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <TabsTrigger value="participants" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                <Users className="w-4 h-4 mr-2" />
+                Participants
+              </TabsTrigger>
+              <TabsTrigger value="messages" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Messages
+              </TabsTrigger>
+              <TabsTrigger value="meetings" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                <Calendar className="w-4 h-4 mr-2" />
+                Meetings
+              </TabsTrigger>
+              <TabsTrigger value="tasks" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                <Target className="w-4 h-4 mr-2" />
+                Tasks
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="participants" className="space-y-3 mt-4">
+              <h3 className="text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.7)' }}>Recent Participants</h3>
+              {participants.slice(0, 10).map(participant => {
+                const lastCheckIn = allCheckIns.find(c => c.participant_email === participant.participant_email);
+                const daysSince = lastCheckIn ? Math.floor((Date.now() - new Date(lastCheckIn.created_date)) / (1000 * 60 * 60 * 24)) : null;
+                
+                return (
+                  <div key={participant.id} className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium" style={{ color: '#ffffff' }}>{participant.participant_email}</p>
+                        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                          {lastCheckIn ? `Last check-in: ${daysSince} days ago` : 'No check-ins yet'}
+                        </p>
+                      </div>
+                      <div className={`w-3 h-3 rounded-full`} style={{ 
+                        background: !daysSince || daysSince > 3 ? '#ef4444' : daysSince > 1 ? '#fbbf24' : '#22c55e'
+                      }} />
+                    </div>
                   </div>
-                  <div className={`w-3 h-3 rounded-full`} style={{ 
-                    background: !daysSince || daysSince > 3 ? '#ef4444' : daysSince > 1 ? '#fbbf24' : '#22c55e'
-                  }} />
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </TabsContent>
+
+            <TabsContent value="messages" className="mt-4">
+              <MessagingPanel 
+                counselorEmail={user?.email} 
+                facilityId={facility?.id} 
+                participants={participants} 
+              />
+            </TabsContent>
+
+            <TabsContent value="meetings" className="mt-4">
+              <MeetingScheduler 
+                counselorEmail={user?.email} 
+                facilityId={facility?.id} 
+                participants={participants} 
+              />
+            </TabsContent>
+
+            <TabsContent value="tasks" className="mt-4">
+              <CustomTaskManager 
+                counselorEmail={user?.email} 
+                facilityId={facility?.id} 
+                participants={participants} 
+              />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
