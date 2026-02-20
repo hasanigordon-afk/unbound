@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { MapPin, Phone, ExternalLink, Navigation, Search, Heart, Clock, Loader2 } from "lucide-react";
+import { MapPin, Phone, ExternalLink, Navigation, Search, Heart, Clock, Loader2, Map as MapIcon, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Fix leaflet default marker icons
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
 
 const FILTER_CHIPS = [
   { value: "all", label: "All" },
@@ -18,6 +29,16 @@ const FILTER_CHIPS = [
   { value: "reentry", label: "Reentry Support" },
   { value: "saved", label: "Saved" }
 ];
+
+function MapUpdater({ center }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.setView(center, map.getZoom());
+    }
+  }, [center, map]);
+  return null;
+}
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 3959; // Earth's radius in miles
@@ -177,6 +198,8 @@ export default function ResourceFinder() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userLocation, setUserLocation] = useState(null);
   const [locationRequested, setLocationRequested] = useState(false);
+  const [viewMode, setViewMode] = useState("list");
+  const [selectedResource, setSelectedResource] = useState(null);
   
   const queryClient = useQueryClient();
   
@@ -301,17 +324,39 @@ export default function ResourceFinder() {
     }
   };
   
+  const mapCenter = userLocation 
+    ? [userLocation.lat, userLocation.lng]
+    : [40.0583, -74.4057]; // New Jersey center
+
   return (
     <div className="space-y-4">
       <div className="glass-card p-4">
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(255,255,255,0.5)' }} />
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name, city, zip, or tags..."
-            className="pl-10 bg-transparent border-white/20 text-white"
-          />
+        <div className="flex gap-2 mb-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(255,255,255,0.5)' }} />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name, city, zip, or tags..."
+              className="pl-10 bg-transparent border-white/20 text-white"
+            />
+          </div>
+          <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.1)' }}>
+            <button
+              onClick={() => setViewMode("list")}
+              className="p-2 rounded transition-all"
+              style={{ background: viewMode === "list" ? '#2FF3E0' : 'transparent' }}
+            >
+              <List className="w-4 h-4" style={{ color: viewMode === "list" ? '#0B0F1F' : '#FFFFFF' }} />
+            </button>
+            <button
+              onClick={() => setViewMode("map")}
+              className="p-2 rounded transition-all"
+              style={{ background: viewMode === "map" ? '#2FF3E0' : 'transparent' }}
+            >
+              <MapIcon className="w-4 h-4" style={{ color: viewMode === "map" ? '#0B0F1F' : '#FFFFFF' }} />
+            </button>
+          </div>
         </div>
         
         <div className="flex flex-wrap gap-2">
@@ -341,6 +386,83 @@ export default function ResourceFinder() {
           <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
             No resources found
           </p>
+        </div>
+      ) : viewMode === "map" ? (
+        <div className="glass-card overflow-hidden" style={{ height: '600px' }}>
+          <MapContainer
+            center={mapCenter}
+            zoom={userLocation ? 12 : 8}
+            style={{ height: '100%', width: '100%' }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            />
+            <MapUpdater center={userLocation ? [userLocation.lat, userLocation.lng] : null} />
+            
+            {userLocation && (
+              <Marker 
+                position={[userLocation.lat, userLocation.lng]}
+                icon={L.icon({
+                  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41]
+                })}
+              >
+                <Popup>
+                  <div className="text-sm">
+                    <strong>Your Location</strong>
+                  </div>
+                </Popup>
+              </Marker>
+            )}
+            
+            {filteredResources
+              .filter(r => r.latitude && r.longitude)
+              .map(resource => (
+                <Marker
+                  key={resource.id}
+                  position={[resource.latitude, resource.longitude]}
+                  eventHandlers={{
+                    click: () => setSelectedResource(resource)
+                  }}
+                >
+                  <Popup>
+                    <div className="text-sm" style={{ minWidth: '200px' }}>
+                      <strong className="block mb-1">{resource.name}</strong>
+                      <Badge className="text-xs mb-2" style={{ background: '#2FF3E0', color: '#0B0F1F' }}>
+                        {resource.category}
+                      </Badge>
+                      <p className="text-xs mb-2">{resource.address}<br />{resource.city}, {resource.state}</p>
+                      {resource.phone && (
+                        <a href={`tel:${resource.phone}`} className="text-xs block mb-2" style={{ color: '#2FF3E0' }}>
+                          {resource.phone}
+                        </a>
+                      )}
+                      {resource.distance && (
+                        <p className="text-xs mb-2">{resource.distance.toFixed(1)} miles away</p>
+                      )}
+                      <Button
+                        size="sm"
+                        className="w-full mt-2"
+                        onClick={() => {
+                          if (resource.latitude && resource.longitude) {
+                            window.open(`https://www.google.com/maps/dir/?api=1&destination=${resource.latitude},${resource.longitude}`, '_blank');
+                          }
+                        }}
+                        style={{ background: '#2FF3E0', color: '#0B0F1F' }}
+                      >
+                        <Navigation className="w-3 h-3 mr-1" />
+                        Directions
+                      </Button>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+          </MapContainer>
         </div>
       ) : (
         <div className="space-y-4">
