@@ -3,16 +3,15 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { CheckCircle2, Circle, Upload, FileText, Download, Award, AlertCircle } from "lucide-react";
+import { CheckCircle2, Circle, Upload, FileText, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Progress } from "@/components/ui/progress";
 
 const PHASE_INFO = {
-  1: { name: "Stabilization", days: "Days 1-14", color: "#ef4444" },
-  2: { name: "Foundation", days: "Days 15-45", color: "#f59e0b" },
-  3: { name: "Momentum", days: "Days 46-90", color: "#22c55e" },
+  1: { name: "Phase 1: Stabilization", days: "Days 1-14", startDay: 0, endDay: 14 },
+  2: { name: "Phase 2: Foundation", days: "Days 15-45", startDay: 15, endDay: 45 },
+  3: { name: "Phase 3: Momentum", days: "Days 46-90", startDay: 46, endDay: 90 },
 };
 
 export default function ReintegrationMap() {
@@ -154,21 +153,39 @@ export default function ReintegrationMap() {
 
   const overallProgress = Math.round((completions.length / allTasks.length) * 100) || 0;
 
+  const getPhaseStartDate = (phase) => {
+    if (!profile?.discharge_date) return null;
+    const dischargeDate = new Date(profile.discharge_date);
+    const startDay = PHASE_INFO[phase].startDay;
+    const startDate = new Date(dischargeDate);
+    startDate.setDate(startDate.getDate() + startDay);
+    return startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const getPhaseEndDate = (phase) => {
+    if (!profile?.discharge_date) return null;
+    const dischargeDate = new Date(profile.discharge_date);
+    const endDay = PHASE_INFO[phase].endDay;
+    const endDate = new Date(dischargeDate);
+    endDate.setDate(endDate.getDate() + endDay);
+    return endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const getTaskCompletion = (taskId) => {
+    return completions.find(c => c.task_id === taskId);
+  };
+
   if (!disclaimerAccepted) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: '#1a1f3a' }}>
-        <div className="max-w-2xl w-full p-8 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <AlertCircle className="w-12 h-12 mx-auto mb-6" style={{ color: '#fbbf24' }} />
-          <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>
-            90-Day Reintegration Map
-          </h2>
-          <div className="space-y-4 mb-8 text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            <p>This roadmap provides structured engagement guidance during your first 90 days post-discharge.</p>
-            <p className="font-semibold" style={{ color: '#fbbf24' }}>Important Disclaimers:</p>
+      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--bg-secondary)' }}>
+        <div className="max-w-2xl w-full card">
+          <h2 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>90-Day Reintegration Framework</h2>
+          <div className="space-y-4 mb-8 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p>This framework provides structured engagement guidance during your first 90 days post-discharge.</p>
+            <p className="font-semibold" style={{ color: 'var(--accent)' }}>Important Notice:</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li>This is NOT medical treatment</li>
-              <li>This does NOT provide medical or legal advice</li>
               <li>This is a behavioral engagement and accountability tool</li>
+              <li>This does NOT provide medical or legal advice</li>
               <li>You remain responsible for seeking professional assistance when needed</li>
               <li>In case of emergency, call 911 immediately</li>
             </ul>
@@ -178,8 +195,7 @@ export default function ReintegrationMap() {
               localStorage.setItem("reintegration_disclaimer_accepted", "true");
               setDisclaimerAccepted(true);
             }}
-            className="w-full"
-            style={{ background: '#fbbf24', color: '#0f1628' }}
+            className="btn-primary w-full"
           >
             I Understand and Accept
           </Button>
