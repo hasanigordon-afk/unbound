@@ -148,10 +148,24 @@ export default function ParticipantDashboard() {
         <div className="space-y-3">
           <h3 className="text-sm font-semibold px-2" style={{ color: 'rgba(255,255,255,0.7)' }}>Quick Access</h3>
           
+          <Link to={createPageUrl("ReintegrationMap")}>
+            <div className="p-5 rounded-xl hover:opacity-90 transition-opacity" style={{ background: 'linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.2))', border: '1px solid rgba(251,191,36,0.3)' }}>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.3)' }}>
+                  <Calendar className="w-6 h-6" style={{ color: '#fbbf24' }} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold" style={{ color: '#ffffff' }}>90-Day Reintegration Map</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Track your structured progress</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
           <Link to={createPageUrl("ParticipantProgress")}>
             <div className="p-4 rounded-xl flex items-center gap-4 hover:opacity-90 transition-opacity" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.15)' }}>
-                <TrendingUp className="w-6 h-6" style={{ color: '#fbbf24' }} />
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)' }}>
+                <TrendingUp className="w-6 h-6" style={{ color: '#60a5fa' }} />
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-sm" style={{ color: '#ffffff' }}>View Progress</p>

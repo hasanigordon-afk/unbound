@@ -49,6 +49,7 @@
  */
 import AdminResources from './pages/AdminResources';
 import Community from './pages/Community';
+import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
@@ -61,6 +62,7 @@ import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
 import Onboarding from './pages/Onboarding';
+import ParticipantDashboard from './pages/ParticipantDashboard';
 import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import Resources from './pages/Resources';
@@ -68,14 +70,14 @@ import SavedResources from './pages/SavedResources';
 import Splash from './pages/Splash';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import ParticipantDashboard from './pages/ParticipantDashboard';
-import DailyCheckIn from './pages/DailyCheckIn';
+import ReintegrationMap from './pages/ReintegrationMap';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AdminResources": AdminResources,
     "Community": Community,
+    "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
@@ -88,6 +90,7 @@ export const PAGES = {
     "Mentors": Mentors,
     "Messages": Messages,
     "Onboarding": Onboarding,
+    "ParticipantDashboard": ParticipantDashboard,
     "PlatformAdmin": PlatformAdmin,
     "Profile": Profile,
     "Resources": Resources,
@@ -95,8 +98,7 @@ export const PAGES = {
     "Splash": Splash,
     "SupportChat": SupportChat,
     "utils": utils,
-    "ParticipantDashboard": ParticipantDashboard,
-    "DailyCheckIn": DailyCheckIn,
+    "ReintegrationMap": ReintegrationMap,
 }
 
 export const pagesConfig = {
