@@ -6,16 +6,21 @@ import { createPageUrl } from "./utils";
 import { Users, MapPin, Loader2, Phone, Sparkles, Quote } from "lucide-react";
 
 const QUOTES = [
-  "Every day is a new beginning. Take a deep breath and start again.",
-  "Recovery is not a race. You don't have to feel guilty if it takes you longer than you thought it would.",
-  "Fall seven times, stand up eight.",
-  "You are braver than you believe, stronger than you seem, and smarter than you think.",
-  "The only way out is through.",
-  "Your story isn't over yet.",
-  "One day at a time.",
-  "Progress, not perfection.",
-  "You are worthy of recovery.",
-  "The comeback is always stronger than the setback."
+  { text: "Every day is a new beginning. Take a deep breath and start again.", author: "Unknown" },
+  { text: "Recovery is not a race. You don't have to feel guilty if it takes you longer than you thought it would.", author: "Unknown" },
+  { text: "Fall seven times, stand up eight.", author: "Japanese Proverb" },
+  { text: "You are braver than you believe, stronger than you seem, and smarter than you think.", author: "A.A. Milne" },
+  { text: "The only way out is through.", author: "Robert Frost" },
+  { text: "Your story isn't over yet.", author: "Unknown" },
+  { text: "One day at a time.", author: "Unknown" },
+  { text: "Progress, not perfection.", author: "Unknown" },
+  { text: "You are worthy of recovery.", author: "Unknown" },
+  { text: "The comeback is always stronger than the setback.", author: "Unknown" },
+  { text: "Rock bottom became the solid foundation on which I rebuilt my life.", author: "J.K. Rowling" },
+  { text: "Recovery is an acceptance that your life is in shambles and you have to change it.", author: "Jamie Lee Curtis" },
+  { text: "It's not about perfect. It's about effort.", author: "Jillian Michaels" },
+  { text: "You don't have to see the whole staircase, just take the first step.", author: "Martin Luther King Jr." },
+  { text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't.", author: "Rikki Rogers" }
 ];
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -93,7 +98,15 @@ export default function Home() {
   const profile = profiles?.[0];
 
   const [activeTrack, setActiveTrack] = useState(null);
-  const [currentQuote, setCurrentQuote] = useState(QUOTES[Math.floor(Math.random() * QUOTES.length)]);
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(Math.floor(Math.random() * QUOTES.length));
+  
+  const getNewQuote = () => {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * QUOTES.length);
+    } while (newIndex === currentQuoteIndex && QUOTES.length > 1);
+    setCurrentQuoteIndex(newIndex);
+  };
 
   useEffect(() => {
     if (profile) {
