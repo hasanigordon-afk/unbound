@@ -389,36 +389,28 @@ export default function ReintegrationMap() {
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                  Attach Photo (Optional)
+                <label className="text-sm font-medium mb-2 block" style={{ color: 'var(--text-primary)' }}>
+                  Photo Evidence (Optional)
                 </label>
-                <label className="flex items-center justify-center gap-2 p-4 rounded-lg cursor-pointer border-2 border-dashed transition-colors hover:border-amber-500" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
-                  <Upload className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.5)' }} />
-                  <span className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                    {uploadedPhoto ? "Photo attached" : "Upload photo"}
+                <label className="flex items-center justify-center gap-2 p-4 cursor-pointer border-2 border-dashed" style={{ borderColor: 'var(--border)', borderRadius: 'var(--radius)' }}>
+                  <Upload className="w-5 h-5" style={{ color: 'var(--text-muted)' }} strokeWidth={2} />
+                  <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                    {uploadPhotoMutation.isPending ? "Uploading..." : uploadedPhoto ? "Photo Attached" : "Upload Photo"}
                   </span>
                   <input type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
                 </label>
+                {uploadedPhoto && (
+                  <img src={uploadedPhoto} alt="Evidence" className="mt-2 w-full h-32 object-cover" style={{ borderRadius: 'var(--radius)' }} />
+                )}
               </div>
 
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => setSelectedTask(null)}
-                  variant="outline"
-                  className="flex-1"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#ffffff' }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleCompleteTask}
-                  disabled={completeTaskMutation.isPending}
-                  className="flex-1"
-                  style={{ background: '#fbbf24', color: '#0f1628' }}
-                >
-                  Mark Complete
-                </Button>
-              </div>
+              <Button
+                onClick={handleCompleteTask}
+                disabled={completeTaskMutation.isPending}
+                className="btn-primary w-full"
+              >
+                {completeTaskMutation.isPending ? "Saving..." : "Mark as Complete"}
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
