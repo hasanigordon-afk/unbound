@@ -5,7 +5,6 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Button } from "@/components/ui/button";
-import ResourceImporter from "../components/admin/ResourceImporter";
 
 export default function AdminResources() {
   const { data: user } = useQuery({
@@ -13,7 +12,7 @@ export default function AdminResources() {
     queryFn: () => base44.auth.me(),
   });
 
-  const { data: resources = [], refetch } = useQuery({
+  const { data: resources = [] } = useQuery({
     queryKey: ["all-resources"],
     queryFn: () => base44.entities.Resource.list("-created_date", 100),
   });
@@ -32,12 +31,10 @@ export default function AdminResources() {
               Resource Management
             </h1>
             <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Import and manage resources
+              Manage resources
             </p>
           </div>
         </div>
-
-        <ResourceImporter onSuccess={() => refetch()} />
 
         <div className="glass-card p-4">
           <h3 className="font-semibold mb-3" style={{ color: '#FFFFFF' }}>
