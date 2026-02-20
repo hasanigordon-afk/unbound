@@ -77,6 +77,7 @@ import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import CounselorPortal from './pages/CounselorPortal';
 import ForwardPlan from './pages/ForwardPlan';
+import AdminResourceManager from './pages/AdminResourceManager';
 import __Layout from './Layout.jsx';
 
 
@@ -111,6 +112,7 @@ export const PAGES = {
     "utils": utils,
     "CounselorPortal": CounselorPortal,
     "ForwardPlan": ForwardPlan,
+    "AdminResourceManager": AdminResourceManager,
 }
 
 export const pagesConfig = {
