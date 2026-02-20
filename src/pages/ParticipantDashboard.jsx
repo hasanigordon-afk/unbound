@@ -85,11 +85,15 @@ export default function ParticipantDashboard() {
   const streak = calculateStreak();
   const sobrietyDays = calculateSobrietyDays();
   const weekStats = getWeekStats();
+  const accentColor = facility?.primary_color || '#fbbf24';
 
   return (
     <div className="min-h-screen pb-24" style={{ background: '#1a1f3a' }}>
       {/* Header */}
       <div className="px-6 pt-8 pb-6" style={{ background: '#0f1628', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        {facility?.logo_url && (
+          <img src={facility.logo_url} alt={facility.facility_name} className="h-10 mb-4" />
+        )}
         <h1 className="text-2xl font-bold mb-1" style={{ color: '#ffffff' }}>Dashboard</h1>
         <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>Track your daily engagement</p>
       </div>
