@@ -75,6 +75,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
+import CounselorPortal from './pages/CounselorPortal';
 import __Layout from './Layout.jsx';
 
 
@@ -107,6 +108,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
+    "CounselorPortal": CounselorPortal,
 }
 
 export const pagesConfig = {
