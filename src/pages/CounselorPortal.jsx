@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, TrendingUp, AlertTriangle, Download, Filter, Search } from "lucide-react";
+import { Users, TrendingUp, AlertTriangle, Download, Filter, Search, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import MessagingPanel from "../components/counselor/MessagingPanel";
 
 export default function CounselorPortal() {
   const [searchQuery, setSearchQuery] = useState("");
   const [riskFilter, setRiskFilter] = useState("all");
   const [phaseFilter, setPhaseFilter] = useState("all");
   const [engagementFilter, setEngagementFilter] = useState("all");
+  const [selectedParticipant, setSelectedParticipant] = useState(null);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -390,6 +392,17 @@ export default function CounselorPortal() {
                       </div>
                     </div>
                   </div>
+
+                  <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
+                    <Button
+                      onClick={() => setSelectedParticipant(participant)}
+                      size="sm"
+                      className="btn-secondary"
+                    >
+                      <MessageSquare className="w-4 h-4 mr-2" strokeWidth={1.5} />
+                      Send Message
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -402,6 +415,15 @@ export default function CounselorPortal() {
           </div>
         </div>
       </div>
+
+      {selectedParticipant && (
+        <MessagingPanel
+          participant={selectedParticipant}
+          counselorEmail={user?.email}
+          facilityId={facility?.id}
+          onClose={() => setSelectedParticipant(null)}
+        />
+      )}
     </div>
   );
 }

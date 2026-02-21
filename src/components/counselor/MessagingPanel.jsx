@@ -1,146 +1,196 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Send, User, Loader2 } from "lucide-react";
+import { Send, MessageSquare, X, Clock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
-export default function MessagingPanel({ counselorEmail, facilityId, participants }) {
+export default function MessagingPanel({ participant, counselorEmail, facilityId, onClose }) {
+  const [messageContent, setMessageContent] = useState("");
   const queryClient = useQueryClient();
-  const [selectedParticipant, setSelectedParticipant] = useState(null);
-  const [messageText, setMessageText] = useState("");
 
   const { data: messages = [] } = useQuery({
-    queryKey: ["counselor-messages", facilityId],
-    queryFn: () => base44.entities.CounselorMessage.filter({ facility_id: facilityId }),
-    refetchInterval: 3000,
+    queryKey: ["counselor-messages", participant.participant_email],
+    queryFn: async () => {
+      const allMessages = await base44.entities.CounselorMessage.filter({
+        facility_id: facilityId,
+        participant_email: participant.participant_email
+      });
+      return allMessages.sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
+    },
+    enabled: !!participant && !!facilityId,
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: async () => {
-      await base44.entities.CounselorMessage.create({
+    mutationFn: async (content) => {
+      return await base44.entities.CounselorMessage.create({
         facility_id: facilityId,
         counselor_email: counselorEmail,
-        participant_email: selectedParticipant,
-        message: messageText,
+        participant_email: participant.participant_email,
+        message: content,
+        is_read: false,
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["counselor-messages"]);
-      setMessageText("");
+      setMessageContent("");
+      toast.success("Message sent");
     },
   });
 
-  const participantMessages = messages.filter(
-    m => m.participant_email === selectedParticipant
-  ).sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
-
-  const unreadCounts = {};
-  messages.forEach(m => {
-    if (!m.is_read) {
-      unreadCounts[m.participant_email] = (unreadCounts[m.participant_email] || 0) + 1;
-    }
-  });
+  const handleSendMessage = () => {
+    if (!messageContent.trim()) return;
+    sendMessageMutation.mutate(messageContent.trim());
+  };
 
   return (
-    <div className="grid grid-cols-3 gap-4 h-[600px]">
-      {/* Participant List */}
-      <div className="rounded-xl overflow-hidden" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-        <div className="p-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-          <h3 className="font-semibold" style={{ color: '#ffffff' }}>Participants</h3>
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.5)' }}
+      onClick={onClose}
+    >
+      <div 
+        className="w-full max-w-2xl flex flex-col"
+        style={{ 
+          background: 'var(--bg-secondary)', 
+          borderRadius: 'var(--radius)',
+          maxHeight: '80vh',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div 
+          className="flex items-center justify-between p-4"
+          style={{ borderBottom: '1px solid var(--border)' }}
+        >
+          <div className="flex items-center gap-3">
+            <MessageSquare className="w-5 h-5" style={{ color: 'var(--primary)' }} strokeWidth={1.5} />
+            <div>
+              <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+                Message Participant
+              </h3>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                {participant.participant_email}
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="h-8 w-8"
+          >
+            <X className="w-4 h-4" strokeWidth={1.5} />
+          </Button>
         </div>
-        <ScrollArea className="h-[540px]">
-          <div className="p-2 space-y-1">
-            {participants.map(p => (
-              <button
-                key={p.participant_email}
-                onClick={() => setSelectedParticipant(p.participant_email)}
-                className="w-full p-3 rounded-lg text-left transition-all"
-                style={{
-                  background: selectedParticipant === p.participant_email ? 'rgba(251,191,36,0.2)' : 'transparent',
-                  border: `1px solid ${selectedParticipant === p.participant_email ? 'rgba(251,191,36,0.3)' : 'transparent'}`,
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.2)' }}>
-                      <User className="w-4 h-4" style={{ color: '#fbbf24' }} />
+
+        {/* Message History */}
+        <div 
+          className="flex-1 overflow-y-auto p-4"
+          style={{ background: 'var(--bg-primary)' }}
+        >
+          <div className="space-y-3">
+            {messages.length === 0 ? (
+              <div className="text-center py-12">
+                <MessageSquare className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} strokeWidth={1.5} />
+                <p style={{ color: 'var(--text-muted)' }}>No messages yet</p>
+              </div>
+            ) : (
+              messages.map(msg => (
+                <div 
+                  key={msg.id}
+                  className="p-4"
+                  style={{
+                    background: 'var(--bg-secondary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius)'
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant="outline"
+                        className="text-[10px] px-2 py-0.5"
+                        style={{ 
+                          background: 'rgba(74,144,226,0.1)', 
+                          color: 'var(--primary)',
+                          border: '1px solid var(--primary)'
+                        }}
+                      >
+                        COUNSELOR
+                      </Badge>
+                      {msg.is_read && (
+                        <CheckCircle2 
+                          className="w-3 h-3" 
+                          style={{ color: '#4CAF50' }} 
+                          strokeWidth={2}
+                        />
+                      )}
                     </div>
-                    <span className="text-sm font-medium" style={{ color: '#ffffff' }}>
-                      {p.participant_email.split('@')[0]}
-                    </span>
+                    <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-muted)' }}>
+                      <Clock className="w-3 h-3" strokeWidth={1.5} />
+                      {new Date(msg.created_date).toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit'
+                      })}
+                    </div>
                   </div>
-                  {unreadCounts[p.participant_email] > 0 && (
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: '#ef4444', color: '#ffffff' }}>
-                      {unreadCounts[p.participant_email]}
-                    </div>
+                  <p className="text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>
+                    {msg.message}
+                  </p>
+                  {msg.read_at && (
+                    <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
+                      Read: {new Date(msg.read_at).toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit'
+                      })}
+                    </p>
                   )}
                 </div>
-              </button>
-            ))}
+              ))
+            )}
           </div>
-        </ScrollArea>
-      </div>
+        </div>
 
-      {/* Message Thread */}
-      <div className="col-span-2 rounded-xl overflow-hidden flex flex-col" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-        {selectedParticipant ? (
-          <>
-            <div className="p-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <h3 className="font-semibold" style={{ color: '#ffffff' }}>{selectedParticipant}</h3>
-            </div>
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-3">
-                {participantMessages.map(msg => (
-                  <div
-                    key={msg.id}
-                    className={`flex ${msg.counselor_email === counselorEmail ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className="max-w-[70%] p-3 rounded-lg"
-                      style={{
-                        background: msg.counselor_email === counselorEmail ? '#fbbf24' : 'rgba(255,255,255,0.1)',
-                        color: msg.counselor_email === counselorEmail ? '#0f1628' : '#ffffff',
-                      }}
-                    >
-                      <p className="text-sm">{msg.message}</p>
-                      <p className="text-xs mt-1" style={{ opacity: 0.7 }}>
-                        {new Date(msg.created_date).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-            <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="flex gap-2">
-                <Textarea
-                  value={messageText}
-                  onChange={(e) => setMessageText(e.target.value)}
-                  placeholder="Type a message..."
-                  rows={2}
-                  style={{ background: '#1a1f3a', border: '1px solid rgba(255,255,255,0.1)', color: '#ffffff' }}
-                />
-                <Button
-                  onClick={() => sendMessageMutation.mutate()}
-                  disabled={!messageText.trim() || sendMessageMutation.isPending}
-                  style={{ background: '#fbbf24', color: '#0f1628' }}
-                >
-                  {sendMessageMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Send className="w-4 h-4" />
-                  )}
-                </Button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center">
-            <p style={{ color: 'rgba(255,255,255,0.5)' }}>Select a participant to start messaging</p>
+        {/* Message Input */}
+        <div 
+          className="p-4"
+          style={{ borderTop: '1px solid var(--border)' }}
+        >
+          <Textarea
+            placeholder="Type your message to the participant..."
+            value={messageContent}
+            onChange={(e) => setMessageContent(e.target.value)}
+            rows={3}
+            className="mb-3"
+            style={{
+              background: 'var(--bg-primary)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius)',
+              color: 'var(--text-primary)'
+            }}
+          />
+          <div className="flex items-center justify-between">
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+              Messages are visible to the participant in their dashboard
+            </p>
+            <Button
+              onClick={handleSendMessage}
+              disabled={!messageContent.trim() || sendMessageMutation.isPending}
+              className="btn-primary"
+            >
+              <Send className="w-4 h-4 mr-2" strokeWidth={1.5} />
+              {sendMessageMutation.isPending ? "Sending..." : "Send Message"}
+            </Button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

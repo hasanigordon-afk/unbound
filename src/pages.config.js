@@ -47,14 +47,17 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AdminResourceManager from './pages/AdminResourceManager';
 import AdminResources from './pages/AdminResources';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
+import CounselorPortal from './pages/CounselorPortal';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
+import ForwardPlan from './pages/ForwardPlan';
 import Goals from './pages/Goals';
 import Home from './pages/Home';
 import IdentityBridge from './pages/IdentityBridge';
@@ -75,21 +78,21 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import CounselorPortal from './pages/CounselorPortal';
-import ForwardPlan from './pages/ForwardPlan';
-import AdminResourceManager from './pages/AdminResourceManager';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AdminResourceManager": AdminResourceManager,
     "AdminResources": AdminResources,
     "AnalyticsDashboard": AnalyticsDashboard,
     "Community": Community,
     "ComplianceReports": ComplianceReports,
+    "CounselorPortal": CounselorPortal,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
+    "ForwardPlan": ForwardPlan,
     "Goals": Goals,
     "Home": Home,
     "IdentityBridge": IdentityBridge,
@@ -110,9 +113,6 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "CounselorPortal": CounselorPortal,
-    "ForwardPlan": ForwardPlan,
-    "AdminResourceManager": AdminResourceManager,
 }
 
 export const pagesConfig = {
