@@ -68,6 +68,7 @@ import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
 import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
+import ParticipantMessages from './pages/ParticipantMessages';
 import PlatformAdmin from './pages/PlatformAdmin';
 import Profile from './pages/Profile';
 import ReintegrationMap from './pages/ReintegrationMap';
@@ -78,7 +79,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import ParticipantMessages from './pages/ParticipantMessages';
+import ContentfulSetup from './pages/ContentfulSetup';
 import __Layout from './Layout.jsx';
 
 
@@ -104,6 +105,7 @@ export const PAGES = {
     "Messages": Messages,
     "Onboarding": Onboarding,
     "ParticipantDashboard": ParticipantDashboard,
+    "ParticipantMessages": ParticipantMessages,
     "PlatformAdmin": PlatformAdmin,
     "Profile": Profile,
     "ReintegrationMap": ReintegrationMap,
@@ -114,7 +116,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "ParticipantMessages": ParticipantMessages,
+    "ContentfulSetup": ContentfulSetup,
 }
 
 export const pagesConfig = {
