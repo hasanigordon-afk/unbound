@@ -190,7 +190,35 @@ export default function CounselorPortal() {
         </p>
       </div>
 
-      <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
+      {/* Tab Nav */}
+      <div className="flex px-6 pt-4 gap-1" style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-secondary)' }}>
+        {[
+          { id: "participants", label: "Participants", icon: Users },
+          { id: "lifeline", label: "Lifeline Events", icon: Phone },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-t-lg"
+            style={{
+              color: activeTab === tab.id ? 'var(--primary)' : 'var(--text-muted)',
+              borderBottom: activeTab === tab.id ? '2px solid var(--primary)' : '2px solid transparent',
+              background: 'none'
+            }}
+          >
+            <tab.icon className="w-4 h-4" strokeWidth={1.5} />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "lifeline" && (
+        <div className="px-6 py-6">
+          <LifelineEventsTab facilityId={facility?.id} participants={participants} />
+        </div>
+      )}
+
+      {activeTab === "participants" && <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
         {/* Top Level Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="metric-card">
