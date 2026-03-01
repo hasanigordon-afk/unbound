@@ -52,6 +52,7 @@ import AdminResources from './pages/AdminResources';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
+import ContentfulSetup from './pages/ContentfulSetup';
 import CounselorPortal from './pages/CounselorPortal';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
@@ -79,7 +80,8 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import ContentfulSetup from './pages/ContentfulSetup';
+import Lifeline from './pages/Lifeline';
+import Meetings from './pages/Meetings';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +91,7 @@ export const PAGES = {
     "AnalyticsDashboard": AnalyticsDashboard,
     "Community": Community,
     "ComplianceReports": ComplianceReports,
+    "ContentfulSetup": ContentfulSetup,
     "CounselorPortal": CounselorPortal,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
@@ -116,7 +119,8 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "ContentfulSetup": ContentfulSetup,
+    "Lifeline": Lifeline,
+    "Meetings": Meetings,
 }
 
 export const pagesConfig = {
