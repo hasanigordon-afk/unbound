@@ -82,6 +82,8 @@ import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import Lifeline from './pages/Lifeline';
 import Meetings from './pages/Meetings';
+import PrivacyControls from './pages/PrivacyControls';
+import ModerationQueue from './pages/ModerationQueue';
 import __Layout from './Layout.jsx';
 
 
@@ -121,6 +123,8 @@ export const PAGES = {
     "utils": utils,
     "Lifeline": Lifeline,
     "Meetings": Meetings,
+    "PrivacyControls": PrivacyControls,
+    "ModerationQueue": ModerationQueue,
 }
 
 export const pagesConfig = {
