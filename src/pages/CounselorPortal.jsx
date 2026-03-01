@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, TrendingUp, AlertTriangle, Download, Filter, Search, MessageSquare } from "lucide-react";
+import { Users, TrendingUp, AlertTriangle, Download, Search, MessageSquare, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import MessagingPanel from "../components/counselor/MessagingPanel";
+import LifelineEventsTab from "../components/counselor/LifelineEventsTab";
 
 export default function CounselorPortal() {
   const [searchQuery, setSearchQuery] = useState("");
