@@ -14,6 +14,7 @@ export default function CounselorPortal() {
   const [phaseFilter, setPhaseFilter] = useState("all");
   const [engagementFilter, setEngagementFilter] = useState("all");
   const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [activeTab, setActiveTab] = useState("participants"); // "participants" | "lifeline"
 
   const { data: user } = useQuery({
     queryKey: ["user"],
