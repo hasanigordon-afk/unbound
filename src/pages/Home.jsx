@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Users, MapPin, Loader2, Phone, Sparkles, Quote } from "lucide-react";
+import { Users, MapPin, Loader2, Phone, Sparkles, CalendarCheck } from "lucide-react";
 
 const QUOTES = [
   { text: "Every day is a new beginning. Take a deep breath and start again.", author: "Unknown" },
