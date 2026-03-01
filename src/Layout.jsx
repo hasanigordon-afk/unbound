@@ -143,8 +143,25 @@ export default function Layout({ children, currentPageName }) {
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 border-t z-50 pb-safe" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
           <div className="max-w-lg mx-auto flex">
-            {NAV_ITEMS.map(({ name, icon: Icon, page }) => {
+            {NAV_ITEMS.map(({ name, icon: Icon, page, isLifeline }) => {
               const isActive = currentPageName === page;
+              if (isLifeline) {
+                return (
+                  <Link
+                    key={page}
+                    to={createPageUrl(page)}
+                    className="flex-1 flex flex-col items-center gap-1 py-2"
+                  >
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center -mt-5"
+                      style={{ background: isActive ? '#c0392b' : '#E85D4C', boxShadow: '0 4px 14px rgba(232,93,76,0.5)' }}
+                    >
+                      <Icon className="w-5 h-5 text-white" strokeWidth={2} />
+                    </div>
+                    <span className="text-[10px] font-semibold" style={{ color: '#E85D4C' }}>{name}</span>
+                  </Link>
+                );
+              }
               return (
                 <Link
                   key={page}
