@@ -446,7 +446,7 @@ export default function CounselorPortal() {
         </div>
       </div>
 
-      </div>}
+      </div>
 
       {selectedParticipant && (
         <MessagingPanel
