@@ -1,75 +1,55 @@
-export default async function GetContentfulMessageTemplates(data, context) {
-  const { facilityId, templateType } = data;
-  
-  const spaceId = context.secrets.CONTENTFUL_SPACE_ID;
-  const accessToken = context.secrets.CONTENTFUL_ACCESS_TOKEN;
-  const environment = context.secrets.CONTENTFUL_ENVIRONMENT || 'master';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
-  if (!spaceId || !accessToken) {
-    return {
-      success: false,
-      error: "Contentful credentials not configured"
-    };
-  }
-
+Deno.serve(async (req) => {
   try {
-    const url = `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/entries`;
-    
-    const params = new URLSearchParams({
-      content_type: 'messageTemplate',
-      limit: 100
-    });
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-    if (templateType) {
-      params.append('fields.templateType', templateType);
+    const body = await req.json();
+    const { facilityId, templateType } = body;
+
+    const spaceId = Deno.env.get("CONTENTFUL_SPACE_ID");
+    const accessToken = Deno.env.get("CONTENTFUL_ACCESS_TOKEN");
+    const environment = Deno.env.get("CONTENTFUL_ENVIRONMENT") || 'master';
+
+    if (!spaceId || !accessToken) {
+      return Response.json({ success: false, error: "Contentful credentials not configured" }, { status: 500 });
     }
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
+    const params = new URLSearchParams({ content_type: 'messageTemplate', limit: '100' });
+    if (templateType) params.append('fields.templateType', templateType);
 
-    if (!response.ok) {
-      throw new Error(`Contentful API error: ${response.status}`);
-    }
+    const response = await fetch(
+      `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/entries?${params}`,
+      { headers: { 'Authorization': `Bearer ${accessToken}` } }
+    );
 
-    const contentfulData = await response.json();
-    
-    // Filter templates by facility or default
-    const templates = contentfulData.items
+    if (!response.ok) throw new Error(`Contentful error: ${response.status}`);
+
+    const data = await response.json();
+
+    const templates = data.items
       .map(item => ({
         id: item.sys.id,
         templateName: item.fields.templateName,
-        templateType: item.fields.templateType, // 'nudge', 'welcome', 'milestone', 'reminder', 'alert'
+        templateType: item.fields.templateType,
         subject: item.fields.subject,
         body: item.fields.body,
-        scope: item.fields.scope || 'default', // 'default', 'facility'
+        scope: item.fields.scope || 'default',
         scopeId: item.fields.scopeId,
-        variables: item.fields.variables || [], // Available placeholders
+        variables: item.fields.variables || [],
         isActive: item.fields.isActive !== false
       }))
-      .filter(template => {
-        if (!template.isActive) return false;
-        
-        // Facility-specific templates
-        if (template.scope === 'facility' && template.scopeId === facilityId) return true;
-        
-        // Default templates
-        if (template.scope === 'default' || !template.scope) return true;
-        
+      .filter(t => {
+        if (!t.isActive) return false;
+        if (t.scope === 'facility' && t.scopeId === facilityId) return true;
+        if (t.scope === 'default' || !t.scope) return true;
         return false;
       });
 
-    return {
-      success: true,
-      templates,
-      cachedAt: new Date().toISOString()
-    };
+    return Response.json({ success: true, templates, cachedAt: new Date().toISOString() });
   } catch (error) {
-    return {
-      success: false,
-      error: error.message
-    };
+    return Response.json({ success: false, error: error.message }, { status: 500 });
   }
-}
+});
