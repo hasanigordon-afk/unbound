@@ -85,6 +85,10 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
+import RoleSelect from './pages/RoleSelect';
+import PatientDashboard from './pages/PatientDashboard';
+import CounselorDashboard from './pages/CounselorDashboard';
+import ProbationDashboard from './pages/ProbationDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -127,6 +131,10 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
+    "RoleSelect": RoleSelect,
+    "PatientDashboard": PatientDashboard,
+    "CounselorDashboard": CounselorDashboard,
+    "ProbationDashboard": ProbationDashboard,
 }
 
 export const pagesConfig = {
