@@ -58,6 +58,7 @@ import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
 import ForwardPlan from './pages/ForwardPlan';
+import GoalBoard from './pages/GoalBoard';
 import Goals from './pages/Goals';
 import Home from './pages/Home';
 import IdentityBridge from './pages/IdentityBridge';
@@ -69,6 +70,7 @@ import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
 import ModerationQueue from './pages/ModerationQueue';
+import MyGoals from './pages/MyGoals';
 import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import ParticipantMessages from './pages/ParticipantMessages';
@@ -83,7 +85,6 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import GoalBoard from './pages/GoalBoard';
 import __Layout from './Layout.jsx';
 
 
@@ -99,6 +100,7 @@ export const PAGES = {
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
     "ForwardPlan": ForwardPlan,
+    "GoalBoard": GoalBoard,
     "Goals": Goals,
     "Home": Home,
     "IdentityBridge": IdentityBridge,
@@ -110,6 +112,7 @@ export const PAGES = {
     "Mentors": Mentors,
     "Messages": Messages,
     "ModerationQueue": ModerationQueue,
+    "MyGoals": MyGoals,
     "Onboarding": Onboarding,
     "ParticipantDashboard": ParticipantDashboard,
     "ParticipantMessages": ParticipantMessages,
@@ -124,7 +127,6 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "GoalBoard": GoalBoard,
 }
 
 export const pagesConfig = {
