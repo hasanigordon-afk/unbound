@@ -22,7 +22,7 @@ export default function Splash() {
 
     // Navigate after 3.9s (fade out duration 0.5s)
     const navTimer = setTimeout(() => {
-      navigate(createPageUrl("Home"));
+      navigate(createPageUrl("RoleSelect"));
     }, 3900);
 
     return () => {
