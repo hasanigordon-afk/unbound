@@ -219,7 +219,8 @@ export default function CounselorPortal() {
         </div>
       )}
 
-      {activeTab === "participants" && <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
+      {activeTab === "participants" && (
+        <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
         {/* Top Level Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="metric-card">
