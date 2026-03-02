@@ -183,6 +183,7 @@ export default function CounselorPortal() {
 
   return (
     <div className="min-h-screen pb-8" style={{ background: 'var(--bg-primary)' }}>
+
       <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
         <h1 style={{ marginBottom: '4px' }}>Counselor Portal</h1>
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

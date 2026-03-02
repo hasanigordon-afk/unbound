@@ -63,14 +63,18 @@ import Goals from './pages/Goals';
 import Home from './pages/Home';
 import IdentityBridge from './pages/IdentityBridge';
 import Journal from './pages/Journal';
+import Lifeline from './pages/Lifeline';
 import Meditation from './pages/Meditation';
+import Meetings from './pages/Meetings';
 import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
+import ModerationQueue from './pages/ModerationQueue';
 import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import ParticipantMessages from './pages/ParticipantMessages';
 import PlatformAdmin from './pages/PlatformAdmin';
+import PrivacyControls from './pages/PrivacyControls';
 import Profile from './pages/Profile';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
@@ -80,10 +84,6 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import Lifeline from './pages/Lifeline';
-import Meetings from './pages/Meetings';
-import PrivacyControls from './pages/PrivacyControls';
-import ModerationQueue from './pages/ModerationQueue';
 import __Layout from './Layout.jsx';
 
 
@@ -104,14 +104,18 @@ export const PAGES = {
     "Home": Home,
     "IdentityBridge": IdentityBridge,
     "Journal": Journal,
+    "Lifeline": Lifeline,
     "Meditation": Meditation,
+    "Meetings": Meetings,
     "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
+    "ModerationQueue": ModerationQueue,
     "Onboarding": Onboarding,
     "ParticipantDashboard": ParticipantDashboard,
     "ParticipantMessages": ParticipantMessages,
     "PlatformAdmin": PlatformAdmin,
+    "PrivacyControls": PrivacyControls,
     "Profile": Profile,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
@@ -121,10 +125,6 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "Lifeline": Lifeline,
-    "Meetings": Meetings,
-    "PrivacyControls": PrivacyControls,
-    "ModerationQueue": ModerationQueue,
 }
 
 export const pagesConfig = {
