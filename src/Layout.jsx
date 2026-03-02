@@ -128,7 +128,7 @@ export default function Layout({ children, currentPageName }) {
         }
       `}</style>
 
-      <div className="flex-1">
+      <div className="flex-1 pb-20">
         {children}
       </div>
 
