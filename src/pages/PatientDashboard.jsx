@@ -4,7 +4,7 @@ import { createPageUrl } from "./utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, TrendingUp, Inbox, LogOut, CheckCircle } from "lucide-react";
-import PatientInbox from "../components/messaging/PatientInbox";
+import PatientInbox from "@/components/messaging/PatientInbox";
 
 export default function PatientDashboard() {
   const navigate = useNavigate();

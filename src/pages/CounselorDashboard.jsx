@@ -4,7 +4,7 @@ import { createPageUrl } from "./utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Users, AlertTriangle, LogOut, MessageSquare } from "lucide-react";
-import CounselorMessagePanel from "../components/messaging/CounselorMessagePanel";
+import CounselorMessagePanel from "@/components/messaging/CounselorMessagePanel";
 
 export default function CounselorDashboard() {
   const navigate = useNavigate();
