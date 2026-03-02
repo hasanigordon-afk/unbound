@@ -83,7 +83,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import GoalBoard from './pages/GoalBoard';
+import MyGoals from './pages/MyGoals';
 import __Layout from './Layout.jsx';
 
 
@@ -124,7 +124,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "GoalBoard": GoalBoard,
+    "MyGoals": MyGoals,
 }
 
 export const pagesConfig = {

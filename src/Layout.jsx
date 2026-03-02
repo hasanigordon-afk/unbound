@@ -4,7 +4,7 @@ import { createPageUrl } from "./pages/utils";
 import { Home, Users, MapPin, User, Sparkles, Phone } from "lucide-react";
 
 const NAV_ITEMS = [
-  { name: "Home", icon: Home, page: "Home" },
+  { name: "Goals", icon: Target, page: "MyGoals" },
   { name: "Community", icon: Users, page: "Community" },
   { name: "Lifeline", icon: Phone, page: "Lifeline", isLifeline: true },
   { name: "Resources", icon: MapPin, page: "Resources" },
