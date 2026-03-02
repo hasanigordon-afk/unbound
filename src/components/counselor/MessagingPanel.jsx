@@ -81,7 +81,7 @@ function MessageBubble({ msg }) {
 }
 
 export default function MessagingPanel({ participant, counselorEmail, facilityId, onClose }) {
-  const [activeTab, setActiveTab] = useState("message");
+  const [activeTab, setActiveTab] = useState(participant._openTab || "message");
   const [messageContent, setMessageContent] = useState("");
   const [notifTitle, setNotifTitle] = useState("");
   const [scheduledFor, setScheduledFor] = useState("");
