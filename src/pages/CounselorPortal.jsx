@@ -425,14 +425,22 @@ export default function CounselorPortal() {
                     </div>
                   </div>
 
-                  <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
+                  <div className="flex gap-2 mt-3 pt-3 flex-wrap" style={{ borderTop: '1px solid var(--border)' }}>
                     <Button
                       onClick={() => setSelectedParticipant(participant)}
                       size="sm"
                       className="btn-secondary"
                     >
                       <MessageSquare className="w-4 h-4 mr-2" strokeWidth={1.5} />
-                      Send Message
+                      Message
+                    </Button>
+                    <Button
+                      onClick={() => { setSelectedParticipant({ ...participant, _openTab: "notification" }); }}
+                      size="sm"
+                      className="btn-secondary"
+                    >
+                      <Bell className="w-4 h-4 mr-2" strokeWidth={1.5} />
+                      Alert
                     </Button>
                   </div>
                 </div>
