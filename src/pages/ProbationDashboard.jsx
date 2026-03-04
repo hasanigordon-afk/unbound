@@ -5,6 +5,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Shield, AlertTriangle, LogOut, MessageSquare, FileText } from "lucide-react";
 import CounselorMessagePanel from "@/components/messaging/CounselorMessagePanel";
+import ClientView from "@/components/shared/ClientView";
 
 export default function ProbationDashboard() {
   const navigate = useNavigate();
