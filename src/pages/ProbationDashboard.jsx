@@ -46,6 +46,19 @@ export default function ProbationDashboard() {
     { id: "messages", label: "Messages", icon: MessageSquare },
   ];
 
+  if (clientViewClient) {
+    return (
+      <ClientView
+        client={clientViewClient}
+        authorEmail={user?.email}
+        authorRole="probation_officer"
+        channel="probation_client"
+        facilityId={null}
+        onBack={() => setClientViewClient(null)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen" style={{ background: "#F7F7F8" }}>
       {/* Header */}

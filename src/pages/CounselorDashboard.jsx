@@ -74,6 +74,19 @@ export default function CounselorDashboard() {
     { id: "messages", label: "Messages", icon: MessageSquare },
   ];
 
+  if (clientViewPatient) {
+    return (
+      <ClientView
+        client={clientViewPatient}
+        authorEmail={user?.email}
+        authorRole="counselor"
+        channel="counselor_patient"
+        facilityId={facility?.id}
+        onBack={() => setClientViewPatient(null)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen" style={{ background: "#F7F7F8" }}>
       {/* Header */}
