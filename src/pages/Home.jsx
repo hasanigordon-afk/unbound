@@ -137,12 +137,18 @@ export default function Home() {
   return (
     <div className="min-h-screen pb-24 flex flex-col" style={{ background: 'var(--bg-primary)' }}>
       <div className="px-5 pt-6 pb-4">
-        <div className="flex items-center justify-center mb-2">
+        <div className="flex flex-col items-center text-center mb-1">
           <img 
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698cbbdc830161c35d66ad0e/f15d68acb_image.png" 
             alt="Unbound" 
-            className="h-10 w-auto"
+            className="h-10 w-auto mb-3"
           />
+          <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'var(--text-muted)' }}>
+            Breaking free with nowhere to go but Up
+          </p>
+          <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--text-secondary)' }}>
+            A recovery platform built by someone who lived addiction — designed to keep people connected, accountable, and supported after treatment.
+          </p>
         </div>
       </div>
 
