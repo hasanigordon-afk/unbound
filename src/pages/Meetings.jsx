@@ -25,12 +25,20 @@ const PROGRAM_COLORS = { AA: "#4A90E2", NA: "#9C6FE4", SMART: "#22c55e", Other: 
 
 export default function Meetings() {
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState("finder");
   const [view, setView] = useState("list");
   const [filterType, setFilterType] = useState("all");
   const [filterFormat, setFilterFormat] = useState("all");
   const [filterDay, setFilterDay] = useState("all");
   const [showAttendModal, setShowAttendModal] = useState(null);
   const [attendNote, setAttendNote] = useState("");
+
+  const TABS = [
+    { id: "finder", label: "Find", icon: List },
+    { id: "plan", label: "My Plan", icon: Calendar },
+    { id: "attendance", label: "Log", icon: ClipboardList },
+    { id: "probation", label: "P/O Appts", icon: Shield },
+  ];
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
