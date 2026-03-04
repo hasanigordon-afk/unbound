@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { MapPin, List, Star, StarOff, Check, Filter, Calendar, Wifi, Globe, Map } from "lucide-react";
+import { MapPin, List, Star, StarOff, Check, Filter, Calendar, Wifi, Globe, Map, ClipboardList, BookOpen, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import MyPlanTab from "@/components/meetings/MyPlanTab";
+import AttendanceLog from "@/components/meetings/AttendanceLog";
+import ProbationCalendar from "@/components/meetings/ProbationCalendar";
 
 // Fix leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
