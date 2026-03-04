@@ -20,6 +20,9 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#F5F5F7' }}>
       <style>{`
+        .top-nav-safe { padding-top: env(safe-area-inset-top, 0px); }
+      `}</style>
+      <style>{`
         :root {
           --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
           --primary: #4A90E2;
