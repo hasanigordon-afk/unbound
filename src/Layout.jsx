@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Users, MapPin, User, Phone } from "lucide-react";
+import { LayoutDashboard, CalendarCheck, MessageCircle, MapPin, TrendingUp } from "lucide-react";
 
 const NAV_ITEMS = [
-  { name: "Home", icon: Home, page: "Home" },
-  { name: "Community", icon: Users, page: "Community" },
-  { name: "Lifeline", icon: Phone, page: "Lifeline", isLifeline: true },
-  { name: "Resources", icon: MapPin, page: "Resources" },
-  { name: "Profile", icon: User, page: "Profile" },
+  { name: "Dashboard", icon: LayoutDashboard, page: "PatientDashboard" },
+  { name: "Check-In", icon: CalendarCheck, page: "DailyCheckIn" },
+  { name: "Messages", icon: MessageCircle, page: "ParticipantMessages" },
+  { name: "Resources", icon: MapPin, page: "ResourceDirectory" },
+  { name: "Progress", icon: TrendingUp, page: "ReintegrationMap" },
 ];
 
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "PatientDashboard", "CounselorDashboard", "ProbationDashboard"];
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
