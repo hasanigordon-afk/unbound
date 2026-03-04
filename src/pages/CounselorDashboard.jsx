@@ -188,12 +188,19 @@ export default function CounselorDashboard() {
 
                   <div className="flex gap-2 mt-4 pt-4" style={{ borderTop: "1px solid #F0F0F3" }}>
                     <button
+                      onClick={() => setClientViewPatient(p)}
+                      className="flex items-center gap-1.5 text-xs px-3 py-2 rounded font-medium"
+                      style={{ background: "#4A90E2", color: "#FFF", border: "none" }}
+                    >
+                      View Client
+                    </button>
+                    <button
                       onClick={() => { setSelectedPatient(p); setActiveTab("messages"); }}
                       className="flex items-center gap-1.5 text-xs px-3 py-2 rounded font-medium"
                       style={{ background: "#F0F4FA", color: "#4A90E2", border: "1px solid #C7D7F0" }}
                     >
                       <MessageSquare className="w-3.5 h-3.5" strokeWidth={1.5} />
-                      Send Message
+                      Message
                     </button>
                   </div>
                 </div>
