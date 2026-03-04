@@ -33,6 +33,7 @@ export default function PatientDashboard() {
 
   const TABS = [
     { id: "overview", label: "Overview", icon: TrendingUp },
+    { id: "guidelines", label: "Court Rules", icon: Shield },
     { id: "inbox", label: "Inbox", icon: Inbox },
   ];
 
