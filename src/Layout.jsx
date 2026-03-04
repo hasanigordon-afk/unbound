@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Target, Users, MapPin, User, Phone } from "lucide-react";
+import { Home, Users, MapPin, User, Phone } from "lucide-react";
 
 const NAV_ITEMS = [
-  { name: "Goals", icon: Target, page: "GoalBoard" },
+  { name: "Home", icon: Home, page: "Home" },
   { name: "Community", icon: Users, page: "Community" },
   { name: "Lifeline", icon: Phone, page: "Lifeline", isLifeline: true },
   { name: "Resources", icon: MapPin, page: "Resources" },
