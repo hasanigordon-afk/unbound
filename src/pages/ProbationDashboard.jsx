@@ -11,6 +11,7 @@ export default function ProbationDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("clients");
   const [selectedClient, setSelectedClient] = useState(null);
+  const [clientViewClient, setClientViewClient] = useState(null);
 
   const { data: user } = useQuery({
     queryKey: ["user"],

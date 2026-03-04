@@ -11,6 +11,7 @@ export default function CounselorDashboard() {
   const navigate = useNavigate();
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [activeTab, setActiveTab] = useState("patients");
+  const [clientViewPatient, setClientViewPatient] = useState(null);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
