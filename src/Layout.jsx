@@ -131,20 +131,8 @@ export default function Layout({ children, currentPageName }) {
         }
       `}</style>
 
-      <div className="flex-1 pb-20">
-        {children}
-      </div>
-
-      {showFooter && (
-        <footer className="border-t py-4 px-6 text-center" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', marginTop: 'auto' }}>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Unbound is a behavioral engagement platform. It does not provide medical treatment.
-          </p>
-        </footer>
-      )}
-
       {showNav && (
-        <nav className="fixed bottom-0 left-0 right-0 border-t z-50 pb-safe" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
+        <nav className="sticky top-0 left-0 right-0 border-b z-50 top-nav-safe" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
           <div className="max-w-lg mx-auto flex">
             {NAV_ITEMS.map(({ name, icon: Icon, page, isLifeline }) => {
               const isActive = currentPageName === page;
@@ -154,12 +142,13 @@ export default function Layout({ children, currentPageName }) {
                     key={page}
                     to={createPageUrl(page)}
                     className="flex-1 flex flex-col items-center gap-1 py-2"
+                    style={{ color: isActive ? '#E85D4C' : 'var(--text-muted)' }}
                   >
                     <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center -mt-5"
-                      style={{ background: isActive ? '#c0392b' : '#E85D4C', boxShadow: '0 4px 14px rgba(232,93,76,0.5)' }}
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ background: isActive ? '#c0392b' : '#E85D4C' }}
                     >
-                      <Icon className="w-5 h-5 text-white" strokeWidth={2} />
+                      <Icon className="w-4 h-4 text-white" strokeWidth={2} />
                     </div>
                     <span className="text-[10px] font-semibold" style={{ color: '#E85D4C' }}>{name}</span>
                   </Link>
@@ -169,8 +158,8 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={page}
                   to={createPageUrl(page)}
-                  className="flex-1 flex flex-col items-center gap-1 py-3"
-                  style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}
+                  className="flex-1 flex flex-col items-center gap-1 py-2"
+                  style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)', borderBottom: isActive ? '2px solid var(--primary)' : '2px solid transparent' }}
                 >
                   <Icon className="w-5 h-5" strokeWidth={1.5} />
                   <span className="text-[10px] font-medium">{name}</span>
@@ -179,6 +168,18 @@ export default function Layout({ children, currentPageName }) {
             })}
           </div>
         </nav>
+      )}
+
+      <div className="flex-1">
+        {children}
+      </div>
+
+      {showFooter && (
+        <footer className="border-t py-4 px-6 text-center" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+            Unbound is a behavioral engagement platform. It does not provide medical treatment.
+          </p>
+        </footer>
       )}
     </div>
   );
