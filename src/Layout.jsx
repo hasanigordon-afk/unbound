@@ -132,36 +132,18 @@ export default function Layout({ children, currentPageName }) {
       `}</style>
 
       {showNav && (
-        <nav className="sticky top-0 left-0 right-0 border-b z-50 top-nav-safe" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
+        <nav className="fixed bottom-0 left-0 right-0 border-t z-50" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           <div className="max-w-lg mx-auto flex">
-            {NAV_ITEMS.map(({ name, icon: Icon, page, isLifeline }) => {
+            {NAV_ITEMS.map(({ name, icon: Icon, page }) => {
               const isActive = currentPageName === page;
-              if (isLifeline) {
-                return (
-                  <Link
-                    key={page}
-                    to={createPageUrl(page)}
-                    className="flex-1 flex flex-col items-center gap-1 py-2"
-                    style={{ color: isActive ? '#E85D4C' : 'var(--text-muted)' }}
-                  >
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ background: isActive ? '#c0392b' : '#E85D4C' }}
-                    >
-                      <Icon className="w-4 h-4 text-white" strokeWidth={2} />
-                    </div>
-                    <span className="text-[10px] font-semibold" style={{ color: '#E85D4C' }}>{name}</span>
-                  </Link>
-                );
-              }
               return (
                 <Link
                   key={page}
                   to={createPageUrl(page)}
-                  className="flex-1 flex flex-col items-center gap-1 py-2"
-                  style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)', borderBottom: isActive ? '2px solid var(--primary)' : '2px solid transparent' }}
+                  className="flex-1 flex flex-col items-center gap-1 py-3"
+                  style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}
                 >
-                  <Icon className="w-5 h-5" strokeWidth={1.5} />
+                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
                   <span className="text-[10px] font-medium">{name}</span>
                 </Link>
               );
