@@ -152,6 +152,10 @@ export default function PatientDashboard() {
           </>
         )}
 
+        {activeTab === "guidelines" && (
+          <CourtGuidelinesReminder />
+        )}
+
         {activeTab === "inbox" && user && (
           <PatientInbox userEmail={user.email} userRole="patient" />
         )}
