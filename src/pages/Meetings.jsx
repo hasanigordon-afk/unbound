@@ -107,104 +107,124 @@ export default function Meetings() {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
       {/* Header */}
-      <div className="px-5 pt-8 pb-5" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
+      <div className="px-5 pt-8 pb-0" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
         <h1 style={{ marginBottom: '4px' }}>Meetings</h1>
-        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Find AA, NA, SMART & more</p>
+        <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Find, plan, and track your meetings</p>
 
-        {/* View toggle */}
-        <div className="flex mt-4 rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
-          <button
-            onClick={() => setView("list")}
-            className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium"
-            style={{ background: view === "list" ? 'var(--primary)' : 'var(--bg-primary)', color: view === "list" ? '#FFF' : 'var(--text-secondary)' }}
-          >
-            <List className="w-4 h-4" strokeWidth={1.5} /> List
-          </button>
-          <button
-            onClick={() => setView("map")}
-            className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium"
-            style={{ background: view === "map" ? 'var(--primary)' : 'var(--bg-primary)', color: view === "map" ? '#FFF' : 'var(--text-secondary)' }}
-          >
-            <Map className="w-4 h-4" strokeWidth={1.5} /> Map
-          </button>
+        {/* Main Tabs */}
+        <div className="flex overflow-x-auto">
+          {TABS.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id)}
+              className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium flex-shrink-0"
+              style={{
+                color: activeTab === t.id ? 'var(--primary)' : 'var(--text-muted)',
+                borderBottom: activeTab === t.id ? '2px solid var(--primary)' : '2px solid transparent',
+                background: 'none',
+                border: 'none',
+                borderBottom: activeTab === t.id ? '2px solid var(--primary)' : '2px solid transparent',
+                cursor: 'pointer',
+              }}
+            >
+              <t.icon className="w-4 h-4" strokeWidth={1.5} />
+              {t.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="px-5 py-3 flex gap-2 overflow-x-auto" style={{ borderBottom: '1px solid var(--border)' }}>
-        <select
-          value={filterType}
-          onChange={e => setFilterType(e.target.value)}
-          className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
-          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
-        >
-          <option value="all">All Types</option>
-          <option value="AA">AA</option>
-          <option value="NA">NA</option>
-          <option value="SMART">SMART</option>
-          <option value="Other">Other</option>
-        </select>
+      {/* FINDER TAB */}
+      {activeTab === "finder" && (
+        <>
+          {/* View toggle */}
+          <div className="px-5 pt-4 pb-0">
+            <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+              <button onClick={() => setView("list")} className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium"
+                style={{ background: view === "list" ? 'var(--primary)' : 'var(--bg-primary)', color: view === "list" ? '#FFF' : 'var(--text-secondary)' }}>
+                <List className="w-4 h-4" strokeWidth={1.5} /> List
+              </button>
+              <button onClick={() => setView("map")} className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium"
+                style={{ background: view === "map" ? 'var(--primary)' : 'var(--bg-primary)', color: view === "map" ? '#FFF' : 'var(--text-secondary)' }}>
+                <Map className="w-4 h-4" strokeWidth={1.5} /> Map
+              </button>
+            </div>
+          </div>
 
-        <select
-          value={filterFormat}
-          onChange={e => setFilterFormat(e.target.value)}
-          className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
-          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
-        >
-          <option value="all">In-Person & Online</option>
-          <option value="in_person">In-Person</option>
-          <option value="online">Online</option>
-        </select>
+          {/* Filters */}
+          <div className="px-5 py-3 flex gap-2 overflow-x-auto" style={{ borderBottom: '1px solid var(--border)' }}>
+            <select value={filterType} onChange={e => setFilterType(e.target.value)} className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
+              style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+              <option value="all">All Types</option>
+              <option value="AA">AA</option>
+              <option value="NA">NA</option>
+              <option value="SMART">SMART</option>
+              <option value="Other">Other</option>
+            </select>
+            <select value={filterFormat} onChange={e => setFilterFormat(e.target.value)} className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
+              style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+              <option value="all">In-Person & Online</option>
+              <option value="in_person">In-Person</option>
+              <option value="online">Online</option>
+            </select>
+            <select value={filterDay} onChange={e => setFilterDay(e.target.value)} className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
+              style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+              <option value="all">Any Day</option>
+              {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
+            </select>
+          </div>
 
-        <select
-          value={filterDay}
-          onChange={e => setFilterDay(e.target.value)}
-          className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
-          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
-        >
-          <option value="all">Any Day</option>
-          {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
-        </select>
-      </div>
-
-      {/* Content */}
-      {view === "list" ? (
-        <div className="px-5 py-4 space-y-3">
-          {filtered.length === 0 ? (
-            <div className="text-center py-16 card">
-              <Calendar className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} strokeWidth={1.5} />
-              <p style={{ color: 'var(--text-muted)' }}>No meetings found</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Try adjusting your filters</p>
+          {view === "list" ? (
+            <div className="px-5 py-4 space-y-3">
+              {filtered.length === 0 ? (
+                <div className="text-center py-16 card">
+                  <Calendar className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} strokeWidth={1.5} />
+                  <p style={{ color: 'var(--text-muted)' }}>No meetings found</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Try adjusting your filters</p>
+                </div>
+              ) : (
+                filtered.map(meeting => (
+                  <MeetingCard key={meeting.id} meeting={meeting} isFav={isFav(meeting.id)} attended={attendedToday(meeting.id)}
+                    onToggleFav={() => toggleFavMutation.mutate(meeting)} onLogAttend={() => setShowAttendModal(meeting)} />
+                ))
+              )}
             </div>
           ) : (
-            filtered.map(meeting => (
-              <MeetingCard
-                key={meeting.id}
-                meeting={meeting}
-                isFav={isFav(meeting.id)}
-                attended={attendedToday(meeting.id)}
-                onToggleFav={() => toggleFavMutation.mutate(meeting)}
-                onLogAttend={() => setShowAttendModal(meeting)}
-              />
-            ))
+            <div style={{ height: 'calc(100vh - 300px)' }}>
+              <MapContainer center={mapCenter} zoom={10} style={{ height: '100%', width: '100%' }}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                {filtered.filter(m => m.latitude && m.longitude).map(m => (
+                  <Marker key={m.id} position={[m.latitude, m.longitude]}>
+                    <Popup>
+                      <div>
+                        <p className="font-semibold">{m.title}</p>
+                        <p className="text-xs">{m.program_type} · {DAYS[m.day_of_week]} {m.start_time}</p>
+                        {m.address && <p className="text-xs">{m.address}, {m.city}</p>}
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            </div>
           )}
+        </>
+      )}
+
+      {activeTab === "plan" && (
+        <div className="px-5 py-5">
+          <MyPlanTab user={user} meetings={meetings} />
         </div>
-      ) : (
-        <div style={{ height: 'calc(100vh - 240px)' }}>
-          <MapContainer center={mapCenter} zoom={10} style={{ height: '100%', width: '100%' }}>
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            {filtered.filter(m => m.latitude && m.longitude).map(m => (
-              <Marker key={m.id} position={[m.latitude, m.longitude]}>
-                <Popup>
-                  <div>
-                    <p className="font-semibold">{m.title}</p>
-                    <p className="text-xs">{m.program_type} · {DAYS[m.day_of_week]} {m.start_time}</p>
-                    {m.address && <p className="text-xs">{m.address}, {m.city}</p>}
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+      )}
+
+      {activeTab === "attendance" && (
+        <div className="px-5 py-5">
+          <AttendanceLog user={user} meetings={meetings} />
+        </div>
+      )}
+
+      {activeTab === "probation" && (
+        <div className="px-5 py-5">
+          <ProbationCalendar user={user} />
         </div>
       )}
 
@@ -214,14 +234,9 @@ export default function Meetings() {
           <div className="w-full max-w-md p-6 rounded-2xl" style={{ background: 'var(--bg-secondary)' }} onClick={e => e.stopPropagation()}>
             <h3 className="font-semibold mb-1">Log Attendance</h3>
             <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>{showAttendModal.title}</p>
-            <textarea
-              placeholder="Notes (optional)"
-              value={attendNote}
-              onChange={e => setAttendNote(e.target.value)}
-              rows={2}
+            <textarea placeholder="Notes (optional)" value={attendNote} onChange={e => setAttendNote(e.target.value)} rows={2}
               className="w-full p-3 text-sm rounded-lg mb-4"
-              style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-primary)', resize: 'none' }}
-            />
+              style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-primary)', resize: 'none' }} />
             <div className="flex gap-3">
               <Button onClick={() => setShowAttendModal(null)} className="flex-1 btn-secondary">Cancel</Button>
               <Button onClick={() => logAttendanceMutation.mutate(showAttendModal)} className="flex-1 btn-primary" disabled={logAttendanceMutation.isPending}>
