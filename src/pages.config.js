@@ -52,6 +52,7 @@ import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
 import ContentfulSetup from './pages/ContentfulSetup';
+import CounselorDashboard from './pages/CounselorDashboard';
 import CounselorPortal from './pages/CounselorPortal';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
@@ -74,21 +75,20 @@ import MyGoals from './pages/MyGoals';
 import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import ParticipantMessages from './pages/ParticipantMessages';
+import PatientDashboard from './pages/PatientDashboard';
 import PlatformAdmin from './pages/PlatformAdmin';
 import PrivacyControls from './pages/PrivacyControls';
+import ProbationDashboard from './pages/ProbationDashboard';
 import Profile from './pages/Profile';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
 import Resources from './pages/Resources';
+import RoleSelect from './pages/RoleSelect';
 import SavedResources from './pages/SavedResources';
 import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import RoleSelect from './pages/RoleSelect';
-import PatientDashboard from './pages/PatientDashboard';
-import CounselorDashboard from './pages/CounselorDashboard';
-import ProbationDashboard from './pages/ProbationDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -98,6 +98,7 @@ export const PAGES = {
     "Community": Community,
     "ComplianceReports": ComplianceReports,
     "ContentfulSetup": ContentfulSetup,
+    "CounselorDashboard": CounselorDashboard,
     "CounselorPortal": CounselorPortal,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
@@ -120,21 +121,20 @@ export const PAGES = {
     "Onboarding": Onboarding,
     "ParticipantDashboard": ParticipantDashboard,
     "ParticipantMessages": ParticipantMessages,
+    "PatientDashboard": PatientDashboard,
     "PlatformAdmin": PlatformAdmin,
     "PrivacyControls": PrivacyControls,
+    "ProbationDashboard": ProbationDashboard,
     "Profile": Profile,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
     "Resources": Resources,
+    "RoleSelect": RoleSelect,
     "SavedResources": SavedResources,
     "Splash": Splash,
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "RoleSelect": RoleSelect,
-    "PatientDashboard": PatientDashboard,
-    "CounselorDashboard": CounselorDashboard,
-    "ProbationDashboard": ProbationDashboard,
 }
 
 export const pagesConfig = {
