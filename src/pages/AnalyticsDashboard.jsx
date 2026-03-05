@@ -1,7 +1,8 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, Users, Building2, MapPin, Award } from "lucide-react";
+import { TrendingUp, Users, Building2, MapPin, Award, ShieldAlert } from "lucide-react";
+import RelapseRiskPanel from "@/components/risk/RelapseRiskPanel";
 
 export default function AnalyticsDashboard() {
   const { data: user } = useQuery({
