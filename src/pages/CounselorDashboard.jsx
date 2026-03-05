@@ -217,6 +217,10 @@ export default function CounselorDashboard() {
           <RelapseRiskPanel facilityId={facility?.id} />
         )}
 
+        {activeTab === "channels" && (
+          <ChannelModerationPanel />
+        )}
+
         {activeTab === "messages" && (
           <CounselorMessagePanel
             counselorEmail={user?.email}
