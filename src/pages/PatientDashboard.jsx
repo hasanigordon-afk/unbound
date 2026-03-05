@@ -203,6 +203,11 @@ export default function PatientDashboard() {
             </>
           )}
 
+          {/* Community Channels Tab */}
+          {sidebarTab === "channels" && user && (
+            <GroupChannelsTab userEmail={user.email} />
+          )}
+
           {/* Lifeline Tab */}
           {sidebarTab === "lifeline" && (
             <div className="p-5 flex flex-col gap-4 max-w-xl">
