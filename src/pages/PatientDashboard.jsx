@@ -5,10 +5,11 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import {
   Calendar, TrendingUp, Inbox, LogOut, CheckCircle, Shield,
-  Home, Phone, PlayCircle, BookOpen, ChevronRight
+  Home, Phone, PlayCircle, BookOpen, ChevronRight, Users
 } from "lucide-react";
 import PatientInbox from "@/components/messaging/PatientInbox";
 import CourtGuidelinesReminder from "@/components/compliance/CourtGuidelinesReminder";
+import GroupChannelsTab from "@/components/channels/GroupChannelsTab";
 
 const SIDEBAR_ITEMS = [
   { id: "home", label: "Home", icon: Home },
