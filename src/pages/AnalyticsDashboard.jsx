@@ -159,7 +159,13 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
 
-      <div className="px-6 py-6 space-y-6">
+      {activeTab === "import" && (
+        <div className="px-6 py-6 max-w-2xl">
+          <BulkResourceImport />
+        </div>
+      )}
+
+      {activeTab === "analytics" && <div className="px-6 py-6 space-y-6">
         {/* Overall Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
