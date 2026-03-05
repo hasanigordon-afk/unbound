@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { LayoutDashboard, CalendarCheck, MessageCircle, MapPin, TrendingUp } from "lucide-react";
+import { LayoutDashboard, CalendarCheck, MessageCircle, MapPin, TrendingUp, LifeBuoy } from "lucide-react";
 
 const NAV_ITEMS = [
   { name: "Dashboard", icon: LayoutDashboard, page: "PatientDashboard" },
   { name: "Check-In", icon: CalendarCheck, page: "DailyCheckIn" },
-  { name: "Messages", icon: MessageCircle, page: "ParticipantMessages" },
+  { name: "Find Help", icon: LifeBuoy, page: "FindHelpNow" },
   { name: "Resources", icon: MapPin, page: "ResourceDirectory" },
   { name: "Progress", icon: TrendingUp, page: "ReintegrationMap" },
 ];
