@@ -75,12 +75,8 @@ export default function AftercareMonitoring() {
         ? Math.floor((new Date() - new Date(profile.sobriety_start_date)) / 86400000)
         : null;
 
-      // Engagement score (0-100)
-      const checkInRate = Math.min(last7.length / 7, 1);
-      const meetingRate = Math.min(weeklyMeetings / 3, 1);
-      const sponsorRate = Math.min(sponsorContacts / 3, 1);
-      const moodScore = avgMood ? (parseFloat(avgMood) - 1) / 4 : 0.5;
-      const engagementScore = Math.round((checkInRate * 0.4 + meetingRate * 0.25 + sponsorRate * 0.2 + moodScore * 0.15) * 100);
+      // Engagement score (0-100) using standardized calculation
+      const { score: engagementScore, level: engagementLevel } = calcEngagementScore(myCheckIns);
 
       // Alert flags
       const missedCheckIns = daysSinceCheckIn >= 3;
