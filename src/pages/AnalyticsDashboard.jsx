@@ -126,15 +126,37 @@ export default function AnalyticsDashboard() {
     );
   }
 
+  const [activeTab, setActiveTab] = useState("analytics");
   const stateAnalytics = getStateAnalytics();
   const facilityAnalytics = getFacilityAnalytics();
   const overallMetrics = getOverallMetrics();
 
   return (
     <div className="min-h-screen pb-24" style={{ background: '#1a1f3a' }}>
-      <div className="px-6 pt-8 pb-6" style={{ background: '#0f1628', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+      <div className="px-6 pt-8 pb-4" style={{ background: '#0f1628', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <h1 className="text-2xl font-bold mb-1" style={{ color: '#ffffff' }}>Analytics Dashboard</h1>
-        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>System-wide engagement and compliance analytics</p>
+        <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>System-wide engagement and compliance analytics</p>
+        <div className="flex gap-1">
+          {[
+            { id: "analytics", label: "Analytics" },
+            { id: "import", label: "Bulk Import", icon: Upload },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-t text-sm font-medium"
+              style={{
+                background: activeTab === tab.id ? '#1a1f3a' : 'transparent',
+                color: activeTab === tab.id ? '#60a5fa' : 'rgba(255,255,255,0.5)',
+                border: activeTab === tab.id ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                borderBottom: activeTab === tab.id ? '1px solid #1a1f3a' : 'none',
+              }}
+            >
+              {tab.icon && <tab.icon className="w-3.5 h-3.5" />}
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="px-6 py-6 space-y-6">
