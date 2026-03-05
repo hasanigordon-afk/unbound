@@ -89,6 +89,7 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
 import ResourcesNearYou from './pages/ResourcesNearYou';
+import FindHelpNow from './pages/FindHelpNow';
 import __Layout from './Layout.jsx';
 
 
@@ -135,6 +136,7 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "utils": utils,
     "ResourcesNearYou": ResourcesNearYou,
+    "FindHelpNow": FindHelpNow,
 }
 
 export const pagesConfig = {
