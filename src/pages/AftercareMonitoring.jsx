@@ -96,6 +96,7 @@ export default function AftercareMonitoring() {
         avgCraving,
         sobrietyDays,
         engagementScore,
+        engagementLevel,
         missedCheckIns,
         highCravings,
         noMeetings,
