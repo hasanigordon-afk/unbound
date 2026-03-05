@@ -44,6 +44,7 @@ export default function ProbationDashboard() {
 
   const TABS = [
     { id: "clients", label: "Clients", icon: Shield },
+    { id: "risk", label: "Risk Alerts", icon: ShieldAlert },
     { id: "messages", label: "Messages", icon: MessageSquare },
   ];
 
