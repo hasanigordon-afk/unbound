@@ -219,6 +219,15 @@ export default function AnalyticsDashboard() {
           ))}
         </div>
 
+        {/* Relapse Risk Alerts */}
+        <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <h3 className="text-lg font-semibold flex items-center gap-2 mb-4" style={{ color: '#ffffff' }}>
+            <ShieldAlert className="w-5 h-5 text-red-400" />
+            Relapse Risk Alerts
+          </h3>
+          <RelapseRiskPanel />
+        </div>
+
         {/* Grant Readiness Note */}
         <div className="p-5 rounded-xl" style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)' }}>
           <p className="font-semibold mb-2" style={{ color: '#60a5fa' }}>Grant Positioning Ready</p>
