@@ -69,7 +69,7 @@ export default function AftercareClientList({ clientMetrics, onSelectClient }) {
                     <p style={{ color: "#8E8E93" }}>Avg Mood</p>
                   </div>
                 </div>
-                <EngagementBar score={m.engagementScore} />
+                <EngagementBar score={m.engagementScore} level={m.engagementLevel} />
               </div>
               <ChevronRight className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: "#D1D1D6" }} />
             </div>
