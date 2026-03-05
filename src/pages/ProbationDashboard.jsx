@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Shield, AlertTriangle, LogOut, MessageSquare, FileText } from "lucide-react";
+import { Shield, AlertTriangle, LogOut, MessageSquare, FileText, ShieldAlert } from "lucide-react";
 import CounselorMessagePanel from "@/components/messaging/CounselorMessagePanel";
 import ClientView from "@/components/shared/ClientView";
+import RelapseRiskPanel from "@/components/risk/RelapseRiskPanel";
 
 export default function ProbationDashboard() {
   const navigate = useNavigate();
