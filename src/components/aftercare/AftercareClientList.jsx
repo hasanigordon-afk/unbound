@@ -1,5 +1,6 @@
 import React from "react";
-import { AlertTriangle, CheckCircle, ChevronRight, TrendingUp } from "lucide-react";
+import { AlertTriangle, ChevronRight } from "lucide-react";
+import { engagementLevelColor, engagementLevelBg } from "@/components/aftercare/engagementScore";
 
 function EngagementBar({ score }) {
   const color = score >= 70 ? "#22C55E" : score >= 40 ? "#F59E0B" : "#EF4444";
