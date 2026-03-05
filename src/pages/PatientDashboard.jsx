@@ -13,6 +13,7 @@ import GroupChannelsTab from "@/components/channels/GroupChannelsTab";
 
 const SIDEBAR_ITEMS = [
   { id: "home", label: "Home", icon: Home },
+  { id: "channels", label: "Community", icon: Users },
   { id: "lifeline", label: "Lifeline", icon: Phone },
   { id: "media", label: "Media", icon: PlayCircle },
   { id: "links", label: "Helpful Links", icon: BookOpen },
