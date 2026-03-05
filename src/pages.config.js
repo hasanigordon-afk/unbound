@@ -91,6 +91,7 @@ import utils from './pages/utils';
 import ResourcesNearYou from './pages/ResourcesNearYou';
 import FindHelpNow from './pages/FindHelpNow';
 import NearbyResources from './pages/NearbyResources';
+import AftercareMonitoring from './pages/AftercareMonitoring';
 import __Layout from './Layout.jsx';
 
 
@@ -139,6 +140,7 @@ export const PAGES = {
     "ResourcesNearYou": ResourcesNearYou,
     "FindHelpNow": FindHelpNow,
     "NearbyResources": NearbyResources,
+    "AftercareMonitoring": AftercareMonitoring,
 }
 
 export const pagesConfig = {
