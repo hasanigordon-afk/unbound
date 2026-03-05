@@ -177,6 +177,10 @@ export default function ProbationDashboard() {
           </div>
         )}
 
+        {activeTab === "risk" && (
+          <RelapseRiskPanel />
+        )}
+
         {activeTab === "messages" && (
           <CounselorMessagePanel
             counselorEmail={user?.email}
