@@ -11,6 +11,8 @@ const NAV_ITEMS = [
   { name: "Progress", icon: TrendingUp, page: "ReintegrationMap" },
 ];
 
+const HIDE_NAV_PAGES_AFTERCARE = ["AftercareMonitoring"];
+
 const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard"];
 
 export default function Layout({ children, currentPageName }) {
