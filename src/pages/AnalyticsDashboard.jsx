@@ -265,7 +265,8 @@ export default function AnalyticsDashboard() {
             These aggregate analytics demonstrate measurable outcomes for grant applications and institutional partnerships.
           </p>
         </div>
-      </div>}
+      </div>
+      )}
     </div>
   );
 
