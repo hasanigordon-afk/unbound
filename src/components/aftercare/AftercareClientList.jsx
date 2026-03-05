@@ -2,14 +2,14 @@ import React from "react";
 import { AlertTriangle, ChevronRight } from "lucide-react";
 import { engagementLevelColor, engagementLevelBg } from "@/components/aftercare/engagementScore";
 
-function EngagementBar({ score }) {
-  const color = score >= 70 ? "#22C55E" : score >= 40 ? "#F59E0B" : "#EF4444";
+function EngagementBar({ score, level }) {
+  const color = engagementLevelColor(level);
   return (
     <div className="flex items-center gap-2">
       <div className="flex-1 h-1.5 rounded-full" style={{ background: "#F0F0F3" }}>
         <div className="h-1.5 rounded-full" style={{ width: `${score}%`, background: color }} />
       </div>
-      <span className="text-xs font-semibold w-8 text-right" style={{ color }}>{score}</span>
+      <span className="text-xs font-semibold" style={{ color, whiteSpace: "nowrap" }}>{score} · {level}</span>
     </div>
   );
 }
