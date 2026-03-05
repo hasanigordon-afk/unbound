@@ -72,6 +72,7 @@ export default function CounselorDashboard() {
 
   const TABS = [
     { id: "patients", label: "Patients", icon: Users },
+    { id: "risk", label: "Risk Alerts", icon: ShieldAlert },
     { id: "messages", label: "Messages", icon: MessageSquare },
   ];
 
