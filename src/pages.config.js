@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AftercareMonitoring from './pages/AftercareMonitoring';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
@@ -57,6 +58,7 @@ import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
+import FindHelpNow from './pages/FindHelpNow';
 import ForwardPlan from './pages/ForwardPlan';
 import GoalBoard from './pages/GoalBoard';
 import Goals from './pages/Goals';
@@ -71,6 +73,7 @@ import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
 import ModerationQueue from './pages/ModerationQueue';
 import MyGoals from './pages/MyGoals';
+import NearbyResources from './pages/NearbyResources';
 import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import ParticipantMessages from './pages/ParticipantMessages';
@@ -82,20 +85,18 @@ import Profile from './pages/Profile';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
 import Resources from './pages/Resources';
+import ResourcesNearYou from './pages/ResourcesNearYou';
 import RoleSelect from './pages/RoleSelect';
 import SavedResources from './pages/SavedResources';
 import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import ResourcesNearYou from './pages/ResourcesNearYou';
-import FindHelpNow from './pages/FindHelpNow';
-import NearbyResources from './pages/NearbyResources';
-import AftercareMonitoring from './pages/AftercareMonitoring';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AftercareMonitoring": AftercareMonitoring,
     "AnalyticsDashboard": AnalyticsDashboard,
     "Community": Community,
     "ComplianceReports": ComplianceReports,
@@ -106,6 +107,7 @@ export const PAGES = {
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
+    "FindHelpNow": FindHelpNow,
     "ForwardPlan": ForwardPlan,
     "GoalBoard": GoalBoard,
     "Goals": Goals,
@@ -120,6 +122,7 @@ export const PAGES = {
     "Messages": Messages,
     "ModerationQueue": ModerationQueue,
     "MyGoals": MyGoals,
+    "NearbyResources": NearbyResources,
     "Onboarding": Onboarding,
     "ParticipantDashboard": ParticipantDashboard,
     "ParticipantMessages": ParticipantMessages,
@@ -131,16 +134,13 @@ export const PAGES = {
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
     "Resources": Resources,
+    "ResourcesNearYou": ResourcesNearYou,
     "RoleSelect": RoleSelect,
     "SavedResources": SavedResources,
     "Splash": Splash,
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "ResourcesNearYou": ResourcesNearYou,
-    "FindHelpNow": FindHelpNow,
-    "NearbyResources": NearbyResources,
-    "AftercareMonitoring": AftercareMonitoring,
 }
 
 export const pagesConfig = {

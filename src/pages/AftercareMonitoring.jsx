@@ -8,6 +8,7 @@ import {
 import AftercareClientList from "@/components/aftercare/AftercareClientList";
 import AftercareClientDetail from "@/components/aftercare/AftercareClientDetail";
 import AftercareAlerts from "@/components/aftercare/AftercareAlerts";
+import { calcEngagementScore } from "@/components/aftercare/engagementScore";
 
 const TABS = [
   { id: "clients", label: "Clients", icon: Users },
