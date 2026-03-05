@@ -162,14 +162,43 @@ export default function FindHelpNow() {
         )}
       </div>
 
-      {/* Quick Emergency */}
+      {/* Emergency Help Buttons */}
       <div className="px-5 pt-4 pb-2">
-        <a href="tel:211"
-          className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold text-sm"
-          style={{ background: "#4A90E2", color: "#FFF", borderRadius: "8px" }}
-        >
-          📞 Call 211 — Free Local Help Line
-        </a>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Emergency Help</p>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => { setCategoryFilter("Emergency Shelter"); setRadius(25); setSortBy("nearest"); }}
+            className="flex flex-col items-center justify-center gap-1.5 py-4 rounded-lg font-semibold text-sm"
+            style={{ background: "#8B5CF6", color: "#FFF", borderRadius: "8px" }}
+          >
+            <span className="text-2xl">🛏</span>
+            <span>Find Shelter Tonight</span>
+          </button>
+          <button
+            onClick={() => { setCategoryFilter("Detox"); setRadius(25); setSortBy("nearest"); }}
+            className="flex flex-col items-center justify-center gap-1.5 py-4 rounded-lg font-semibold text-sm"
+            style={{ background: "#EF4444", color: "#FFF", borderRadius: "8px" }}
+          >
+            <span className="text-2xl">💊</span>
+            <span>Find Detox Center</span>
+          </button>
+          <button
+            onClick={() => { setCategoryFilter("Food Pantry"); setRadius(25); setSortBy("nearest"); }}
+            className="flex flex-col items-center justify-center gap-1.5 py-4 rounded-lg font-semibold text-sm"
+            style={{ background: "#22C55E", color: "#FFF", borderRadius: "8px" }}
+          >
+            <span className="text-2xl">🍽️</span>
+            <span>Find Food Nearby</span>
+          </button>
+          <a
+            href="tel:211"
+            className="flex flex-col items-center justify-center gap-1.5 py-4 rounded-lg font-semibold text-sm"
+            style={{ background: "#4A90E2", color: "#FFF", borderRadius: "8px" }}
+          >
+            <span className="text-2xl">📞</span>
+            <span>Call 211</span>
+          </a>
+        </div>
       </div>
 
       {/* Category Pills */}
