@@ -88,6 +88,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
+import ResourcesNearYou from './pages/ResourcesNearYou';
 import __Layout from './Layout.jsx';
 
 
@@ -133,6 +134,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
+    "ResourcesNearYou": ResourcesNearYou,
 }
 
 export const pagesConfig = {
