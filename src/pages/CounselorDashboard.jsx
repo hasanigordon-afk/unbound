@@ -211,6 +211,10 @@ export default function CounselorDashboard() {
           </div>
         )}
 
+        {activeTab === "risk" && (
+          <RelapseRiskPanel facilityId={facility?.id} />
+        )}
+
         {activeTab === "messages" && (
           <CounselorMessagePanel
             counselorEmail={user?.email}
