@@ -132,7 +132,7 @@ export default function AftercareMonitoring() {
 
         {/* Tab bar */}
         <div className="flex gap-1 mt-4">
-          {TABS.map(({ id, label, icon: Icon }) => (
+          {TABS.map(({ id, label, icon: TabIcon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
@@ -142,7 +142,7 @@ export default function AftercareMonitoring() {
                 color: activeTab === id ? "#FFF" : "#5A5A5A",
               }}
             >
-              <Icon className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <TabIcon className="w-3.5 h-3.5" strokeWidth={1.5} />
               {label}
               {id === "alerts" && alertCount > 0 && (
                 <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#EF4444", color: "#FFF" }}>
