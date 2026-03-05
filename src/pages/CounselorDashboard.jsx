@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, AlertTriangle, LogOut, MessageSquare, ShieldAlert } from "lucide-react";
+import { Users, AlertTriangle, LogOut, MessageSquare, ShieldAlert, Hash } from "lucide-react";
 import CounselorMessagePanel from "@/components/messaging/CounselorMessagePanel";
 import ClientView from "@/components/shared/ClientView";
 import RelapseRiskPanel from "@/components/risk/RelapseRiskPanel";
+import ChannelModerationPanel from "@/components/channels/ChannelModerationPanel";
 
 export default function CounselorDashboard() {
   const navigate = useNavigate();
