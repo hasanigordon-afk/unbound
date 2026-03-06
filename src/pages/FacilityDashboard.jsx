@@ -107,19 +107,62 @@ export default function FacilityDashboard() {
     },
   });
 
+  const { data: clientCheckIns = [] } = useQuery({
+    queryKey: ["facility-client-checkins", facility?.id],
+    queryFn: () => base44.entities.ClientCheckins.list("-date", 1000),
+    enabled: !!facility?.id && participants.length > 0,
+  });
+
+  const { data: meetingAttendance = [] } = useQuery({
+    queryKey: ["facility-meeting-attendance", facility?.id],
+    queryFn: () => base44.entities.MeetingAttendance.list("-created_date", 500),
+    enabled: !!facility?.id,
+  });
+
   const getEngagementStats = () => {
     const last7Days = new Date();
     last7Days.setDate(last7Days.getDate() - 7);
-    
+    const participantEmails = participants.map(p => p.participant_email);
+
     const recentCheckIns = allCheckIns.filter(c => new Date(c.created_date) >= last7Days);
     const activeParticipants = new Set(recentCheckIns.map(c => c.participant_email)).size;
     const engagementRate = participants.length > 0 ? Math.round((activeParticipants / participants.length) * 100) : 0;
+
+    // Average engagement score from ClientCheckins
+    const recentClientCheckIns = clientCheckIns.filter(c =>
+      participantEmails.includes(c.client_id || c.participant_email) &&
+      new Date(c.date) >= last7Days
+    );
+    const avgEngagement = recentClientCheckIns.length
+      ? Math.round(recentClientCheckIns.reduce((s, c) => s + (c.engagement_score || 100), 0) / recentClientCheckIns.length)
+      : null;
+
+    // Check-in compliance: days with a check-in / (7 * total clients)
+    const totalExpected = participants.length * 7;
+    const checkinCompliance = totalExpected > 0
+      ? Math.round((recentCheckIns.length / totalExpected) * 100)
+      : 0;
+
+    // High risk clients
+    const highRiskCount = alerts.filter(a =>
+      (a.risk_level === "high" || a.risk_level === "critical") && a.status === "active"
+    ).length;
+
+    // Meetings logged this week
+    const meetingsThisWeek = meetingAttendance.filter(a =>
+      new Date(a.created_date) >= last7Days &&
+      (participantEmails.includes(a.participant_email) || participantEmails.includes(a.created_by))
+    ).length;
 
     return {
       totalParticipants: participants.length,
       activeParticipants,
       engagementRate,
       atRiskCount: alerts.length,
+      avgEngagement,
+      checkinCompliance,
+      highRiskCount,
+      meetingsThisWeek,
     };
   };
 
