@@ -222,13 +222,22 @@ export default function CounselorDashboard() {
         )}
 
         {activeTab === "messages" && (
-          <CounselorMessagePanel
-            counselorEmail={user?.email}
-            facilityId={facility?.id}
-            participants={participants}
-            initialPatient={selectedPatient}
-            channel="counselor_patient"
-          />
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs uppercase tracking-wide font-semibold" style={{ color: "#8E8E93" }}>Client Communications</p>
+              <Link to={createPageUrl("CounselorMessaging")} className="flex items-center gap-1.5 text-xs px-3 py-2 rounded font-medium" style={{ background: "#4A90E2", color: "#FFF", textDecoration: "none" }}>
+                <MessageSquare className="w-3.5 h-3.5" strokeWidth={1.5} />
+                Open Messaging Center
+              </Link>
+            </div>
+            <CounselorMessagePanel
+              counselorEmail={user?.email}
+              facilityId={facility?.id}
+              participants={participants}
+              initialPatient={selectedPatient}
+              channel="counselor_patient"
+            />
+          </div>
         )}
       </div>
     </div>
