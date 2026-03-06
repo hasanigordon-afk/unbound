@@ -53,6 +53,7 @@ import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
 import ContentfulSetup from './pages/ContentfulSetup';
 import CounselorDashboard from './pages/CounselorDashboard';
+import CounselorMessaging from './pages/CounselorMessaging';
 import CounselorPortal from './pages/CounselorPortal';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
@@ -92,7 +93,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import CounselorMessaging from './pages/CounselorMessaging';
+import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -103,6 +104,7 @@ export const PAGES = {
     "ComplianceReports": ComplianceReports,
     "ContentfulSetup": ContentfulSetup,
     "CounselorDashboard": CounselorDashboard,
+    "CounselorMessaging": CounselorMessaging,
     "CounselorPortal": CounselorPortal,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
@@ -142,7 +144,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "CounselorMessaging": CounselorMessaging,
+    "ProbationOfficerDashboard": ProbationOfficerDashboard,
 }
 
 export const pagesConfig = {
