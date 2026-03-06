@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, MessageSquare, Users } from "lucide-react";
 import { createPageUrl } from "./utils";
 import { Link } from "react-router-dom";
-import MessagingInbox from "@/components/messaging/MessagingInbox";
-import ComposeMessage from "@/components/messaging/ComposeMessage";
+import MessagingInbox from "@/components/messaging/MessagingInbox.jsx";
+import ComposeMessage from "@/components/messaging/ComposeMessage.jsx";
 
 export default function CounselorMessaging() {
   const [view, setView] = useState("inbox"); // "inbox" | "compose"
