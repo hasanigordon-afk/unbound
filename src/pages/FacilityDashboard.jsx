@@ -215,22 +215,52 @@ export default function FacilityDashboard() {
 
       <div className="px-6 py-6 space-y-6">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Total Participants</p>
-            <p className="text-3xl font-bold" style={{ color: '#60a5fa' }}>{stats.totalParticipants}</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <Users className="w-4 h-4" style={{ color: '#60a5fa' }} strokeWidth={1.5} />
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Active Clients</p>
+            </div>
+            <p className="text-3xl font-bold" style={{ color: '#60a5fa' }}>{stats.activeParticipants}</p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>of {stats.totalParticipants} total</p>
           </div>
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Active (7d)</p>
-            <p className="text-3xl font-bold" style={{ color: '#22c55e' }}>{stats.activeParticipants}</p>
+
+          <div className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-4 h-4" style={{ color: '#22c55e' }} strokeWidth={1.5} />
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Avg Engagement</p>
+            </div>
+            <p className="text-3xl font-bold" style={{ color: '#22c55e' }}>
+              {stats.avgEngagement !== null ? stats.avgEngagement : '—'}
+            </p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>score out of 100</p>
           </div>
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Engagement</p>
-            <p className="text-3xl font-bold" style={{ color: '#fbbf24' }}>{stats.engagementRate}%</p>
+
+          <div className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <Calendar className="w-4 h-4" style={{ color: '#fbbf24' }} strokeWidth={1.5} />
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Check-in Compliance</p>
+            </div>
+            <p className="text-3xl font-bold" style={{ color: '#fbbf24' }}>{stats.checkinCompliance}%</p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>last 7 days</p>
           </div>
-          <div className="p-5 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>At Risk</p>
-            <p className="text-3xl font-bold" style={{ color: '#ef4444' }}>{stats.atRiskCount}</p>
+
+          <div className="p-4 rounded-xl" style={{ background: '#0f1628', border: '1px solid rgba(239,68,68,0.25)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle className="w-4 h-4" style={{ color: '#ef4444' }} strokeWidth={1.5} />
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>High Risk Clients</p>
+            </div>
+            <p className="text-3xl font-bold" style={{ color: '#ef4444' }}>{stats.highRiskCount}</p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>{stats.atRiskCount} total alerts</p>
+          </div>
+
+          <div className="p-4 rounded-xl col-span-2 md:col-span-2" style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <Target className="w-4 h-4" style={{ color: '#a78bfa' }} strokeWidth={1.5} />
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Meetings Logged This Week</p>
+            </div>
+            <p className="text-3xl font-bold" style={{ color: '#a78bfa' }}>{stats.meetingsThisWeek}</p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>across all participants</p>
           </div>
         </div>
 
