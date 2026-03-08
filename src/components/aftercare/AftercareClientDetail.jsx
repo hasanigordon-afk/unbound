@@ -3,8 +3,9 @@ import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft, TrendingUp, Calendar, MessageSquare, Flag,
-  CheckCircle, AlertTriangle, BookOpen
+  CheckCircle, AlertTriangle, BookOpen, FileText
 } from "lucide-react";
+import WeeklySummaryModal from "./WeeklySummaryModal";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/pages/utils";
 
