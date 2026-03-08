@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, AlertTriangle, MessageSquare, FileText, Plus, Send, CheckCircle2 } from "lucide-react";
+import { ChevronLeft, AlertTriangle, MessageSquare, FileText, Plus, Send, CheckCircle2, BookOpen } from "lucide-react";
+import ClientJournalViewer from "@/components/counselor/ClientJournalViewer";
 import { toast } from "sonner";
 import moment from "moment";
 
@@ -121,6 +122,7 @@ export default function ClientView({ client, authorEmail, authorRole, channel, f
     { id: "overview", label: "Overview" },
     { id: "messages", label: "Messages" },
     { id: "notes", label: "Progress Notes" },
+    { id: "journal", label: "Journal" },
   ];
 
   return (
@@ -358,6 +360,16 @@ export default function ClientView({ client, authorEmail, authorRole, channel, f
               )}
             </div>
           </div>
+        )}
+
+        {/* JOURNAL TAB */}
+        {activeTab === "journal" && (
+          <ClientJournalViewer
+            clientEmail={clientEmail}
+            authorEmail={authorEmail}
+            authorRole={authorRole}
+            facilityId={facilityId}
+          />
         )}
 
         {/* PROGRESS NOTES TAB */}
