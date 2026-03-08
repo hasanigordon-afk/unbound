@@ -111,6 +111,13 @@ export default function AftercareMonitoring() {
 
   const alertCount = clientMetrics.filter((c) => c.missedCheckIns || c.highCravings || c.noMeetings || c.flagged).length;
 
+  const predictiveCount = clientMetrics
+    .filter((m) => m.engagementLevel !== "High Risk")
+    .filter((m) => {
+      const { predictiveLevel } = calcPredictiveRisk(m.checkIns || []);
+      return predictiveLevel === "Pre-Alert" || predictiveLevel === "Emerging Risk";
+    }).length;
+
   if (selectedClient) {
     const metrics = clientMetrics.find((m) => m.email === selectedClient.email);
     return (
