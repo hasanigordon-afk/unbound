@@ -180,6 +180,12 @@ export default function AftercareMonitoring() {
               onSelectClient={(m) => setSelectedClient({ email: m.email })}
             />
           )}
+          {activeTab === "predictive" && (
+            <PredictiveRiskPanel
+              clientMetrics={clientMetrics}
+              onSelectClient={(m) => setSelectedClient({ email: m.email })}
+            />
+          )}
           {activeTab === "alerts" && (
             <AftercareAlerts
               clientMetrics={clientMetrics}
