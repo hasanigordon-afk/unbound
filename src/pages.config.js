@@ -48,7 +48,6 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AftercareMonitoring from './pages/AftercareMonitoring';
-import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
 import ContentfulSetup from './pages/ContentfulSetup';
@@ -99,7 +98,6 @@ import __Layout from './Layout.jsx';
 
 export const PAGES = {
     "AftercareMonitoring": AftercareMonitoring,
-    "AnalyticsDashboard": AnalyticsDashboard,
     "Community": Community,
     "ComplianceReports": ComplianceReports,
     "ContentfulSetup": ContentfulSetup,
@@ -148,7 +146,7 @@ export const PAGES = {
 }
 
 export const pagesConfig = {
-    mainPage: "AnalyticsDashboard",
+    mainPage: "AftercareMonitoring",
     Pages: PAGES,
     Layout: __Layout,
 };
