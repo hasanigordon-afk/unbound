@@ -93,6 +93,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
+import FamilyView from './pages/FamilyView';
 import __Layout from './Layout.jsx';
 
 
@@ -143,6 +144,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
+    "FamilyView": FamilyView,
 }
 
 export const pagesConfig = {
