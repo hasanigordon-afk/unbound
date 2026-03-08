@@ -8,10 +8,13 @@ import {
 import AftercareClientList from "@/components/aftercare/AftercareClientList";
 import AftercareClientDetail from "@/components/aftercare/AftercareClientDetail";
 import AftercareAlerts from "@/components/aftercare/AftercareAlerts";
+import PredictiveRiskPanel from "@/components/aftercare/PredictiveRiskPanel";
 import { calcEngagementScore } from "@/components/aftercare/engagementScore";
+import { calcPredictiveRisk } from "@/components/aftercare/predictiveRisk";
 
 const TABS = [
   { id: "clients", label: "Clients", icon: Users },
+  { id: "predictive", label: "Predictive", icon: TrendingUp },
   { id: "alerts", label: "Alerts", icon: AlertTriangle },
 ];
 
