@@ -6,6 +6,7 @@ import { createPageUrl } from "./utils";
 import { Calendar, TrendingUp, Users, MapPin, MessageCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import FamilySettings from "@/components/family/FamilySettings";
 
 export default function ParticipantDashboard() {
   const { data: user } = useQuery({
