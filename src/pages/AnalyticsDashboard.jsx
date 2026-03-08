@@ -128,7 +128,6 @@ export default function AnalyticsDashboard() {
     );
   }
 
-  const [activeTab, setActiveTab] = useState("analytics");
   const stateAnalytics = getStateAnalytics();
   const facilityAnalytics = getFacilityAnalytics();
   const overallMetrics = getOverallMetrics();
