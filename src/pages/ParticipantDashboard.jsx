@@ -294,6 +294,9 @@ export default function ParticipantDashboard() {
           </div>
         </div>
 
+        {/* Family Support Contacts */}
+        <FamilySettings participantEmail={user?.email} />
+
         {/* Legal Disclaimer */}
         <div className="p-4 text-xs" style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 'var(--radius)' }}>
           <p className="font-semibold mb-2" style={{ color: 'var(--accent)' }}>Important Notice</p>
