@@ -82,6 +82,7 @@ import PatientDashboard from './pages/PatientDashboard';
 import PlatformAdmin from './pages/PlatformAdmin';
 import PrivacyControls from './pages/PrivacyControls';
 import ProbationDashboard from './pages/ProbationDashboard';
+import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
 import Profile from './pages/Profile';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
@@ -93,7 +94,6 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -133,6 +133,7 @@ export const PAGES = {
     "PlatformAdmin": PlatformAdmin,
     "PrivacyControls": PrivacyControls,
     "ProbationDashboard": ProbationDashboard,
+    "ProbationOfficerDashboard": ProbationOfficerDashboard,
     "Profile": Profile,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
@@ -144,7 +145,6 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "ProbationOfficerDashboard": ProbationOfficerDashboard,
 }
 
 export const pagesConfig = {

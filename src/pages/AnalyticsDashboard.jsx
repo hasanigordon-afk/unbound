@@ -6,6 +6,8 @@ import RelapseRiskPanel from "@/components/risk/RelapseRiskPanel";
 import BulkResourceImport from "@/components/admin/BulkResourceImport";
 
 export default function AnalyticsDashboard() {
+  const [activeTab, setActiveTab] = useState("analytics");
+
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
