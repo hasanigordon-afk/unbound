@@ -207,9 +207,26 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
               <BookOpen className="w-3.5 h-3.5" />
               Recommend Resources
             </Link>
+
+            <button
+              onClick={() => setShowSummaryModal(true)}
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium"
+              style={{ background: "#EBF3FD", color: "#4A90E2", border: "1px solid #C7D7F0" }}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              Weekly PDF Summary
+            </button>
           </div>
         </div>
       </div>
+
+      {showSummaryModal && (
+        <WeeklySummaryModal
+          metrics={metrics}
+          counselorEmail={counselorEmail}
+          onClose={() => setShowSummaryModal(false)}
+        />
+      )}
     </div>
   );
 }
