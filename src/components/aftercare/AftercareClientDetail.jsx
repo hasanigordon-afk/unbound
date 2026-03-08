@@ -24,6 +24,7 @@ function StatBox({ label, value, color = "#1E1E1E", bg = "#F7F7F8" }) {
 export default function AftercareClientDetail({ metrics, counselorEmail, onBack }) {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
   const queryClient = useQueryClient();
 
   const messageMutation = useMutation({
