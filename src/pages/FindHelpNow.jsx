@@ -143,7 +143,7 @@ export default function FindHelpNow() {
         <div className="flex items-center justify-between mb-1">
           <div>
             <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Help Near Me</h1>
-            <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>Housing, food, jobs, meetings & more near you</p>
+            <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>Real places near you that can help today</p>
           </div>
           <button onClick={requestLocation} className="p-1.5 rounded" style={{ background: "#F0F0F3" }}>
             <RefreshCw className="w-4 h-4" style={{ color: "#5A5A5A" }} strokeWidth={1.5} />
@@ -152,13 +152,13 @@ export default function FindHelpNow() {
 
         {locationLoading && (
           <div className="flex items-center gap-1.5 text-xs mt-2" style={{ color: "#8E8E93" }}>
-            <Loader2 className="w-3.5 h-3.5 animate-spin" /> Detecting your location…
+            <Loader2 className="w-3.5 h-3.5 animate-spin" /> Finding your location…
           </div>
         )}
         {userLocation && !locationLoading && (
           <div className="flex items-center gap-1.5 text-xs mt-2" style={{ color: "#22C55E" }}>
             <MapPin className="w-3.5 h-3.5" strokeWidth={2} />
-            Location found — {processedResources.length} resource{processedResources.length !== 1 ? "s" : ""} within {radius} miles
+            Location found — {processedResources.length} place{processedResources.length !== 1 ? "s" : ""} within {radius} miles
           </div>
         )}
         {locationError && (
@@ -168,7 +168,7 @@ export default function FindHelpNow() {
 
       {/* Emergency Help Buttons */}
       <div className="px-5 pt-4 pb-2">
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Need help right now?</p>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Most urgent needs</p>
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => { setCategoryFilter("Emergency Shelter"); setRadius(25); setSortBy("nearest"); }}
@@ -176,7 +176,7 @@ export default function FindHelpNow() {
             style={{ background: "#8B5CF6", color: "#FFF", borderRadius: "8px" }}
           >
             <span className="text-2xl">🛏</span>
-            <span>Find Shelter Tonight</span>
+            <span>Shelter Tonight</span>
           </button>
           <button
             onClick={() => { setCategoryFilter("Detox"); setRadius(25); setSortBy("nearest"); }}
@@ -192,7 +192,7 @@ export default function FindHelpNow() {
             style={{ background: "#22C55E", color: "#FFF", borderRadius: "8px" }}
           >
             <span className="text-2xl">🍽️</span>
-            <span>Find Food Nearby</span>
+            <span>Food Near Me</span>
           </button>
           <a
             href="tel:211"
@@ -285,13 +285,13 @@ export default function FindHelpNow() {
         {resourcesLoading ? (
           <div className="text-center py-16" style={{ color: "#8E8E93" }}>
             <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin opacity-40" strokeWidth={1.5} />
-            <p className="text-sm">Loading resources…</p>
+            <p className="text-sm">Finding places near you…</p>
           </div>
         ) : processedResources.length === 0 ? (
           <div className="text-center py-16" style={{ color: "#8E8E93" }}>
             <Search className="w-10 h-10 mx-auto mb-3 opacity-30" strokeWidth={1} />
-            <p className="text-sm font-medium">No resources found</p>
-            <p className="text-xs mt-1">Try increasing the radius or adjusting filters</p>
+            <p className="text-sm font-medium">Nothing matched that search.</p>
+            <p className="text-xs mt-1">Try a wider radius or clear a filter to see more places.</p>
           </div>
         ) : (
           processedResources.map((resource) => (
