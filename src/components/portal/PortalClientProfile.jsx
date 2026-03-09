@@ -13,6 +13,7 @@ const STATUS_CONFIG = {
 };
 
 const TABS = [
+  { id: "timeline",  label: "Timeline" },
   { id: "overview",  label: "Overview" },
   { id: "checkins",  label: "Check-Ins" },
   { id: "notes",     label: "Notes" },
