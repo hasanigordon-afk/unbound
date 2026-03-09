@@ -62,11 +62,17 @@ export default function DailyCheckIn() {
         participant_email: user.email,
         check_in_date: today,
         mood_rating: formData.mood_rating,
+        craving_intensity: formData.craving_intensity,
+        stress_level: formData.stress_level,
         attended_meeting: formData.attended_meeting,
         meeting_type: formData.attended_meeting ? formData.meeting_type : null,
         connected_with_sponsor: formData.connected_with_sponsor,
+        needs_help: formData.needs_help || false,
+        relapse_risk_flag: formData.relapse_risk_flag || false,
         notes: formData.notes || null,
       });
+      // Run risk detection in background
+      base44.functions.invoke("cravingAlertDetection", { participantEmail: user.email }).catch(() => {});
     },
     onSuccess: () => {
     queryClient.invalidateQueries(["daily-checkins"]);
