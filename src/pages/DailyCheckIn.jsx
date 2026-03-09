@@ -109,9 +109,9 @@ export default function DailyCheckIn() {
     return (
       <div style={{ minHeight: "100vh", background: "#FEF2F2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤝</div>
-        <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "8px" }}>Help is available right now.</h2>
+        <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "8px" }}>You are not alone right now.</h2>
         <p style={{ fontSize: "15px", color: "#5A5A5A", marginBottom: "28px", lineHeight: "1.6", maxWidth: "320px" }}>
-          You're not alone. Reach out to someone who can help.
+          Reaching out is the right move. Let's get you to the right support.
         </p>
         <div style={{ width: "100%", maxWidth: "360px", display: "flex", flexDirection: "column", gap: "12px" }}>
           <a href="tel:988" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#DC2626", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>

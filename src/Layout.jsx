@@ -161,7 +161,7 @@ export default function Layout({ children, currentPageName }) {
       {showFooter && (
         <footer className="border-t py-4 px-6 text-center" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
           <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Unbound is a behavioral engagement platform. It does not provide medical treatment.
+            Unbound is a support tool, not a medical provider. In an emergency, call 911 or 988.
           </p>
         </footer>
       )}
