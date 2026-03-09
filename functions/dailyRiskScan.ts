@@ -64,20 +64,44 @@ function scoreCheckIns(checkIns) {
     }
   }
 
-  // 3. Craving trend (0-15 pts)
-  const cravR = recent.map(c => c.craving_intensity).filter(Boolean);
-  const cravP = prior.map(c => c.craving_intensity).filter(Boolean);
+  // 3. Craving trend (0-25 pts) — now on 0-10 scale
+  const cravR = recent.map(c => c.craving_intensity).filter(v => v != null);
+  const cravP = prior.map(c => c.craving_intensity).filter(v => v != null);
   const avgCravR = cravR.length ? cravR.reduce((a, b) => a + b, 0) / cravR.length : null;
   const avgCravP = cravP.length ? cravP.reduce((a, b) => a + b, 0) / cravP.length : null;
 
-  if (avgCravR !== null) {
-    score += Math.round(Math.max(0, (avgCravR - 2) / 3) * 12);
-    if (avgCravP !== null && avgCravR > avgCravP + 0.5) {
-      score += Math.min(3, Math.round((avgCravR - avgCravP) * 2));
-      factors.push(`Rising cravings: ${avgCravP.toFixed(1)} → ${avgCravR.toFixed(1)}`);
-    } else if (avgCravR >= 4) {
-      factors.push(`High craving level: ${avgCravR.toFixed(1)}/5`);
+  // Emergency: relapse flag in last 3 days → immediate max score
+  const recentSorted = [...recent].sort((a,b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+  const last3 = recentSorted.slice(0, 3);
+  const relapseFlag = last3.some(c => c.relapse_risk_flag === true);
+  if (relapseFlag) {
+    score += 25;
+    factors.push("EMERGENCY: User self-reported relapse risk");
+  } else if (avgCravR !== null) {
+    // Scale: 0-10 craving → 0-20 pts
+    score += Math.round(Math.max(0, (avgCravR - 3) / 7) * 20);
+    // Pattern: craving > 6 for 3 consecutive days
+    const pattern = last3.length >= 3 && last3.every(c => (c.craving_intensity ?? 0) > 6);
+    if (pattern) {
+      score += 5;
+      factors.push(`Elevated cravings 3+ consecutive days (avg ${avgCravR.toFixed(1)}/10)`);
+    } else if (avgCravR >= 8) {
+      factors.push(`Critical craving level: ${avgCravR.toFixed(1)}/10`);
+    } else if (avgCravR >= 6) {
+      factors.push(`High craving level: ${avgCravR.toFixed(1)}/10`);
     }
+    if (avgCravP !== null && avgCravR > avgCravP + 1) {
+      score += Math.min(5, Math.round((avgCravR - avgCravP) * 2));
+      factors.push(`Rising cravings: ${avgCravP.toFixed(1)} → ${avgCravR.toFixed(1)}/10`);
+    }
+  }
+
+  // Stress level signal (0-5 pts)
+  const stressR = recent.map(c => c.stress_level).filter(v => v != null);
+  const avgStressR = stressR.length ? stressR.reduce((a, b) => a + b, 0) / stressR.length : null;
+  if (avgStressR !== null && avgStressR >= 8) {
+    score += 5;
+    factors.push(`High stress level: ${avgStressR.toFixed(1)}/10`);
   }
 
   // 4. Meeting attendance (0-10 pts)
