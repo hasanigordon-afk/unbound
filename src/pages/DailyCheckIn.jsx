@@ -83,11 +83,12 @@ export default function DailyCheckIn() {
     },
   });
 
-  const TOTAL_STEPS = 5;
+  const TOTAL_STEPS = 6;
 
   const canProceed = () => {
     if (step === 1) return formData.mood_rating !== null;
-    if (step === 2) return formData.attended_meeting !== null;
+    if (step === 2) return true; // craving + stress sliders always have a value
+    if (step === 3) return formData.attended_meeting !== null;
     if (step === 3) return !formData.attended_meeting || formData.meeting_type !== null;
     if (step === 4) return formData.connected_with_sponsor !== null;
     if (step === 5) return formData.needs_help !== null;
