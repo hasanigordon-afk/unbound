@@ -255,6 +255,68 @@ export default function DailyCheckIn() {
           {step === 2 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                How are your cravings and stress?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "28px" }}>Slide to where you're at. No judgment — just honest answers.</p>
+
+              <div style={{ marginBottom: "28px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                  <p style={{ fontSize: "14px", fontWeight: "600", color: TEXT }}>Craving Intensity</p>
+                  <span style={{
+                    background: formData.craving_intensity >= 8 ? "#FEF2F2" : formData.craving_intensity >= 5 ? "#FFFBEB" : "#F0FDF4",
+                    color: formData.craving_intensity >= 8 ? "#DC2626" : formData.craving_intensity >= 5 ? "#D97706" : "#16A34A",
+                    fontWeight: "700", fontSize: "18px", padding: "4px 12px", borderRadius: "8px"
+                  }}>
+                    {formData.craving_intensity}/10
+                  </span>
+                </div>
+                <input type="range" min="0" max="10" step="1"
+                  value={formData.craving_intensity}
+                  onChange={e => setFormData({ ...formData, craving_intensity: parseInt(e.target.value) })}
+                  style={{ width: "100%", accentColor: formData.craving_intensity >= 8 ? "#EF4444" : formData.craving_intensity >= 5 ? "#F59E0B" : "#4A90E2", height: "6px", cursor: "pointer" }}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4px" }}>
+                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>None</span>
+                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>Severe</span>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: "28px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                  <p style={{ fontSize: "14px", fontWeight: "600", color: TEXT }}>Stress Level</p>
+                  <span style={{
+                    background: formData.stress_level >= 8 ? "#FEF2F2" : formData.stress_level >= 5 ? "#FFFBEB" : "#F0FDF4",
+                    color: formData.stress_level >= 8 ? "#DC2626" : formData.stress_level >= 5 ? "#D97706" : "#16A34A",
+                    fontWeight: "700", fontSize: "18px", padding: "4px 12px", borderRadius: "8px"
+                  }}>
+                    {formData.stress_level}/10
+                  </span>
+                </div>
+                <input type="range" min="0" max="10" step="1"
+                  value={formData.stress_level}
+                  onChange={e => setFormData({ ...formData, stress_level: parseInt(e.target.value) })}
+                  style={{ width: "100%", accentColor: formData.stress_level >= 8 ? "#EF4444" : formData.stress_level >= 5 ? "#F59E0B" : "#4A90E2", height: "6px", cursor: "pointer" }}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4px" }}>
+                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>Calm</span>
+                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>Extreme</span>
+                </div>
+              </div>
+
+              {formData.craving_intensity >= 8 && (
+                <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: "12px", padding: "14px 16px" }}>
+                  <p style={{ fontSize: "13px", color: "#DC2626", fontWeight: "600", marginBottom: "4px" }}>That's a high craving score.</p>
+                  <p style={{ fontSize: "13px", color: "#5A5A5A", lineHeight: "1.5" }}>
+                    Your support team will be notified. You don't have to handle this alone.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {step === 3 && (
+            <div>
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you go to a meeting today?
               </h2>
               <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>AA, NA, SMART Recovery, or anything similar.</p>
