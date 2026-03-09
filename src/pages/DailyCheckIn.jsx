@@ -21,10 +21,13 @@ export default function DailyCheckIn() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     mood_rating: null,
+    craving_intensity: 0,
+    stress_level: 0,
     attended_meeting: null,
     meeting_type: null,
     connected_with_sponsor: null,
     needs_help: null,
+    relapse_risk_flag: false,
     notes: "",
   });
 
