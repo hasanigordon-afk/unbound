@@ -43,7 +43,8 @@ export default function ParticipantMessages() {
           />
         ) : (
           <div className="card text-center py-12">
-            <p style={{ color: 'var(--text-muted)' }}>No facility assigned</p>
+            <p style={{ fontSize: "15px", fontWeight: "600", color: "var(--text-primary)", marginBottom: "8px" }}>No messages yet</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: "14px" }}>When your counselor or support team sends you a message, it will show up here.</p>
           </div>
         )}
       </div>

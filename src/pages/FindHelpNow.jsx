@@ -142,8 +142,8 @@ export default function FindHelpNow() {
       <div className="px-5 pt-6 pb-4" style={{ background: "#FFFFFF", borderBottom: "1px solid #D1D1D6" }}>
         <div className="flex items-center justify-between mb-1">
           <div>
-            <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Find Help Now</h1>
-            <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>Housing, treatment, food & recovery support near you</p>
+            <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Help Near Me</h1>
+            <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>Housing, food, jobs, meetings & more near you</p>
           </div>
           <button onClick={requestLocation} className="p-1.5 rounded" style={{ background: "#F0F0F3" }}>
             <RefreshCw className="w-4 h-4" style={{ color: "#5A5A5A" }} strokeWidth={1.5} />
@@ -168,7 +168,7 @@ export default function FindHelpNow() {
 
       {/* Emergency Help Buttons */}
       <div className="px-5 pt-4 pb-2">
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Emergency Help</p>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Need help right now?</p>
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => { setCategoryFilter("Emergency Shelter"); setRadius(25); setSortBy("nearest"); }}
@@ -184,7 +184,7 @@ export default function FindHelpNow() {
             style={{ background: "#EF4444", color: "#FFF", borderRadius: "8px" }}
           >
             <span className="text-2xl">💊</span>
-            <span>Find Detox Center</span>
+            <span>Find Treatment</span>
           </button>
           <button
             onClick={() => { setCategoryFilter("Food Pantry"); setRadius(25); setSortBy("nearest"); }}
