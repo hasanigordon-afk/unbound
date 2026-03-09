@@ -20,12 +20,13 @@ const RADIUS_OPTIONS = [5, 10, 25, 50];
 const CATEGORY_FILTERS = [
   { label: "All", value: "" },
   { label: "🏠 Housing", value: "Housing" },
-  { label: "🛏 Shelter", value: "Emergency Shelter" },
-  { label: "💊 Detox", value: "Detox" },
-  { label: "🏥 Rehab", value: "Inpatient Rehab" },
+  { label: "🛏 Shelter Tonight", value: "Emergency Shelter" },
   { label: "🍽 Food", value: "Food Pantry" },
-  { label: "💼 Employment", value: "Employment Assistance" },
-  { label: "🔓 Reentry", value: "Reentry Services" },
+  { label: "💼 Jobs", value: "Employment Assistance" },
+  { label: "🧠 Mental Health", value: "Mental Health" },
+  { label: "💊 Treatment", value: "Detox" },
+  { label: "🪪 Benefits & ID", value: "Reentry Services" },
+  { label: "🤝 Peer Support", value: "Peer Support" },
 ];
 
 const SORT_OPTIONS = [

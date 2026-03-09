@@ -1,29 +1,19 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { ChevronRight, ChevronLeft, Loader2, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Loader2, Phone } from "lucide-react";
 
 const MOOD_OPTIONS = [
-  { value: 1, emoji: "😢", label: "Very Bad" },
-  { value: 2, emoji: "😕", label: "Bad" },
-  { value: 3, emoji: "😐", label: "Okay" },
-  { value: 4, emoji: "🙂", label: "Good" },
-  { value: 5, emoji: "😊", label: "Great" },
+  { value: 1, emoji: "😢", label: "Really rough" },
+  { value: 2, emoji: "😕", label: "Struggling" },
+  { value: 3, emoji: "😐", label: "Getting by" },
+  { value: 4, emoji: "🙂", label: "Doing okay" },
+  { value: 5, emoji: "😊", label: "Feeling good" },
 ];
 
-const MEETING_TYPES = ["AA", "NA", "Other", "Virtual", "In-Person"];
-
-const CRAVING_OPTIONS = [
-  { value: 1, label: "None" },
-  { value: 2, label: "Mild" },
-  { value: 3, label: "Moderate" },
-  { value: 4, label: "Strong" },
-  { value: 5, label: "Intense" },
-];
+const MEETING_TYPES = ["AA", "NA", "SMART Recovery", "Virtual", "Other"];
 
 export default function DailyCheckIn() {
   const navigate = useNavigate();
@@ -34,128 +24,215 @@ export default function DailyCheckIn() {
     attended_meeting: null,
     meeting_type: null,
     connected_with_sponsor: null,
-    craving_intensity: null,
+    needs_help: null,
     notes: "",
   });
 
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => base44.auth.me(),
+  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+
+  const { data: checkIns = [] } = useQuery({
+    queryKey: ["daily-checkins", user?.email],
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 30),
+    enabled: !!user,
   });
+
+  const streak = (() => {
+    if (!checkIns.length) return 0;
+    const sorted = [...checkIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+    let count = 0;
+    let current = new Date();
+    current.setHours(0, 0, 0, 0);
+    for (const c of sorted) {
+      const d = new Date(c.check_in_date);
+      d.setHours(0, 0, 0, 0);
+      const diff = Math.round((current - d) / 86400000);
+      if (diff <= 1) { count++; current = d; }
+      else break;
+    }
+    return count;
+  })();
 
   const submitCheckInMutation = useMutation({
     mutationFn: async () => {
-      const today = new Date().toISOString().split('T')[0];
-      const checkInData = {
+      const today = new Date().toISOString().split("T")[0];
+      await base44.entities.DailyCheckIn.create({
         participant_email: user.email,
         check_in_date: today,
         mood_rating: formData.mood_rating,
         attended_meeting: formData.attended_meeting,
         meeting_type: formData.attended_meeting ? formData.meeting_type : null,
         connected_with_sponsor: formData.connected_with_sponsor,
-        craving_intensity: formData.craving_intensity,
         notes: formData.notes || null,
-      };
-      await base44.entities.DailyCheckIn.create(checkInData);
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["daily-checkins"]);
-      setStep(6); // Success screen
+      setStep(formData.needs_help ? 7 : 6);
     },
   });
+
+  const TOTAL_STEPS = 5;
 
   const canProceed = () => {
     if (step === 1) return formData.mood_rating !== null;
     if (step === 2) return formData.attended_meeting !== null;
     if (step === 3) return !formData.attended_meeting || formData.meeting_type !== null;
     if (step === 4) return formData.connected_with_sponsor !== null;
-    if (step === 5) return true; // Optional step
+    if (step === 5) return formData.needs_help !== null;
     return false;
   };
 
   const handleNext = () => {
-    if (step === 2 && !formData.attended_meeting) {
-      setStep(4); // Skip meeting type if didn't attend
-    } else if (step === 5) {
-      submitCheckInMutation.mutate();
-    } else {
-      setStep(step + 1);
-    }
+    if (step === 2 && !formData.attended_meeting) { setStep(4); return; }
+    if (step === 5) { submitCheckInMutation.mutate(); return; }
+    setStep(step + 1);
   };
 
   const handleBack = () => {
-    if (step === 4 && !formData.attended_meeting) {
-      setStep(2); // Skip back over meeting type
-    } else {
-      setStep(step - 1);
-    }
+    if (step === 4 && !formData.attended_meeting) { setStep(2); return; }
+    setStep(step - 1);
   };
 
-  if (step === 6) {
+  const BG = "#FAFAFA";
+  const CARD_BG = "#FFFFFF";
+  const SELECTED_BG = "#EBF5FF";
+  const SELECTED_BORDER = "#4A90E2";
+  const TEXT = "#1E1E1E";
+  const TEXT_MUTED = "#8E8E93";
+  const BTN_BG = "#4A90E2";
+
+  // Need-help crisis screen
+  if (step === 7) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#1a1f3a' }}>
-        <div className="max-w-md w-full px-6 text-center">
-          <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.2)' }}>
-            <Check className="w-10 h-10" style={{ color: '#22c55e' }} />
-          </div>
-          <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>Check-In Complete!</h2>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
-            Great job staying engaged. Keep up the momentum!
-          </p>
-          <Button
-            onClick={() => navigate(createPageUrl("ParticipantDashboard"))}
-            className="w-full"
-            style={{ background: '#fbbf24', color: '#0f1628' }}
+      <div style={{ minHeight: "100vh", background: "#FEF2F2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤝</div>
+        <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "8px" }}>Help is available right now.</h2>
+        <p style={{ fontSize: "15px", color: "#5A5A5A", marginBottom: "28px", lineHeight: "1.6", maxWidth: "320px" }}>
+          You're not alone. Reach out to someone who can help.
+        </p>
+        <div style={{ width: "100%", maxWidth: "360px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <a href="tel:988" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#DC2626", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
+            <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
+            <div style={{ textAlign: "left" }}>
+              <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>Call 988 — Crisis Line</p>
+              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>Free, confidential, 24/7</p>
+            </div>
+          </a>
+          <a href="sms:741741" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#2563EB", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
+            <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
+            <div style={{ textAlign: "left" }}>
+              <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>Text HOME to 741741</p>
+              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>Crisis Text Line — free & anonymous</p>
+            </div>
+          </a>
+          <a href="tel:18006624357" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#EA580C", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
+            <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
+            <div style={{ textAlign: "left" }}>
+              <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>SAMHSA Helpline</p>
+              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>1-800-662-4357 — Treatment referrals</p>
+            </div>
+          </a>
+          <button
+            onClick={() => navigate(createPageUrl("PatientDashboard"))}
+            style={{ background: "#FFF", border: "1px solid #D1D1D6", borderRadius: "14px", padding: "16px", fontSize: "15px", fontWeight: "600", color: "#1E1E1E", cursor: "pointer", marginTop: "8px" }}
           >
-            Back to Dashboard
-          </Button>
+            Back to Home
+          </button>
         </div>
       </div>
     );
   }
 
+  // Success screen
+  if (step === 6) {
+    const newStreak = streak + 1;
+    return (
+      <div style={{ minHeight: "100vh", background: "#F0FDF4", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: "56px", marginBottom: "16px" }}>✅</div>
+        <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#15803D", marginBottom: "8px" }}>You checked in!</h2>
+        <p style={{ fontSize: "15px", color: "#16A34A", marginBottom: "8px" }}>
+          {newStreak > 1 ? `${newStreak}-day streak. Keep it going.` : "Great first step. Come back tomorrow."}
+        </p>
+        <p style={{ fontSize: "14px", color: "#5A5A5A", marginBottom: "32px" }}>
+          Every day you show up matters.
+        </p>
+        {formData.mood_rating <= 2 && (
+          <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: "12px", padding: "16px 20px", marginBottom: "20px", maxWidth: "340px" }}>
+            <p style={{ fontSize: "14px", color: "#92400E", lineHeight: "1.5" }}>
+              It sounds like today was tough. If you need to talk to someone, your support team is here.
+            </p>
+            <Link to={createPageUrl("ParticipantMessages")}>
+              <button style={{ marginTop: "10px", background: "#EA580C", color: "#FFF", border: "none", borderRadius: "8px", padding: "10px 20px", fontWeight: "600", fontSize: "13px", cursor: "pointer" }}>
+                Send a Message
+              </button>
+            </Link>
+          </div>
+        )}
+        <button
+          onClick={() => navigate(createPageUrl("PatientDashboard"))}
+          style={{ background: "#16A34A", color: "#FFF", border: "none", borderRadius: "14px", padding: "18px 48px", fontSize: "16px", fontWeight: "700", cursor: "pointer", width: "100%", maxWidth: "340px" }}
+        >
+          Done
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#1a1f3a' }}>
+    <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div className="px-6 pt-8 pb-6" style={{ background: '#0f1628', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <h1 className="text-xl font-bold" style={{ color: '#ffffff' }}>Daily Check-In</h1>
+      <div style={{ background: CARD_BG, padding: "20px 20px 16px", borderBottom: "1px solid #E5E7EB" }}>
+        <p style={{ fontSize: "12px", fontWeight: "700", color: TEXT_MUTED, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "4px" }}>
+          Daily Check-In
+        </p>
+        <p style={{ fontSize: "15px", color: "#5A5A5A" }}>
+          {streak > 0 ? `🔥 ${streak}-day streak — keep it going` : "Takes less than 30 seconds"}
+        </p>
       </div>
 
-      {/* Progress */}
-      <div className="px-6 py-4">
-        <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map(i => (
-            <div
-              key={i}
-              className="h-1 flex-1 rounded-full transition-all"
-              style={{
-                background: i <= step ? '#fbbf24' : 'rgba(255,255,255,0.2)'
-              }}
-            />
+      {/* Progress bar */}
+      <div style={{ padding: "16px 20px 0", background: CARD_BG }}>
+        <div style={{ display: "flex", gap: "6px", marginBottom: "16px" }}>
+          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+            <div key={i} style={{ flex: 1, height: "4px", borderRadius: "2px", background: i < step ? "#4A90E2" : "#E5E7EB" }} />
           ))}
         </div>
+        <p style={{ fontSize: "12px", color: TEXT_MUTED, marginBottom: "16px" }}>
+          Step {Math.min(step, TOTAL_STEPS)} of {TOTAL_STEPS}
+        </p>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex items-center justify-center px-6 py-8">
-        <div className="max-w-md w-full">
+      {/* Question area */}
+      <div style={{ flex: 1, padding: "24px 20px", overflowY: "auto" }}>
+        <div style={{ maxWidth: "440px", margin: "0 auto" }}>
+
           {step === 1 && (
             <div>
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>How are you feeling today?</h2>
-              <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>Rate your mood</p>
-              <div className="grid grid-cols-5 gap-3">
-                {MOOD_OPTIONS.map(option => (
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                How are you feeling today?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>Be honest — there's no wrong answer.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
+                {MOOD_OPTIONS.map(opt => (
                   <button
-                    key={option.value}
-                    onClick={() => setFormData({ ...formData, mood_rating: option.value })}
-                    className="p-4 rounded-xl flex flex-col items-center gap-2 transition-all"
+                    key={opt.value}
+                    onClick={() => setFormData({ ...formData, mood_rating: opt.value })}
                     style={{
-                      background: formData.mood_rating === option.value ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                      border: formData.mood_rating === option.value ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
+                      background: formData.mood_rating === opt.value ? SELECTED_BG : CARD_BG,
+                      border: `2px solid ${formData.mood_rating === opt.value ? SELECTED_BORDER : "#E5E7EB"}`,
+                      borderRadius: "12px",
+                      padding: "14px 6px",
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "6px",
                     }}
                   >
-                    <span className="text-3xl">{option.emoji}</span>
-                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>{option.label}</span>
+                    <span style={{ fontSize: "26px" }}>{opt.emoji}</span>
+                    <span style={{ fontSize: "10px", fontWeight: "600", color: formData.mood_rating === opt.value ? SELECTED_BORDER : TEXT_MUTED, textAlign: "center", lineHeight: "1.2" }}>
+                      {opt.label}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -164,49 +241,35 @@ export default function DailyCheckIn() {
 
           {step === 2 && (
             <div>
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>Did you attend a meeting today?</h2>
-              <div className="space-y-3">
-                <button
-                  onClick={() => setFormData({ ...formData, attended_meeting: true })}
-                  className="w-full p-5 rounded-xl text-left transition-all"
-                  style={{
-                    background: formData.attended_meeting === true ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                    border: formData.attended_meeting === true ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
-                  }}
-                >
-                  <p className="font-semibold text-lg" style={{ color: '#ffffff' }}>Yes</p>
-                  <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>I attended a meeting</p>
-                </button>
-                <button
-                  onClick={() => setFormData({ ...formData, attended_meeting: false, meeting_type: null })}
-                  className="w-full p-5 rounded-xl text-left transition-all"
-                  style={{
-                    background: formData.attended_meeting === false ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                    border: formData.attended_meeting === false ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
-                  }}
-                >
-                  <p className="font-semibold text-lg" style={{ color: '#ffffff' }}>No</p>
-                  <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>No meeting today</p>
-                </button>
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                Did you go to a meeting today?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>AA, NA, SMART Recovery, or any other group.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {[
+                  { val: true, label: "Yes, I went", sub: "Great — any support counts" },
+                  { val: false, label: "Not today", sub: "That's okay — tomorrow is another chance" },
+                ].map(opt => (
+                  <button key={String(opt.val)} onClick={() => setFormData({ ...formData, attended_meeting: opt.val, meeting_type: opt.val ? formData.meeting_type : null })}
+                    style={{ background: formData.attended_meeting === opt.val ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.attended_meeting === opt.val ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer" }}>
+                    <p style={{ fontWeight: "700", fontSize: "16px", color: TEXT, marginBottom: "3px" }}>{opt.label}</p>
+                    <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
+                  </button>
+                ))}
               </div>
             </div>
           )}
 
           {step === 3 && (
             <div>
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>What type of meeting?</h2>
-              <div className="grid grid-cols-2 gap-3">
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                What kind of meeting?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>Pick whichever fits best.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                 {MEETING_TYPES.map(type => (
-                  <button
-                    key={type}
-                    onClick={() => setFormData({ ...formData, meeting_type: type })}
-                    className="p-4 rounded-xl text-center transition-all"
-                    style={{
-                      background: formData.meeting_type === type ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                      border: formData.meeting_type === type ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
-                      color: '#ffffff'
-                    }}
-                  >
+                  <button key={type} onClick={() => setFormData({ ...formData, meeting_type: type })}
+                    style={{ background: formData.meeting_type === type ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.meeting_type === type ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "12px", padding: "16px", fontWeight: "600", fontSize: "15px", color: formData.meeting_type === type ? SELECTED_BORDER : TEXT, cursor: "pointer" }}>
                     {type}
                   </button>
                 ))}
@@ -216,65 +279,55 @@ export default function DailyCheckIn() {
 
           {step === 4 && (
             <div>
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>Did you connect with your sponsor?</h2>
-              <div className="space-y-3">
-                <button
-                  onClick={() => setFormData({ ...formData, connected_with_sponsor: true })}
-                  className="w-full p-5 rounded-xl text-left transition-all"
-                  style={{
-                    background: formData.connected_with_sponsor === true ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                    border: formData.connected_with_sponsor === true ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
-                  }}
-                >
-                  <p className="font-semibold text-lg" style={{ color: '#ffffff' }}>Yes</p>
-                  <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Connected today</p>
-                </button>
-                <button
-                  onClick={() => setFormData({ ...formData, connected_with_sponsor: false })}
-                  className="w-full p-5 rounded-xl text-left transition-all"
-                  style={{
-                    background: formData.connected_with_sponsor === false ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                    border: formData.connected_with_sponsor === false ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
-                  }}
-                >
-                  <p className="font-semibold text-lg" style={{ color: '#ffffff' }}>No</p>
-                  <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Did not connect</p>
-                </button>
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                Did you talk to someone in your support network today?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>A sponsor, mentor, counselor, or supportive friend.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {[
+                  { val: true, label: "Yes, I reached out", sub: "Connection matters — good work" },
+                  { val: false, label: "Not today", sub: "Consider sending a message tomorrow" },
+                ].map(opt => (
+                  <button key={String(opt.val)} onClick={() => setFormData({ ...formData, connected_with_sponsor: opt.val })}
+                    style={{ background: formData.connected_with_sponsor === opt.val ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.connected_with_sponsor === opt.val ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer" }}>
+                    <p style={{ fontWeight: "700", fontSize: "16px", color: TEXT, marginBottom: "3px" }}>{opt.label}</p>
+                    <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
+                  </button>
+                ))}
               </div>
             </div>
           )}
 
           {step === 5 && (
             <div>
-              <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>Any cravings today?</h2>
-              <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>Optional</p>
-              <div className="space-y-3 mb-6">
-                {CRAVING_OPTIONS.map(option => (
-                  <button
-                    key={option.value}
-                    onClick={() => setFormData({ ...formData, craving_intensity: option.value })}
-                    className="w-full p-4 rounded-xl text-left transition-all"
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                Do you need help today?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>No judgment. We just want to make sure you're okay.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
+                {[
+                  { val: false, label: "I'm okay right now", sub: "Good to hear" },
+                  { val: true, label: "I could use some help", sub: "We'll show you who to reach out to" },
+                ].map(opt => (
+                  <button key={String(opt.val)} onClick={() => setFormData({ ...formData, needs_help: opt.val })}
                     style={{
-                      background: formData.craving_intensity === option.value ? 'rgba(251,191,36,0.2)' : '#0f1628',
-                      border: formData.craving_intensity === option.value ? '2px solid #fbbf24' : '1px solid rgba(255,255,255,0.1)',
-                      color: '#ffffff'
-                    }}
-                  >
-                    {option.label}
+                      background: formData.needs_help === opt.val ? (opt.val ? "#FEF2F2" : SELECTED_BG) : CARD_BG,
+                      border: `2px solid ${formData.needs_help === opt.val ? (opt.val ? "#FCA5A5" : SELECTED_BORDER) : "#E5E7EB"}`,
+                      borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer"
+                    }}>
+                    <p style={{ fontWeight: "700", fontSize: "16px", color: TEXT, marginBottom: "3px" }}>{opt.label}</p>
+                    <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
                   </button>
                 ))}
               </div>
               <div>
-                <label className="text-sm font-medium mb-2 block" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                  Optional Notes
-                </label>
-                <Textarea
+                <p style={{ fontSize: "13px", fontWeight: "600", color: TEXT_MUTED, marginBottom: "8px" }}>Anything you want to add? (optional)</p>
+                <textarea
                   value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="How are you feeling? Any thoughts to share..."
-                  rows={4}
-                  className="w-full"
-                  style={{ background: '#0f1628', border: '1px solid rgba(255,255,255,0.1)', color: '#ffffff' }}
+                  onChange={e => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Write anything on your mind..."
+                  rows={3}
+                  style={{ width: "100%", background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "12px", padding: "14px", fontSize: "14px", color: TEXT, resize: "vertical", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
                 />
               </div>
             </div>
@@ -283,33 +336,25 @@ export default function DailyCheckIn() {
       </div>
 
       {/* Navigation */}
-      <div className="px-6 py-6 flex gap-3" style={{ background: '#0f1628', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ background: CARD_BG, borderTop: "1px solid #E5E7EB", padding: "16px 20px", display: "flex", gap: "10px" }}>
         {step > 1 && (
-          <Button
-            onClick={handleBack}
-            variant="outline"
-            style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#ffffff' }}
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
+          <button onClick={handleBack}
+            style={{ background: "#F5F5F7", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "16px 20px", fontSize: "15px", fontWeight: "600", color: "#5A5A5A", cursor: "pointer" }}>
             Back
-          </Button>
+          </button>
         )}
-        <Button
+        <button
           onClick={handleNext}
           disabled={!canProceed() || submitCheckInMutation.isPending}
-          className="flex-1"
-          style={{ background: '#fbbf24', color: '#0f1628' }}
+          style={{
+            flex: 1, background: canProceed() ? BTN_BG : "#E5E7EB", border: "none", borderRadius: "12px",
+            padding: "16px", fontSize: "16px", fontWeight: "700",
+            color: canProceed() ? "#FFF" : "#9CA3AF", cursor: canProceed() ? "pointer" : "not-allowed",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+          }}
         >
-          {submitCheckInMutation.isPending ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : step === 5 ? (
-            "Submit"
-          ) : (
-            <>
-              Next <ChevronRight className="w-4 h-4 ml-1" />
-            </>
-          )}
-        </Button>
+          {submitCheckInMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : step === 5 ? "Finish Check-In" : "Continue →"}
+        </button>
       </div>
     </div>
   );

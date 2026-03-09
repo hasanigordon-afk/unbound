@@ -9,13 +9,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const GOAL_CATEGORIES = [
-  { id: "housing", label: "Housing Stability", icon: "🏠" },
-  { id: "employment", label: "Employment / Career", icon: "💼" },
-  { id: "education", label: "Education / Skill Development", icon: "📚" },
-  { id: "financial", label: "Financial Stability", icon: "💰" },
-  { id: "health", label: "Health & Wellness", icon: "❤️" },
-  { id: "relationships", label: "Relationships / Support Network", icon: "🤝" },
-  { id: "legal", label: "Legal / Compliance Status", icon: "⚖️" },
+  { id: "housing", label: "Housing", icon: "🏠" },
+  { id: "employment", label: "Work & Income", icon: "💼" },
+  { id: "education", label: "Learning & Skills", icon: "📚" },
+  { id: "financial", label: "Money & Finances", icon: "💰" },
+  { id: "health", label: "Health & Wellbeing", icon: "❤️" },
+  { id: "relationships", label: "Family & Support", icon: "🤝" },
+  { id: "legal", label: "Legal & Court", icon: "⚖️" },
 ];
 
 const PREDEFINED_GOALS = {
