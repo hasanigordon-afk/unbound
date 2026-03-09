@@ -1,81 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Users, MapPin, Loader2, Phone, Sparkles, CalendarCheck } from "lucide-react";
+import { Loader2, ChevronRight, CalendarCheck, CheckCircle } from "lucide-react";
 
-const QUOTES = [
-  { text: "Every day is a new beginning. Take a deep breath and start again.", author: "Unknown" },
-  { text: "Recovery is not a race. You don't have to feel guilty if it takes you longer than you thought it would.", author: "Unknown" },
-  { text: "Fall seven times, stand up eight.", author: "Japanese Proverb" },
-  { text: "You are braver than you believe, stronger than you seem, and smarter than you think.", author: "A.A. Milne" },
-  { text: "The only way out is through.", author: "Robert Frost" },
-  { text: "Your story isn't over yet.", author: "Unknown" },
-  { text: "One day at a time.", author: "Unknown" },
-  { text: "Progress, not perfection.", author: "Unknown" },
-  { text: "You are worthy of recovery.", author: "Unknown" },
-  { text: "The comeback is always stronger than the setback.", author: "Unknown" },
-  { text: "Rock bottom became the solid foundation on which I rebuilt my life.", author: "J.K. Rowling" },
-  { text: "Recovery is an acceptance that your life is in shambles and you have to change it.", author: "Jamie Lee Curtis" },
-  { text: "It's not about perfect. It's about effort.", author: "Jillian Michaels" },
-  { text: "You don't have to see the whole staircase, just take the first step.", author: "Martin Luther King Jr." },
-  { text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't.", author: "Rikki Rogers" }
+const NEEDS = [
+  { label: "Housing", sub: "Shelter & stable housing", emoji: "🏠", href: "FindHelpNow?category=Housing" },
+  { label: "Food", sub: "Food banks & free meals", emoji: "🍽️", href: "FindHelpNow?category=Food Pantry" },
+  { label: "Jobs", sub: "Employment support", emoji: "💼", href: "FindHelpNow?category=Employment Assistance" },
+  { label: "Meetings", sub: "AA, NA & recovery groups", emoji: "🤝", href: "Meetings" },
+  { label: "Benefits & ID", sub: "Government services", emoji: "🪪", href: "FindHelpNow?category=Reentry Services" },
+  { label: "Talk to Someone", sub: "Your support team", emoji: "💬", href: "ParticipantMessages" },
 ];
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import QuickCheckin from "../components/home/QuickCheckin";
-import TrackToggle from "../components/home/TrackToggle";
-import ProgressCard from "../components/gamification/ProgressCard";
-
-function NearbyResources({ profile }) {
-  const { data: resources = [] } = useQuery({
-    queryKey: ["nearby-resources", profile?.location_city],
-    queryFn: () => {
-      if (!profile?.location_city) return [];
-      return base44.entities.Resource.filter({ city: profile.location_city });
-    },
-    enabled: !!profile?.location_city,
-  });
-
-  if (!resources.length) return null;
-
-  const topResources = resources.slice(0, 3);
-
-  return (
-    <div className="glass-card p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold" style={{ color: '#FFFFFF' }}>Nearby Resources</h3>
-        <Link to={createPageUrl("Resources")} className="text-xs hover:opacity-80" style={{ color: '#2FF3E0' }}>
-          See all
-        </Link>
-      </div>
-      <div className="space-y-3">
-        {topResources.map(resource => (
-          <div key={resource.id} className="flex items-start gap-3 pb-3 last:border-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(244,213,94,0.15)' }}>
-              <MapPin className="w-4 h-4" style={{ color: '#F4D35E' }} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm truncate" style={{ color: '#FFFFFF' }}>{resource.name}</p>
-              <p className="text-xs capitalize" style={{ color: 'rgba(255,255,255,0.5)' }}>{resource.category?.replace(/_/g, " ")}</p>
-              {resource.phone && (
-                <a href={`tel:${resource.phone}`} className="text-xs flex items-center gap-1 mt-1 hover:opacity-80" style={{ color: '#2FF3E0' }}>
-                  <Phone className="w-3 h-3" />
-                  {resource.phone}
-                </a>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function Home() {
   const navigate = useNavigate();
-  
+
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
@@ -83,40 +24,17 @@ export default function Home() {
 
   const { data: profiles, isLoading } = useQuery({
     queryKey: ["my-profile"],
-    queryFn: async () => {
-      return base44.entities.MemberProfile.filter({ created_by: user.email });
-    },
+    queryFn: () => base44.entities.MemberProfile.filter({ created_by: user.email }),
     enabled: !!user,
   });
 
-  const { data: progressData = [] } = useQuery({
-    queryKey: ["user-progress", user?.email],
-    queryFn: () => base44.entities.UserProgress.filter({ created_by: user.email }),
+  const { data: checkIns = [] } = useQuery({
+    queryKey: ["daily-checkins-home", user?.email],
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 30),
     enabled: !!user,
   });
 
   const profile = profiles?.[0];
-
-  const [activeTrack, setActiveTrack] = useState(null);
-  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(Math.floor(Math.random() * QUOTES.length));
-  
-  const getNewQuote = () => {
-    let newIndex;
-    do {
-      newIndex = Math.floor(Math.random() * QUOTES.length);
-    } while (newIndex === currentQuoteIndex && QUOTES.length > 1);
-    setCurrentQuoteIndex(newIndex);
-  };
-
-  useEffect(() => {
-    if (profile) {
-      setActiveTrack(
-        profile.track === "both"
-          ? profile.default_track || "alcohol"
-          : profile.track
-      );
-    }
-  }, [profile]);
 
   useEffect(() => {
     if (!isLoading && user && (!profile || !profile.onboarding_complete)) {
@@ -126,94 +44,144 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
-        <Loader2 className="w-6 h-6" style={{ color: 'var(--primary)' }} />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#F5F5F7" }}>
+        <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#4A90E2" }} />
       </div>
     );
   }
 
-  const currentQuote = QUOTES[currentQuoteIndex];
+  const today = new Date().toISOString().split("T")[0];
+  const hasCheckedInToday = checkIns.some((c) => c.check_in_date === today);
+  const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const recent7 = checkIns.filter((c) => new Date(c.check_in_date) >= sevenDaysAgo);
+  const streak = recent7.length;
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const firstName = user?.full_name?.split(" ")[0] || "there";
 
   return (
-    <div className="min-h-screen pb-24 flex flex-col" style={{ background: 'var(--bg-primary)' }}>
-      <div className="px-5 pt-6 pb-4">
-        <div className="flex flex-col items-center text-center mb-1">
-          <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698cbbdc830161c35d66ad0e/f15d68acb_image.png" 
-            alt="Unbound" 
-            className="h-10 w-auto mb-3"
-          />
-          <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'var(--text-muted)' }}>
-            Breaking free with nowhere to go but Up
-          </p>
-          <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--text-secondary)' }}>
-            A recovery platform built by someone who lived addiction — designed to keep people connected, accountable, and supported after treatment.
-          </p>
-        </div>
+    <div style={{ background: "#F5F5F7", minHeight: "100vh", paddingBottom: 100 }}>
+
+      {/* Header */}
+      <div style={{ background: "#FFFFFF", padding: "28px 20px 20px", borderBottom: "1px solid #E5E7EB" }}>
+        <p style={{ fontSize: 13, color: "#8E8E93", marginBottom: 4 }}>{greeting}, {firstName}</p>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1E1E1E", lineHeight: 1.2 }}>
+          What do you need today?
+        </h1>
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-5">
-        <div className="max-w-2xl w-full" style={{ marginTop: '-40px' }}>
-          <div style={{ marginBottom: 'var(--spacing-section)' }}>
-            {/* Main Quote Display */}
-            <div className="card p-8 text-center">
-              <p className="text-2xl leading-relaxed mb-4" style={{ color: 'var(--text-primary)', fontWeight: 400 }}>
-                "{currentQuote.text}"
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+
+        {/* Check-in CTA */}
+        {!hasCheckedInToday ? (
+          <Link to={createPageUrl("DailyCheckIn")}>
+            <div style={{
+              background: "#4A90E2",
+              borderRadius: 18,
+              padding: "20px 22px",
+              marginBottom: 24,
+              display: "flex",
+              alignItems: "center",
+              gap: 16,
+              boxShadow: "0 4px 16px rgba(74,144,226,0.25)",
+            }}>
+              <div style={{ background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: 10, flexShrink: 0 }}>
+                <CalendarCheck className="w-6 h-6" style={{ color: "#FFF" }} strokeWidth={2} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ color: "#FFF", fontWeight: 700, fontSize: 16, marginBottom: 2 }}>Check in for today</p>
+                <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>Takes less than 30 seconds</p>
+              </div>
+              <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.7)" }} />
+            </div>
+          </Link>
+        ) : (
+          <div style={{
+            background: "#F0FDF4", border: "1px solid #86EFAC",
+            borderRadius: 18, padding: "18px 22px", marginBottom: 24,
+            display: "flex", alignItems: "center", gap: 14,
+          }}>
+            <CheckCircle className="w-6 h-6 flex-shrink-0" style={{ color: "#16A34A" }} />
+            <div>
+              <p style={{ color: "#15803D", fontWeight: 600, fontSize: 15 }}>You checked in today ✓</p>
+              <p style={{ color: "#16A34A", fontSize: 13 }}>
+                {streak > 1 ? `${streak} days this week — keep going.` : "Great. See you tomorrow."}
               </p>
-              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-                — {currentQuote.author}
-              </p>
-              <button
-                onClick={getNewQuote}
-                className="btn-primary px-6 py-3"
-              >
-                Next Quote
-              </button>
             </div>
           </div>
+        )}
 
-          {/* Quick Action Buttons */}
-          <div className="grid grid-cols-3 gap-3" style={{ marginBottom: 'var(--spacing-section)' }}>
-            <Link to={createPageUrl("Discover")}>
-              <div className="card text-center">
-                <Sparkles className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} strokeWidth={2} />
-                <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>Discover</p>
+        {/* Needs grid */}
+        <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
+          Help near you
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 28 }}>
+          {NEEDS.map((n) => (
+            <Link key={n.label} to={createPageUrl(n.href)}>
+              <div style={{
+                background: "#FFFFFF", border: "1px solid #E5E7EB",
+                borderRadius: 16, padding: "18px 14px", textAlign: "center",
+              }}>
+                <div style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{n.emoji}</div>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "#1E1E1E", marginBottom: 3 }}>{n.label}</p>
+                <p style={{ fontSize: 11, color: "#8E8E93", lineHeight: 1.3 }}>{n.sub}</p>
               </div>
             </Link>
-            <Link to={createPageUrl("Meetings")}>
-              <div className="card text-center">
-                <CalendarCheck className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} strokeWidth={2} />
-                <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>Meetings</p>
-              </div>
-            </Link>
-            <Link to={createPageUrl("Community")}>
-              <div className="card text-center">
-                <Users className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} strokeWidth={2} />
-                <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>Community</p>
-              </div>
-            </Link>
-          </div>
-
-          {/* Progress Indicator */}
-          {progressData[0] && (
-            <div className="text-center">
-              <Link 
-                to={createPageUrl("Profile")}
-                className="inline-flex items-center gap-2 px-4 py-2"
-                style={{ 
-                  background: 'rgba(47,243,224,0.1)', 
-                  color: 'var(--primary)',
-                  borderRadius: 'var(--radius)'
-                }}
-              >
-                <span className="text-sm">Level {progressData[0].level}</span>
-                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                  • {progressData[0].current_streak}-day streak
-                </span>
-              </Link>
-            </div>
-          )}
+          ))}
         </div>
+
+        {/* My Plan shortcut */}
+        <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
+          Your next steps
+        </p>
+        <Link to={createPageUrl("ForwardPlan")}>
+          <div style={{
+            background: "#FFFFFF", border: "1px solid #E5E7EB",
+            borderRadius: 16, padding: "18px 20px", marginBottom: 12,
+            display: "flex", alignItems: "center", gap: 14,
+          }}>
+            <span style={{ fontSize: 24 }}>📋</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#1E1E1E" }}>My Plan</p>
+              <p style={{ fontSize: 12, color: "#8E8E93" }}>Goals, milestones & what's next</p>
+            </div>
+            <ChevronRight className="w-4 h-4" style={{ color: "#C7C7CC" }} />
+          </div>
+        </Link>
+        <Link to={createPageUrl("Meetings")}>
+          <div style={{
+            background: "#FFFFFF", border: "1px solid #E5E7EB",
+            borderRadius: 16, padding: "18px 20px", marginBottom: 28,
+            display: "flex", alignItems: "center", gap: 14,
+          }}>
+            <span style={{ fontSize: 24 }}>📅</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#1E1E1E" }}>Find a Meeting</p>
+              <p style={{ fontSize: 12, color: "#8E8E93" }}>AA, NA, SMART Recovery & more</p>
+            </div>
+            <ChevronRight className="w-4 h-4" style={{ color: "#C7C7CC" }} />
+          </div>
+        </Link>
+
+        {/* Crisis row */}
+        <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
+          Need immediate help?
+        </p>
+        <div style={{ display: "flex", gap: 10 }}>
+          <a href="tel:988" style={{ flex: 1, background: "#FEF2F2", borderRadius: 14, padding: "14px 10px", textAlign: "center", textDecoration: "none" }}>
+            <p style={{ fontWeight: 800, color: "#DC2626", fontSize: 18, lineHeight: 1 }}>988</p>
+            <p style={{ fontSize: 11, color: "#DC2626", marginTop: 4, fontWeight: 600 }}>Crisis Line</p>
+          </a>
+          <a href="tel:18006624357" style={{ flex: 1, background: "#FFF7ED", borderRadius: 14, padding: "14px 10px", textAlign: "center", textDecoration: "none" }}>
+            <p style={{ fontWeight: 800, color: "#EA580C", fontSize: 11, lineHeight: 1.3 }}>1-800-662-4357</p>
+            <p style={{ fontSize: 11, color: "#EA580C", marginTop: 4, fontWeight: 600 }}>SAMHSA</p>
+          </a>
+          <a href="sms:741741" style={{ flex: 1, background: "#EFF6FF", borderRadius: 14, padding: "14px 10px", textAlign: "center", textDecoration: "none" }}>
+            <p style={{ fontWeight: 800, color: "#2563EB", fontSize: 13, lineHeight: 1.3 }}>Text HOME</p>
+            <p style={{ fontSize: 11, color: "#2563EB", marginTop: 4, fontWeight: 600 }}>to 741741</p>
+          </a>
+        </div>
+
       </div>
     </div>
   );
