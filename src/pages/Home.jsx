@@ -191,6 +191,22 @@ export default function Home() {
           profile={profile}
         />
 
+        {/* ── CRAVING CONTROL CENTER BANNER ── */}
+        <Link to={createPageUrl("CravingControlCenter")} style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
+          <div style={{
+            background: "linear-gradient(135deg, #1B3A5C, #1E4A72)",
+            borderRadius: 18, padding: "20px 22px",
+            display: "flex", alignItems: "center", gap: 16,
+          }}>
+            <span style={{ fontSize: 28, flexShrink: 0 }}>🧘</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ color: "#FFFFFF", fontWeight: 800, fontSize: 15, marginBottom: 2 }}>Craving Control Center</p>
+              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13 }}>Breathing, meditation, music & more</p>
+            </div>
+            <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.5)" }} />
+          </div>
+        </Link>
+
         {/* ── SECTION 7: SAVED / RECOMMENDED SUPPORT ── */}
         <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
           More ways to get help
