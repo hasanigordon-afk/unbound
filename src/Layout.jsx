@@ -4,7 +4,7 @@ import { createPageUrl } from "./pages/utils";
 import { Home, CalendarCheck, MessageCircle, MapPin, TrendingUp } from "lucide-react";
 
 const NAV_ITEMS = [
-  { name: "Home", icon: Home, page: "PatientDashboard" },
+  { name: "Home", icon: Home, page: "Home" },
   { name: "Find Help", icon: MapPin, page: "FindHelpNow" },
   { name: "Check In", icon: CalendarCheck, page: "DailyCheckIn" },
   { name: "Messages", icon: MessageCircle, page: "ParticipantMessages" },
@@ -13,7 +13,7 @@ const NAV_ITEMS = [
 
 
 
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView"];
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
