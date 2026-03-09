@@ -1,21 +1,20 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Users, AlertTriangle, CheckCircle, TrendingUp, Calendar,
-  MessageSquare, Flag, ChevronRight, Loader2
-} from "lucide-react";
+import { Users, AlertTriangle, TrendingUp, Shield, Loader2 } from "lucide-react";
 import AftercareClientList from "@/components/aftercare/AftercareClientList";
 import AftercareClientDetail from "@/components/aftercare/AftercareClientDetail";
 import AftercareAlerts from "@/components/aftercare/AftercareAlerts";
 import PredictiveRiskPanel from "@/components/aftercare/PredictiveRiskPanel";
+import CravingAlertPanel from "@/components/aftercare/CravingAlertPanel";
 import { calcEngagementScore } from "@/components/aftercare/engagementScore";
 import { calcPredictiveRisk } from "@/components/aftercare/predictiveRisk";
 
 const TABS = [
-  { id: "clients", label: "Clients", icon: Users },
-  { id: "predictive", label: "Predictive", icon: TrendingUp },
-  { id: "alerts", label: "Alerts", icon: AlertTriangle },
+  { id: "clients",    label: "Clients",      icon: Users },
+  { id: "risk",       label: "Risk Monitor", icon: Shield },
+  { id: "predictive", label: "Predictive",   icon: TrendingUp },
+  { id: "alerts",     label: "Alerts",       icon: AlertTriangle },
 ];
 
 export default function AftercareMonitoring() {
@@ -44,7 +43,6 @@ export default function AftercareMonitoring() {
     enabled: !!user,
   });
 
-  // Compute per-client metrics
   const clientMetrics = useMemo(() => {
     return profiles.map((profile) => {
       const email = profile.participant_email;
@@ -64,8 +62,8 @@ export default function AftercareMonitoring() {
         ? Math.floor((new Date() - new Date(lastCheckIn)) / 86400000)
         : 99;
 
-      const weeklyMeetings = last7.filter((c) => c.attended_meeting).length;
-      const sponsorContacts = last7.filter((c) => c.connected_with_sponsor).length;
+      const weeklyMeetings   = last7.filter((c) => c.attended_meeting).length;
+      const sponsorContacts  = last7.filter((c) => c.connected_with_sponsor).length;
       const avgMood = last7.length
         ? (last7.reduce((sum, c) => sum + (c.mood_rating || 0), 0) / last7.length).toFixed(1)
         : null;
@@ -73,20 +71,50 @@ export default function AftercareMonitoring() {
         ? (last7.reduce((sum, c) => sum + (c.craving_intensity || 0), 0) / last7.length).toFixed(1)
         : null;
 
-      // Sobriety streak from sobriety_start_date
       const sobrietyDays = profile.sobriety_start_date
         ? Math.floor((new Date() - new Date(profile.sobriety_start_date)) / 86400000)
         : null;
 
-      // Engagement score (0-100) using standardized calculation
       const { score: engagementScore, level: engagementLevel } = calcEngagementScore(myCheckIns);
 
-      // Alert flags
+      // Existing flags (backward compatible)
       const missedCheckIns = daysSinceCheckIn >= 3;
-      const highCravings = avgCraving && parseFloat(avgCraving) >= 4;
-      const noMeetings = weeklyMeetings === 0 && last7.length > 0;
+      const highCravings   = avgCraving && parseFloat(avgCraving) >= 4;
+      const noMeetings     = weeklyMeetings === 0 && last7.length > 0;
+      const flagged        = alerts.some((a) => a.participant_email === email && a.status === "active");
 
-      const flagged = alerts.some((a) => a.participant_email === email && a.status === "active");
+      // ── Craving Alert System: new risk signals (0-10 scale) ─────────────
+      const last3 = myCheckIns.slice(0, 3);
+      const last5 = myCheckIns.slice(0, 5);
+
+      const latestCraving = myCheckIns[0]?.craving_intensity ?? null;
+      const latestStress  = myCheckIns[0]?.stress_level ?? null;
+
+      // Emergency: relapse flag raised in any of last 3 check-ins
+      const relapseFlag = last3.some(c => c.relapse_risk_flag === true);
+
+      // High risk: craving 8–10
+      const highCravingImmediate = latestCraving !== null && latestCraving >= 8;
+
+      // Moderate craving pattern: craving > 6 for 3 consecutive days
+      const moderateCravingPattern =
+        last3.length >= 3 && last3.every(c => (c.craving_intensity ?? 0) > 6);
+
+      // Mood drop: mood rating 1–2 for 3 consecutive days
+      const moodDropPattern =
+        last3.length >= 3 && last3.every(c => c.mood_rating !== null && c.mood_rating <= 2);
+
+      // Isolation: no meeting OR no sponsor contact for 5 consecutive days
+      const noMeetings5Days = last5.length >= 5 && last5.every(c => !c.attended_meeting);
+      const noSponsor5Days  = last5.length >= 5 && last5.every(c => !c.connected_with_sponsor);
+      const isolationFlag   = noMeetings5Days || noSponsor5Days;
+
+      // Color-coded risk status for Risk Monitor panel
+      const riskColor =
+        relapseFlag || highCravingImmediate ? "red" :
+        moderateCravingPattern || moodDropPattern || isolationFlag || missedCheckIns || flagged
+          ? "yellow"
+          : "green";
 
       return {
         profile,
@@ -105,11 +133,29 @@ export default function AftercareMonitoring() {
         noMeetings,
         flagged,
         checkIns: myCheckIns,
+        // Craving Alert System fields
+        latestCraving,
+        latestStress,
+        relapseFlag,
+        highCravingImmediate,
+        moderateCravingPattern,
+        moodDropPattern,
+        isolationFlag,
+        riskColor,
       };
     });
   }, [profiles, allCheckIns, alerts]);
 
-  const alertCount = clientMetrics.filter((c) => c.missedCheckIns || c.highCravings || c.noMeetings || c.flagged).length;
+  const alertCount = clientMetrics.filter(
+    (c) => c.missedCheckIns || c.highCravings || c.noMeetings || c.flagged ||
+            c.relapseFlag || c.highCravingImmediate
+  ).length;
+
+  const riskCount = clientMetrics.filter(
+    m => m.riskColor === "red" || m.riskColor === "yellow"
+  ).length;
+
+  const hasRedRisk = clientMetrics.some(m => m.riskColor === "red");
 
   const predictiveCount = clientMetrics
     .filter((m) => m.engagementLevel !== "High Risk")
@@ -131,20 +177,18 @@ export default function AftercareMonitoring() {
 
   return (
     <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
-      {/* Header */}
       <div className="px-5 pt-6 pb-4" style={{ background: "#FFF", borderBottom: "1px solid #E5E7EB" }}>
         <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Aftercare Monitoring</h1>
         <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>
-          Post-discharge engagement tracking for {profiles.length} client{profiles.length !== 1 ? "s" : ""}
+          Post-discharge engagement for {profiles.length} client{profiles.length !== 1 ? "s" : ""}
         </p>
 
-        {/* Tab bar */}
-        <div className="flex gap-1 mt-4">
+        <div className="flex gap-1 mt-4 overflow-x-auto pb-1">
           {TABS.map(({ id, label, icon: TabIcon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium relative"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium relative whitespace-nowrap"
               style={{
                 background: activeTab === id ? "#1E1E1E" : "#F0F0F3",
                 color: activeTab === id ? "#FFF" : "#5A5A5A",
@@ -155,6 +199,11 @@ export default function AftercareMonitoring() {
               {id === "alerts" && alertCount > 0 && (
                 <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#EF4444", color: "#FFF" }}>
                   {alertCount}
+                </span>
+              )}
+              {id === "risk" && riskCount > 0 && (
+                <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: hasRedRisk ? "#EF4444" : "#F59E0B", color: "#FFF" }}>
+                  {riskCount}
                 </span>
               )}
               {id === "predictive" && predictiveCount > 0 && (
@@ -177,6 +226,13 @@ export default function AftercareMonitoring() {
           {activeTab === "clients" && (
             <AftercareClientList
               clientMetrics={clientMetrics}
+              onSelectClient={(m) => setSelectedClient({ email: m.email })}
+            />
+          )}
+          {activeTab === "risk" && (
+            <CravingAlertPanel
+              clientMetrics={clientMetrics}
+              counselorEmail={user?.email}
               onSelectClient={(m) => setSelectedClient({ email: m.email })}
             />
           )}

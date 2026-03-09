@@ -15,16 +15,26 @@ const MOOD_OPTIONS = [
 
 const MEETING_TYPES = ["AA", "NA", "SMART Recovery", "Virtual", "Other"];
 
+function getIntensityColor(val) {
+  if (val >= 8) return "#DC2626";
+  if (val >= 6) return "#EA580C";
+  if (val >= 4) return "#F59E0B";
+  return "#22C55E";
+}
+
 export default function DailyCheckIn() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     mood_rating: null,
+    craving_intensity: 3,
+    stress_level: 3,
     attended_meeting: null,
     meeting_type: null,
     connected_with_sponsor: null,
     needs_help: null,
+    relapse_risk_flag: false,
     notes: "",
   });
 
@@ -62,37 +72,45 @@ export default function DailyCheckIn() {
         attended_meeting: formData.attended_meeting,
         meeting_type: formData.attended_meeting ? formData.meeting_type : null,
         connected_with_sponsor: formData.connected_with_sponsor,
+        craving_intensity: formData.craving_intensity,
+        stress_level: formData.stress_level,
+        relapse_risk_flag: formData.relapse_risk_flag || false,
         notes: formData.notes || null,
       });
     },
     onSuccess: () => {
-    queryClient.invalidateQueries(["daily-checkins"]);
-    setStep(6);
-    if (formData.needs_help) {
-      setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
-    }
+      queryClient.invalidateQueries(["daily-checkins"]);
+      if (formData.relapse_risk_flag) {
+        setStep(8); // go straight to crisis support
+      } else {
+        setStep(7); // success screen
+        if (formData.needs_help) {
+          setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
+        }
+      }
     },
   });
 
-  const TOTAL_STEPS = 5;
+  const TOTAL_STEPS = 6;
 
   const canProceed = () => {
     if (step === 1) return formData.mood_rating !== null;
-    if (step === 2) return formData.attended_meeting !== null;
-    if (step === 3) return !formData.attended_meeting || formData.meeting_type !== null;
-    if (step === 4) return formData.connected_with_sponsor !== null;
-    if (step === 5) return formData.needs_help !== null;
+    if (step === 2) return true; // sliders always have a value
+    if (step === 3) return formData.attended_meeting !== null;
+    if (step === 4) return !formData.attended_meeting || formData.meeting_type !== null;
+    if (step === 5) return formData.connected_with_sponsor !== null;
+    if (step === 6) return formData.needs_help !== null;
     return false;
   };
 
   const handleNext = () => {
-    if (step === 2 && !formData.attended_meeting) { setStep(4); return; }
-    if (step === 5) { submitCheckInMutation.mutate(); return; }
+    if (step === 3 && !formData.attended_meeting) { setStep(5); return; }
+    if (step === 6) { submitCheckInMutation.mutate(); return; }
     setStep(step + 1);
   };
 
   const handleBack = () => {
-    if (step === 4 && !formData.attended_meeting) { setStep(2); return; }
+    if (step === 5 && !formData.attended_meeting) { setStep(3); return; }
     setStep(step - 1);
   };
 
@@ -104,14 +122,17 @@ export default function DailyCheckIn() {
   const TEXT_MUTED = "#8E8E93";
   const BTN_BG = "#4A90E2";
 
-  // Need-help crisis screen
-  if (step === 7) {
+  // Crisis screen (relapse flag)
+  if (step === 8) {
     return (
       <div style={{ minHeight: "100vh", background: "#FEF2F2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤝</div>
         <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "8px" }}>You are not alone right now.</h2>
-        <p style={{ fontSize: "15px", color: "#5A5A5A", marginBottom: "28px", lineHeight: "1.6", maxWidth: "320px" }}>
-          Reaching out is the right move. Let's get you to the right support.
+        <p style={{ fontSize: "15px", color: "#5A5A5A", marginBottom: "8px", lineHeight: "1.6", maxWidth: "320px" }}>
+          Reaching out is the right move. Your support team has been notified.
+        </p>
+        <p style={{ fontSize: "13px", color: "#8E8E93", marginBottom: "28px", maxWidth: "320px" }}>
+          Let's get you connected to immediate support right now.
         </p>
         <div style={{ width: "100%", maxWidth: "360px", display: "flex", flexDirection: "column", gap: "12px" }}>
           <a href="tel:988" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#DC2626", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
@@ -125,7 +146,7 @@ export default function DailyCheckIn() {
             <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
             <div style={{ textAlign: "left" }}>
               <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>Text HOME to 741741</p>
-              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>Crisis Text Line — free & anonymous</p>
+              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>Crisis Text Line — free &amp; anonymous</p>
             </div>
           </a>
           <a href="tel:18006624357" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#EA580C", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
@@ -136,7 +157,7 @@ export default function DailyCheckIn() {
             </div>
           </a>
           <button
-            onClick={() => navigate(createPageUrl("PatientDashboard"))}
+            onClick={() => navigate(createPageUrl("Home"))}
             style={{ background: "#FFF", border: "1px solid #D1D1D6", borderRadius: "14px", padding: "16px", fontSize: "15px", fontWeight: "600", color: "#1E1E1E", cursor: "pointer", marginTop: "8px" }}
           >
             Back to Home
@@ -147,7 +168,7 @@ export default function DailyCheckIn() {
   }
 
   // Success screen
-  if (step === 6) {
+  if (step === 7) {
     const newStreak = streak + 1;
     return (
       <div style={{ minHeight: "100vh", background: "#F0FDF4", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
@@ -209,6 +230,7 @@ export default function DailyCheckIn() {
       <div style={{ flex: 1, padding: "24px 20px", overflowY: "auto" }}>
         <div style={{ maxWidth: "440px", margin: "0 auto" }}>
 
+          {/* Step 1: Mood */}
           {step === 1 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
@@ -242,7 +264,75 @@ export default function DailyCheckIn() {
             </div>
           )}
 
+          {/* Step 2: Craving + Stress sliders (NEW) */}
           {step === 2 && (
+            <div>
+              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
+                Cravings &amp; stress today?
+              </h2>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>
+                Honest answers help us support you better. No judgment here.
+              </p>
+
+              {/* Craving intensity */}
+              <div style={{ background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "14px", padding: "20px", marginBottom: "14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                  <p style={{ fontWeight: "700", fontSize: "15px", color: TEXT }}>🔥 Craving Intensity</p>
+                  <span style={{ fontWeight: "800", fontSize: "22px", color: getIntensityColor(formData.craving_intensity), lineHeight: 1 }}>
+                    {formData.craving_intensity}
+                    <span style={{ fontSize: "12px", fontWeight: "500", color: TEXT_MUTED }}>/10</span>
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="1"
+                  value={formData.craving_intensity}
+                  onChange={e => setFormData({ ...formData, craving_intensity: parseInt(e.target.value) })}
+                  style={{ width: "100%", accentColor: getIntensityColor(formData.craving_intensity), cursor: "pointer" }}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px", fontSize: "11px", color: TEXT_MUTED }}>
+                  <span>No cravings</span>
+                  <span>Overwhelming</span>
+                </div>
+                {formData.craving_intensity >= 8 && (
+                  <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: "8px", padding: "10px 12px", marginTop: "12px" }}>
+                    <p style={{ fontSize: "12px", color: "#DC2626", fontWeight: "600" }}>
+                      That's intense. You're not alone — your support team will be notified.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Stress level */}
+              <div style={{ background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "14px", padding: "20px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                  <p style={{ fontWeight: "700", fontSize: "15px", color: TEXT }}>💭 Stress Level</p>
+                  <span style={{ fontWeight: "800", fontSize: "22px", color: getIntensityColor(formData.stress_level), lineHeight: 1 }}>
+                    {formData.stress_level}
+                    <span style={{ fontSize: "12px", fontWeight: "500", color: TEXT_MUTED }}>/10</span>
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="1"
+                  value={formData.stress_level}
+                  onChange={e => setFormData({ ...formData, stress_level: parseInt(e.target.value) })}
+                  style={{ width: "100%", accentColor: getIntensityColor(formData.stress_level), cursor: "pointer" }}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px", fontSize: "11px", color: TEXT_MUTED }}>
+                  <span>Calm</span>
+                  <span>Very stressed</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Meeting attendance */}
+          {step === 3 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you go to a meeting today?
@@ -263,7 +353,8 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 3 && (
+          {/* Step 4: Meeting type (conditional) */}
+          {step === 4 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 What kind of meeting?
@@ -280,7 +371,8 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 4 && (
+          {/* Step 5: Sponsor contact */}
+          {step === 5 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you connect with someone today?
@@ -301,7 +393,8 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 5 && (
+          {/* Step 6: Needs help + relapse flag */}
+          {step === 6 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Do you need any support right now?
@@ -309,19 +402,28 @@ export default function DailyCheckIn() {
               <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>It's okay either way. We just want to make sure you're alright.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
                 {[
-                  { val: false, label: "I'm okay right now", sub: "Good to hear." },
-                  { val: true, label: "I could use some support", sub: "We'll connect you with the right help." },
-                ].map(opt => (
-                  <button key={String(opt.val)} onClick={() => setFormData({ ...formData, needs_help: opt.val })}
-                    style={{
-                      background: formData.needs_help === opt.val ? (opt.val ? "#FEF2F2" : SELECTED_BG) : CARD_BG,
-                      border: `2px solid ${formData.needs_help === opt.val ? (opt.val ? "#FCA5A5" : SELECTED_BORDER) : "#E5E7EB"}`,
-                      borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer"
-                    }}>
-                    <p style={{ fontWeight: "700", fontSize: "16px", color: TEXT, marginBottom: "3px" }}>{opt.label}</p>
-                    <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
-                  </button>
-                ))}
+                  { needs_help: false, rf: false, label: "I'm okay right now", sub: "Good to hear.", urgent: false },
+                  { needs_help: true, rf: false, label: "I could use some support", sub: "We'll connect you with the right help.", urgent: false },
+                  { needs_help: true, rf: true, label: "I feel like I might relapse today", sub: "We'll get you immediate support right now.", urgent: true },
+                ].map(opt => {
+                  const isSelected = formData.needs_help !== null &&
+                    formData.needs_help === opt.needs_help &&
+                    formData.relapse_risk_flag === opt.rf;
+                  return (
+                    <button
+                      key={`${opt.needs_help}-${opt.rf}`}
+                      onClick={() => setFormData({ ...formData, needs_help: opt.needs_help, relapse_risk_flag: opt.rf })}
+                      style={{
+                        background: isSelected ? (opt.urgent ? "#FEF2F2" : opt.needs_help ? "#FFF7ED" : SELECTED_BG) : CARD_BG,
+                        border: `2px solid ${isSelected ? (opt.urgent ? "#FCA5A5" : opt.needs_help ? "#FED7AA" : SELECTED_BORDER) : "#E5E7EB"}`,
+                        borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer"
+                      }}
+                    >
+                      <p style={{ fontWeight: "700", fontSize: "16px", color: opt.urgent ? "#DC2626" : TEXT, marginBottom: "3px" }}>{opt.label}</p>
+                      <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
+                    </button>
+                  );
+                })}
               </div>
               <div>
                 <p style={{ fontSize: "13px", fontWeight: "600", color: TEXT_MUTED, marginBottom: "8px" }}>Anything on your mind? (optional)</p>
@@ -356,7 +458,7 @@ export default function DailyCheckIn() {
             display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
           }}
         >
-          {submitCheckInMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : step === 5 ? "Done →" : "Keep Going →"}
+          {submitCheckInMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : step === 6 ? "Done →" : "Keep Going →"}
         </button>
       </div>
     </div>
