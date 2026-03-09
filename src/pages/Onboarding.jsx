@@ -8,41 +8,41 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const TRACKS = [
-  { value: "alcohol", label: "Alcohol", desc: "Support for alcohol recovery" },
-  { value: "substances", label: "Substances", desc: "Support for substance recovery" },
-  { value: "both", label: "Both", desc: "Support for both" },
+  { value: "alcohol", label: "Alcohol", desc: "I want help with drinking" },
+  { value: "substances", label: "Other substances", desc: "I want help with drugs or other substances" },
+  { value: "both", label: "Both", desc: "I need support with both" },
 ];
 
 const STAGES = [
-  { value: "using_currently", label: "Currently using", desc: "I'm actively using right now" },
-  { value: "trying_to_stop", label: "Trying to stop", desc: "I want to quit but haven't yet" },
-  { value: "detox_last_14_days", label: "Detox (0-14 days)", desc: "Recently stopped" },
-  { value: "early_recovery_15_90", label: "Early recovery (15-90 days)", desc: "Building new habits" },
-  { value: "recovery_3_12_months", label: "Recovery (3-12 months)", desc: "Making progress" },
-  { value: "long_term_1_year_plus", label: "Long-term (1+ year)", desc: "Sustained recovery" },
-  { value: "relapsed_recently", label: "Relapsed recently", desc: "Getting back on track" },
+  { value: "using_currently", label: "I'm still using", desc: "I haven't stopped yet" },
+  { value: "trying_to_stop", label: "I want to stop", desc: "I'm ready to make a change" },
+  { value: "detox_last_14_days", label: "Just stopped (0–14 days)", desc: "I recently stopped — it's still very new" },
+  { value: "early_recovery_15_90", label: "Early days (15–90 days)", desc: "I'm finding my footing" },
+  { value: "recovery_3_12_months", label: "A few months in", desc: "I'm building something real" },
+  { value: "long_term_1_year_plus", label: "More than a year", desc: "I'm staying strong" },
+  { value: "relapsed_recently", label: "I had a setback", desc: "I'm getting back up — that takes courage" },
 ];
 
 const GOALS = [
   "Stay sober today",
-  "Find support network",
-  "Rebuild relationships",
+  "Find people who get it",
+  "Reconnect with family",
   "Get a job",
-  "Find housing",
-  "Improve mental health",
-  "Build daily routine",
-  "Manage cravings",
+  "Find a place to stay",
+  "Feel better mentally",
+  "Build a daily routine",
+  "Deal with cravings",
 ];
 
 const CHALLENGES = [
   "Cravings",
-  "Loneliness",
-  "Triggers",
-  "Depression/Anxiety",
-  "Financial stress",
-  "Housing instability",
+  "Feeling alone",
+  "Avoiding triggers",
+  "Anxiety or depression",
+  "Money stress",
+  "No stable housing",
   "Legal issues",
-  "Family problems",
+  "Family struggles",
 ];
 
 export default function Onboarding() {
@@ -139,7 +139,7 @@ export default function Onboarding() {
                   What brings you here?
                 </h2>
                 <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                  Choose the area where you'd like support
+                  No judgment. Just pick what fits.
                 </p>
                 <div className="space-y-3">
                   {TRACKS.map(track => (
@@ -163,10 +163,10 @@ export default function Onboarding() {
             {step === 2 && (
               <div>
                 <h2 className="text-2xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
-                  Where are you in your journey?
+                  Where are you right now?
                 </h2>
                 <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                  This helps us provide the right support
+                  Wherever you are is okay. We'll meet you there.
                 </p>
                 <div className="space-y-3">
                   {STAGES.map(stage => (
@@ -190,10 +190,10 @@ export default function Onboarding() {
             {step === 3 && (
               <div>
                 <h2 className="text-2xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
-                  What are your goals?
+                  What do you want to work on?
                 </h2>
                 <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                  Select all that apply
+                  Pick everything that matters to you right now.
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {GOALS.map(goal => (
@@ -217,10 +217,10 @@ export default function Onboarding() {
             {step === 4 && (
               <div>
                 <h2 className="text-2xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
-                  What challenges are you facing?
+                  What's hardest right now?
                 </h2>
                 <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                  Select up to 2 biggest challenges
+                  Pick up to 2. You can always update this later.
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {CHALLENGES.map(challenge => (
@@ -245,10 +245,10 @@ export default function Onboarding() {
             {step === 5 && (
               <div>
                 <h2 className="text-2xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
-                  Where are you located?
+                  Where are you?
                 </h2>
                 <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                  This helps us find local resources
+                  We use this to find resources near you. That's it.
                 </p>
                 <div className="space-y-4">
                   <div>
@@ -311,7 +311,7 @@ export default function Onboarding() {
               {createProfileMutation.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : step === 5 ? (
-                "Get Started"
+                "Let's go →"
               ) : (
                 <>
                   Next <ChevronRight className="w-4 h-4 ml-1" />

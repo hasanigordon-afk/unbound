@@ -31,15 +31,15 @@ export default function Profile() {
     );
   }
 
-  const trackLabel = { alcohol: "Alcohol Recovery", substances: "Substance Recovery", both: "Both Tracks" };
+  const trackLabel = { alcohol: "Alcohol", substances: "Other substances", both: "Alcohol & substances" };
   const stageLabel = {
-    using_currently: "Currently using",
-    trying_to_stop: "Trying to stop",
-    detox_last_14_days: "In detox",
-    early_recovery_15_90: "Early recovery",
-    recovery_3_12_months: "In recovery",
-    long_term_1_year_plus: "Long-term recovery",
-    relapsed_recently: "Getting back on track",
+    using_currently: "Still using",
+    trying_to_stop: "Want to stop",
+    detox_last_14_days: "Just stopped",
+    early_recovery_15_90: "Early days",
+    recovery_3_12_months: "A few months in",
+    long_term_1_year_plus: "Over a year strong",
+    relapsed_recently: "Getting back up",
   };
 
   return (
@@ -59,17 +59,21 @@ export default function Profile() {
               <User className="w-6 h-6 text-teal-600" />
             </div>
             <div>
-              <p className="font-semibold text-slate-800">{user?.full_name || "Member"}</p>
+              <p className="font-semibold text-slate-800">{user?.full_name || "You"}</p>
               <p className="text-sm text-slate-400">{user?.email}</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary" className="bg-teal-50 text-teal-700 border-teal-200">
-              {trackLabel[profile?.track] || "No track"}
-            </Badge>
-            <Badge variant="secondary" className="bg-slate-100 text-slate-600">
-              {stageLabel[profile?.stage] || "Unknown stage"}
-            </Badge>
+            {profile?.track && (
+              <Badge variant="secondary" className="bg-teal-50 text-teal-700 border-teal-200">
+                {trackLabel[profile.track]}
+              </Badge>
+            )}
+            {profile?.stage && (
+              <Badge variant="secondary" className="bg-slate-100 text-slate-600">
+                {stageLabel[profile.stage]}
+              </Badge>
+            )}
           </div>
         </div>
 
@@ -87,7 +91,7 @@ export default function Profile() {
 
         {profile?.challenges?.length > 0 && (
           <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4">
-            <p className="text-sm font-medium text-slate-500 mb-3">Current Challenges</p>
+            <p className="text-sm font-medium text-slate-500 mb-3">What I'm working through</p>
             <div className="flex flex-wrap gap-2">
               {profile.challenges.map((c) => (
                 <Badge key={c} variant="outline" className="capitalize">
@@ -102,7 +106,7 @@ export default function Profile() {
           <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 text-teal-600">
               <Bookmark className="w-5 h-5" />
-              <span className="font-medium">Saved Resources</span>
+              <span className="font-medium">Places I Saved</span>
             </div>
           </div>
         </Link>
