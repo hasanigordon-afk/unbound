@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
-import { AlertTriangle, Check, MessageSquare, FileText, User } from "lucide-react";
+import { Check, User } from "lucide-react";
 
 const ALERT_CONFIG = {
-  missed_checkin_3_days:  { icon: "📅", label: "Missed Check-Ins",      bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
-  low_engagement:         { icon: "📉", label: "Low Engagement",         bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
-  low_mood_trend:         { icon: "😔", label: "Low Mood Trend",         bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
-  high_craving_trend:     { icon: "⚠️", label: "High Craving Trend",     bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
-  missed_meetings:        { icon: "🤝", label: "Missing Meetings",        bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
-  no_sponsor_contact:     { icon: "📵", label: "No Sponsor Contact",     bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
-  composite_high_risk:    { icon: "🔴", label: "High Risk",              bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
-  composite_medium_risk:  { icon: "🟡", label: "Medium Risk",            bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
-  rapid_mood_decline:     { icon: "📉", label: "Rapid Mood Decline",     bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
+  missed_checkin_3_days:  { icon: "📅", label: "Missed Check-Ins",    bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
+  low_engagement:         { icon: "📉", label: "Low Engagement",       bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
+  low_mood_trend:         { icon: "😔", label: "Low Mood Trend",       bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
+  high_craving_trend:     { icon: "⚠️", label: "High Craving Trend",   bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
+  missed_meetings:        { icon: "🤝", label: "Missing Meetings",      bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
+  no_sponsor_contact:     { icon: "📵", label: "No Sponsor Contact",   bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
+  composite_high_risk:    { icon: "🔴", label: "High Risk",            bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
+  composite_medium_risk:  { icon: "🟡", label: "Medium Risk",          bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
+  rapid_mood_decline:     { icon: "📉", label: "Rapid Mood Decline",   bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
 };
 
 export default function PortalAlerts({ activeAlerts, participants, onSelectClient, onRefresh }) {
@@ -36,7 +36,6 @@ export default function PortalAlerts({ activeAlerts, participants, onSelectClien
         </p>
       </div>
 
-      {/* Filter tabs */}
       <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
         {["all", "critical", "high", "medium", "low"].map(level => {
           const count = level === "all" ? activeAlerts.length : activeAlerts.filter(a => a.risk_level === level).length;
@@ -48,7 +47,7 @@ export default function PortalAlerts({ activeAlerts, participants, onSelectClien
                 color: filter === level ? "#3B82F6" : "#475569",
                 borderRadius: 20, padding: "6px 14px", fontSize: 12, fontWeight: 600, cursor: "pointer",
               }}>
-              {level.charAt(0).toUpperCase() + level.slice(1)} {count > 0 && `(${count})`}
+              {level.charAt(0).toUpperCase() + level.slice(1)}{count > 0 ? ` (${count})` : ""}
             </button>
           );
         })}

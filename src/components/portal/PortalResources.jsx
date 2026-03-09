@@ -50,7 +50,6 @@ export default function PortalResources({ facilityId, user, participants }) {
         <p style={{ color: "#64748B", fontSize: 14 }}>Find and send support resources directly to your clients.</p>
       </div>
 
-      {/* Search + Filter */}
       <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 12, padding: "16px 20px", marginBottom: 20, display: "flex", gap: 10, flexWrap: "wrap" }}>
         <div style={{ flex: 1, minWidth: 200, position: "relative" }}>
           <Search className="w-4 h-4" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
@@ -63,7 +62,6 @@ export default function PortalResources({ facilityId, user, participants }) {
         </select>
       </div>
 
-      {/* Resource Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 14 }}>
         {filtered.slice(0, 40).map(r => (
           <div key={r.id} style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 12, padding: "18px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -89,14 +87,12 @@ export default function PortalResources({ facilityId, user, participants }) {
                   <ExternalLink className="w-3 h-3" /> Website
                 </a>
               )}
-              <button
-                onClick={() => sendTarget?.id === r.id ? setSendTarget(null) : setSendTarget(r)}
+              <button onClick={() => sendTarget?.id === r.id ? setSendTarget(null) : setSendTarget(r)}
                 style={{ background: "#EFF6FF", border: "1px solid #BFDBFE", borderRadius: 8, padding: "5px 10px", fontSize: 11, fontWeight: 600, color: "#2563EB", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
                 <Send className="w-3 h-3" /> Send to Client
               </button>
             </div>
 
-            {/* Send dropdown */}
             {sendTarget?.id === r.id && (
               <div style={{ borderTop: "1px solid #E2E8F0", paddingTop: 10 }}>
                 <p style={{ fontSize: 12, fontWeight: 600, color: "#0F172A", marginBottom: 8 }}>Send to which client?</p>

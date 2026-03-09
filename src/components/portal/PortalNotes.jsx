@@ -54,7 +54,6 @@ export default function PortalNotes({ user, counselorProfile, facilityId, partic
         <p style={{ color: "#64748B", fontSize: 14 }}>Case notes, progress notes, and follow-up reminders.</p>
       </div>
 
-      {/* Add Note Form */}
       <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 14, padding: "20px 24px", marginBottom: 28 }}>
         <p style={{ fontWeight: 700, fontSize: 15, color: "#0F172A", marginBottom: 16 }}>Add a Note</p>
         <div style={{ display: "flex", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
@@ -82,7 +81,6 @@ export default function PortalNotes({ user, counselorProfile, facilityId, partic
         </div>
       </div>
 
-      {/* Filters */}
       <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap", alignItems: "center" }}>
         <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
           <Search className="w-4 h-4" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
@@ -96,14 +94,13 @@ export default function PortalNotes({ user, counselorProfile, facilityId, partic
         </select>
       </div>
 
-      {/* Notes list */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {filtered.map(n => (
           <div key={n.id} style={{ background: NOTE_COLORS[n.note_type] || "#FFF", border: "1px solid #E2E8F0", borderRadius: 12, padding: "16px 20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
-              <div style={{ display: "flex", align: "center", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <p style={{ fontWeight: 700, fontSize: 14, color: "#0F172A" }}>{clientMap[n.client_email] || n.client_email}</p>
-                <span style={{ background: "#FFF", border: "1px solid #E2E8F0", color: "#475569", borderRadius: 20, padding: "2px 9px", fontSize: 11, fontWeight: 600, marginLeft: 6 }}>
+                <span style={{ background: "#FFF", border: "1px solid #E2E8F0", color: "#475569", borderRadius: 20, padding: "2px 9px", fontSize: 11, fontWeight: 600 }}>
                   {n.note_type?.replace(/_/g, " ")}
                 </span>
               </div>

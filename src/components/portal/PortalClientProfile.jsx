@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, MessageSquare, FileText, TrendingUp, Bell, ChevronRight } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { ArrowLeft, MessageSquare, FileText } from "lucide-react";
 
 const STATUS_CONFIG = {
   at_risk:         { label: "At Risk",         bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
@@ -19,27 +19,17 @@ const TABS = [
   { id: "progress",  label: "Progress" },
 ];
 
-function MoodBar({ value, max = 5, color }) {
-  return (
-    <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-      {Array.from({ length: max }).map((_, i) => (
-        <div key={i} style={{ flex: 1, height: 6, borderRadius: 4, background: i < value ? color : "#E2E8F0" }} />
-      ))}
-    </div>
-  );
-}
-
 export default function PortalClientProfile({ client, user, counselorProfile, facilityId, allCheckIns, onBack }) {
   const [activeTab, setActiveTab] = useState(client?._openTab || "overview");
   const [noteText, setNoteText] = useState("");
   const [noteType, setNoteType] = useState("general");
   const [messageText, setMessageText] = useState("");
-  const qc = useQueryClient();
 
   const cfg = STATUS_CONFIG[client.status] || STATUS_CONFIG.stable;
   const email = client.participant_email;
 
-  const clientCheckIns = allCheckIns.filter(c => c.participant_email === email)
+  const clientCheckIns = allCheckIns
+    .filter(c => c.participant_email === email)
     .sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
 
   const { data: notes = [], refetch: refetchNotes } = useQuery({
@@ -81,7 +71,6 @@ export default function PortalClientProfile({ client, user, counselorProfile, fa
 
   return (
     <div style={{ padding: "20px 28px 40px", maxWidth: 880, margin: "0 auto" }}>
-      {/* Back + Header */}
       <button onClick={onBack}
         style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", color: "#64748B", fontSize: 13, fontWeight: 600, marginBottom: 20, padding: 0 }}>
         <ArrowLeft className="w-4 h-4" /> Back to Clients
@@ -128,7 +117,6 @@ export default function PortalClientProfile({ client, user, counselorProfile, fa
         ))}
       </div>
 
-      {/* Tab Content */}
       {activeTab === "overview" && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
           <InfoCard label="Check-In Rate (7d)" value={`${client.engagement}%`} color={client.engagement >= 70 ? "#22C55E" : client.engagement >= 40 ? "#F59E0B" : "#EF4444"} />
@@ -165,14 +153,12 @@ export default function PortalClientProfile({ client, user, counselorProfile, fa
         <div>
           <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 12, padding: 20, marginBottom: 20 }}>
             <p style={{ fontWeight: 700, fontSize: 14, color: "#0F172A", marginBottom: 14 }}>Add a Note</p>
-            <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-              <select value={noteType} onChange={e => setNoteType(e.target.value)}
-                style={{ border: "1px solid #E2E8F0", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#1E293B", background: "#F8FAFC", outline: "none" }}>
-                {["general","progress","concern","appointment","compliance","resource_referral","sponsor_update","probation_update"].map(t => (
-                  <option key={t} value={t}>{t.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</option>
-                ))}
-              </select>
-            </div>
+            <select value={noteType} onChange={e => setNoteType(e.target.value)}
+              style={{ border: "1px solid #E2E8F0", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#1E293B", background: "#F8FAFC", outline: "none", marginBottom: 10 }}>
+              {["general","progress","concern","appointment","compliance","resource_referral","sponsor_update","probation_update"].map(t => (
+                <option key={t} value={t}>{t.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</option>
+              ))}
+            </select>
             <textarea value={noteText} onChange={e => setNoteText(e.target.value)} rows={3}
               placeholder="Write your note here…"
               style={{ width: "100%", border: "1px solid #E2E8F0", borderRadius: 8, padding: 12, fontSize: 13, color: "#1E293B", resize: "vertical", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
@@ -219,7 +205,7 @@ export default function PortalClientProfile({ client, user, counselorProfile, fa
             </button>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {messages.map(m => {
+            {[...messages].reverse().map(m => {
               const isMe = m.counselor_email === user?.email;
               return (
                 <div key={m.id} style={{ display: "flex", justifyContent: isMe ? "flex-end" : "flex-start" }}>
@@ -241,7 +227,7 @@ export default function PortalClientProfile({ client, user, counselorProfile, fa
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <ProgressBlock label="Check-In Rate (7 days)" value={client.engagement} color="#3B82F6" />
           <ProgressBlock label="Average Mood" value={Math.round((client.avgMood / 5) * 100)} color="#22C55E" />
-          <ProgressBlock label="Craving Level (lower is better)" value={100 - Math.round((client.avgCraving / 5) * 100)} color="#F59E0B" />
+          <ProgressBlock label="Craving Stability (higher = more stable)" value={100 - Math.round((client.avgCraving / 5) * 100)} color="#F59E0B" />
         </div>
       )}
     </div>
@@ -259,7 +245,10 @@ function InfoCard({ label, value, color, isText }) {
 
 function Stat({ label, value }) {
   return (
-    <div><span style={{ fontSize: 11, color: "#94A3B8" }}>{label}: </span><span style={{ fontSize: 12, fontWeight: 600, color: "#1E293B" }}>{value}</span></div>
+    <div>
+      <span style={{ fontSize: 11, color: "#94A3B8" }}>{label}: </span>
+      <span style={{ fontSize: 12, fontWeight: 600, color: "#1E293B" }}>{value}</span>
+    </div>
   );
 }
 
@@ -279,7 +268,7 @@ function ProgressBlock({ label, value, color }) {
         <p style={{ fontSize: 14, fontWeight: 700, color }}>{value}%</p>
       </div>
       <div style={{ background: "#F1F5F9", borderRadius: 8, height: 10, overflow: "hidden" }}>
-        <div style={{ background: color, width: `${Math.min(value, 100)}%`, height: "100%", borderRadius: 8, transition: "width 0.4s" }} />
+        <div style={{ background: color, width: `${Math.min(value, 100)}%`, height: "100%", borderRadius: 8 }} />
       </div>
     </div>
   );
