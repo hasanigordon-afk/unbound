@@ -56,13 +56,13 @@ export default function CounselorMessages({ participantEmail, facilityId }) {
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <MessageSquare className="w-5 h-5" style={{ color: "var(--primary)" }} strokeWidth={1.5} />
-        <h3>From Your Counselor</h3>
+        <h3>Your Support Team</h3>
         {unreadTotal > 0 && (
           <span
             className="text-[10px] font-bold px-2 py-0.5 rounded-full"
             style={{ background: "var(--primary)", color: "#fff" }}
           >
-            {unreadTotal} NEW
+            {unreadTotal} new
           </span>
         )}
       </div>
