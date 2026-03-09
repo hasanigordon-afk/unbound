@@ -6,22 +6,22 @@ import { User, Stethoscope, Shield } from "lucide-react";
 const ROLES = [
   {
     id: "patient",
-    label: "Patient",
-    description: "View your dashboard, check-ins, compliance status, and messages from your care team.",
+    label: "I'm here for myself",
+    description: "Check in, find help near you, message your support team, and track your progress.",
     icon: User,
     page: "PatientDashboard",
   },
   {
     id: "counselor",
-    label: "Counselor",
-    description: "Manage assigned patients, review engagement data, and send structured communications.",
+    label: "I'm a counselor",
+    description: "View your clients, track how they're doing, and stay in touch.",
     icon: Stethoscope,
     page: "CounselorDashboard",
   },
   {
     id: "probation_officer",
-    label: "Probation Officer",
-    description: "Monitor client compliance, court dates, violations, and required documentation.",
+    label: "I'm a case officer",
+    description: "Manage client check-ins, court dates, and required tasks.",
     icon: Shield,
     page: "ProbationDashboard",
   },
@@ -41,8 +41,8 @@ export default function RoleSelect() {
         {/* Logo / Header */}
         <div className="text-center mb-10">
           <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#8E8E93" }}>UNBOUND</p>
-          <h1 className="text-2xl font-semibold mb-2" style={{ color: "#1E1E1E" }}>Select Your Role</h1>
-          <p className="text-sm" style={{ color: "#5A5A5A" }}>Choose how you are accessing the system.</p>
+          <h1 className="text-2xl font-semibold mb-2" style={{ color: "#1E1E1E" }}>Who's logging in?</h1>
+          <p className="text-sm" style={{ color: "#5A5A5A" }}>Pick the option that fits you.</p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -80,7 +80,7 @@ export default function RoleSelect() {
         </div>
 
         <p className="text-center text-xs mt-8" style={{ color: "#8E8E93" }}>
-          Recovery Accountability System — Unbound v1.0
+          Unbound — built for people rebuilding their lives
         </p>
       </div>
     </div>

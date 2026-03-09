@@ -142,8 +142,8 @@ export default function ParticipantDashboard() {
       <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 style={{ color: 'var(--text-primary)' }}>Engagement Dashboard</h1>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Behavioral tracking and compliance</p>
+            <h1 style={{ color: 'var(--text-primary)' }}>How you're doing</h1>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Your progress this week</p>
           </div>
           {facility?.logo_url && (
             <img src={facility.logo_url} alt={facility.facility_name} className="h-10 w-auto" />
@@ -154,7 +154,7 @@ export default function ParticipantDashboard() {
         <div className="flex items-center gap-2 mt-4">
           <div className="w-3 h-3 rounded-full" style={{ background: getStatusColor() }} />
           <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-            Status: {getStatusText()}
+            {daysSinceLastCheckIn === 0 ? "You checked in today 👍" : daysSinceLastCheckIn === 1 ? "Missed yesterday — check in today" : `${daysSinceLastCheckIn} days since last check-in`}
           </span>
         </div>
       </div>
@@ -164,27 +164,27 @@ export default function ParticipantDashboard() {
         <div>
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Engagement Streak</p>
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Check-in streak</p>
               <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{streak}</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Days Consecutive</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>days in a row 🔥</p>
             </div>
 
             <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Compliance Rate</p>
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Staying on track</p>
               <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{engagementCompliance}%</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Last 7 Days</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>last 7 days</p>
             </div>
 
             <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Phase Progress</p>
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Steps complete</p>
               <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{phaseProgress}%</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>90-Day Map</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>of your 90-day plan</p>
             </div>
 
             <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Meetings Attended</p>
+              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Meetings this week</p>
               <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{meetingCount}</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>This Week</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>keep showing up</p>
             </div>
           </div>
           <p className="text-xs text-right" style={{ color: 'var(--text-muted)' }}>Last Updated: {lastUpdated}</p>
@@ -195,8 +195,8 @@ export default function ParticipantDashboard() {
           <Link to={createPageUrl("DailyCheckIn")}>
             <div className="card text-center" style={{ borderColor: 'var(--primary)', borderWidth: '2px' }}>
               <Calendar className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--primary)' }} strokeWidth={2} />
-              <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>Complete Daily Check-In</h3>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Required for compliance tracking</p>
+              <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>Check in for today</h3>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Takes less than 30 seconds</p>
             </div>
           </Link>
         ) : (
@@ -209,7 +209,7 @@ export default function ParticipantDashboard() {
 
         {/* Quick Access */}
         <div>
-          <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Quick Access</h3>
+          <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Keep going</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <Link to={createPageUrl("ReintegrationMap")}>
               <div className="card flex items-center gap-4">
@@ -217,8 +217,8 @@ export default function ParticipantDashboard() {
                   <Calendar className="w-5 h-5" style={{ color: 'var(--accent)' }} strokeWidth={2} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>90-Day Reintegration Map</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>View structured task progression</p>
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>My 90-Day Steps</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>See what's next on your plan</p>
                 </div>
               </div>
             </Link>
@@ -229,32 +229,20 @@ export default function ParticipantDashboard() {
                   <TrendingUp className="w-5 h-5" style={{ color: 'var(--primary)' }} strokeWidth={2} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Forward Plan</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>5-Year Stability Roadmap</p>
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>My Plan</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Your goals and where you're headed</p>
                 </div>
               </div>
             </Link>
 
-            <Link to={createPageUrl("ParticipantProgress")}>
-              <div className="card flex items-center gap-4">
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)', borderRadius: 'var(--radius)' }}>
-                  <TrendingUp className="w-5 h-5" style={{ color: '#60a5fa' }} strokeWidth={2} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>View Progress Report</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Engagement trends and history</p>
-                </div>
-              </div>
-            </Link>
-
-            <Link to={createPageUrl("ResourceDirectory")}>
+            <Link to={createPageUrl("FindHelpNow")}>
               <div className="card flex items-center gap-4">
                 <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)', borderRadius: 'var(--radius)' }}>
                   <MapPin className="w-5 h-5" style={{ color: '#60a5fa' }} strokeWidth={2} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Resource Directory</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Employment, housing, benefits</p>
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Help Near Me</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Housing, food, jobs, meetings & more</p>
                 </div>
               </div>
             </Link>
@@ -265,8 +253,8 @@ export default function ParticipantDashboard() {
                   <MessageCircle className="w-5 h-5" style={{ color: '#22c55e' }} strokeWidth={2} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Counselor Messages</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>View communications</p>
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Messages</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Stay in touch with your support team</p>
                 </div>
               </div>
             </Link>
@@ -277,7 +265,7 @@ export default function ParticipantDashboard() {
         <div className="p-5" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 'var(--radius)' }}>
           <h3 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#ef4444' }}>
             <AlertCircle className="w-5 h-5" strokeWidth={2} />
-            Emergency Contacts
+            Need help right now?
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <a href="tel:911" className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
@@ -299,9 +287,8 @@ export default function ParticipantDashboard() {
 
         {/* Legal Disclaimer */}
         <div className="p-4 text-xs" style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 'var(--radius)' }}>
-          <p className="font-semibold mb-2" style={{ color: 'var(--accent)' }}>Important Notice</p>
           <p style={{ color: 'var(--text-secondary)' }}>
-            This platform tracks behavioral engagement only. It does not provide medical advice, treatment, or clinical services. For medical emergencies, call 911 immediately.
+            Unbound helps you stay connected and track your own progress. It is not a medical service. If you are in danger, call 911.
           </p>
         </div>
 
