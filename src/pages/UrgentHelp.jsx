@@ -125,7 +125,7 @@ function SectionLabel({ text }) {
 function CrisisStrip() {
   return (
     <div style={{ marginTop: 28, background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: "16px 18px" }}>
-      <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>Always available</p>
+      <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>Always available — always free</p>
       <div style={{ display: "flex", gap: 10 }}>
         <a href="tel:988" style={{ flex: 1, background: C.redSoft, borderRadius: 12, padding: "12px 8px", textAlign: "center", textDecoration: "none" }}>
           <p style={{ fontWeight: 800, color: C.red, fontSize: 18, lineHeight: 1 }}>988</p>

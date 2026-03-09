@@ -52,9 +52,9 @@ export default function PatientDashboard() {
     <div style={{ background: "#F5F5F7", minHeight: "100vh", paddingBottom: "100px" }}>
       {/* Header */}
       <div style={{ background: "#FFFFFF", padding: "28px 20px 20px", borderBottom: "1px solid #E5E7EB" }}>
-        <p style={{ fontSize: "13px", color: "#8E8E93", marginBottom: "4px" }}>{greeting}, {firstName}</p>
+        <p style={{ fontSize: "13px", color: "#8E8E93", marginBottom: "4px" }}>Welcome back, {firstName}</p>
         <h1 style={{ fontSize: "22px", fontWeight: "700", color: "#1E1E1E", lineHeight: "1.2" }}>
-          How can we help you today?
+          What do you need today?
         </h1>
       </div>
 
@@ -81,7 +81,7 @@ export default function PatientDashboard() {
                   Check in for today
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>
-                  Takes less than 30 seconds
+                  30 seconds. No judgment.
                 </p>
               </div>
               <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.7)" }} strokeWidth={2} />
@@ -100,15 +100,17 @@ export default function PatientDashboard() {
           }}>
             <CheckCircle className="w-6 h-6 flex-shrink-0" style={{ color: "#16A34A" }} strokeWidth={2} />
             <div>
-              <p style={{ color: "#15803D", fontWeight: "600", fontSize: "15px" }}>You checked in today ✓</p>
-              <p style={{ color: "#16A34A", fontSize: "13px" }}>Great job. See you tomorrow.</p>
+              <p style={{ color: "#15803D", fontWeight: "600", fontSize: "15px" }}>You showed up today ✓</p>
+              <p style={{ color: "#16A34A", fontSize: "13px" }}>
+                {recent7.length > 1 ? `${recent7.length} days this week. Keep moving forward.` : "Nice work. See you tomorrow."}
+              </p>
             </div>
           </div>
         )}
 
         {/* What do you need today */}
         <p style={{ fontSize: "12px", fontWeight: "700", color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "12px" }}>
-          What do you need?
+          Find help
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "28px" }}>
           {QUICK_ACTIONS.map((action) => (
@@ -147,7 +149,7 @@ export default function PatientDashboard() {
             <p style={{ fontSize: "32px", fontWeight: "800", color: compliancePct >= 70 ? "#22C55E" : compliancePct >= 40 ? "#F59E0B" : "#EF4444", lineHeight: "1" }}>
               {compliancePct}%
             </p>
-            <p style={{ fontSize: "12px", color: "#8E8E93", marginTop: "6px" }}>Check-in rate</p>
+            <p style={{ fontSize: "12px", color: "#8E8E93", marginTop: "6px" }}>Check-ins</p>
             <p style={{ fontSize: "11px", color: "#B0B0B8", marginTop: "2px" }}>Last 7 days</p>
           </div>
           {sobrietyDays !== null ? (
@@ -156,7 +158,7 @@ export default function PatientDashboard() {
                 {sobrietyDays}
               </p>
               <p style={{ fontSize: "12px", color: "#8E8E93", marginTop: "6px" }}>Days sober</p>
-              <p style={{ fontSize: "11px", color: "#B0B0B8", marginTop: "2px" }}>Keep going</p>
+              <p style={{ fontSize: "11px", color: "#B0B0B8", marginTop: "2px" }}>Keep moving forward</p>
             </div>
           ) : (
             <div style={{ flex: 1, textAlign: "center", paddingLeft: "16px" }}>
@@ -171,7 +173,7 @@ export default function PatientDashboard() {
 
         {/* Emergency Help */}
         <p style={{ fontSize: "12px", fontWeight: "700", color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "12px" }}>
-          Need immediate help?
+          Crisis support — always free
         </p>
         <div style={{ display: "flex", gap: "10px" }}>
           <a href="tel:988" style={{ flex: 1, background: "#FEF2F2", borderRadius: "14px", padding: "14px 10px", textAlign: "center", textDecoration: "none", display: "block" }}>

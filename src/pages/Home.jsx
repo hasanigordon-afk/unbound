@@ -181,7 +181,7 @@ export default function Home() {
 
         {/* Crisis numbers */}
         <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
-          Crisis support — always free
+          Always available — always free
         </p>
         <div style={{ display: "flex", gap: 10 }}>
           <a href="tel:988" style={{ flex: 1, background: "#FEF2F2", borderRadius: 14, padding: "14px 10px", textAlign: "center", textDecoration: "none" }}>
