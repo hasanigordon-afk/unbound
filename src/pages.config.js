@@ -58,6 +58,7 @@ import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
+import FamilyView from './pages/FamilyView';
 import FindHelpNow from './pages/FindHelpNow';
 import ForwardPlan from './pages/ForwardPlan';
 import GoalBoard from './pages/GoalBoard';
@@ -93,7 +94,6 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
-import FamilyView from './pages/FamilyView';
 import __Layout from './Layout.jsx';
 
 
@@ -109,6 +109,7 @@ export const PAGES = {
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
+    "FamilyView": FamilyView,
     "FindHelpNow": FindHelpNow,
     "ForwardPlan": ForwardPlan,
     "GoalBoard": GoalBoard,
@@ -144,7 +145,6 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
-    "FamilyView": FamilyView,
 }
 
 export const pagesConfig = {

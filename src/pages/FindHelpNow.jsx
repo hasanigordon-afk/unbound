@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { MapPin, Loader2, RefreshCw, Filter, X, Search } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { MapPin, Loader2, RefreshCw, X, Search } from "lucide-react";
 import FindHelpCard from "@/components/resources/FindHelpCard";
 
 function haversineDistance(lat1, lon1, lat2, lon2) {

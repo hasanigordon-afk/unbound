@@ -31,8 +31,8 @@ export default function ParticipantMessages() {
             Back to Dashboard
           </Button>
         </Link>
-        <h1 style={{ marginBottom: '4px' }}>Counselor Messages</h1>
-        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Communications from your counselor</p>
+        <h1 style={{ marginBottom: '4px' }}>Messages</h1>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Stay in touch with your support team</p>
       </div>
 
       <div className="px-6 py-6">
