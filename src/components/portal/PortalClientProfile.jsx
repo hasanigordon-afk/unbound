@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { ArrowLeft, MessageSquare, FileText } from "lucide-react";
+import ClientTimeline from "./ClientTimeline";
 
 const STATUS_CONFIG = {
   at_risk:         { label: "At Risk",         bg: "#FEF2F2", border: "#FECACA", text: "#DC2626" },
