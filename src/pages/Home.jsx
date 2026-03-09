@@ -27,7 +27,13 @@ export default function Home() {
     enabled: !!user,
   });
 
-  const isLoading = userLoading || (!!user && profilesLoading);
+  const { data: counselorProfiles, isLoading: counselorLoading } = useQuery({
+    queryKey: ["counselor-profile-home", user?.email],
+    queryFn: () => base44.entities.CounselorProfile.filter({ counselor_email: user.email }),
+    enabled: !!user,
+  });
+
+  const isLoading = userLoading || (!!user && (profilesLoading || counselorLoading));
 
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins-home", user?.email],
@@ -36,12 +42,19 @@ export default function Home() {
   });
 
   const profile = profiles?.[0];
+  const isCounselor = counselorProfiles?.length > 0;
 
   useEffect(() => {
-    if (!isLoading && user && profiles !== undefined && (!profile || !profile.onboarding_complete)) {
+    if (isLoading) return;
+    if (!user) return;
+    if (isCounselor) {
+      navigate(createPageUrl("ProfessionalPortal"), { replace: true });
+      return;
+    }
+    if (profiles !== undefined && (!profile || !profile.onboarding_complete)) {
       navigate(createPageUrl("Onboarding"));
     }
-  }, [isLoading, user, profiles, profile, navigate]);
+  }, [isLoading, user, profiles, profile, isCounselor, navigate]);
 
   if (isLoading) {
     return (
