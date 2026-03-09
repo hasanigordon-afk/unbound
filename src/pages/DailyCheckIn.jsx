@@ -152,21 +152,21 @@ export default function DailyCheckIn() {
     return (
       <div style={{ minHeight: "100vh", background: "#F0FDF4", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "56px", marginBottom: "16px" }}>✅</div>
-        <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#15803D", marginBottom: "8px" }}>You checked in!</h2>
+        <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#15803D", marginBottom: "8px" }}>You showed up today.</h2>
         <p style={{ fontSize: "15px", color: "#16A34A", marginBottom: "8px" }}>
-          {newStreak > 1 ? `${newStreak}-day streak. Keep it going.` : "Great first step. Come back tomorrow."}
+          {newStreak > 1 ? `${newStreak} days in a row. Keep moving forward.` : "That's a real first step. Come back tomorrow."}
         </p>
         <p style={{ fontSize: "14px", color: "#5A5A5A", marginBottom: "32px" }}>
-          Every day you show up matters.
+          Progress still counts, even on hard days.
         </p>
         {formData.mood_rating <= 2 && (
           <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: "12px", padding: "16px 20px", marginBottom: "20px", maxWidth: "340px" }}>
             <p style={{ fontSize: "14px", color: "#92400E", lineHeight: "1.5" }}>
-              It sounds like today was tough. If you need to talk to someone, your support team is here.
+              Sounds like today was rough. You don't have to carry this alone — your support team is here.
             </p>
             <Link to={createPageUrl("ParticipantMessages")}>
               <button style={{ marginTop: "10px", background: "#EA580C", color: "#FFF", border: "none", borderRadius: "8px", padding: "10px 20px", fontWeight: "600", fontSize: "13px", cursor: "pointer" }}>
-                Send a Message
+                Message support
               </button>
             </Link>
           </div>
@@ -189,7 +189,7 @@ export default function DailyCheckIn() {
           Daily Check-In
         </p>
         <p style={{ fontSize: "15px", color: "#5A5A5A" }}>
-          {streak > 0 ? `🔥 ${streak}-day streak — keep it going` : "Takes less than 30 seconds"}
+          {streak > 0 ? `🔥 ${streak} days in a row — you're showing up` : "Quick check-in. No wrong answers."}
         </p>
       </div>
 
@@ -214,7 +214,7 @@ export default function DailyCheckIn() {
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 How are you feeling today?
               </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>Be honest — there's no wrong answer.</p>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>Wherever you are — that's a valid place to start.</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
                 {MOOD_OPTIONS.map(opt => (
                   <button
@@ -247,11 +247,11 @@ export default function DailyCheckIn() {
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you go to a meeting today?
               </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>AA, NA, SMART Recovery, or any other group.</p>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>AA, NA, SMART Recovery, or anything similar.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {[
-                  { val: true, label: "Yes, I went", sub: "Great — any support counts" },
-                  { val: false, label: "Not today", sub: "That's okay — tomorrow is another chance" },
+                  { val: true, label: "Yes, I went", sub: "Good. Any support counts." },
+                  { val: false, label: "Not today", sub: "That's okay. Tomorrow is another chance." },
                 ].map(opt => (
                   <button key={String(opt.val)} onClick={() => setFormData({ ...formData, attended_meeting: opt.val, meeting_type: opt.val ? formData.meeting_type : null })}
                     style={{ background: formData.attended_meeting === opt.val ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.attended_meeting === opt.val ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer" }}>
@@ -283,13 +283,13 @@ export default function DailyCheckIn() {
           {step === 4 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                Did you talk to someone in your support network today?
+                Did you connect with someone today?
               </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>A sponsor, mentor, counselor, or supportive friend.</p>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>A sponsor, mentor, counselor, or someone you trust.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {[
-                  { val: true, label: "Yes, I reached out", sub: "Connection matters — good work" },
-                  { val: false, label: "Not today", sub: "Consider sending a message tomorrow" },
+                  { val: true, label: "Yes, I reached out", sub: "Connection matters. Good work." },
+                  { val: false, label: "Not today", sub: "Try sending a quick message tomorrow." },
                 ].map(opt => (
                   <button key={String(opt.val)} onClick={() => setFormData({ ...formData, connected_with_sponsor: opt.val })}
                     style={{ background: formData.connected_with_sponsor === opt.val ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.connected_with_sponsor === opt.val ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer" }}>
@@ -304,13 +304,13 @@ export default function DailyCheckIn() {
           {step === 5 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                Do you need help today?
+                Do you need any support right now?
               </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>No judgment. We just want to make sure you're okay.</p>
+              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>It's okay either way. We just want to make sure you're alright.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
                 {[
-                  { val: false, label: "I'm okay right now", sub: "Good to hear" },
-                  { val: true, label: "I could use some help", sub: "We'll show you who to reach out to" },
+                  { val: false, label: "I'm okay right now", sub: "Good to hear." },
+                  { val: true, label: "I could use some support", sub: "We'll connect you with the right help." },
                 ].map(opt => (
                   <button key={String(opt.val)} onClick={() => setFormData({ ...formData, needs_help: opt.val })}
                     style={{
@@ -324,11 +324,11 @@ export default function DailyCheckIn() {
                 ))}
               </div>
               <div>
-                <p style={{ fontSize: "13px", fontWeight: "600", color: TEXT_MUTED, marginBottom: "8px" }}>Anything you want to add? (optional)</p>
+                <p style={{ fontSize: "13px", fontWeight: "600", color: TEXT_MUTED, marginBottom: "8px" }}>Anything on your mind? (optional)</p>
                 <textarea
                   value={formData.notes}
                   onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Write anything on your mind..."
+                  placeholder="Say whatever you need to say..."
                   rows={3}
                   style={{ width: "100%", background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "12px", padding: "14px", fontSize: "14px", color: TEXT, resize: "vertical", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
                 />
@@ -356,7 +356,7 @@ export default function DailyCheckIn() {
             display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
           }}
         >
-          {submitCheckInMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : step === 5 ? "Finish Check-In" : "Continue →"}
+          {submitCheckInMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : step === 5 ? "Done →" : "Keep Going →"}
         </button>
       </div>
     </div>
