@@ -12,24 +12,19 @@ export default function Splash() {
     const t1 = setTimeout(() => setPhase("tagline"), 900);
     const t2 = setTimeout(() => setPhase("hint"), 1800);
 
-    // Auto-detect returning user and skip role select
+    // Auto-detect returning user and route accordingly
     const autoNavigate = async () => {
       try {
         const user = await base44.auth.me();
         if (user) {
-          const [counselorProfiles, memberProfiles] = await Promise.all([
-            base44.entities.CounselorProfile.filter({ counselor_email: user.email }),
-            base44.entities.MemberProfile.filter({ created_by: user.email }),
-          ]);
+          const counselorProfiles = await base44.entities.CounselorProfile.filter({ counselor_email: user.email });
           if (counselorProfiles.length > 0) {
             navigate(createPageUrl("ProfessionalPortal"), { replace: true }); return;
           }
-          if (memberProfiles.length > 0 && memberProfiles[0]?.onboarding_complete) {
-            navigate(createPageUrl("Home"), { replace: true }); return;
-          }
+          navigate(createPageUrl("Home"), { replace: true }); return;
         }
       } catch {}
-      navigate(createPageUrl("RoleSelect"));
+      navigate(createPageUrl("Home"), { replace: true });
     };
 
     const t3 = setTimeout(autoNavigate, 3200);
