@@ -12,6 +12,7 @@ import PortalNotes from "../components/portal/PortalNotes";
 import PortalProgress from "../components/portal/PortalProgress";
 import PortalResources from "../components/portal/PortalResources";
 import PortalSettings from "../components/portal/PortalSettings";
+import CravingAlertPanel from "../components/portal/CravingAlertPanel";
 
 function computeMetrics(participant, allCheckIns, activeAlerts) {
   const email = participant.participant_email;

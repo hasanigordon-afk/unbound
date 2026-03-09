@@ -1,15 +1,16 @@
 import React from "react";
-import { LayoutDashboard, Users, MessageSquare, Bell, FileText, TrendingUp, BookOpen, Settings, X } from "lucide-react";
+import { LayoutDashboard, Users, MessageSquare, Bell, FileText, TrendingUp, BookOpen, Settings, X, Activity } from "lucide-react";
 
 const NAV = [
-  { id: "dashboard", label: "Dashboard",   icon: LayoutDashboard },
-  { id: "clients",   label: "My Clients",  icon: Users },
-  { id: "messages",  label: "Messages",    icon: MessageSquare },
-  { id: "alerts",    label: "Alerts",      icon: Bell },
-  { id: "notes",     label: "Notes",       icon: FileText },
-  { id: "progress",  label: "Progress",    icon: TrendingUp },
-  { id: "resources", label: "Resources",   icon: BookOpen },
-  { id: "settings",  label: "Settings",    icon: Settings },
+  { id: "dashboard",      label: "Dashboard",     icon: LayoutDashboard },
+  { id: "clients",        label: "My Clients",    icon: Users },
+  { id: "craving_alerts", label: "Risk Monitor",  icon: Activity },
+  { id: "messages",       label: "Messages",      icon: MessageSquare },
+  { id: "alerts",         label: "Alerts",        icon: Bell },
+  { id: "notes",          label: "Notes",         icon: FileText },
+  { id: "progress",       label: "Progress",      icon: TrendingUp },
+  { id: "resources",      label: "Resources",     icon: BookOpen },
+  { id: "settings",       label: "Settings",      icon: Settings },
 ];
 
 const ROLE_LABELS = {
