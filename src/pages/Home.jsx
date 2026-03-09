@@ -38,10 +38,10 @@ export default function Home() {
   const profile = profiles?.[0];
 
   useEffect(() => {
-    if (!isLoading && user && (!profile || !profile.onboarding_complete)) {
+    if (!isLoading && user && profiles !== undefined && (!profile || !profile.onboarding_complete)) {
       navigate(createPageUrl("Onboarding"));
     }
-  }, [isLoading, user, profile, navigate]);
+  }, [isLoading, user, profiles, profile, navigate]);
 
   if (isLoading) {
     return (
