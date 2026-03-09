@@ -66,8 +66,11 @@ export default function DailyCheckIn() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["daily-checkins"]);
-      setStep(formData.needs_help ? 7 : 6);
+    queryClient.invalidateQueries(["daily-checkins"]);
+    setStep(6);
+    if (formData.needs_help) {
+      setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
+    }
     },
   });
 
@@ -169,7 +172,7 @@ export default function DailyCheckIn() {
           </div>
         )}
         <button
-          onClick={() => navigate(createPageUrl("PatientDashboard"))}
+          onClick={() => navigate(createPageUrl("Home"))}
           style={{ background: "#16A34A", color: "#FFF", border: "none", borderRadius: "14px", padding: "18px 48px", fontSize: "16px", fontWeight: "700", cursor: "pointer", width: "100%", maxWidth: "340px" }}
         >
           Done

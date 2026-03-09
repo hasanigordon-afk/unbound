@@ -163,9 +163,25 @@ export default function Home() {
           </div>
         </Link>
 
-        {/* Crisis row */}
+        {/* Urgent help button */}
+        <Link to={createPageUrl("UrgentHelp")}>
+          <div style={{
+            background: "#FEF2F2", border: "2px solid #FCA5A5", borderRadius: 18,
+            padding: "18px 22px", marginBottom: 20,
+            display: "flex", alignItems: "center", gap: 14,
+          }}>
+            <span style={{ fontSize: 26 }}>🆘</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 16, fontWeight: 800, color: "#DC2626" }}>Need help right now?</p>
+              <p style={{ fontSize: 13, color: "#B91C1C" }}>Crisis, cravings, shelter, safety & more</p>
+            </div>
+            <ChevronRight className="w-5 h-5" style={{ color: "#FCA5A5" }} />
+          </div>
+        </Link>
+
+        {/* Crisis numbers */}
         <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
-          Need immediate help?
+          Always available
         </p>
         <div style={{ display: "flex", gap: 10 }}>
           <a href="tel:988" style={{ flex: 1, background: "#FEF2F2", borderRadius: 14, padding: "14px 10px", textAlign: "center", textDecoration: "none" }}>
