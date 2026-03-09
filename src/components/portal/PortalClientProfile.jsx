@@ -22,7 +22,7 @@ const TABS = [
 ];
 
 export default function PortalClientProfile({ client, user, counselorProfile, facilityId, allCheckIns, onBack }) {
-  const [activeTab, setActiveTab] = useState(client?._openTab || "overview");
+  const [activeTab, setActiveTab] = useState(client?._openTab || "timeline");
   const [noteText, setNoteText] = useState("");
   const [noteType, setNoteType] = useState("general");
   const [messageText, setMessageText] = useState("");
