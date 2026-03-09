@@ -89,20 +89,20 @@ export default function DailyCheckIn() {
     if (step === 1) return formData.mood_rating !== null;
     if (step === 2) return true; // craving + stress sliders always have a value
     if (step === 3) return formData.attended_meeting !== null;
-    if (step === 3) return !formData.attended_meeting || formData.meeting_type !== null;
-    if (step === 4) return formData.connected_with_sponsor !== null;
-    if (step === 5) return formData.needs_help !== null;
+    if (step === 4) return !formData.attended_meeting || formData.meeting_type !== null;
+    if (step === 5) return formData.connected_with_sponsor !== null;
+    if (step === 6) return formData.needs_help !== null;
     return false;
   };
 
   const handleNext = () => {
-    if (step === 2 && !formData.attended_meeting) { setStep(4); return; }
-    if (step === 5) { submitCheckInMutation.mutate(); return; }
+    if (step === 3 && !formData.attended_meeting) { setStep(5); return; }
+    if (step === 6) { submitCheckInMutation.mutate(); return; }
     setStep(step + 1);
   };
 
   const handleBack = () => {
-    if (step === 4 && !formData.attended_meeting) { setStep(2); return; }
+    if (step === 5 && !formData.attended_meeting) { setStep(3); return; }
     setStep(step - 1);
   };
 
