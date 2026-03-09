@@ -75,11 +75,11 @@ export default function DailyCheckIn() {
       base44.functions.invoke("cravingAlertDetection", { participantEmail: user.email }).catch(() => {});
     },
     onSuccess: () => {
-    queryClient.invalidateQueries(["daily-checkins"]);
-    setStep(6);
-    if (formData.needs_help) {
-      setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
-    }
+      queryClient.invalidateQueries(["daily-checkins"]);
+      setStep(7);
+      if (formData.needs_help) {
+        setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
+      }
     },
   });
 
