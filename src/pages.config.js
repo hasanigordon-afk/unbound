@@ -83,6 +83,7 @@ import PlatformAdmin from './pages/PlatformAdmin';
 import PrivacyControls from './pages/PrivacyControls';
 import ProbationDashboard from './pages/ProbationDashboard';
 import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
+import ProfessionalPortal from './pages/ProfessionalPortal';
 import Profile from './pages/Profile';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
@@ -95,7 +96,8 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
-import ProfessionalPortal from './pages/ProfessionalPortal';
+import ClientProgress from './pages/ClientProgress';
+import ClientSettings from './pages/ClientSettings';
 import __Layout from './Layout.jsx';
 
 
@@ -136,6 +138,7 @@ export const PAGES = {
     "PrivacyControls": PrivacyControls,
     "ProbationDashboard": ProbationDashboard,
     "ProbationOfficerDashboard": ProbationOfficerDashboard,
+    "ProfessionalPortal": ProfessionalPortal,
     "Profile": Profile,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
@@ -148,7 +151,8 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
-    "ProfessionalPortal": ProfessionalPortal,
+    "ClientProgress": ClientProgress,
+    "ClientSettings": ClientSettings,
 }
 
 export const pagesConfig = {
