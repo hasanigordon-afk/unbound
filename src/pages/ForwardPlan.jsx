@@ -239,7 +239,7 @@ export default function ForwardPlan() {
           <div className="card">
             <h3 className="mb-2">What are you working toward?</h3>
             <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
-              Choose the areas that matter most to you right now. You can always update this later.
+              Pick the areas that matter most right now. You can always change this later.
             </p>
           </div>
 
@@ -285,7 +285,7 @@ export default function ForwardPlan() {
           ))}
 
           <Button onClick={handleVisionSubmit} className="btn-primary" disabled={createPlanMutation.isPending}>
-            {createPlanMutation.isPending ? "Building your plan..." : "Start My Plan →"}
+            {createPlanMutation.isPending ? "Setting up your plan…" : "Start My Plan →"}
           </Button>
 
           <div className="p-4 text-xs" style={{ 
@@ -326,7 +326,7 @@ export default function ForwardPlan() {
             </Button>
           </div>
           <div className="metric-value">{plan?.overall_completion_percentage || 0}%</div>
-          <div className="metric-label">Steps completed</div>
+          <div className="metric-label">Steps done</div>
           <div className="w-full h-2 mt-2" style={{ background: 'rgba(0,0,0,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
             <div style={{ width: `${plan?.overall_completion_percentage || 0}%`, height: '100%', background: 'var(--primary)' }} />
           </div>
@@ -334,7 +334,7 @@ export default function ForwardPlan() {
 
         {/* Tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {[{ key: "3_year", label: "Long-term (3yr)" }, { key: "1_year", label: "This year" }, { key: "90_day", label: "Next 90 days" }].map(t => (
+          {[{ key: "3_year", label: "Big picture (3yr)" }, { key: "1_year", label: "This year" }, { key: "90_day", label: "Next 90 days" }].map(t => (
             <button
               key={t.key}
               onClick={() => setActiveStep(t.key)}
@@ -433,7 +433,7 @@ export default function ForwardPlan() {
           color: 'var(--text-secondary)' 
         }}>
           <p className="text-center">
-            This feature supports structured long-term planning. It does not provide financial, legal, or medical advice.
+            Your plan is a personal guide — not a contract. Update it whenever you need to.
           </p>
         </div>
       </div>
@@ -443,7 +443,7 @@ export default function ForwardPlan() {
         <Dialog open={!!editingMilestone} onOpenChange={() => setEditingMilestone(null)}>
           <DialogContent style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
             <DialogHeader>
-              <DialogTitle style={{ color: 'var(--text-primary)' }}>Edit Milestone Notes</DialogTitle>
+              <DialogTitle style={{ color: 'var(--text-primary)' }}>Add a note to this step</DialogTitle>
             </DialogHeader>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
@@ -454,7 +454,7 @@ export default function ForwardPlan() {
               <Textarea
                 value={milestoneNotes}
                 onChange={(e) => setMilestoneNotes(e.target.value)}
-                placeholder="Add notes about this milestone..."
+                placeholder="What's happening with this step? Any thoughts…"
                 rows={4}
                 style={{
                   background: 'var(--bg-primary)',
@@ -464,7 +464,7 @@ export default function ForwardPlan() {
                 }}
               />
               <Button onClick={saveMilestoneNotes} className="btn-primary">
-                Save Notes
+                Save
               </Button>
             </div>
           </DialogContent>

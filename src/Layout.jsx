@@ -5,7 +5,7 @@ import { Home, CalendarCheck, MessageCircle, MapPin, TrendingUp } from "lucide-r
 
 const NAV_ITEMS = [
   { name: "Home", icon: Home, page: "Home" },
-  { name: "Find Help", icon: MapPin, page: "FindHelpNow" },
+  { name: "Help Near Me", icon: MapPin, page: "FindHelpNow" },
   { name: "Check In", icon: CalendarCheck, page: "DailyCheckIn" },
   { name: "Messages", icon: MessageCircle, page: "ParticipantMessages" },
   { name: "My Plan", icon: TrendingUp, page: "ForwardPlan" },
