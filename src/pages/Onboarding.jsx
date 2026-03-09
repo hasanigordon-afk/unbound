@@ -256,9 +256,9 @@ export default function Onboarding() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>UNBOUND</p>
             <h1 style={{ color: "#FFFFFF", fontSize: 28, fontWeight: 800, lineHeight: 1.2, marginBottom: 14 }}>Welcome to Unbound</h1>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 6 }}>Real help for your next step forward.</p>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 6 }}>Help for your next step forward.</p>
             <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, lineHeight: 1.7, maxWidth: 340, margin: "0 auto" }}>
-              Whether you're leaving treatment, coming home, trying to stay on track, or just need support right now — Unbound is here.
+              Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this app is built for you.
             </p>
           </div>
 
@@ -288,7 +288,7 @@ export default function Onboarding() {
           </div>
 
           <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 12, textAlign: "center", marginTop: 28 }}>
-            Setup takes less than 1 minute. No paperwork.
+            Takes under a minute. No paperwork. No judgment.
           </p>
         </div>
       </div>
@@ -307,7 +307,7 @@ export default function Onboarding() {
           <div style={{ fontSize: 40, marginBottom: 12 }}>✨</div>
           <h1 style={{ color: "#FFFFFF", fontSize: 22, fontWeight: 800, marginBottom: 10 }}>Here's a good place to start.</h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.7, maxWidth: 320, margin: "0 auto" }}>
-            You don't have to figure everything out at once.{"\n"}Start with the next right step.
+            You don't have to figure everything out today.{"\n"}Start with one step.
           </p>
         </div>
 
@@ -316,7 +316,7 @@ export default function Onboarding() {
           {/* Urgent banner */}
           {isUrgent && (
             <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: 14, padding: "16px 18px", marginBottom: 20 }}>
-              <p style={{ color: "#DC2626", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Support is available right now</p>
+              <p style={{ color: "#DC2626", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Help is available right now</p>
               <div style={{ display: "flex", gap: 10 }}>
                 <a href="tel:988" style={{ flex: 1, background: "#DC2626", borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
                   <p style={{ color: "#FFF", fontWeight: 800, fontSize: 16, lineHeight: 1 }}>988</p>
@@ -341,7 +341,7 @@ export default function Onboarding() {
               <span style={{ fontSize: 26 }}>{nextStep.emoji}</span>
               <div style={{ flex: 1 }}>
                 <p style={{ color: "#FFFFFF", fontWeight: 700, fontSize: 16, lineHeight: 1.3 }}>{nextStep.label}</p>
-                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, marginTop: 3 }}>Tap to go there now</p>
+                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, marginTop: 3 }}>Start here</p>
               </div>
               <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.7)" }} />
             </div>
@@ -350,7 +350,7 @@ export default function Onboarding() {
           {/* Top needs */}
           {topNeeds.length > 0 && (
             <>
-              <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 10 }}>What you said you need</p>
+              <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 10 }}>What you're focused on</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
                 {topNeeds.map(need => (
                   <Link key={need} to={createPageUrl(NEED_HREFS[need] || "FindHelpNow")} style={{ textDecoration: "none" }}>
@@ -431,7 +431,7 @@ export default function Onboarding() {
             <>
               <Heading
                 title="What brings you here today?"
-                sub="No judgment. Just pick what fits."
+                sub="Pick whatever fits your situation."
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {REASONS.map(r => (
@@ -452,7 +452,7 @@ export default function Onboarding() {
             <>
               <Heading
                 title="What do you need most right now?"
-                sub={`Pick up to 3. ${data.needs.length}/3 selected.`}
+                sub={`Pick up to 3 things. ${data.needs.length} of 3 selected.`}
               />
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 {NEEDS.map(n => (
@@ -482,7 +482,7 @@ export default function Onboarding() {
             <>
               <Heading
                 title="How are things feeling right now?"
-                sub="Wherever you are — that's okay. We'll work with it."
+                sub="Be honest. There's no wrong answer here."
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {FEELINGS.map(f => (
@@ -517,8 +517,8 @@ export default function Onboarding() {
           {step === 5 && (
             <>
               <Heading
-                title="Who would you like support from?"
-                sub="You can always change this later."
+                title="Who do you want to hear from?"
+                sub="You can change this any time."
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {SUPPORT_OPTIONS.map(s => (
@@ -541,7 +541,7 @@ export default function Onboarding() {
             onBack={() => setStep(s => s - 1)}
             onNext={handleNext}
             loading={saveProfile.isPending}
-            nextLabel={step === 5 ? "Show me where to start →" : "Continue"}
+            nextLabel={step === 5 ? "Show me where to start →" : "Keep going"}
           />
         </div>
       </div>
