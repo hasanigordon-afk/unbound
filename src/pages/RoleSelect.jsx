@@ -1,85 +1,154 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "./utils";
-import { User, Stethoscope, Shield } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
-const ROLES = [
-  {
-    id: "patient",
-    label: "I'm here for myself",
-    description: "Check in, find help near you, message your support team, and track your progress.",
-    icon: User,
-    page: "PatientDashboard",
-  },
-  {
-    id: "counselor",
-    label: "I'm a counselor",
-    description: "View your clients, track how they're doing, and stay in touch.",
-    icon: Stethoscope,
-    page: "CounselorDashboard",
-  },
-  {
-    id: "probation_officer",
-    label: "I'm a case officer",
-    description: "Manage client check-ins, court dates, and required tasks.",
-    icon: Shield,
-    page: "ProbationDashboard",
-  },
+const CLIENT_OPTION = {
+  id: "client",
+  label: "I'm here for myself",
+  sub: "Check in daily, find help near you, message your support team, and track your progress.",
+  emoji: "🙋",
+  color: "#4A90E2",
+  bg: "#EFF6FF",
+  page: "Home",
+};
+
+const PROFESSIONAL_OPTIONS = [
+  { id: "counselor",        label: "Counselor",          sub: "Monitor clients, send messages, track progress." },
+  { id: "probation_officer",label: "Probation Officer",  sub: "Supervision check-ins, compliance, case notes." },
+  { id: "sponsor",          label: "Sponsor",            sub: "Support your sponsee, stay connected." },
+  { id: "recovery_coach",   label: "Recovery Coach",     sub: "Coach clients through goals and stability." },
+  { id: "case_manager",     label: "Case Manager",       sub: "Track plans, resources, and client needs." },
+  { id: "facility_admin",   label: "Facility Admin",     sub: "Manage staff accounts and program overview." },
 ];
 
 export default function RoleSelect() {
   const navigate = useNavigate();
+  const [checking, setChecking] = useState(true);
+  const [showProfessionalExpanded, setShowProfessionalExpanded] = useState(false);
 
-  const handleSelect = (role) => {
-    sessionStorage.setItem("unbound_role", role.id);
-    navigate(createPageUrl(role.page));
+  // Auto-detect role from existing profiles
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) { setChecking(false); return; }
+
+        const [counselorProfiles, memberProfiles] = await Promise.all([
+          base44.entities.CounselorProfile.filter({ counselor_email: user.email }),
+          base44.entities.MemberProfile.filter({ created_by: user.email }),
+        ]);
+
+        if (counselorProfiles.length > 0) {
+          navigate(createPageUrl("ProfessionalPortal"), { replace: true });
+          return;
+        }
+        if (memberProfiles.length > 0 && memberProfiles[0]?.onboarding_complete) {
+          navigate(createPageUrl("Home"), { replace: true });
+          return;
+        }
+      } catch {
+        // not logged in, show role select
+      }
+      setChecking(false);
+    })();
+  }, [navigate]);
+
+  const handleClient = () => {
+    sessionStorage.setItem("unbound_role", "client");
+    navigate(createPageUrl("Home"));
   };
 
+  const handleProfessional = (roleId) => {
+    sessionStorage.setItem("unbound_role", roleId);
+    navigate(createPageUrl("ProfessionalPortal"));
+  };
+
+  if (checking) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F7F7F8" }}>
+        <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#4A90E2" }} />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12" style={{ background: "#F7F7F8" }}>
-      <div className="w-full max-w-md">
-        {/* Logo / Header */}
-        <div className="text-center mb-10">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#8E8E93" }}>UNBOUND</p>
-          <h1 className="text-2xl font-semibold mb-2" style={{ color: "#1E1E1E" }}>Who's logging in?</h1>
-          <p className="text-sm" style={{ color: "#5A5A5A" }}>Pick the option that fits you.</p>
+    <div style={{ minHeight: "100vh", background: "#F7F7F8", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
+      <div style={{ width: "100%", maxWidth: 440 }}>
+
+        {/* Brand */}
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <div style={{ position: "relative", width: 60, height: 60, margin: "0 auto 16px" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, width: 44, height: 44, borderRadius: "50%", border: "2.5px solid rgba(74,144,226,0.7)" }} />
+            <div style={{ position: "absolute", bottom: 0, right: 0, width: 44, height: 44, borderRadius: "50%", border: "2.5px solid rgba(212,165,116,0.7)" }} />
+            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 12, height: 12, borderRadius: "50%", background: "#4A90E2" }} />
+          </div>
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8E8E93", marginBottom: 8 }}>UNBOUND</p>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1E1E1E", marginBottom: 6 }}>Who's logging in?</h1>
+          <p style={{ fontSize: 14, color: "#5A5A5A" }}>Pick the option that fits you.</p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {ROLES.map((role) => {
-            const Icon = role.icon;
-            return (
-              <button
-                key={role.id}
-                onClick={() => handleSelect(role)}
-                className="w-full text-left p-5 rounded-lg flex items-start gap-4"
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #D1D1D6",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  transition: "border-color 0.15s",
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.borderColor = "#4A90E2"}
-                onMouseLeave={(e) => e.currentTarget.style.borderColor = "#D1D1D6"}
-              >
-                <div
-                  className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded"
-                  style={{ background: "#F0F4FA" }}
+        {/* Client option */}
+        <button onClick={handleClient}
+          style={{
+            width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
+            background: CLIENT_OPTION.bg, border: `2px solid ${CLIENT_OPTION.color}`,
+            cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
+          }}>
+          <div style={{ width: 48, height: 48, borderRadius: 14, background: CLIENT_OPTION.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <span style={{ fontSize: 22 }}>{CLIENT_OPTION.emoji}</span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 4 }}>{CLIENT_OPTION.label}</p>
+            <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.5 }}>{CLIENT_OPTION.sub}</p>
+          </div>
+          <span style={{ fontSize: 20, color: CLIENT_OPTION.color, alignSelf: "center" }}>›</span>
+        </button>
+
+        {/* Professional section */}
+        <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 16, overflow: "hidden" }}>
+          <button
+            onClick={() => setShowProfessionalExpanded(!showProfessionalExpanded)}
+            style={{
+              width: "100%", textAlign: "left", padding: "20px", background: "none", border: "none",
+              cursor: "pointer", display: "flex", alignItems: "center", gap: 16,
+            }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ fontSize: 22 }}>💼</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 2 }}>I'm a support professional</p>
+              <p style={{ fontSize: 13, color: "#64748B" }}>Counselor, officer, sponsor, coach, or admin</p>
+            </div>
+            <span style={{ fontSize: 18, color: "#94A3B8", transform: showProfessionalExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>›</span>
+          </button>
+
+          {showProfessionalExpanded && (
+            <div style={{ borderTop: "1px solid #F1F5F9" }}>
+              {PROFESSIONAL_OPTIONS.map((opt, i) => (
+                <button key={opt.id} onClick={() => handleProfessional(opt.id)}
+                  style={{
+                    width: "100%", textAlign: "left", padding: "14px 20px",
+                    background: "none", border: "none", cursor: "pointer",
+                    borderTop: i > 0 ? "1px solid #F8FAFC" : "none",
+                    display: "flex", alignItems: "center", gap: 12,
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#F8FAFC"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}
                 >
-                  <Icon className="w-5 h-5" style={{ color: "#4A90E2" }} strokeWidth={1.5} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm mb-1" style={{ color: "#1E1E1E" }}>{role.label}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: "#5A5A5A" }}>{role.description}</p>
-                </div>
-                <div className="flex-shrink-0 self-center" style={{ color: "#8E8E93" }}>›</div>
-              </button>
-            );
-          })}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontWeight: 600, fontSize: 14, color: "#1E293B", marginBottom: 2 }}>{opt.label}</p>
+                    <p style={{ fontSize: 12, color: "#64748B" }}>{opt.sub}</p>
+                  </div>
+                  <span style={{ color: "#CBD5E1", fontSize: 16 }}>›</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        <p className="text-center text-xs mt-8" style={{ color: "#8E8E93" }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "#94A3B8", marginTop: 24 }}>
           Unbound — built for people rebuilding their lives
         </p>
       </div>
