@@ -56,7 +56,7 @@ export default function Home() {
     }
   }, [isLoading, user, profiles, profile, isCounselor, navigate]);
 
-  if (isLoading) {
+  if (isLoading || isCounselor || !profile?.onboarding_complete) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#F5F5F7" }}>
         <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#4A90E2" }} />
