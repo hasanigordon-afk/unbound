@@ -119,6 +119,10 @@ export default function PortalClientProfile({ client, user, counselorProfile, fa
         ))}
       </div>
 
+      {activeTab === "timeline" && (
+        <ClientTimeline client={client} allCheckIns={allCheckIns} facilityId={facilityId} user={user} />
+      )}
+
       {activeTab === "overview" && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
           <InfoCard label="Check-In Rate (7d)" value={`${client.engagement}%`} color={client.engagement >= 70 ? "#22C55E" : client.engagement >= 40 ? "#F59E0B" : "#EF4444"} />
