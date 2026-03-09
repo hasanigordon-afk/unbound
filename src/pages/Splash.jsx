@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "./utils";
 import { motion } from "framer-motion";
 
@@ -10,7 +11,28 @@ export default function Splash() {
   useEffect(() => {
     const t1 = setTimeout(() => setPhase("tagline"), 900);
     const t2 = setTimeout(() => setPhase("hint"), 1800);
-    const t3 = setTimeout(() => navigate(createPageUrl("RoleSelect")), 3800);
+
+    // Auto-detect returning user and skip role select
+    const autoNavigate = async () => {
+      try {
+        const user = await base44.auth.me();
+        if (user) {
+          const [counselorProfiles, memberProfiles] = await Promise.all([
+            base44.entities.CounselorProfile.filter({ counselor_email: user.email }),
+            base44.entities.MemberProfile.filter({ created_by: user.email }),
+          ]);
+          if (counselorProfiles.length > 0) {
+            navigate(createPageUrl("ProfessionalPortal"), { replace: true }); return;
+          }
+          if (memberProfiles.length > 0 && memberProfiles[0]?.onboarding_complete) {
+            navigate(createPageUrl("Home"), { replace: true }); return;
+          }
+        }
+      } catch {}
+      navigate(createPageUrl("RoleSelect"));
+    };
+
+    const t3 = setTimeout(autoNavigate, 3200);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [navigate]);
 
