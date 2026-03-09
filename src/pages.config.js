@@ -94,6 +94,7 @@ import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import utils from './pages/utils';
+import UrgentHelp from './pages/UrgentHelp';
 import __Layout from './Layout.jsx';
 
 
@@ -145,6 +146,7 @@ export const PAGES = {
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "utils": utils,
+    "UrgentHelp": UrgentHelp,
 }
 
 export const pagesConfig = {
