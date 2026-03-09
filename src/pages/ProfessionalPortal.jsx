@@ -12,7 +12,6 @@ import PortalNotes from "../components/portal/PortalNotes";
 import PortalProgress from "../components/portal/PortalProgress";
 import PortalResources from "../components/portal/PortalResources";
 import PortalSettings from "../components/portal/PortalSettings";
-import CravingAlertPanel from "../components/portal/CravingAlertPanel";
 
 function computeMetrics(participant, allCheckIns, activeAlerts) {
   const email = participant.participant_email;
@@ -155,9 +154,8 @@ export default function ProfessionalPortal() {
       case "alerts":     return <PortalAlerts {...sharedProps} onRefresh={refetchAlerts} />;
       case "notes":      return <PortalNotes {...sharedProps} />;
       case "progress":   return <PortalProgress {...sharedProps} />;
-      case "resources":      return <PortalResources {...sharedProps} />;
-      case "settings":       return <PortalSettings {...sharedProps} />;
-      case "craving_alerts": return <CravingAlertPanel {...sharedProps} />;
+      case "resources":  return <PortalResources {...sharedProps} />;
+      case "settings":   return <PortalSettings {...sharedProps} />;
       default:           return <PortalDashboard {...sharedProps} />;
     }
   };

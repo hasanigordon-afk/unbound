@@ -21,13 +21,10 @@ export default function DailyCheckIn() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     mood_rating: null,
-    craving_intensity: 0,
-    stress_level: 0,
     attended_meeting: null,
     meeting_type: null,
     connected_with_sponsor: null,
     needs_help: null,
-    relapse_risk_flag: false,
     notes: "",
   });
 
@@ -62,47 +59,40 @@ export default function DailyCheckIn() {
         participant_email: user.email,
         check_in_date: today,
         mood_rating: formData.mood_rating,
-        craving_intensity: formData.craving_intensity,
-        stress_level: formData.stress_level,
         attended_meeting: formData.attended_meeting,
         meeting_type: formData.attended_meeting ? formData.meeting_type : null,
         connected_with_sponsor: formData.connected_with_sponsor,
-        needs_help: formData.needs_help || false,
-        relapse_risk_flag: formData.relapse_risk_flag || false,
         notes: formData.notes || null,
       });
-      // Run risk detection in background
-      base44.functions.invoke("cravingAlertDetection", { participantEmail: user.email }).catch(() => {});
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["daily-checkins"]);
-      setStep(7);
-      if (formData.needs_help) {
-        setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
-      }
+    queryClient.invalidateQueries(["daily-checkins"]);
+    setStep(6);
+    if (formData.needs_help) {
+      setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
+    }
     },
   });
 
-  const TOTAL_STEPS = 6;
+  const TOTAL_STEPS = 5;
 
   const canProceed = () => {
     if (step === 1) return formData.mood_rating !== null;
-    if (step === 2) return true; // craving + stress sliders always have a value
-    if (step === 3) return formData.attended_meeting !== null;
-    if (step === 4) return !formData.attended_meeting || formData.meeting_type !== null;
-    if (step === 5) return formData.connected_with_sponsor !== null;
-    if (step === 6) return formData.needs_help !== null;
+    if (step === 2) return formData.attended_meeting !== null;
+    if (step === 3) return !formData.attended_meeting || formData.meeting_type !== null;
+    if (step === 4) return formData.connected_with_sponsor !== null;
+    if (step === 5) return formData.needs_help !== null;
     return false;
   };
 
   const handleNext = () => {
-    if (step === 3 && !formData.attended_meeting) { setStep(5); return; }
-    if (step === 6) { submitCheckInMutation.mutate(); return; }
+    if (step === 2 && !formData.attended_meeting) { setStep(4); return; }
+    if (step === 5) { submitCheckInMutation.mutate(); return; }
     setStep(step + 1);
   };
 
   const handleBack = () => {
-    if (step === 5 && !formData.attended_meeting) { setStep(3); return; }
+    if (step === 4 && !formData.attended_meeting) { setStep(2); return; }
     setStep(step - 1);
   };
 
@@ -115,7 +105,7 @@ export default function DailyCheckIn() {
   const BTN_BG = "#4A90E2";
 
   // Need-help crisis screen
-  if (step === 8) {
+  if (step === 7) {
     return (
       <div style={{ minHeight: "100vh", background: "#FEF2F2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤝</div>
@@ -157,7 +147,7 @@ export default function DailyCheckIn() {
   }
 
   // Success screen
-  if (step === 7) {
+  if (step === 6) {
     const newStreak = streak + 1;
     return (
       <div style={{ minHeight: "100vh", background: "#F0FDF4", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
@@ -255,68 +245,6 @@ export default function DailyCheckIn() {
           {step === 2 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                How are your cravings and stress?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "28px" }}>Slide to where you're at. No judgment — just honest answers.</p>
-
-              <div style={{ marginBottom: "28px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                  <p style={{ fontSize: "14px", fontWeight: "600", color: TEXT }}>Craving Intensity</p>
-                  <span style={{
-                    background: formData.craving_intensity >= 8 ? "#FEF2F2" : formData.craving_intensity >= 5 ? "#FFFBEB" : "#F0FDF4",
-                    color: formData.craving_intensity >= 8 ? "#DC2626" : formData.craving_intensity >= 5 ? "#D97706" : "#16A34A",
-                    fontWeight: "700", fontSize: "18px", padding: "4px 12px", borderRadius: "8px"
-                  }}>
-                    {formData.craving_intensity}/10
-                  </span>
-                </div>
-                <input type="range" min="0" max="10" step="1"
-                  value={formData.craving_intensity}
-                  onChange={e => setFormData({ ...formData, craving_intensity: parseInt(e.target.value) })}
-                  style={{ width: "100%", accentColor: formData.craving_intensity >= 8 ? "#EF4444" : formData.craving_intensity >= 5 ? "#F59E0B" : "#4A90E2", height: "6px", cursor: "pointer" }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4px" }}>
-                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>None</span>
-                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>Severe</span>
-                </div>
-              </div>
-
-              <div style={{ marginBottom: "28px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                  <p style={{ fontSize: "14px", fontWeight: "600", color: TEXT }}>Stress Level</p>
-                  <span style={{
-                    background: formData.stress_level >= 8 ? "#FEF2F2" : formData.stress_level >= 5 ? "#FFFBEB" : "#F0FDF4",
-                    color: formData.stress_level >= 8 ? "#DC2626" : formData.stress_level >= 5 ? "#D97706" : "#16A34A",
-                    fontWeight: "700", fontSize: "18px", padding: "4px 12px", borderRadius: "8px"
-                  }}>
-                    {formData.stress_level}/10
-                  </span>
-                </div>
-                <input type="range" min="0" max="10" step="1"
-                  value={formData.stress_level}
-                  onChange={e => setFormData({ ...formData, stress_level: parseInt(e.target.value) })}
-                  style={{ width: "100%", accentColor: formData.stress_level >= 8 ? "#EF4444" : formData.stress_level >= 5 ? "#F59E0B" : "#4A90E2", height: "6px", cursor: "pointer" }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4px" }}>
-                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>Calm</span>
-                  <span style={{ fontSize: "11px", color: TEXT_MUTED }}>Extreme</span>
-                </div>
-              </div>
-
-              {formData.craving_intensity >= 8 && (
-                <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: "12px", padding: "14px 16px" }}>
-                  <p style={{ fontSize: "13px", color: "#DC2626", fontWeight: "600", marginBottom: "4px" }}>That's a high craving score.</p>
-                  <p style={{ fontSize: "13px", color: "#5A5A5A", lineHeight: "1.5" }}>
-                    Your support team will be notified. You don't have to handle this alone.
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {step === 3 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you go to a meeting today?
               </h2>
               <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>AA, NA, SMART Recovery, or anything similar.</p>
@@ -335,7 +263,7 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 3 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 What kind of meeting?
@@ -352,7 +280,7 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 5 && (
+          {step === 4 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you connect with someone today?
