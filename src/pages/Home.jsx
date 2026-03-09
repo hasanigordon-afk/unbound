@@ -13,7 +13,7 @@ const NEEDS = [
   { label: "Jobs",           emoji: "💼", href: "FindHelpNow?category=Employment Assistance" },
   { label: "Meetings",       emoji: "🤝", href: "Meetings" },
   { label: "ID & Benefits",  emoji: "🪪", href: "FindHelpNow?category=Reentry Services" },
-  { label: "Talk to Someone",emoji: "💬", href: "ParticipantMessages" },
+  { label: "My Progress",    emoji: "📊", href: "ClientProgress" },
 ];
 
 export default function Home() {
