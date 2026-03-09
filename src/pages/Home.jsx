@@ -64,7 +64,7 @@ export default function Home() {
 
       {/* Header */}
       <div style={{ background: "#FFFFFF", padding: "28px 20px 20px", borderBottom: "1px solid #E5E7EB" }}>
-        <p style={{ fontSize: 13, color: "#8E8E93", marginBottom: 4 }}>{greeting}, {firstName}</p>
+        <p style={{ fontSize: 13, color: "#8E8E93", marginBottom: 4 }}>Welcome back, {firstName}</p>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1E1E1E", lineHeight: 1.2 }}>
           What do you need today?
         </h1>
@@ -90,7 +90,7 @@ export default function Home() {
               </div>
               <div style={{ flex: 1 }}>
                 <p style={{ color: "#FFF", fontWeight: 700, fontSize: 16, marginBottom: 2 }}>Check in for today</p>
-                <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>Takes less than 30 seconds</p>
+                <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>30 seconds. No judgment.</p>
               </div>
               <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.7)" }} />
             </div>
@@ -103,9 +103,9 @@ export default function Home() {
           }}>
             <CheckCircle className="w-6 h-6 flex-shrink-0" style={{ color: "#16A34A" }} />
             <div>
-              <p style={{ color: "#15803D", fontWeight: 600, fontSize: 15 }}>You checked in today ✓</p>
+              <p style={{ color: "#15803D", fontWeight: 600, fontSize: 15 }}>You showed up today ✓</p>
               <p style={{ color: "#16A34A", fontSize: 13 }}>
-                {streak > 1 ? `${streak} days this week — keep going.` : "Great. See you tomorrow."}
+                {streak > 1 ? `${streak} days this week. Keep moving forward.` : "Nice work. See you tomorrow."}
               </p>
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function Home() {
 
         {/* Needs grid */}
         <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
-          Help near you
+          Find help
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 28 }}>
           {NEEDS.map((n) => (
@@ -132,7 +132,7 @@ export default function Home() {
 
         {/* My Plan shortcut */}
         <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
-          Your next steps
+          Keep moving forward
         </p>
         <Link to={createPageUrl("ForwardPlan")}>
           <div style={{
@@ -143,7 +143,7 @@ export default function Home() {
             <span style={{ fontSize: 24 }}>📋</span>
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 15, fontWeight: 700, color: "#1E1E1E" }}>My Plan</p>
-              <p style={{ fontSize: 12, color: "#8E8E93" }}>Goals, milestones & what's next</p>
+              <p style={{ fontSize: 12, color: "#8E8E93" }}>Your goals & next steps</p>
             </div>
             <ChevronRight className="w-4 h-4" style={{ color: "#C7C7CC" }} />
           </div>
@@ -157,7 +157,7 @@ export default function Home() {
             <span style={{ fontSize: 24 }}>📅</span>
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 15, fontWeight: 700, color: "#1E1E1E" }}>Find a Meeting</p>
-              <p style={{ fontSize: 12, color: "#8E8E93" }}>AA, NA, SMART Recovery & more</p>
+              <p style={{ fontSize: 12, color: "#8E8E93" }}>AA, NA, SMART Recovery — in person or online</p>
             </div>
             <ChevronRight className="w-4 h-4" style={{ color: "#C7C7CC" }} />
           </div>
@@ -173,7 +173,7 @@ export default function Home() {
             <span style={{ fontSize: 26 }}>🆘</span>
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 16, fontWeight: 800, color: "#DC2626" }}>Need help right now?</p>
-              <p style={{ fontSize: 13, color: "#B91C1C" }}>Crisis, cravings, shelter, safety & more</p>
+              <p style={{ fontSize: 13, color: "#B91C1C" }}>You are not alone. Let's find the right support.</p>
             </div>
             <ChevronRight className="w-5 h-5" style={{ color: "#FCA5A5" }} />
           </div>
@@ -181,7 +181,7 @@ export default function Home() {
 
         {/* Crisis numbers */}
         <p style={{ fontSize: 12, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>
-          Always available
+          Crisis support — always free
         </p>
         <div style={{ display: "flex", gap: 10 }}>
           <a href="tel:988" style={{ flex: 1, background: "#FEF2F2", borderRadius: 14, padding: "14px 10px", textAlign: "center", textDecoration: "none" }}>
