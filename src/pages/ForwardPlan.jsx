@@ -226,20 +226,20 @@ export default function ForwardPlan() {
     return (
       <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
         <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
-          <Link to={createPageUrl("ParticipantDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
-            ← Back to Dashboard
+          <Link to={createPageUrl("PatientDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
+            ← Back to Home
           </Link>
-          <h1 style={{ marginBottom: '4px' }}>Forward Plan</h1>
+          <h1 style={{ marginBottom: '4px' }}>My Plan</h1>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            5-Year Stability Roadmap
+            Your goals and next steps — all in one place
           </p>
         </div>
 
         <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
           <div className="card">
-            <h3 className="mb-2">Build Your 5-Year Vision</h3>
+            <h3 className="mb-2">What are you working toward?</h3>
             <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
-              Define long-term goals in key stability areas. Select from predefined options or create custom goals.
+              Choose the areas that matter most to you right now. You can always update this later.
             </p>
           </div>
 
@@ -285,7 +285,7 @@ export default function ForwardPlan() {
           ))}
 
           <Button onClick={handleVisionSubmit} className="btn-primary" disabled={createPlanMutation.isPending}>
-            {createPlanMutation.isPending ? "Creating Plan..." : "Create Forward Plan"}
+            {createPlanMutation.isPending ? "Building your plan..." : "Start My Plan →"}
           </Button>
 
           <div className="p-4 text-xs" style={{ 
@@ -306,12 +306,12 @@ export default function ForwardPlan() {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
       <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
-        <Link to={createPageUrl("ParticipantDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
-          ← Back to Dashboard
+        <Link to={createPageUrl("PatientDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
+          ← Back to Home
         </Link>
-        <h1 style={{ marginBottom: '4px' }}>Forward Plan</h1>
+        <h1 style={{ marginBottom: '4px' }}>My Plan</h1>
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-          5-Year Stability Roadmap
+          Your goals and steps forward
         </p>
       </div>
 
@@ -326,7 +326,7 @@ export default function ForwardPlan() {
             </Button>
           </div>
           <div className="metric-value">{plan?.overall_completion_percentage || 0}%</div>
-          <div className="metric-label">Overall Completion</div>
+          <div className="metric-label">Steps completed</div>
           <div className="w-full h-2 mt-2" style={{ background: 'rgba(0,0,0,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
             <div style={{ width: `${plan?.overall_completion_percentage || 0}%`, height: '100%', background: 'var(--primary)' }} />
           </div>
@@ -334,26 +334,26 @@ export default function ForwardPlan() {
 
         {/* Tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {["3-Year", "1-Year", "90-Day"].map(timeline => (
+          {[{ key: "3_year", label: "Long-term (3yr)" }, { key: "1_year", label: "This year" }, { key: "90_day", label: "Next 90 days" }].map(t => (
             <button
-              key={timeline}
-              onClick={() => setActiveStep(timeline.toLowerCase().replace("-", "_"))}
+              key={t.key}
+              onClick={() => setActiveStep(t.key)}
               className="px-4 py-2 text-sm font-medium whitespace-nowrap"
               style={{
-                background: activeStep === timeline.toLowerCase().replace("-", "_") ? 'var(--primary)' : 'transparent',
-                color: activeStep === timeline.toLowerCase().replace("-", "_") ? '#FFFFFF' : 'var(--text-secondary)',
-                border: `1px solid ${activeStep === timeline.toLowerCase().replace("-", "_") ? 'var(--primary)' : 'var(--border)'}`,
+                background: activeStep === t.key ? 'var(--primary)' : 'transparent',
+                color: activeStep === t.key ? '#FFFFFF' : 'var(--text-secondary)',
+                border: `1px solid ${activeStep === t.key ? 'var(--primary)' : 'var(--border)'}`,
                 borderRadius: 'var(--radius)',
               }}
             >
-              {timeline} Milestones
+              {t.label}
             </button>
           ))}
         </div>
 
         {/* Milestones */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {getMilestonesByTimeline(activeStep === "3_year" ? "3_year" : activeStep === "1_year" ? "1_year" : "90_day").map(milestone => {
+          {getMilestonesByTimeline(activeStep).map(milestone => {
             const category = GOAL_CATEGORIES.find(c => c.id === milestone.category);
             return (
               <div
