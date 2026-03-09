@@ -27,13 +27,7 @@ export default function Home() {
     enabled: !!user,
   });
 
-  const { data: counselorProfiles, isLoading: counselorLoading } = useQuery({
-    queryKey: ["counselor-profile-home", user?.email],
-    queryFn: () => base44.entities.CounselorProfile.filter({ counselor_email: user.email }),
-    enabled: !!user,
-  });
-
-  const isLoading = userLoading || (!!user && (profilesLoading || counselorLoading));
+  const isLoading = userLoading || (!!user && profilesLoading);
 
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins-home", user?.email],
@@ -42,21 +36,14 @@ export default function Home() {
   });
 
   const profile = profiles?.[0];
-  const isCounselor = counselorProfiles?.length > 0;
 
   useEffect(() => {
-    if (isLoading) return;
-    if (!user) return;
-    if (isCounselor) {
-      navigate(createPageUrl("ProfessionalPortal"), { replace: true });
-      return;
-    }
-    if (profiles !== undefined && (!profile || !profile.onboarding_complete)) {
+    if (!isLoading && user && profiles !== undefined && (!profile || !profile.onboarding_complete)) {
       navigate(createPageUrl("Onboarding"));
     }
-  }, [isLoading, user, profiles, profile, isCounselor, navigate]);
+  }, [isLoading, user, profiles, profile, navigate]);
 
-  if (isLoading || isCounselor || !profile?.onboarding_complete) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#F5F5F7" }}>
         <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#4A90E2" }} />
@@ -190,22 +177,6 @@ export default function Home() {
           checkinRate={checkinRate}
           profile={profile}
         />
-
-        {/* ── CRAVING CONTROL CENTER BANNER ── */}
-        <Link to={createPageUrl("CravingControlCenter")} style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
-          <div style={{
-            background: "linear-gradient(135deg, #1B3A5C, #1E4A72)",
-            borderRadius: 18, padding: "20px 22px",
-            display: "flex", alignItems: "center", gap: 16,
-          }}>
-            <span style={{ fontSize: 28, flexShrink: 0 }}>🧘</span>
-            <div style={{ flex: 1 }}>
-              <p style={{ color: "#FFFFFF", fontWeight: 800, fontSize: 15, marginBottom: 2 }}>Craving Control Center</p>
-              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13 }}>Breathing, meditation, music & more</p>
-            </div>
-            <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.5)" }} />
-          </div>
-        </Link>
 
         {/* ── SECTION 7: SAVED / RECOMMENDED SUPPORT ── */}
         <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 12 }}>

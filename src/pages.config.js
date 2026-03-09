@@ -98,7 +98,6 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
-import CravingControlCenter from './pages/CravingControlCenter';
 import __Layout from './Layout.jsx';
 
 
@@ -154,7 +153,6 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
-    "CravingControlCenter": CravingControlCenter,
 }
 
 export const pagesConfig = {
