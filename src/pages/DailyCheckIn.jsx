@@ -335,7 +335,7 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 What kind of meeting?
