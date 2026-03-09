@@ -32,7 +32,7 @@ export default function ParticipantMessages() {
           </Button>
         </Link>
         <h1 style={{ marginBottom: '4px' }}>Messages</h1>
-        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Stay in touch with your support team</p>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Talk to your counselor or support contact</p>
       </div>
 
       <div className="px-6 py-6">
@@ -44,7 +44,7 @@ export default function ParticipantMessages() {
         ) : (
           <div className="card text-center py-12">
             <p style={{ fontSize: "15px", fontWeight: "600", color: "var(--text-primary)", marginBottom: "8px" }}>No messages yet</p>
-            <p style={{ color: 'var(--text-muted)', fontSize: "14px" }}>When your counselor or support team sends you a message, it will show up here.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: "14px" }}>Your messages with your counselor and support team will show up here.</p>
           </div>
         )}
       </div>

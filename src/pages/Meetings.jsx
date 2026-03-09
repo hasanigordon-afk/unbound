@@ -37,7 +37,7 @@ export default function Meetings() {
     { id: "finder", label: "Find", icon: List },
     { id: "plan", label: "My Plan", icon: Calendar },
     { id: "attendance", label: "Log", icon: ClipboardList },
-    { id: "probation", label: "P/O Appts", icon: Shield },
+    { id: "probation", label: "Appointments", icon: Shield },
   ];
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
@@ -109,7 +109,7 @@ export default function Meetings() {
       {/* Header */}
       <div className="px-5 pt-8 pb-0" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
         <h1 style={{ marginBottom: '4px' }}>Meetings</h1>
-        <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Find, plan, and track your meetings</p>
+        <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Find a meeting, save your favorites, and log when you go</p>
 
         {/* Main Tabs */}
         <div className="flex overflow-x-auto">
@@ -179,8 +179,8 @@ export default function Meetings() {
               {filtered.length === 0 ? (
                 <div className="text-center py-16 card">
                   <Calendar className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} strokeWidth={1.5} />
-                  <p style={{ color: 'var(--text-muted)' }}>No meetings found</p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Try adjusting your filters</p>
+                  <p style={{ color: 'var(--text-muted)' }}>No meetings found with those filters.</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Try changing the day or meeting type.</p>
                 </div>
               ) : (
                 filtered.map(meeting => (
@@ -232,15 +232,15 @@ export default function Meetings() {
       {showAttendModal && (
         <div className="fixed inset-0 z-50 flex items-end justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }} onClick={() => setShowAttendModal(null)}>
           <div className="w-full max-w-md p-6 rounded-2xl" style={{ background: 'var(--bg-secondary)' }} onClick={e => e.stopPropagation()}>
-            <h3 className="font-semibold mb-1">Log Attendance</h3>
+            <h3 className="font-semibold mb-1">Mark as attended</h3>
             <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>{showAttendModal.title}</p>
-            <textarea placeholder="Notes (optional)" value={attendNote} onChange={e => setAttendNote(e.target.value)} rows={2}
+            <textarea placeholder="Any notes? (optional)" value={attendNote} onChange={e => setAttendNote(e.target.value)} rows={2}
               className="w-full p-3 text-sm rounded-lg mb-4"
               style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-primary)', resize: 'none' }} />
             <div className="flex gap-3">
               <Button onClick={() => setShowAttendModal(null)} className="flex-1 btn-secondary">Cancel</Button>
               <Button onClick={() => logAttendanceMutation.mutate(showAttendModal)} className="flex-1 btn-primary" disabled={logAttendanceMutation.isPending}>
-                {logAttendanceMutation.isPending ? "Saving..." : "Log Attendance"}
+                {logAttendanceMutation.isPending ? "Saving…" : "I was there ✓"}
               </Button>
             </div>
           </div>
@@ -326,7 +326,7 @@ function MeetingCard({ meeting, isFav, attended, onToggleFav, onLogAttend }) {
           }}
         >
           <Check className="w-3.5 h-3.5" strokeWidth={2} />
-          {attended ? "Attended Today" : "I Attended"}
+          {attended ? "Went today ✓" : "I went"}
         </button>
       </div>
     </div>
