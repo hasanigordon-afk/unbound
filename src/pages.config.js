@@ -48,6 +48,8 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AftercareMonitoring from './pages/AftercareMonitoring';
+import ClientProgress from './pages/ClientProgress';
+import ClientSettings from './pages/ClientSettings';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
 import ContentfulSetup from './pages/ContentfulSetup';
@@ -96,13 +98,13 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
-import ClientProgress from './pages/ClientProgress';
-import ClientSettings from './pages/ClientSettings';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AftercareMonitoring": AftercareMonitoring,
+    "ClientProgress": ClientProgress,
+    "ClientSettings": ClientSettings,
     "Community": Community,
     "ComplianceReports": ComplianceReports,
     "ContentfulSetup": ContentfulSetup,
@@ -151,8 +153,6 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
-    "ClientProgress": ClientProgress,
-    "ClientSettings": ClientSettings,
 }
 
 export const pagesConfig = {

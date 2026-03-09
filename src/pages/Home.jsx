@@ -19,13 +19,15 @@ const NEEDS = [
 export default function Home() {
   const navigate = useNavigate();
 
-  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+  const { data: user, isLoading: userLoading } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
-  const { data: profiles, isLoading } = useQuery({
+  const { data: profiles, isLoading: profilesLoading } = useQuery({
     queryKey: ["my-profile"],
     queryFn: () => base44.entities.MemberProfile.filter({ created_by: user.email }),
     enabled: !!user,
   });
+
+  const isLoading = userLoading || (!!user && profilesLoading);
 
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins-home", user?.email],
