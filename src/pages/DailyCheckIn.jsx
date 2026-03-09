@@ -115,7 +115,7 @@ export default function DailyCheckIn() {
   const BTN_BG = "#4A90E2";
 
   // Need-help crisis screen
-  if (step === 7) {
+  if (step === 8) {
     return (
       <div style={{ minHeight: "100vh", background: "#FEF2F2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤝</div>
