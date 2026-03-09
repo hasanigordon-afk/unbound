@@ -13,7 +13,7 @@ const NAV_ITEMS = [
 
 
 
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding"];
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
