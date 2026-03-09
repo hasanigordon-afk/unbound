@@ -4,16 +4,16 @@ import { createPageUrl } from "./pages/utils";
 import { Home, CalendarCheck, MessageCircle, MapPin, TrendingUp } from "lucide-react";
 
 const NAV_ITEMS = [
-{ name: "Home", icon: Home, page: "Home" },
-{ name: "Help Near Me", icon: MapPin, page: "FindHelpNow" },
-{ name: "Check In", icon: CalendarCheck, page: "DailyCheckIn" },
-{ name: "Messages", icon: MessageCircle, page: "ParticipantMessages" },
-{ name: "My Plan", icon: TrendingUp, page: "ForwardPlan" }];
+  { name: "Home", icon: Home, page: "Home" },
+  { name: "Help Near Me", icon: MapPin, page: "FindHelpNow" },
+  { name: "Check In", icon: CalendarCheck, page: "DailyCheckIn" },
+  { name: "Messages", icon: MessageCircle, page: "ParticipantMessages" },
+  { name: "My Plan", icon: TrendingUp, page: "ForwardPlan" },
+];
 
 
 
-
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp"];
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
@@ -133,38 +133,38 @@ export default function Layout({ children, currentPageName }) {
         }
       `}</style>
 
-      {showNav &&
-      <nav className="fixed bottom-0 left-0 right-0 border-t z-50" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      {showNav && (
+        <nav className="fixed bottom-0 left-0 right-0 border-t z-50" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           <div className="max-w-lg mx-auto flex">
             {NAV_ITEMS.map(({ name, icon: Icon, page }) => {
-            const isActive = currentPageName === page;
-            return (
-              <Link
-                key={page}
-                to={createPageUrl(page)} className="text-gray-950 py-3 text-xl font-extrabold uppercase flex-1 flex flex-col items-center gap-1"
-
-                style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}>
-
+              const isActive = currentPageName === page;
+              return (
+                <Link
+                  key={page}
+                  to={createPageUrl(page)}
+                  className="flex-1 flex flex-col items-center gap-1 py-3"
+                  style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}
+                >
                   <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
                   <span className="text-[10px] font-medium">{name}</span>
-                </Link>);
-
-          })}
+                </Link>
+              );
+            })}
           </div>
         </nav>
-      }
+      )}
 
       <div className="flex-1 pb-16">
         {children}
       </div>
 
-      {showFooter &&
-      <footer className="border-t py-4 px-6 text-center" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
+      {showFooter && (
+        <footer className="border-t py-4 px-6 text-center" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
           <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
             Unbound is a support tool, not a medical provider. In an emergency, call 911 or 988.
           </p>
         </footer>
-      }
-    </div>);
-
+      )}
+    </div>
+  );
 }
