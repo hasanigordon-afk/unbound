@@ -352,7 +352,7 @@ export default function DailyCheckIn() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <div>
               <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
                 Did you connect with someone today?
