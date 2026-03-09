@@ -8,12 +8,12 @@ import NextBestStep from "../components/home/NextBestStep";
 import ProgressSnapshot from "../components/home/ProgressSnapshot";
 
 const NEEDS = [
+  { label: "Find Help",      emoji: "🗺️",  href: "FindHelpNow" },
   { label: "Housing",        emoji: "🏠", href: "FindHelpNow?category=Housing" },
   { label: "Food",           emoji: "🍽️", href: "FindHelpNow?category=Food Pantry" },
   { label: "Jobs",           emoji: "💼", href: "FindHelpNow?category=Employment Assistance" },
   { label: "Meetings",       emoji: "🤝", href: "Meetings" },
-  { label: "ID & Benefits",  emoji: "🪪", href: "FindHelpNow?category=Reentry Services" },
-  { label: "My Progress",    emoji: "📊", href: "ClientProgress" },
+  { label: "My Plan",        emoji: "📋", href: "ForwardPlan" },
 ];
 
 export default function Home() {
