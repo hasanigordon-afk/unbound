@@ -65,7 +65,6 @@ import FindHelpNow from './pages/FindHelpNow';
 import ForwardPlan from './pages/ForwardPlan';
 import GoalBoard from './pages/GoalBoard';
 import Goals from './pages/Goals';
-import Home from './pages/Home';
 import IdentityBridge from './pages/IdentityBridge';
 import Journal from './pages/Journal';
 import Lifeline from './pages/Lifeline';
@@ -98,6 +97,7 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
+import Home from './pages/Home';
 import __Layout from './Layout.jsx';
 
 
@@ -120,7 +120,6 @@ export const PAGES = {
     "ForwardPlan": ForwardPlan,
     "GoalBoard": GoalBoard,
     "Goals": Goals,
-    "Home": Home,
     "IdentityBridge": IdentityBridge,
     "Journal": Journal,
     "Lifeline": Lifeline,
@@ -153,6 +152,7 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
+    "Home": Home,
 }
 
 export const pagesConfig = {
