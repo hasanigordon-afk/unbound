@@ -155,8 +155,9 @@ export default function ProfessionalPortal() {
       case "alerts":     return <PortalAlerts {...sharedProps} onRefresh={refetchAlerts} />;
       case "notes":      return <PortalNotes {...sharedProps} />;
       case "progress":   return <PortalProgress {...sharedProps} />;
-      case "resources":  return <PortalResources {...sharedProps} />;
-      case "settings":   return <PortalSettings {...sharedProps} />;
+      case "resources":      return <PortalResources {...sharedProps} />;
+      case "settings":       return <PortalSettings {...sharedProps} />;
+      case "craving_alerts": return <CravingAlertPanel {...sharedProps} />;
       default:           return <PortalDashboard {...sharedProps} />;
     }
   };
