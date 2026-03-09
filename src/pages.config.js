@@ -93,8 +93,9 @@ import SavedResources from './pages/SavedResources';
 import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
-import utils from './pages/utils';
 import UrgentHelp from './pages/UrgentHelp';
+import utils from './pages/utils';
+import ProfessionalPortal from './pages/ProfessionalPortal';
 import __Layout from './Layout.jsx';
 
 
@@ -145,8 +146,9 @@ export const PAGES = {
     "Splash": Splash,
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
-    "utils": utils,
     "UrgentHelp": UrgentHelp,
+    "utils": utils,
+    "ProfessionalPortal": ProfessionalPortal,
 }
 
 export const pagesConfig = {
