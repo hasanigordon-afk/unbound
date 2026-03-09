@@ -25,10 +25,10 @@ export default function ParticipantMessages() {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
       <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
-        <Link to={createPageUrl("ParticipantDashboard")}>
+        <Link to={createPageUrl("PatientDashboard")}>
           <Button variant="ghost" size="sm" className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" strokeWidth={1.5} />
-            Back to Dashboard
+            Back to Home
           </Button>
         </Link>
         <h1 style={{ marginBottom: '4px' }}>Messages</h1>

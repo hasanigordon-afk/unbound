@@ -35,11 +35,13 @@ const SORT_OPTIONS = [
 
 export default function FindHelpNow() {
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const urlCategory = new URLSearchParams(location.search).get("category") || "";
   const [userLocation, setUserLocation] = useState(null);
   const [locationError, setLocationError] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
   const [radius, setRadius] = useState(25);
-  const [categoryFilter, setCategoryFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState(urlCategory);
   const [sortBy, setSortBy] = useState("nearest");
   const [medicaidOnly, setMedicaidOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
