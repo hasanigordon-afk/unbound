@@ -157,7 +157,7 @@ export default function DailyCheckIn() {
   }
 
   // Success screen
-  if (step === 6) {
+  if (step === 7) {
     const newStreak = streak + 1;
     return (
       <div style={{ minHeight: "100vh", background: "#F0FDF4", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
