@@ -77,12 +77,15 @@ export default function RecoveryNetwork() {
 
       {/* Tabs */}
       <div style={{ display: "flex", gap: 0, borderBottom: "1px solid rgba(255,255,255,0.08)", paddingLeft: 20, paddingRight: 20 }}>
-        {TABS.map(({ id, label, icon: Icon }) => (
-          <button key={id} onClick={() => setTab(id)} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "10px 6px 12px", background: "none", border: "none", borderBottom: tab === id ? "2px solid #3B82F6" : "2px solid transparent", cursor: "pointer", marginBottom: -1 }}>
-            <Icon style={{ width: 18, height: 18, color: tab === id ? "#3B82F6" : "rgba(255,255,255,0.35)" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: tab === id ? "#3B82F6" : "rgba(255,255,255,0.35)" }}>{label}</span>
-          </button>
-        ))}
+        {TABS.map((tabItem) => {
+          const TabIcon = tabItem.icon;
+          return (
+            <button key={tabItem.id} onClick={() => setTab(tabItem.id)} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "10px 6px 12px", background: "none", border: "none", borderBottom: tab === tabItem.id ? "2px solid #3B82F6" : "2px solid transparent", cursor: "pointer", marginBottom: -1 }}>
+              <TabIcon style={{ width: 18, height: 18, color: tab === tabItem.id ? "#3B82F6" : "rgba(255,255,255,0.35)" }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: tab === tabItem.id ? "#3B82F6" : "rgba(255,255,255,0.35)" }}>{tabItem.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       <div style={{ padding: "20px 20px 0" }}>
