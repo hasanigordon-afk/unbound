@@ -512,12 +512,3 @@ function hexToRgb(hex) {
   const b = parseInt(hex.slice(5,7), 16);
   return `${r},${g},${b}`;
 }
-
-const MUTED = "rgba(255,255,255,0.32)";
-const DIM   = "rgba(255,255,255,0.6)";
-const GLASS = {
-  background: "rgba(255,255,255,0.055)",
-  border: "1px solid rgba(255,255,255,0.10)",
-  backdropFilter: "blur(18px)",
-  WebkitBackdropFilter: "blur(18px)",
-};

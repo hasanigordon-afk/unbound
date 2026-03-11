@@ -5,7 +5,7 @@ import { Home, Compass, Users, MessageCircle, User } from "lucide-react";
 
 const NAV_ITEMS = [
   { name: "Home",       icon: Home,          page: "Home" },
-  { name: "Resources",  icon: Map,           page: "FindHelpNow" },
+  { name: "Resources",  icon: Compass,       page: "FindHelpNow" },
   { name: "Mentorship", icon: Users,         page: "Mentors" },
   { name: "Messages",   icon: MessageCircle, page: "ParticipantMessages" },
   { name: "Profile",    icon: User,          page: "Profile" },
