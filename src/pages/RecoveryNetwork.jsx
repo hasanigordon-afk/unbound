@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Users, Globe, UserCheck, ChevronRight, MessageCircle, Loader2 } from "lucide-react";
+import { Users, Globe, UserCheck, ChevronRight, Loader2 } from "lucide-react";
 import NetworkDirectory from "@/components/network/NetworkDirectory";
 import RecoveryCircleList from "@/components/network/RecoveryCircleList";
 import CircleView from "@/components/network/CircleView";
