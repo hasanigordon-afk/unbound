@@ -134,7 +134,13 @@ export default function Layout({ children, currentPageName }) {
       `}</style>
 
       {showNav && (
-        <nav className="fixed bottom-0 left-0 right-0 border-t z-50" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        <nav className="fixed bottom-0 left-0 right-0 z-50" style={{
+          background: 'rgba(10,15,30,0.92)',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+        }}>
           <div className="max-w-lg mx-auto flex">
             {NAV_ITEMS.map(({ name, icon: Icon, page }) => {
               const isActive = currentPageName === page;
@@ -143,9 +149,16 @@ export default function Layout({ children, currentPageName }) {
                   key={page}
                   to={createPageUrl(page)}
                   className="flex-1 flex flex-col items-center gap-1 py-3"
-                  style={{ color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}
+                  style={{ color: isActive ? '#3B82F6' : 'rgba(255,255,255,0.4)', textDecoration: 'none' }}
                 >
-                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+                  <div style={{
+                    padding: '4px 12px',
+                    borderRadius: 10,
+                    background: isActive ? 'rgba(59,130,246,0.15)' : 'transparent',
+                    transition: 'background 0.15s ease',
+                  }}>
+                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+                  </div>
                   <span className="text-[10px] font-medium">{name}</span>
                 </Link>
               );
