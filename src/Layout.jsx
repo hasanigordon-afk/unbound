@@ -20,7 +20,7 @@ export default function Layout({ children, currentPageName }) {
   const showFooter = !HIDE_NAV_PAGES.includes(currentPageName);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F5F5F7' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0A0F1E' }}>
       <style>{`
         .top-nav-safe { padding-top: env(safe-area-inset-top, 0px); }
       `}</style>
