@@ -62,7 +62,15 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
 
   const { profile, checkIns } = metrics;
   const recent = checkIns.slice(0, 14);
-  const { stabilityScore, stabilityLabel, stabilityColor } = metrics;
+
+  const stabilityMeta = metrics.stabilityScore >= 80
+    ? { label: "Stable",    bg: "#F0FDF4", border: "#86EFAC", text: "#16A34A", bar: "#22C55E" }
+    : metrics.stabilityScore >= 50
+    ? { label: "At Risk",   bg: "#FFFBEB", border: "#FDE68A", text: "#D97706", bar: "#F59E0B" }
+    : { label: "High Risk", bg: "#FEF2F2", border: "#FCA5A5", text: "#DC2626", bar: "#EF4444" };
+
+  const hasHousing    = !!profile.housing_status && profile.housing_status !== "none" && profile.housing_status !== "unstable";
+  const hasEmployment = !!profile.employment_status && profile.employment_status !== "none" && profile.employment_status !== "unemployed";
 
   return (
     <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
@@ -104,71 +112,58 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
         )}
 
         {/* Recovery Stability Score */}
-        <div className="p-4 rounded-xl" style={{ background: "#FFF", border: `2px solid ${stabilityColor}40` }}>
-          <div className="flex items-center justify-between mb-3">
+        <div style={{ background: stabilityMeta.bg, border: `1px solid ${stabilityMeta.border}`, borderRadius: 14, padding: "16px 18px" }}>
+          <div className="flex items-center justify-between mb-2">
             <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#8E8E93" }}>Recovery Stability Score</p>
-            <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: `${stabilityColor}18`, color: stabilityColor, border: `1px solid ${stabilityColor}40` }}>
-              {stabilityLabel}
+            <span style={{ fontSize: 12, fontWeight: 700, background: "#FFF", borderRadius: 20, padding: "2px 10px", color: stabilityMeta.text, border: `1px solid ${stabilityMeta.border}` }}>
+              {stabilityMeta.label}
             </span>
           </div>
-          <div className="flex items-center gap-4 mb-3">
-            <p className="text-4xl font-black" style={{ color: stabilityColor, lineHeight: 1 }}>{stabilityScore}</p>
-            <div className="flex-1">
-              <div className="h-3 rounded-full overflow-hidden" style={{ background: "#F0F0F3" }}>
-                <div style={{ width: `${stabilityScore}%`, height: "100%", background: stabilityColor, borderRadius: 99 }} />
-              </div>
-              <div className="flex justify-between mt-1">
-                <span className="text-xs" style={{ color: "#EF4444" }}>High Risk</span>
-                <span className="text-xs" style={{ color: "#F59E0B" }}>At Risk</span>
-                <span className="text-xs" style={{ color: "#10B981" }}>Stable</span>
-              </div>
-            </div>
+          <p style={{ fontSize: 44, fontWeight: 900, color: stabilityMeta.text, lineHeight: 1 }}>
+            {metrics.stabilityScore}<span style={{ fontSize: 18, fontWeight: 600, color: "#8E8E93" }}>/100</span>
+          </p>
+          <div style={{ height: 6, borderRadius: 3, background: "rgba(0,0,0,0.08)", marginTop: 10, overflow: "hidden" }}>
+            <div style={{ width: `${metrics.stabilityScore}%`, height: "100%", background: stabilityMeta.bar, borderRadius: 3 }} />
           </div>
-          {/* 5 Recovery Indicators */}
-          <div className="grid grid-cols-5 gap-2 text-center">
+          <p className="text-xs mt-2" style={{ color: "#8E8E93" }}>
+            {metrics.stabilityScore >= 80 ? "Client is on track — keep monitoring." :
+             metrics.stabilityScore >= 50 ? "Some risk factors present. Engagement recommended." :
+             "High risk — immediate outreach advised."}
+          </p>
+        </div>
+
+        {/* 5 Recovery Indicators */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Recovery Indicators (Last 7 Days)</p>
+          <div className="flex flex-col gap-2">
             {[
-              { icon: "🔥", label: "Streak",   value: `${metrics.streak ?? 0}d`,              good: (metrics.streak ?? 0) >= 3 },
-              { icon: "🤝", label: "Meetings",  value: metrics.weeklyMeetings,                  good: metrics.weeklyMeetings > 0 },
-              { icon: "📞", label: "Sponsor",   value: metrics.sponsorContacts,                 good: metrics.sponsorContacts > 0 },
-              { icon: "🏠", label: "Housing",   value: profile?.housing_status    || "—",       good: !!profile?.housing_status },
-              { icon: "💼", label: "Employed",  value: profile?.employment_status || "—",       good: profile?.employment_status === "employed" },
+              { label: "Daily Check-In Streak", value: metrics.streak > 0 ? `🔥 ${metrics.streak} day${metrics.streak !== 1 ? "s" : ""}` : "No streak", done: metrics.streak >= 3, sub: metrics.lastCheckIn ? `Last: ${metrics.daysSinceCheckIn}d ago` : "Never checked in" },
+              { label: "Meeting Attendance",     value: `${metrics.weeklyMeetings} this week`, done: metrics.weeklyMeetings > 0, sub: metrics.noMeetings ? "⚠ None logged this week" : "On track" },
+              { label: "Mentor / Sponsor Contact", value: `${metrics.sponsorContacts} this week`, done: metrics.sponsorContacts > 0, sub: metrics.sponsorContacts === 0 ? "⚠ No contact logged" : "Contact maintained" },
+              { label: "Housing Status",          value: profile.housing_status ? profile.housing_status.replace(/_/g, " ") : "Not recorded", done: hasHousing, sub: profile.housing_status || "Update profile to track" },
+              { label: "Employment Progress",     value: profile.employment_status ? profile.employment_status.replace(/_/g, " ") : "Not recorded", done: hasEmployment, sub: profile.employment_status || "Update profile to track" },
             ].map(ind => (
-              <div key={ind.label} className="p-2 rounded-lg" style={{ background: ind.good ? "#F0FDF4" : "#FFF7ED", border: `1px solid ${ind.good ? "#BBF7D0" : "#FDE68A"}` }}>
-                <p style={{ fontSize: 16 }}>{ind.icon}</p>
-                <p className="text-xs font-bold mt-1 truncate" style={{ color: ind.good ? "#15803D" : "#92400E" }}>{ind.value}</p>
-                <p className="text-xs" style={{ color: "#8E8E93" }}>{ind.label}</p>
+              <div key={ind.label} style={{
+                background: "#FFF", border: "1px solid #E5E7EB", borderRadius: 10, padding: "12px 14px",
+                borderLeft: `3px solid ${ind.done ? "#22C55E" : "#EF4444"}`,
+                display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+              }}>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold" style={{ color: "#1E1E1E" }}>{ind.label}</p>
+                  <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>{ind.sub}</p>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-sm font-bold" style={{ color: ind.done ? "#16A34A" : "#DC2626" }}>{ind.value}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Engagement Metrics */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Engagement (Last 7 Days)</p>
-          <div className="grid grid-cols-4 gap-2">
-            <StatBox label="Eng. Score" value={metrics.engagementScore} color="#4A90E2" bg="#EBF3FD" />
-            <StatBox label="Meetings" value={metrics.weeklyMeetings} color="#22C55E" bg="#F0FDF4" />
-            <StatBox label="Avg Mood" value={metrics.avgMood} color="#F59E0B" bg="#FFFBEB" />
-            <StatBox label="Avg Craving" value={metrics.avgCraving} color={parseFloat(metrics.avgCraving) >= 4 ? "#EF4444" : "#6366F1"} bg="#F5F3FF" />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-4 rounded-xl" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
-            <p className="text-xs" style={{ color: "#8E8E93" }}>Sobriety Streak</p>
-            <p className="text-2xl font-bold mt-1" style={{ color: "#22C55E" }}>
-              {metrics.sobrietyDays !== null ? `${metrics.sobrietyDays}d` : "—"}
-            </p>
-          </div>
-          <div className="p-4 rounded-xl" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
-            <p className="text-xs" style={{ color: "#8E8E93" }}>Last Check-In</p>
-            <p className="text-sm font-semibold mt-1" style={{ color: "#1E1E1E" }}>
-              {metrics.lastCheckIn || "Never"}
-            </p>
-            {metrics.lastCheckIn && (
-              <p className="text-xs" style={{ color: "#8E8E93" }}>{metrics.daysSinceCheckIn} days ago</p>
-            )}
-          </div>
+        <div className="grid grid-cols-3 gap-2">
+          <StatBox label="Streak" value={metrics.streak > 0 ? `${metrics.streak}d` : "—"} color="#F59E0B" bg="#FFFBEB" />
+          <StatBox label="Avg Mood" value={metrics.avgMood} color="#22C55E" bg="#F0FDF4" />
+          <StatBox label="Avg Craving" value={metrics.avgCraving ? `${metrics.avgCraving}/10` : "—"} color={parseFloat(metrics.avgCraving) >= 7 ? "#EF4444" : "#6366F1"} bg="#F5F3FF" />
         </div>
 
         {/* Recent Check-In History */}

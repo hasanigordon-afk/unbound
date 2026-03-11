@@ -208,9 +208,9 @@ export default function AftercareMonitoring() {
   return (
     <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
       <div className="px-5 pt-6 pb-4" style={{ background: "#FFF", borderBottom: "1px solid #E5E7EB" }}>
-        <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Aftercare Monitoring</h1>
+        <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Recovery Accountability</h1>
         <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>
-          Post-discharge engagement for {profiles.length} client{profiles.length !== 1 ? "s" : ""}
+          {profiles.length} client{profiles.length !== 1 ? "s" : ""} · Counselors, Probation Officers &amp; Sponsors
         </p>
 
         <div className="flex gap-1 mt-4 overflow-x-auto pb-1">
