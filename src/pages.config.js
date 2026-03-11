@@ -56,6 +56,7 @@ import ContentfulSetup from './pages/ContentfulSetup';
 import CounselorDashboard from './pages/CounselorDashboard';
 import CounselorMessaging from './pages/CounselorMessaging';
 import CounselorPortal from './pages/CounselorPortal';
+import CravingControlCenter from './pages/CravingControlCenter';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
 import FacilityDashboard from './pages/FacilityDashboard';
@@ -87,19 +88,19 @@ import ProbationDashboard from './pages/ProbationDashboard';
 import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
 import ProfessionalPortal from './pages/ProfessionalPortal';
 import Profile from './pages/Profile';
+import RecoveryNetwork from './pages/RecoveryNetwork';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
 import Resources from './pages/Resources';
 import ResourcesNearYou from './pages/ResourcesNearYou';
 import RoleSelect from './pages/RoleSelect';
 import SavedResources from './pages/SavedResources';
+import SecondChanceMap from './pages/SecondChanceMap';
 import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
-import CravingControlCenter from './pages/CravingControlCenter';
-import RecoveryNetwork from './pages/RecoveryNetwork';
 import __Layout from './Layout.jsx';
 
 
@@ -113,6 +114,7 @@ export const PAGES = {
     "CounselorDashboard": CounselorDashboard,
     "CounselorMessaging": CounselorMessaging,
     "CounselorPortal": CounselorPortal,
+    "CravingControlCenter": CravingControlCenter,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
     "FacilityDashboard": FacilityDashboard,
@@ -144,19 +146,19 @@ export const PAGES = {
     "ProbationOfficerDashboard": ProbationOfficerDashboard,
     "ProfessionalPortal": ProfessionalPortal,
     "Profile": Profile,
+    "RecoveryNetwork": RecoveryNetwork,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
     "Resources": Resources,
     "ResourcesNearYou": ResourcesNearYou,
     "RoleSelect": RoleSelect,
     "SavedResources": SavedResources,
+    "SecondChanceMap": SecondChanceMap,
     "Splash": Splash,
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
-    "CravingControlCenter": CravingControlCenter,
-    "RecoveryNetwork": RecoveryNetwork,
 }
 
 export const pagesConfig = {
