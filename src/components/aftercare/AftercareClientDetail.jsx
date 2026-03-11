@@ -103,6 +103,45 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
           </div>
         )}
 
+        {/* Recovery Stability Score */}
+        <div className="p-4 rounded-xl" style={{ background: "#FFF", border: `2px solid ${stabilityColor}40` }}>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#8E8E93" }}>Recovery Stability Score</p>
+            <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: `${stabilityColor}18`, color: stabilityColor, border: `1px solid ${stabilityColor}40` }}>
+              {stabilityLabel}
+            </span>
+          </div>
+          <div className="flex items-center gap-4 mb-3">
+            <p className="text-4xl font-black" style={{ color: stabilityColor, lineHeight: 1 }}>{stabilityScore}</p>
+            <div className="flex-1">
+              <div className="h-3 rounded-full overflow-hidden" style={{ background: "#F0F0F3" }}>
+                <div style={{ width: `${stabilityScore}%`, height: "100%", background: stabilityColor, borderRadius: 99 }} />
+              </div>
+              <div className="flex justify-between mt-1">
+                <span className="text-xs" style={{ color: "#EF4444" }}>High Risk</span>
+                <span className="text-xs" style={{ color: "#F59E0B" }}>At Risk</span>
+                <span className="text-xs" style={{ color: "#10B981" }}>Stable</span>
+              </div>
+            </div>
+          </div>
+          {/* 5 Recovery Indicators */}
+          <div className="grid grid-cols-5 gap-2 text-center">
+            {[
+              { icon: "🔥", label: "Streak",   value: `${metrics.streak ?? 0}d`,              good: (metrics.streak ?? 0) >= 3 },
+              { icon: "🤝", label: "Meetings",  value: metrics.weeklyMeetings,                  good: metrics.weeklyMeetings > 0 },
+              { icon: "📞", label: "Sponsor",   value: metrics.sponsorContacts,                 good: metrics.sponsorContacts > 0 },
+              { icon: "🏠", label: "Housing",   value: profile?.housing_status    || "—",       good: !!profile?.housing_status },
+              { icon: "💼", label: "Employed",  value: profile?.employment_status || "—",       good: profile?.employment_status === "employed" },
+            ].map(ind => (
+              <div key={ind.label} className="p-2 rounded-lg" style={{ background: ind.good ? "#F0FDF4" : "#FFF7ED", border: `1px solid ${ind.good ? "#BBF7D0" : "#FDE68A"}` }}>
+                <p style={{ fontSize: 16 }}>{ind.icon}</p>
+                <p className="text-xs font-bold mt-1 truncate" style={{ color: ind.good ? "#15803D" : "#92400E" }}>{ind.value}</p>
+                <p className="text-xs" style={{ color: "#8E8E93" }}>{ind.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Engagement Metrics */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Engagement (Last 7 Days)</p>
