@@ -40,6 +40,7 @@ function CheckInGrid({ checkIns }) {
 }
 
 export default function ClientProgress() {
+  const [activeTab, setActiveTab] = useState("overview");
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
   const { data: checkIns = [] } = useQuery({
