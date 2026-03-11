@@ -79,24 +79,28 @@ export default function Home() {
   }, []);
 
   const { data: user,     isLoading: userLoading }     = useQuery({ queryKey: ["user"],      queryFn: () => base44.auth.me() });
-  const { data: profiles, isLoading: profilesLoading } = useQuery({
-    queryKey: ["my-profile"],
+  const { data: profiles, isLoading: profilesLoading, isFetched: profilesFetched } = useQuery({
+    queryKey: ["my-profile", user?.email],
     queryFn:  () => base44.entities.MemberProfile.filter({ created_by: user.email }),
-    enabled:  !!user,
+    enabled:  !!user?.email,
+    staleTime: 30_000,
   });
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins-home", user?.email],
     queryFn:  () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 90),
-    enabled:  !!user,
+    enabled:  !!user?.email,
   });
 
   const isLoading = userLoading || (!!user && profilesLoading);
   const profile   = profiles?.[0];
 
   useEffect(() => {
-    if (!isLoading && user && profiles !== undefined && (!profile || !profile.onboarding_complete))
+    if (!user || !profilesFetched) return;
+    const profile = profiles?.[0];
+    if (!profile || !profile.onboarding_complete) {
       navigate(createPageUrl("Onboarding"));
-  }, [isLoading, user, profiles, profile, navigate]);
+    }
+  }, [user, profiles, profilesFetched, navigate]);
 
   if (isLoading) return (
     <div style={{ background: "#070D1A", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
