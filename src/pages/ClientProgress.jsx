@@ -120,13 +120,11 @@ export default function ClientProgress() {
         </div>
       </div>
 
-      {activeTab === "insights" && (
+      {activeTab === "insights" ? (
         <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
           <RecoveryInsightsTab checkIns={checkIns} />
         </div>
-      )}
-
-      {activeTab === "overview" && (
+      ) : (
       <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
 
         {/* Streak hero */}
