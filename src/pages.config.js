@@ -99,6 +99,7 @@ import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
 import CravingControlCenter from './pages/CravingControlCenter';
+import SecondChanceMap from './pages/SecondChanceMap';
 import __Layout from './Layout.jsx';
 
 
@@ -155,6 +156,7 @@ export const PAGES = {
     "UrgentHelp": UrgentHelp,
     "utils": utils,
     "CravingControlCenter": CravingControlCenter,
+    "SecondChanceMap": SecondChanceMap,
 }
 
 export const pagesConfig = {
