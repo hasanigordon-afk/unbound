@@ -77,6 +77,32 @@ export default function AftercareMonitoring() {
 
       const { score: engagementScore, level: engagementLevel } = calcEngagementScore(myCheckIns);
 
+      // ── Recovery Stability Score (80-100 Stable, 50-79 At Risk, 0-49 High Risk) ──
+      const avgCravingFloat = last7.length
+        ? last7.reduce((s, c) => s + (c.craving_intensity ?? 5), 0) / last7.length
+        : 5;
+      const stabilityCheckinScore = Math.min(last7.length / 7, 1) * 25;
+      const stabilityMeetingScore = last7.length
+        ? (last7.filter(c => c.attended_meeting).length / last7.length) * 25 : 0;
+      const stabilitySponsorScore = last7.length
+        ? (last7.filter(c => c.connected_with_sponsor).length / last7.length) * 25 : 0;
+      const stabilityCravingScore = Math.max(0, (10 - avgCravingFloat) / 10) * 25;
+      const stabilityScore = Math.round(
+        stabilityCheckinScore + stabilityMeetingScore + stabilitySponsorScore + stabilityCravingScore
+      );
+      const stabilityLabel = stabilityScore >= 80 ? "Stable" : stabilityScore >= 50 ? "At Risk" : "High Risk";
+      const stabilityColor = stabilityScore >= 80 ? "#10B981" : stabilityScore >= 50 ? "#F59E0B" : "#EF4444";
+
+      // Check-in streak
+      const streak = (() => {
+        let count = 0; let cur = new Date(); cur.setHours(0,0,0,0);
+        for (const c of myCheckIns) {
+          const d = new Date(c.check_in_date); d.setHours(0,0,0,0);
+          if (Math.round((cur - d) / 86400000) <= 1) { count++; cur = d; } else break;
+        }
+        return count;
+      })();
+
       // Existing flags (backward compatible)
       const missedCheckIns = daysSinceCheckIn >= 3;
       const highCravings   = avgCraving && parseFloat(avgCraving) >= 4;
@@ -142,6 +168,10 @@ export default function AftercareMonitoring() {
         moodDropPattern,
         isolationFlag,
         riskColor,
+        stabilityScore,
+        stabilityLabel,
+        stabilityColor,
+        streak,
       };
     });
   }, [profiles, allCheckIns, alerts]);
