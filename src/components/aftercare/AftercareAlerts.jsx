@@ -4,14 +4,15 @@ import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const ALERT_RULES = [
-  { key: "relapseFlag",            label: "⚡ Relapse risk flag raised",      color: "#DC2626" },
-  { key: "highCravingImmediate",   label: "🔥 High craving intensity (8+/10)", color: "#EF4444" },
-  { key: "missedCheckIns",         label: "📋 Missed 3+ check-ins",           color: "#EF4444" },
-  { key: "moderateCravingPattern", label: "↑ Elevated cravings 3+ days",      color: "#EA580C" },
-  { key: "moodDropPattern",        label: "↓ Low mood for 3+ days",           color: "#F59E0B" },
-  { key: "isolationFlag",          label: "🚪 Isolation pattern detected",     color: "#F59E0B" },
-  { key: "highCravings",           label: "⚠ High avg craving intensity",     color: "#F59E0B" },
-  { key: "noMeetings",             label: "No meetings this week",             color: "#8E8E93" },
+  { key: "relapseFlag",            label: "⚡ Relapse risk flag raised",         color: "#DC2626" },
+  { key: "highCravingImmediate",   label: "🔥 High craving intensity (8+/10)",   color: "#EF4444" },
+  { key: "missedCheckIns",         label: "📋 Missed 3+ check-ins",              color: "#EF4444" },
+  { key: "stabilityDropped",       label: "📉 Stability score below 50",         color: "#EF4444" },
+  { key: "moderateCravingPattern", label: "↑ Elevated cravings 3+ days",         color: "#EA580C" },
+  { key: "moodDropPattern",        label: "↓ Low mood for 3+ days",              color: "#F59E0B" },
+  { key: "isolationFlag",          label: "🚪 No mentor contact 5+ days",        color: "#F59E0B" },
+  { key: "highCravings",           label: "⚠ High avg craving intensity",        color: "#F59E0B" },
+  { key: "noMeetings",             label: "📅 No meetings logged this week",     color: "#8E8E93" },
 ];
 
 export default function AftercareAlerts({ clientMetrics, counselorEmail, onSelectClient }) {
@@ -43,11 +44,13 @@ export default function AftercareAlerts({ clientMetrics, counselorEmail, onSelec
     },
   });
 
-  const alertedClients = clientMetrics.filter(
+  const alertedClients = clientMetrics
+    .map(m => ({ ...m, stabilityDropped: m.stabilityScore < 50 }))
+    .filter(
     (m) =>
       m.missedCheckIns || m.highCravings || m.noMeetings || m.flagged ||
       m.relapseFlag || m.highCravingImmediate || m.moderateCravingPattern ||
-      m.moodDropPattern || m.isolationFlag
+      m.moodDropPattern || m.isolationFlag || m.stabilityDropped
   ).sort((a, b) => {
     // Sort: relapse flag first, then high craving, then others
     if (a.relapseFlag && !b.relapseFlag) return -1;
