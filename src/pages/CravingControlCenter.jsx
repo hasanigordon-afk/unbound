@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Sparkles, BookOpen, Play, Music, Headphones, Wind, Heart, Sun, Menu, X, Brain } from "lucide-react";
-import MeditationSection from "../components/cravingcontrol/MeditationSection";
-import JournalSection from "../components/cravingcontrol/JournalSection";
-import VideosSection from "../components/cravingcontrol/VideosSection";
-import MusicSection from "../components/cravingcontrol/MusicSection";
-import BinauralBeatsSection from "../components/cravingcontrol/BinauralBeatsSection";
-import BreathingResetSection from "../components/cravingcontrol/BreathingResetSection";
-import EmergencyCalmSection from "../components/cravingcontrol/EmergencyCalmSection";
-import MotivationBoostSection from "../components/cravingcontrol/MotivationBoostSection";
+import MeditationSection from "../components/cravingcontrol/MeditationSection.jsx";
+import JournalSection from "../components/cravingcontrol/JournalSection.jsx";
+import VideosSection from "../components/cravingcontrol/VideosSection.jsx";
+import MusicSection from "../components/cravingcontrol/MusicSection.jsx";
+import BinauralBeatsSection from "../components/cravingcontrol/BinauralBeatsSection.jsx";
+import BreathingResetSection from "../components/cravingcontrol/BreathingResetSection.jsx";
+import EmergencyCalmSection from "../components/cravingcontrol/EmergencyCalmSection.jsx";
+import MotivationBoostSection from "../components/cravingcontrol/MotivationBoostSection.jsx";
 
 const NAV_ITEMS = [
   { id: "emergency", label: "Emergency Calm", icon: Heart, color: "#DC2626", activeBg: "#FEF2F2", badge: "SOS" },
