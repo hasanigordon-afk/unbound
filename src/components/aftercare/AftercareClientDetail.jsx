@@ -62,6 +62,7 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
 
   const { profile, checkIns } = metrics;
   const recent = checkIns.slice(0, 14);
+  const { stabilityScore, stabilityLabel, stabilityColor } = metrics;
 
   return (
     <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
