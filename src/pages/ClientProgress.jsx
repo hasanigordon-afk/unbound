@@ -270,6 +270,7 @@ export default function ClientProgress() {
   );
 }
 
+
 function StatCard({ icon, label, value, sub, color }) {
   return (
     <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 16, padding: "18px 16px" }}>
