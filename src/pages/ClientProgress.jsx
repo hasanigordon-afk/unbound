@@ -96,11 +96,37 @@ export default function ClientProgress() {
     <div style={{ background: "#F5F5F7", minHeight: "100vh", paddingBottom: 100 }}>
 
       {/* Header */}
-      <div style={{ background: "#FFFFFF", padding: "32px 20px 24px", borderBottom: "1px solid #E5E7EB" }}>
+      <div style={{ background: "#FFFFFF", padding: "32px 20px 16px", borderBottom: "1px solid #E5E7EB" }}>
         <p style={{ fontSize: 13, color: "#8E8E93", fontWeight: 500, marginBottom: 4 }}>Your journey</p>
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#1E1E1E", lineHeight: 1.25 }}>My Progress</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#1E1E1E", lineHeight: 1.25, marginBottom: 16 }}>My Progress</h1>
+        {/* Tab switcher */}
+        <div style={{ display: "flex", gap: 6 }}>
+          {[
+            { id: "overview", label: "Overview" },
+            { id: "insights", label: "Recovery Insights" },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                padding: "8px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, border: "none", cursor: "pointer",
+                background: activeTab === tab.id ? "#1E1E1E" : "#F0F0F3",
+                color: activeTab === tab.id ? "#FFF" : "#5A5A5A",
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
+      {activeTab === "insights" && (
+        <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+          <RecoveryInsightsTab checkIns={checkIns} />
+        </div>
+      )}
+
+      {activeTab === "overview" && (
       <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
 
         {/* Streak hero */}
