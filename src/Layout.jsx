@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, CalendarCheck, MessageCircle, TrendingUp, Settings, Brain } from "lucide-react";
+import { Home, Map, Users, MessageCircle, User } from "lucide-react";
 
 const NAV_ITEMS = [
-  { name: "Home",      icon: Home,          page: "Home" },
-  { name: "Check In",  icon: CalendarCheck, page: "DailyCheckIn" },
-  { name: "Calm",      icon: Brain,         page: "CravingControlCenter" },
-  { name: "Progress",  icon: TrendingUp,    page: "ClientProgress" },
-  { name: "Messages",  icon: MessageCircle, page: "ParticipantMessages" },
+  { name: "Home",       icon: Home,          page: "Home" },
+  { name: "Resources",  icon: Map,           page: "FindHelpNow" },
+  { name: "Mentorship", icon: Users,         page: "Mentors" },
+  { name: "Messages",   icon: MessageCircle, page: "ParticipantMessages" },
+  { name: "Profile",    icon: User,          page: "Profile" },
 ];
 
 
