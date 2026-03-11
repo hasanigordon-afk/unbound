@@ -267,6 +267,7 @@ export default function ClientProgress() {
         </div>
 
       </div>
+      )}
     </div>
   );
 }
