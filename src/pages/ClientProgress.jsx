@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Flame, CalendarCheck, Star, TrendingUp, CheckCircle2, Circle } from "lucide-react";
+import RecoveryInsightsTab from "../components/progress/RecoveryInsightsTab";
 
 const DAYS = ["S","M","T","W","T","F","S"];
 
