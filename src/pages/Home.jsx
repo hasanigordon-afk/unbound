@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Loader2, CalendarCheck, Users, CheckCircle2, MessageSquare, Compass, Handshake, Flame } from "lucide-react";
+import RecoveryJourneyTimeline from "@/components/home/RecoveryJourneyTimeline";
 
 // ─── Design tokens ───────────────────────────────────────────────
 const EMERALD = "#10B981";
