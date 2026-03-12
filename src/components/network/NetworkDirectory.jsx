@@ -84,6 +84,7 @@ export default function NetworkDirectory({ user, memberProfile, onConnect }) {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [styleFilter, setStyleFilter] = useState("all");
+  const [trackFilter, setTrackFilter] = useState("alcohol");
   const [showMatches, setShowMatches] = useState(false);
   const [matches, setMatches] = useState([]);
 
