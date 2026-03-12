@@ -122,8 +122,14 @@ export default function NetworkDirectory({ user, memberProfile, onConnect }) {
     if (styleFilter !== "all") list = list.filter(m =>
       m.communication_modes?.includes(styleFilter) || m.preferred_support_style === styleFilter
     );
+    // Track filter: show mentors that support this track or "both"
+    list = list.filter(m =>
+      !m.tracks_supported?.length ||
+      m.tracks_supported.includes(trackFilter) ||
+      m.tracks_supported.includes("both")
+    );
     return list;
-  }, [mentors, matches, showMatches, search, roleFilter, styleFilter]);
+  }, [mentors, matches, showMatches, search, roleFilter, styleFilter, trackFilter]);
 
   return (
     <div className="flex flex-col gap-4">
