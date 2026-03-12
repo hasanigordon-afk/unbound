@@ -133,6 +133,9 @@ export default function NetworkDirectory({ user, memberProfile, onConnect }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Track toggle */}
+      <TrackToggle activeTrack={trackFilter} onToggle={setTrackFilter} />
+
       {/* Smart match banner */}
       <button
         onClick={handleFindMatch}
