@@ -381,60 +381,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── RECOVERY JOURNEY MAP (chain-breaking) ────────────── */}
-        <SectionLabel>Recovery Journey · First 90 Days</SectionLabel>
-        {/* Broken chains illustration header */}
-        <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
-          <p style={{ fontSize: 11, color: MUTED }}>break free · one link at a time</p>
-          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
-        </div>
-        <div style={{ ...GLASS, borderRadius: 22, padding: "22px 0 22px 20px", overflowX: "auto", marginBottom: 28 }}>
-          <div style={{ display: "flex", alignItems: "flex-start", minWidth: "max-content", paddingRight: 20 }}>
-            {milestones.map((m, i) => {
-              const isDone    = m.done;
-              const isCurrent = i === currentMilestoneIdx;
-              const nodeColor = isDone ? EMERALD : isCurrent ? GOLD : "rgba(255,255,255,0.1)";
-              const borderCol = isDone ? EMERALD : isCurrent ? GOLD : "rgba(255,255,255,0.18)";
-              return (
-                <React.Fragment key={m.label}>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                    {/* Milestone node */}
-                    <div style={{
-                      width: 56, height: 56, borderRadius: "50%",
-                      background: isDone ? `linear-gradient(135deg, #059669, ${EMERALD})` : isCurrent ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.05)",
-                      border: `2.5px solid ${borderCol}`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: isDone ? 18 : 24, flexShrink: 0,
-                      boxShadow: isDone ? `0 0 16px ${EMERALD}50` : isCurrent ? `0 0 14px ${GOLD}40` : "none",
-                    }}>
-                      {isDone ? <ChainLinkSVG broken size={26} color="#fff" /> : <span style={{ opacity: isCurrent ? 1 : 0.45 }}>{m.icon}</span>}
-                    </div>
-                    {/* Labels */}
-                    <div style={{ textAlign: "center", maxWidth: 68 }}>
-                      <p style={{ fontSize: 11, fontWeight: 800, color: isDone ? EMERALD : isCurrent ? GOLD : MUTED, lineHeight: 1.1, marginBottom: 3 }}>
-                        {m.label}
-                      </p>
-                      <p style={{ fontSize: 10, color: isDone ? "rgba(16,185,129,0.65)" : MUTED, lineHeight: 1.35 }}>{m.sub}</p>
-                    </div>
-                  </div>
-                  {i < milestones.length - 1 && (
-                    <div style={{ display: "flex", alignItems: "center", marginBottom: 28, gap: 1 }}>
-                      {[0,1,2].map(j => (
-                        <div key={j} style={{
-                          width: 10, height: 3, borderRadius: 2,
-                          background: isDone ? EMERALD : "rgba(255,255,255,0.1)",
-                          opacity: isDone ? 1 - j * 0.2 : 0.5,
-                          marginRight: 3,
-                        }} />
-                      ))}
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </div>
-        </div>
+        {/* ── RECOVERY JOURNEY TIMELINE ─────────────────────── */}
+        <RecoveryJourneyTimeline streak={streak} user={user} />
 
         {/* ── NEARBY SUPPORT RESOURCES ─────────────────────────── */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
