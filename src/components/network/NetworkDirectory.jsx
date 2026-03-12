@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search, Sparkles, MessageCircle, Video, Phone, Loader2, Star, MapPin, Shield, Heart } from "lucide-react";
+import TrackToggle from "@/components/home/TrackToggle";
 
 const ROLE_LABELS = {
   peer_mentor: { label: "Peer Mentor", color: "#10B981", bg: "rgba(16,185,129,0.12)" },
