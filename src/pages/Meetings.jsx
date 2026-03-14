@@ -177,10 +177,10 @@ export default function Meetings() {
           {view === "list" ? (
             <div className="px-5 py-4 space-y-3">
               {filtered.length === 0 ? (
-                <div className="text-center py-16 card">
+                <div className="text-center py-16" style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', padding: '40px 20px' }}>
                   <Calendar className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} strokeWidth={1.5} />
-                  <p style={{ color: 'var(--text-muted)' }}>No meetings found with those filters.</p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Try changing the day or meeting type.</p>
+                  <p className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>No meetings found with those filters.</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Try clearing the filters to see all available meetings.</p>
                 </div>
               ) : (
                 filtered.map(meeting => (
