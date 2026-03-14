@@ -99,7 +99,7 @@ export default function CounselorDashboard() {
         authorEmail={counselorEmail}
         authorRole="counselor"
         channel="counselor_patient"
-        facilityId={facility?.id}
+        facilityId={resolvedFacility?.id}
         onBack={() => setClientViewPatient(null)}
       />
     );
@@ -258,7 +258,7 @@ export default function CounselorDashboard() {
           </div>
         )}
 
-        {activeTab === "risk" && <RelapseRiskPanel facilityId={facility?.id} />}
+        {activeTab === "risk" && <RelapseRiskPanel facilityId={resolvedFacility?.id} />}
         {activeTab === "channels" && <ChannelModerationPanel />}
 
         {activeTab === "messages" && (
@@ -272,7 +272,7 @@ export default function CounselorDashboard() {
             </div>
             <CounselorMessagePanel
               counselorEmail={counselorEmail}
-              facilityId={facility?.id}
+              facilityId={resolvedFacility?.id}
               participants={participants}
               initialPatient={selectedPatient}
               channel="counselor_patient"
