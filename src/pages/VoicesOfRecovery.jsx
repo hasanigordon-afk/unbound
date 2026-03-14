@@ -122,7 +122,7 @@ export default function VoicesOfRecovery() {
   });
 
   const reportMutation = useMutation({
-    mutationFn: (post) => base44.entities.ContentReport.create({ content_type: "community_post", content_id: post.id, reason: "harmful_content" }),
+    mutationFn: (post) => base44.entities.CommunityPost.update(post.id, { moderation_status: "flagged" }),
     onSuccess: () => alert("Thank you for reporting. Our moderation team will review this post."),
   });
 
