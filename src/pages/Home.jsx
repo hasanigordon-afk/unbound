@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
@@ -187,8 +187,7 @@ export default function Home() {
           </svg>
 
           <div style={{ position:"relative", zIndex:1, padding:"72px 24px 0" }}>
-            <p className="u-fadeIn" style={{ fontSize:12, fontWeight:700, color:C.teal, letterSpacing:".1em", textTransform:"uppercase", marginBottom:16 }}
-              style={{ animationDelay:".04s", fontSize:12, fontWeight:700, color:C.teal, letterSpacing:".1em", textTransform:"uppercase", marginBottom:16 }}>
+            <p className="u-fadeIn" style={{ animationDelay:".04s", fontSize:12, fontWeight:700, color:C.teal, letterSpacing:".1em", textTransform:"uppercase", marginBottom:16 }}>
               {greeting}, {firstName}
             </p>
 
