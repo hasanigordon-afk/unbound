@@ -256,6 +256,17 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
         </div>
       </div>
 
+        {/* Goal Progress & Weekly Reflections */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>
+            Goals & Weekly Reflections
+          </p>
+          <div className="rounded-xl overflow-hidden" style={{ background: "#FFF", border: "1px solid #E5E7EB", padding: "16px" }}>
+            <GoalFeedbackPanel participantEmail={metrics.email} counselorEmail={counselorEmail} />
+          </div>
+        </div>
+      </div>
+
       {showSummaryModal && (
         <WeeklySummaryModal
           metrics={metrics}
