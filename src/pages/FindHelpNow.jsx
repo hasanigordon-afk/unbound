@@ -162,6 +162,12 @@ export default function FindHelpNow() {
             Location found — {processedResources.length} place{processedResources.length !== 1 ? "s" : ""} within {radius} miles
           </div>
         )}
+        {!userLocation && !locationLoading && (
+          <div className="flex items-center gap-1.5 text-xs mt-2" style={{ color: "#8E8E93" }}>
+            <MapPin className="w-3.5 h-3.5" />
+            Showing {processedResources.length} statewide resources — allow location for nearest results
+          </div>
+        )}
         {locationError && (
           <p className="text-xs mt-2" style={{ color: "#8E8E93" }}>{locationError}</p>
         )}
