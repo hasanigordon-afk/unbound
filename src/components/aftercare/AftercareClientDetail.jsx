@@ -6,6 +6,7 @@ import {
   CheckCircle, AlertTriangle, BookOpen, FileText
 } from "lucide-react";
 import WeeklySummaryModal from "./WeeklySummaryModal";
+import GoalFeedbackPanel from "@/components/counselor/GoalFeedbackPanel";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/pages/utils";
 
