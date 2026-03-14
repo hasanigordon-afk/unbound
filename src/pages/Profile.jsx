@@ -364,6 +364,36 @@ export default function Profile() {
           </div>
         )}
 
+        {/* ── Guided Setup Banner ─────────────────────────────── */}
+        <div style={{ background:"linear-gradient(135deg,rgba(62,207,191,0.08),rgba(91,110,245,0.08))",
+          border:"1px solid rgba(62,207,191,0.2)", borderRadius:20, padding:"20px 20px", marginBottom:20 }}>
+          <p style={{ fontSize:11, fontWeight:700, color:C.teal, textTransform:"uppercase", letterSpacing:".08em", marginBottom:8 }}>Guided Experience</p>
+          <p style={{ fontSize:16, fontWeight:800, color:"#fff", marginBottom:6 }}>Complete Your Profile Step by Step</p>
+          <p style={{ fontSize:13, color:C.slate, lineHeight:1.6, marginBottom:14 }}>
+            A reflective, guided experience designed for patients in treatment. Take it at your own pace — your progress saves automatically.
+          </p>
+          <Link to={createPageUrl("GuidedProfileSetup")} style={{ textDecoration:"none" }}>
+            <button style={{ padding:"12px 20px", borderRadius:14, background:`linear-gradient(135deg,${C.teal},#2CB8AE)`,
+              border:"none", color:"#fff", fontWeight:800, fontSize:14, cursor:"pointer",
+              boxShadow:"0 6px 20px rgba(62,207,191,0.25)" }}>
+              Start Guided Setup →
+            </button>
+          </Link>
+        </div>
+
+        {/* ── Counselor guide link ─────────────────────────────── */}
+        <Link to={createPageUrl("CounselorGuide")} style={{ textDecoration:"none", display:"block", marginBottom:20 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:14, padding:"16px 18px", borderRadius:16,
+            background:"rgba(201,169,110,0.07)", border:"1px solid rgba(201,169,110,0.2)" }}>
+            <span style={{ fontSize:22, flexShrink:0 }}>👨‍🏫</span>
+            <div style={{ flex:1 }}>
+              <p style={{ fontSize:15, fontWeight:700, color:"#fff" }}>Counselor Teaching Guide</p>
+              <p style={{ fontSize:12, color:C.muted }}>For facilities & counselors — lessons, prompts & discharge checklist</p>
+            </div>
+            <ArrowRight style={{ width:16, height:16, color:C.muted }}/>
+          </div>
+        </Link>
+
         {/* ── Quick links ─────────────────────────────────────── */}
         <SLabel icon="🔗">Quick Access</SLabel>
         <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
