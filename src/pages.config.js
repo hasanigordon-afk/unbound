@@ -107,6 +107,8 @@ import HousingAssistance from './pages/HousingAssistance';
 import BenefitsAssistance from './pages/BenefitsAssistance';
 import BillingDashboard from './pages/BillingDashboard';
 import EHRIntegration from './pages/EHRIntegration';
+import NJTreatmentFacilities from './pages/NJTreatmentFacilities';
+import FacilityAdmin from './pages/FacilityAdmin';
 import __Layout from './Layout.jsx';
 
 
@@ -171,6 +173,8 @@ export const PAGES = {
     "BenefitsAssistance": BenefitsAssistance,
     "BillingDashboard": BillingDashboard,
     "EHRIntegration": EHRIntegration,
+    "NJTreatmentFacilities": NJTreatmentFacilities,
+    "FacilityAdmin": FacilityAdmin,
 }
 
 export const pagesConfig = {
