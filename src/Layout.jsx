@@ -1,21 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, BookOpen, MessageCircle, User } from "lucide-react";
+import { Home, Compass, Network, MessageCircle, User } from "lucide-react";
 
 const NAV_ITEMS = [
-  { name: "Home",      icon: Home,          page: "Home" },
-  { name: "Resources", icon: Compass,       page: "FindHelpNow" },
-  { name: "Hub",       icon: BookOpen,      page: "RecoveryHub" },
-  { name: "Messages",  icon: MessageCircle, page: "ParticipantMessages" },
-  { name: "Profile",   icon: User,          page: "Profile" },
+  { name: "Home",       icon: Home,          page: "Home" },
+  { name: "Resources",  icon: Compass,       page: "FindHelpNow" },
+  { name: "Network",    icon: Network,       page: "RecoveryNetwork" },
+  { name: "Messages",   icon: MessageCircle, page: "ParticipantMessages" },
+  { name: "Profile",    icon: User,          page: "Profile" },
 ];
 
 const HIDE_EXTRA_PAGES = ["TelehealthHub","EmploymentOpportunities","HousingAssistance","BenefitsAssistance","ComplianceReports","BillingDashboard","EHRIntegration"];
 
 
 
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn", "TelehealthHub", "EmploymentOpportunities", "HousingAssistance", "BenefitsAssistance", "ComplianceReports", "BillingDashboard", "EHRIntegration", "NJTreatmentFacilities", "FacilityAdmin", "ContentAdmin"];
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn", "TelehealthHub", "EmploymentOpportunities", "HousingAssistance", "BenefitsAssistance", "ComplianceReports", "BillingDashboard", "EHRIntegration", "NJTreatmentFacilities", "FacilityAdmin", "ResourceHub", "VoicesOfRecovery", "ContentAdmin"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);

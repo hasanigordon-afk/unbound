@@ -109,7 +109,8 @@ import SupportChat from './pages/SupportChat';
 import TelehealthHub from './pages/TelehealthHub';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
-import RecoveryHub from './pages/RecoveryHub';
+import ResourceHub from './pages/ResourceHub';
+import VoicesOfRecovery from './pages/VoicesOfRecovery';
 import ContentAdmin from './pages/ContentAdmin';
 import __Layout from './Layout.jsx';
 
@@ -177,7 +178,8 @@ export const PAGES = {
     "TelehealthHub": TelehealthHub,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
-    "RecoveryHub": RecoveryHub,
+    "ResourceHub": ResourceHub,
+    "VoicesOfRecovery": VoicesOfRecovery,
     "ContentAdmin": ContentAdmin,
 }
 
