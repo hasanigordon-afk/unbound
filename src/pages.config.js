@@ -113,6 +113,8 @@ import RecoveryHub from './pages/RecoveryHub';
 import ContentAdmin from './pages/ContentAdmin';
 import ResourceHub from './pages/ResourceHub';
 import VoicesOfRecovery from './pages/VoicesOfRecovery';
+import GuidedProfileSetup from './pages/GuidedProfileSetup';
+import CounselorGuide from './pages/CounselorGuide';
 import __Layout from './Layout.jsx';
 
 
@@ -183,6 +185,8 @@ export const PAGES = {
     "ContentAdmin": ContentAdmin,
     "ResourceHub": ResourceHub,
     "VoicesOfRecovery": VoicesOfRecovery,
+    "GuidedProfileSetup": GuidedProfileSetup,
+    "CounselorGuide": CounselorGuide,
 }
 
 export const pagesConfig = {
