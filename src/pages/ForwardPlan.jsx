@@ -75,13 +75,29 @@ export default function ForwardPlan() {
     enabled: !!user,
   });
 
-  const { data: milestones = [] } = useQuery({
+  // Demo fallback when no user or no plan
+  const { data: demoPlans = [] } = useQuery({
+    queryKey: ["forward-plan-demo"],
+    queryFn: () => base44.entities.ForwardPlan.filter({ participant_email: "demo@unbound.app" }),
+    enabled: plans.length === 0,
+  });
+
+  const { data: userMilestones = [] } = useQuery({
     queryKey: ["forward-milestones", user?.email],
     queryFn: () => base44.entities.ForwardPlanMilestone.filter({ participant_email: user.email }, "sort_order"),
     enabled: !!user,
   });
 
-  const plan = plans[0];
+  // Demo milestones fallback
+  const { data: demoMilestones = [] } = useQuery({
+    queryKey: ["forward-milestones-demo"],
+    queryFn: () => base44.entities.ForwardPlanMilestone.filter({ participant_email: "demo@unbound.app" }, "sort_order"),
+    enabled: userMilestones.length === 0,
+  });
+
+  const plan = plans[0] || demoPlans[0];
+  const milestones = userMilestones.length > 0 ? userMilestones : demoMilestones;
+  const isDemoMode = plans.length === 0;
   const hasVision = !!plan;
 
   const createPlanMutation = useMutation({
@@ -316,6 +332,11 @@ export default function ForwardPlan() {
       </div>
 
       <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
+        {isDemoMode && (
+          <div style={{ background: 'rgba(74,144,226,0.1)', border: '1px solid rgba(74,144,226,0.3)', borderRadius: 'var(--radius)', padding: '12px 16px', fontSize: 13, color: 'var(--text-secondary)', textAlign: 'center' }}>
+            📋 Showing a demo plan — sign in to create your own personalized roadmap.
+          </div>
+        )}
         {/* Overall Progress */}
         <div className="metric-card">
           <div className="flex items-center justify-between mb-2">
