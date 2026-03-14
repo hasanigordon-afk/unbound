@@ -216,8 +216,17 @@ export default function AftercareMonitoring() {
     );
   }
 
+  const isDemo = !user;
+
   return (
     <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
+      {isDemo && (
+        <div style={{ background: "#4A90E2", color: "#FFF", textAlign: "center", padding: "8px 16px", fontSize: 13 }}>
+          👁 Demo mode — showing all enrolled participants.{" "}
+          <button onClick={() => base44.auth.redirectToLogin()} style={{ fontWeight: 700, textDecoration: "underline", background: "none", border: "none", color: "#FFF", cursor: "pointer" }}>Sign in</button>{" "}
+          to view your assigned caseload.
+        </div>
+      )}
       <div className="px-5 pt-6 pb-4" style={{ background: "#FFF", borderBottom: "1px solid #E5E7EB" }}>
         <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Recovery Accountability</h1>
         <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>

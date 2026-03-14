@@ -64,8 +64,15 @@ export default function ProbationDashboard() {
 
   return (
     <div className="min-h-screen" style={{ background: "#F7F7F8" }}>
+      {isDemo && (
+        <div style={{ background: "#4A90E2", color: "#FFF", textAlign: "center", padding: "8px 16px", fontSize: 13 }}>
+          👁 Demo mode — showing sample caseload.{" "}
+          <button onClick={() => base44.auth.redirectToLogin()} style={{ fontWeight: 700, textDecoration: "underline", background: "none", border: "none", color: "#FFF", cursor: "pointer" }}>Sign in</button>{" "}
+          to view your real clients.
+        </div>
+      )}
       {/* Header */}
-      <div className="px-6 pt-8 pb-5" style={{ background: "#FFF", borderBottom: "1px solid #D1D1D6" }}>
+      <div className="px-6 pt-6 pb-5" style={{ background: "#FFF", borderBottom: "1px solid #D1D1D6" }}>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase mb-1" style={{ color: "#8E8E93" }}>PROBATION OFFICER PORTAL</p>
