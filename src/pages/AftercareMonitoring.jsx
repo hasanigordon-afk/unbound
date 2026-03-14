@@ -23,11 +23,20 @@ export default function AftercareMonitoring() {
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
-  const { data: profiles = [], isLoading: profilesLoading } = useQuery({
+  const { data: assignedProfiles = [], isLoading: profilesLoading } = useQuery({
     queryKey: ["aftercare-profiles", user?.email],
     queryFn: () => base44.entities.ParticipantProfile.filter({ assigned_counselor_email: user.email }),
     enabled: !!user,
   });
+
+  // Fall back to all profiles for demo / admin view when no clients are assigned
+  const { data: allProfiles = [] } = useQuery({
+    queryKey: ["aftercare-all-profiles"],
+    queryFn: () => base44.entities.ParticipantProfile.list("-created_date", 50),
+    enabled: !!user && assignedProfiles.length === 0,
+  });
+
+  const profiles = assignedProfiles.length > 0 ? assignedProfiles : allProfiles;
 
   const clientEmails = profiles.map((p) => p.participant_email);
 
