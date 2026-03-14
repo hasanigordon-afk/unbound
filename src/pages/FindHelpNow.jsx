@@ -104,10 +104,11 @@ export default function FindHelpNow() {
         : null,
     }));
 
-    // Radius filter (only when location is available)
+    // Radius filter (only when location is available AND resource has coordinates)
     if (userLocation) {
       list = list.filter((r) => r.distance === null || r.distance <= radius);
     }
+    // Without location: show all resources (don't hide them)
 
     // Category filter
     if (categoryFilter) {
