@@ -101,6 +101,12 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
+import TelehealthHub from './pages/TelehealthHub';
+import EmploymentOpportunities from './pages/EmploymentOpportunities';
+import HousingAssistance from './pages/HousingAssistance';
+import BenefitsAssistance from './pages/BenefitsAssistance';
+import BillingDashboard from './pages/BillingDashboard';
+import EHRIntegration from './pages/EHRIntegration';
 import __Layout from './Layout.jsx';
 
 
@@ -159,6 +165,12 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
+    "TelehealthHub": TelehealthHub,
+    "EmploymentOpportunities": EmploymentOpportunities,
+    "HousingAssistance": HousingAssistance,
+    "BenefitsAssistance": BenefitsAssistance,
+    "BillingDashboard": BillingDashboard,
+    "EHRIntegration": EHRIntegration,
 }
 
 export const pagesConfig = {
