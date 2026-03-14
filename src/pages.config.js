@@ -54,8 +54,10 @@ import ClientProgress from './pages/ClientProgress';
 import ClientSettings from './pages/ClientSettings';
 import Community from './pages/Community';
 import ComplianceReports from './pages/ComplianceReports';
+import ContentAdmin from './pages/ContentAdmin';
 import ContentfulSetup from './pages/ContentfulSetup';
 import CounselorDashboard from './pages/CounselorDashboard';
+import CounselorGuide from './pages/CounselorGuide';
 import CounselorMessaging from './pages/CounselorMessaging';
 import CounselorPortal from './pages/CounselorPortal';
 import CravingControlCenter from './pages/CravingControlCenter';
@@ -71,6 +73,7 @@ import FindHelpNow from './pages/FindHelpNow';
 import ForwardPlan from './pages/ForwardPlan';
 import GoalBoard from './pages/GoalBoard';
 import Goals from './pages/Goals';
+import GuidedProfileSetup from './pages/GuidedProfileSetup';
 import Home from './pages/Home';
 import HousingAssistance from './pages/HousingAssistance';
 import IdentityBridge from './pages/IdentityBridge';
@@ -95,9 +98,11 @@ import ProbationDashboard from './pages/ProbationDashboard';
 import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
 import ProfessionalPortal from './pages/ProfessionalPortal';
 import Profile from './pages/Profile';
+import RecoveryHub from './pages/RecoveryHub';
 import RecoveryNetwork from './pages/RecoveryNetwork';
 import ReintegrationMap from './pages/ReintegrationMap';
 import ResourceDirectory from './pages/ResourceDirectory';
+import ResourceHub from './pages/ResourceHub';
 import Resources from './pages/Resources';
 import ResourcesNearYou from './pages/ResourcesNearYou';
 import RoleSelect from './pages/RoleSelect';
@@ -108,13 +113,8 @@ import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
 import TelehealthHub from './pages/TelehealthHub';
 import UrgentHelp from './pages/UrgentHelp';
-import utils from './pages/utils';
-import RecoveryHub from './pages/RecoveryHub';
-import ContentAdmin from './pages/ContentAdmin';
-import ResourceHub from './pages/ResourceHub';
 import VoicesOfRecovery from './pages/VoicesOfRecovery';
-import GuidedProfileSetup from './pages/GuidedProfileSetup';
-import CounselorGuide from './pages/CounselorGuide';
+import utils from './pages/utils';
 import __Layout from './Layout.jsx';
 
 
@@ -126,8 +126,10 @@ export const PAGES = {
     "ClientSettings": ClientSettings,
     "Community": Community,
     "ComplianceReports": ComplianceReports,
+    "ContentAdmin": ContentAdmin,
     "ContentfulSetup": ContentfulSetup,
     "CounselorDashboard": CounselorDashboard,
+    "CounselorGuide": CounselorGuide,
     "CounselorMessaging": CounselorMessaging,
     "CounselorPortal": CounselorPortal,
     "CravingControlCenter": CravingControlCenter,
@@ -143,6 +145,7 @@ export const PAGES = {
     "ForwardPlan": ForwardPlan,
     "GoalBoard": GoalBoard,
     "Goals": Goals,
+    "GuidedProfileSetup": GuidedProfileSetup,
     "Home": Home,
     "HousingAssistance": HousingAssistance,
     "IdentityBridge": IdentityBridge,
@@ -167,9 +170,11 @@ export const PAGES = {
     "ProbationOfficerDashboard": ProbationOfficerDashboard,
     "ProfessionalPortal": ProfessionalPortal,
     "Profile": Profile,
+    "RecoveryHub": RecoveryHub,
     "RecoveryNetwork": RecoveryNetwork,
     "ReintegrationMap": ReintegrationMap,
     "ResourceDirectory": ResourceDirectory,
+    "ResourceHub": ResourceHub,
     "Resources": Resources,
     "ResourcesNearYou": ResourcesNearYou,
     "RoleSelect": RoleSelect,
@@ -180,13 +185,8 @@ export const PAGES = {
     "SupportChat": SupportChat,
     "TelehealthHub": TelehealthHub,
     "UrgentHelp": UrgentHelp,
-    "utils": utils,
-    "RecoveryHub": RecoveryHub,
-    "ContentAdmin": ContentAdmin,
-    "ResourceHub": ResourceHub,
     "VoicesOfRecovery": VoicesOfRecovery,
-    "GuidedProfileSetup": GuidedProfileSetup,
-    "CounselorGuide": CounselorGuide,
+    "utils": utils,
 }
 
 export const pagesConfig = {

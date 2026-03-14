@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, AlertTriangle, TrendingUp, Shield, Loader2 } from "lucide-react";
+import { Users, AlertTriangle, TrendingUp, Shield, Loader2, CalendarDays } from "lucide-react";
 import AftercareClientList from "@/components/aftercare/AftercareClientList";
 import AftercareClientDetail from "@/components/aftercare/AftercareClientDetail";
 import AftercareAlerts from "@/components/aftercare/AftercareAlerts";
@@ -9,12 +9,14 @@ import PredictiveRiskPanel from "@/components/aftercare/PredictiveRiskPanel";
 import CravingAlertPanel from "@/components/aftercare/CravingAlertPanel";
 import { calcEngagementScore } from "@/components/aftercare/engagementScore";
 import { calcPredictiveRisk } from "@/components/aftercare/predictiveRisk";
+import CounselorCalendar from "@/components/calendar/CounselorCalendar";
 
 const TABS = [
   { id: "clients",    label: "Clients",      icon: Users },
   { id: "risk",       label: "Risk Monitor", icon: Shield },
   { id: "predictive", label: "Predictive",   icon: TrendingUp },
   { id: "alerts",     label: "Alerts",       icon: AlertTriangle },
+  { id: "calendar",   label: "Calendar",     icon: CalendarDays },
 ];
 
 export default function AftercareMonitoring() {
@@ -305,6 +307,7 @@ export default function AftercareMonitoring() {
           {activeTab === "risk"       && <CravingAlertPanel   clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
           {activeTab === "predictive" && <PredictiveRiskPanel clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
           {activeTab === "alerts"     && <AftercareAlerts     clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "calendar"   && <CounselorCalendar   counselorEmail={user?.email} clientMetrics={clientMetrics}/>}
         </div>
       )}
     </div>
