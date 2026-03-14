@@ -48,13 +48,13 @@ export default function Meetings() {
   });
 
   const { data: favorites = [] } = useQuery({
-    queryKey: ["meeting-favorites"],
+    queryKey: ["meeting-favorites", user?.email],
     queryFn: () => base44.entities.MeetingFavorite.filter({ created_by: user.email }),
     enabled: !!user,
   });
 
   const { data: attendance = [] } = useQuery({
-    queryKey: ["meeting-attendance"],
+    queryKey: ["meeting-attendance", user?.email],
     queryFn: () => base44.entities.MeetingAttendance.filter({ participant_email: user.email }),
     enabled: !!user,
   });
