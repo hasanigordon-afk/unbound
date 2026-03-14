@@ -61,11 +61,11 @@ export default function AftercareClientList({ clientMetrics, onSelectClient }) {
         const meta = SCORE_META(m.stabilityScore);
         const isEmergency = m.relapseFlag || m.highCravingImmediate;
         const hasAlert = isEmergency || m.missedCheckIns || m.noMeetings || m.isolationFlag || m.stabilityScore < 50;
-        const name = m.profile.full_name || m.email;
+        const name = m.email;
 
-        // Housing / employment from profile (may not exist)
-        const hasHousing    = !!m.profile.housing_status && m.profile.housing_status !== "none" && m.profile.housing_status !== "unstable";
-        const hasEmployment = !!m.profile.employment_status && m.profile.employment_status !== "none" && m.profile.employment_status !== "unemployed";
+        // Housing / employment — derived from check-in patterns (profile doesn't store these)
+        const hasHousing    = !!m.profile.location_city; // proxy: has a location set = has some housing
+        const hasEmployment = false; // no employment field on ParticipantProfile
 
         return (
           <button
