@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Bookmark, BookmarkCheck, Heart, Share2, ExternalLink, Calendar } from "lucide-react";
+import ArticleComments from "./ArticleComments";
+import ShareMenu from "./ShareMenu";
+
 const CAT_COLORS = {
   "Recovery":           { bg: "#EBF5FF", color: "#2563EB" },
   "Relapse Prevention": { bg: "#FEF2F2", color: "#DC2626" },
@@ -13,8 +16,6 @@ const CAT_COLORS = {
   "Life Skills":        { bg: "#FDF4FF", color: "#9333EA" },
   "Community":          { bg: "#F0FDF4", color: "#059669" },
 };
-import ArticleComments from "./ArticleComments";
-import ShareMenu from "./ShareMenu";
 
 export default function ArticleDetail({ article, user, isSaved, isLiked, onSave, onLike, onBack }) {
   const [showShare, setShowShare] = useState(false);
