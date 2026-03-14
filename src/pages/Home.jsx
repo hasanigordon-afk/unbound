@@ -39,7 +39,7 @@ function rgb(hex) {
 // ─── Quick tools ──────────────────────────────────────────────────
 const TOOLS = [
   { icon:<CalendarCheck className="w-5 h-5"/>, label:"Check-In",   sub:"Daily accountability", href:"DailyCheckIn",    color:C.teal   },
-  { icon:<FileText       className="w-5 h-5"/>, label:"My Plan",    sub:"Goals & milestones",   href:"ForwardPlan",     color:C.gold   },
+  { icon:<FileText       className="w-5 h-5"/>, label:"My Goals",   sub:"Track daily progress",  href:"GoalBoard",       color:C.gold   },
   { icon:<BookOpen       className="w-5 h-5"/>, label:"Resources",  sub:"Articles & guides",    href:"RecoveryHub",     color:C.indigo },
   { icon:<Users          className="w-5 h-5"/>, label:"Community",  sub:"Real people, real wins",href:"VoicesOfRecovery",color:C.emerald},
   { icon:<Briefcase      className="w-5 h-5"/>, label:"Jobs",       sub:"Second-chance employers",href:"EmploymentOpportunities",color:"#F59E0B"},
