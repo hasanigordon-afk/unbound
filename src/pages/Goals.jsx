@@ -64,6 +64,14 @@ export default function Goals() {
       </div>
 
       <div className="px-5 -mt-3 space-y-4 max-w-lg mx-auto">
+        {isDemoMode && (
+          <div className="glass-card p-3 text-center">
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              👀 Showing example goals — sign in to create and track your own.
+            </p>
+          </div>
+        )}
+
         {/* Filter Tabs */}
         <div className="glass-card p-1 flex gap-1">
           {[
