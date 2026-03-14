@@ -204,7 +204,7 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
         </div>
 
         {/* Counselor Actions */}
-        <div>
+        <div className="pb-2">
           <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Counselor Actions</p>
           <div className="p-4 rounded-xl space-y-3" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
             <textarea
