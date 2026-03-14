@@ -254,7 +254,6 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
             </button>
           </div>
         </div>
-      </div>
 
         {/* Goal Progress & Weekly Reflections */}
         <div>
