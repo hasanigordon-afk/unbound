@@ -218,87 +218,93 @@ export default function AftercareMonitoring() {
 
   const isDemo = !user;
 
-  return (
-    <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
-      {isDemo && (
-        <div style={{ background: "#4A90E2", color: "#FFF", textAlign: "center", padding: "8px 16px", fontSize: 13 }}>
-          👁 Demo mode — showing all enrolled participants.{" "}
-          <button onClick={() => base44.auth.redirectToLogin()} style={{ fontWeight: 700, textDecoration: "underline", background: "none", border: "none", color: "#FFF", cursor: "pointer" }}>Sign in</button>{" "}
-          to view your assigned caseload.
-        </div>
-      )}
-      <div className="px-5 pt-6 pb-4" style={{ background: "#FFF", borderBottom: "1px solid #E5E7EB" }}>
-        <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>Recovery Accountability</h1>
-        <p className="text-xs mt-0.5" style={{ color: "#8E8E93" }}>
-          {profiles.length} client{profiles.length !== 1 ? "s" : ""} · Counselors, Probation Officers &amp; Sponsors
-        </p>
+  const stableCount  = clientMetrics.filter(m => m.stabilityScore >= 80).length;
+  const atRiskCount  = clientMetrics.filter(m => m.stabilityScore >= 50 && m.stabilityScore < 80).length;
+  const highRiskCount= clientMetrics.filter(m => m.stabilityScore < 50).length;
 
-        <div className="flex gap-1 mt-4 overflow-x-auto pb-1">
-          {TABS.map(({ id, label, icon: TabIcon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium relative whitespace-nowrap"
-              style={{
-                background: activeTab === id ? "#1E1E1E" : "#F0F0F3",
-                color: activeTab === id ? "#FFF" : "#5A5A5A",
-              }}
-            >
-              <TabIcon className="w-3.5 h-3.5" strokeWidth={1.5} />
-              {label}
-              {id === "alerts" && alertCount > 0 && (
-                <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#EF4444", color: "#FFF" }}>
-                  {alertCount}
-                </span>
-              )}
-              {id === "risk" && riskCount > 0 && (
-                <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: hasRedRisk ? "#EF4444" : "#F59E0B", color: "#FFF" }}>
-                  {riskCount}
-                </span>
-              )}
-              {id === "predictive" && predictiveCount > 0 && (
-                <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#F59E0B", color: "#FFF" }}>
-                  {predictiveCount}
-                </span>
-              )}
-            </button>
-          ))}
+  return (
+    <div style={{ minHeight:"100vh", paddingBottom:96, background:"#F0F2F5" }}>
+
+      {/* ── Premium dark header ─────────────────────────────── */}
+      <div style={{ background:"linear-gradient(155deg,#0E1D3A 0%,#081426 100%)", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", top:-60, right:-60, width:260, height:260, borderRadius:"50%",
+          background:"radial-gradient(circle,rgba(62,207,191,0.1) 0%,transparent 70%)", pointerEvents:"none" }}/>
+
+        {isDemo && (
+          <div style={{ background:"rgba(74,144,226,0.2)", borderBottom:"1px solid rgba(74,144,226,0.3)",
+            padding:"8px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <p style={{ fontSize:12, color:"rgba(255,255,255,0.7)" }}>👁 Demo mode — all participants shown</p>
+            <button onClick={() => base44.auth.redirectToLogin()} style={{ fontSize:12, fontWeight:700,
+              color:"#60A5FA", background:"none", border:"none", cursor:"pointer" }}>Sign in →</button>
+          </div>
+        )}
+
+        <div style={{ padding:"24px 20px 0", position:"relative", zIndex:1 }}>
+          <p style={{ fontSize:11, fontWeight:700, color:"rgba(62,207,191,0.8)", textTransform:"uppercase",
+            letterSpacing:".1em", marginBottom:4 }}>Recovery Accountability</p>
+          <h1 style={{ fontSize:22, fontWeight:900, color:"#fff", marginBottom:4, lineHeight:1.2 }}>
+            Caseload Overview
+          </h1>
+          <p style={{ fontSize:13, color:"rgba(255,255,255,0.4)", marginBottom:20 }}>
+            {profiles.length} client{profiles.length !== 1 ? "s" : ""} · Active monitoring
+          </p>
+
+          {/* Stat blocks */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8, marginBottom:20 }}>
+            {[
+              { value:profiles.length, label:"Total",     color:"#60A5FA", bg:"rgba(96,165,250,0.1)"  },
+              { value:stableCount,     label:"Stable",    color:"#34D399", bg:"rgba(52,211,153,0.1)"  },
+              { value:atRiskCount,     label:"At Risk",   color:"#FBBF24", bg:"rgba(251,191,36,0.1)"  },
+              { value:highRiskCount,   label:"High Risk", color:"#F87171", bg:"rgba(248,113,113,0.1)" },
+            ].map(s=>(
+              <div key={s.label} style={{ background:s.bg, borderRadius:14, padding:"12px 8px", textAlign:"center",
+                border:`1px solid ${s.color}25` }}>
+                <p style={{ fontSize:24, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</p>
+                <p style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.45)", marginTop:4, textTransform:"uppercase", letterSpacing:".05em" }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Tabs */}
+          <div style={{ display:"flex", gap:4, overflowX:"auto", scrollbarWidth:"none", paddingBottom:0 }}>
+            {TABS.map(({ id, label, icon: TabIcon }) => {
+              const active = activeTab === id;
+              const badge = id==="alerts" ? (alertCount||0) : id==="risk" ? (riskCount||0) : id==="predictive" ? (predictiveCount||0) : 0;
+              const badgeColor = id==="alerts"||id==="risk" ? (hasRedRisk?"#EF4444":"#F59E0B") : "#F59E0B";
+              return (
+                <button key={id} onClick={() => setActiveTab(id)} style={{
+                  display:"flex", alignItems:"center", gap:6, padding:"10px 14px",
+                  borderRadius:"12px 12px 0 0", border:"none", cursor:"pointer", whiteSpace:"nowrap",
+                  background: active ? "#F0F2F5" : "transparent",
+                  color: active ? "#0E1D3A" : "rgba(255,255,255,0.5)",
+                  fontWeight: active ? 800 : 600, fontSize:13,
+                  transition:"all 0.15s ease",
+                }}>
+                  <TabIcon style={{ width:14, height:14 }} strokeWidth={active?2:1.5}/>
+                  {label}
+                  {badge > 0 && (
+                    <span style={{ background:badgeColor, color:"#fff", fontSize:10, fontWeight:900,
+                      padding:"2px 6px", borderRadius:20, lineHeight:1.4 }}>{badge}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
+      {/* ── Content ─────────────────────────────────────────── */}
       {profilesLoading ? (
-        <div className="text-center py-20" style={{ color: "#8E8E93" }}>
-          <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin opacity-40" />
-          <p className="text-sm">Loading clients…</p>
+        <div style={{ textAlign:"center", paddingTop:80 }}>
+          <Loader2 style={{ width:32, height:32, color:"#3ECFBF", margin:"0 auto 12px", display:"block" }} className="animate-spin"/>
+          <p style={{ fontSize:13, color:"#8E8E93" }}>Loading clients…</p>
         </div>
       ) : (
-        <div className="px-5 py-4">
-          {activeTab === "clients" && (
-            <AftercareClientList
-              clientMetrics={clientMetrics}
-              onSelectClient={(m) => setSelectedClient({ email: m.email })}
-            />
-          )}
-          {activeTab === "risk" && (
-            <CravingAlertPanel
-              clientMetrics={clientMetrics}
-              counselorEmail={user?.email}
-              onSelectClient={(m) => setSelectedClient({ email: m.email })}
-            />
-          )}
-          {activeTab === "predictive" && (
-            <PredictiveRiskPanel
-              clientMetrics={clientMetrics}
-              onSelectClient={(m) => setSelectedClient({ email: m.email })}
-            />
-          )}
-          {activeTab === "alerts" && (
-            <AftercareAlerts
-              clientMetrics={clientMetrics}
-              counselorEmail={user?.email}
-              onSelectClient={(m) => setSelectedClient({ email: m.email })}
-            />
-          )}
+        <div style={{ padding:"16px 16px" }}>
+          {activeTab === "clients"    && <AftercareClientList clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "risk"       && <CravingAlertPanel   clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "predictive" && <PredictiveRiskPanel clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "alerts"     && <AftercareAlerts     clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
         </div>
       )}
     </div>

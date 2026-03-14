@@ -1,163 +1,118 @@
 import React from "react";
-import { ChevronRight, AlertTriangle } from "lucide-react";
+import { ChevronRight, AlertTriangle, Flame, Calendar, Users, Phone } from "lucide-react";
 
 const SCORE_META = (score) =>
   score >= 80
-    ? { label: "Stable",    bg: "#F0FDF4", border: "#86EFAC", text: "#16A34A", bar: "#22C55E" }
+    ? { label:"Stable",    color:"#10B981", bg:"rgba(16,185,129,0.1)",  border:"rgba(16,185,129,0.25)" }
     : score >= 50
-    ? { label: "At Risk",   bg: "#FFFBEB", border: "#FDE68A", text: "#D97706", bar: "#F59E0B" }
-    : { label: "High Risk", bg: "#FEF2F2", border: "#FCA5A5", text: "#DC2626", bar: "#EF4444" };
+    ? { label:"At Risk",   color:"#F59E0B", bg:"rgba(245,158,11,0.1)",  border:"rgba(245,158,11,0.25)" }
+    : { label:"High Risk", color:"#EF4444", bg:"rgba(239,68,68,0.1)",   border:"rgba(239,68,68,0.25)"  };
 
-function ScoreBar({ score, color }) {
+function Tag({ color, children }) {
   return (
-    <div style={{ height: 5, borderRadius: 3, background: "#F0F0F3", overflow: "hidden" }}>
-      <div style={{ width: `${score}%`, height: "100%", background: color, borderRadius: 3 }} />
-    </div>
+    <span style={{ fontSize:11, fontWeight:700, padding:"3px 9px", borderRadius:20,
+      background:`${color}18`, color, border:`1px solid ${color}30` }}>
+      {children}
+    </span>
   );
 }
 
-function Pill({ done, label }) {
+function StatCell({ value, label, color }) {
   return (
-    <span style={{
-      fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 20,
-      background: done ? "#F0FDF4" : "#FEF2F2",
-      color: done ? "#16A34A" : "#DC2626",
-    }}>
-      {done ? "✓" : "✗"} {label}
-    </span>
+    <div style={{ flex:1, textAlign:"center", padding:"10px 6px",
+      background:"rgba(255,255,255,0.6)", borderRadius:10 }}>
+      <p style={{ fontSize:18, fontWeight:900, color, lineHeight:1 }}>{value}</p>
+      <p style={{ fontSize:10, color:"#8E8E93", marginTop:3, fontWeight:600, textTransform:"uppercase", letterSpacing:".04em" }}>{label}</p>
+    </div>
   );
 }
 
 export default function AftercareClientList({ clientMetrics, onSelectClient }) {
   if (clientMetrics.length === 0) {
     return (
-      <div className="text-center py-16" style={{ color: "#8E8E93" }}>
-        <p className="text-sm font-medium">No clients assigned</p>
-        <p className="text-xs mt-1">Clients will appear here once assigned to you</p>
+      <div style={{ textAlign:"center", padding:"64px 20px", background:"#fff",
+        borderRadius:20, border:"1px solid #E5E7EB" }}>
+        <div style={{ width:52, height:52, borderRadius:"50%", background:"#F0F9FF",
+          display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px" }}>
+          <Users style={{ width:24, height:24, color:"#60A5FA" }}/>
+        </div>
+        <p style={{ fontSize:16, fontWeight:700, color:"#1E1E1E", marginBottom:6 }}>No clients yet</p>
+        <p style={{ fontSize:13, color:"#8E8E93" }}>Clients will appear once assigned to you.</p>
       </div>
     );
   }
 
-  // Sort: High Risk first, then At Risk, then Stable
   const sorted = [...clientMetrics].sort((a, b) => a.stabilityScore - b.stabilityScore);
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Summary strip */}
-      <div className="grid grid-cols-3 gap-2 mb-1">
-        {[
-          { label: "Stable",    count: clientMetrics.filter(m => m.stabilityScore >= 80).length, color: "#16A34A", bg: "#F0FDF4" },
-          { label: "At Risk",   count: clientMetrics.filter(m => m.stabilityScore >= 50 && m.stabilityScore < 80).length, color: "#D97706", bg: "#FFFBEB" },
-          { label: "High Risk", count: clientMetrics.filter(m => m.stabilityScore < 50).length, color: "#DC2626", bg: "#FEF2F2" },
-        ].map(s => (
-          <div key={s.label} style={{ background: s.bg, border: `1px solid ${s.color}30`, borderRadius: 10, padding: "10px 8px", textAlign: "center" }}>
-            <p style={{ fontSize: 22, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.count}</p>
-            <p style={{ fontSize: 11, color: "#8E8E93", marginTop: 2 }}>{s.label}</p>
-          </div>
-        ))}
-      </div>
-
+    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
       {sorted.map((m) => {
         const meta = SCORE_META(m.stabilityScore);
         const isEmergency = m.relapseFlag || m.highCravingImmediate;
         const hasAlert = isEmergency || m.missedCheckIns || m.noMeetings || m.isolationFlag || m.stabilityScore < 50;
-        const name = m.email;
-
-        // Housing / employment — derived from check-in patterns (profile doesn't store these)
-        const hasHousing    = !!m.profile.location_city; // proxy: has a location set = has some housing
-        const hasEmployment = false; // no employment field on ParticipantProfile
+        const handle = m.email?.split("@")[0] || m.email;
+        const lastCIColor = m.daysSinceCheckIn <= 1 ? "#10B981" : m.daysSinceCheckIn <= 3 ? "#F59E0B" : "#EF4444";
+        const streakColor = m.streak >= 7 ? "#10B981" : m.streak >= 3 ? "#F59E0B" : "#EF4444";
 
         return (
-          <button
-            key={m.email}
-            onClick={() => onSelectClient(m)}
-            className="w-full text-left"
-            style={{
-              background: "#FFF",
-              border: `1px solid ${hasAlert ? meta.border : "#E5E7EB"}`,
-              borderLeft: `4px solid ${meta.bar}`,
-              borderRadius: 12,
-              padding: "16px",
-            }}
-          >
-            {/* Row 1: Name + Score badge */}
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2 min-w-0">
-                {isEmergency && <AlertTriangle className="w-4 h-4 flex-shrink-0" style={{ color: "#EF4444" }} />}
-                <p className="font-semibold text-sm truncate" style={{ color: "#1E1E1E" }}>{name}</p>
-              </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <div style={{
-                  background: meta.bg, border: `1px solid ${meta.border}`,
-                  borderRadius: 20, padding: "3px 10px",
-                }}>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: meta.text }}>
-                    {m.stabilityScore} · {meta.label}
-                  </span>
+          <button key={m.email} onClick={() => onSelectClient(m)}
+            style={{ width:"100%", textAlign:"left", background:"#fff",
+              border:`1px solid ${hasAlert ? meta.border : "#E5E7EB"}`,
+              borderLeft:`4px solid ${meta.color}`,
+              borderRadius:16, padding:"16px 16px", cursor:"pointer",
+              boxShadow: isEmergency ? `0 0 0 1px ${meta.color}40, 0 4px 16px ${meta.color}12` : "0 1px 4px rgba(0,0,0,0.05)",
+            }}>
+
+            {/* Row 1: identity + badge */}
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8, minWidth:0 }}>
+                {isEmergency && <AlertTriangle style={{ width:15, height:15, color:"#EF4444", flexShrink:0 }}/>}
+                <div style={{ width:32, height:32, borderRadius:"50%", background:meta.bg,
+                  display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                  fontSize:14, fontWeight:900, color:meta.color }}>
+                  {handle[0]?.toUpperCase()}
                 </div>
-                <ChevronRight className="w-4 h-4" style={{ color: "#D1D1D6" }} />
+                <p style={{ fontSize:14, fontWeight:700, color:"#1E1E1E", overflow:"hidden",
+                  textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{handle}</p>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
+                <span style={{ fontSize:12, fontWeight:800, padding:"4px 12px", borderRadius:20,
+                  background:meta.bg, color:meta.color, border:`1px solid ${meta.border}` }}>
+                  {m.stabilityScore} · {meta.label}
+                </span>
+                <ChevronRight style={{ width:16, height:16, color:"#C7C7CC" }}/>
               </div>
             </div>
 
-            {/* Score bar */}
-            <ScoreBar score={m.stabilityScore} color={meta.bar} />
-
-            {/* Row 2: Key metrics */}
-            <div className="grid grid-cols-4 gap-1.5 mt-3 mb-3">
-              <div className="text-center p-2 rounded-lg" style={{ background: "#F7F7F8" }}>
-                <p className="text-base font-bold" style={{ color: m.streak > 0 ? "#F59E0B" : "#DC2626" }}>
-                  {m.streak > 0 ? `🔥${m.streak}` : "—"}
-                </p>
-                <p className="text-xs" style={{ color: "#8E8E93" }}>Streak</p>
-              </div>
-              <div className="text-center p-2 rounded-lg" style={{ background: "#F7F7F8" }}>
-                <p className="text-base font-bold" style={{ color: m.weeklyMeetings > 0 ? "#22C55E" : "#DC2626" }}>
-                  {m.weeklyMeetings}
-                </p>
-                <p className="text-xs" style={{ color: "#8E8E93" }}>Meetings</p>
-              </div>
-              <div className="text-center p-2 rounded-lg" style={{ background: "#F7F7F8" }}>
-                <p className="text-base font-bold" style={{ color: m.sponsorContacts > 0 ? "#22C55E" : "#DC2626" }}>
-                  {m.sponsorContacts}
-                </p>
-                <p className="text-xs" style={{ color: "#8E8E93" }}>Sponsor</p>
-              </div>
-              <div className="text-center p-2 rounded-lg" style={{ background: "#F7F7F8" }}>
-                <p className="text-base font-bold" style={{ color: m.daysSinceCheckIn <= 1 ? "#22C55E" : m.daysSinceCheckIn <= 3 ? "#F59E0B" : "#DC2626" }}>
-                  {m.lastCheckIn ? `${m.daysSinceCheckIn}d` : "—"}
-                </p>
-                <p className="text-xs" style={{ color: "#8E8E93" }}>Last CI</p>
-              </div>
+            {/* Progress bar */}
+            <div style={{ height:5, borderRadius:3, background:"#F0F0F3", overflow:"hidden", marginBottom:12 }}>
+              <div style={{ width:`${m.stabilityScore}%`, height:"100%", borderRadius:3,
+                background:`linear-gradient(90deg,${meta.color}90,${meta.color})`,
+                transition:"width 0.6s ease" }}/>
             </div>
 
-            {/* Row 3: Housing + Employment pills */}
-            <div className="flex gap-1.5 flex-wrap">
-              <Pill done={hasHousing}    label="Housing" />
-              <Pill done={hasEmployment} label="Employment" />
-              <Pill done={m.sponsorContacts > 0} label="Mentor Contact" />
+            {/* Stats row */}
+            <div style={{ display:"flex", gap:6, marginBottom: hasAlert ? 12 : 0 }}>
+              <StatCell value={m.streak > 0 ? m.streak : "—"} label="Streak" color={streakColor}/>
+              <StatCell value={m.weeklyMeetings} label="Meetings" color={m.weeklyMeetings > 0 ? "#10B981" : "#EF4444"}/>
+              <StatCell value={m.sponsorContacts} label="Sponsor" color={m.sponsorContacts > 0 ? "#10B981" : "#EF4444"}/>
+              <StatCell value={m.lastCheckIn ? `${m.daysSinceCheckIn}d` : "—"} label="Last CI" color={lastCIColor}/>
             </div>
 
             {/* Alert tags */}
             {hasAlert && (
-              <div className="flex gap-1.5 flex-wrap mt-2.5 pt-2.5" style={{ borderTop: `1px solid ${meta.border}` }}>
-                {isEmergency        && <Tag color="#DC2626">⚡ Relapse risk</Tag>}
-                {m.missedCheckIns   && <Tag color="#EF4444">⚠ Missed check-ins</Tag>}
-                {m.noMeetings       && <Tag color="#F59E0B">No meetings this week</Tag>}
-                {m.isolationFlag    && <Tag color="#F59E0B">Isolation pattern</Tag>}
-                {m.stabilityScore < 50 && !isEmergency && <Tag color="#DC2626">Score dropped below 50</Tag>}
+              <div style={{ display:"flex", flexWrap:"wrap", gap:6, paddingTop:12,
+                borderTop:`1px solid ${meta.border}` }}>
+                {isEmergency         && <Tag color="#EF4444">⚡ Relapse risk</Tag>}
+                {m.missedCheckIns    && <Tag color="#EF4444">⚠ Missed check-ins</Tag>}
+                {m.noMeetings        && <Tag color="#F59E0B">No meetings</Tag>}
+                {m.isolationFlag     && <Tag color="#F59E0B">Isolation pattern</Tag>}
+                {m.stabilityScore < 50 && !isEmergency && <Tag color="#EF4444">Score below 50</Tag>}
               </div>
             )}
           </button>
         );
       })}
     </div>
-  );
-}
-
-function Tag({ color, children }) {
-  return (
-    <span style={{ fontSize: 11, fontWeight: 600, padding: "3px 8px", borderRadius: 20, background: color + "18", color }}>
-      {children}
-    </span>
   );
 }
