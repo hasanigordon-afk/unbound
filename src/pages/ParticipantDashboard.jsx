@@ -1,303 +1,292 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Calendar, TrendingUp, Users, MapPin, MessageCircle, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import FamilySettings from "@/components/family/FamilySettings";
+import {
+  CalendarCheck, Target, MapPin, MessageCircle, Phone,
+  CheckCircle2, Circle, ChevronRight, Heart, Loader2, AlertCircle
+} from "lucide-react";
+
+const BLUE = "#4A90E2";
+const EMERALD = "#10B981";
+const GOLD = "#F59E0B";
+const PURPLE = "#8B5CF6";
+const ROSE = "#EF4444";
+
+const DEMO_CHECKINS = [
+  { check_in_date: "2026-03-14", mood_rating: 4, craving_intensity: 3, attended_meeting: true },
+  { check_in_date: "2026-03-13", mood_rating: 3, craving_intensity: 5, attended_meeting: false },
+  { check_in_date: "2026-03-12", mood_rating: 4, craving_intensity: 2, attended_meeting: true },
+  { check_in_date: "2026-03-11", mood_rating: 5, craving_intensity: 1, attended_meeting: true },
+  { check_in_date: "2026-03-10", mood_rating: 4, craving_intensity: 3, attended_meeting: true },
+];
+
+const DEMO_GOALS = [
+  { title: "Get a state ID", status: "active", category: "personal_growth" },
+  { title: "Attend 3 meetings/week", status: "active", category: "daily_habits" },
+  { title: "Apply for Medicaid", status: "active", category: "health" },
+];
+
+const DEMO_RESOURCES = [
+  { organization_name: "NJ Peer Recovery Center", resource_category: "Peer Support", city: "Statewide", phone: "1-844-ReacNow" },
+  { organization_name: "Community Food Bank of NJ", resource_category: "Food Pantry", city: "Hillside", phone: "(908) 355-3663" },
+  { organization_name: "NJ Reentry Corporation", resource_category: "Reentry Services", city: "Statewide", phone: "(609) 396-3024" },
+];
 
 export default function ParticipantDashboard() {
-  const { data: user } = useQuery({
+  const navigate = useNavigate();
+
+  const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
   });
 
-  const { data: profile } = useQuery({
-    queryKey: ["participant-profile"],
-    queryFn: async () => {
-      const profiles = await base44.entities.ParticipantProfile.filter({ participant_email: user.email });
-      return profiles[0];
-    },
-    enabled: !!user,
-  });
-
-  const { data: facility } = useQuery({
-    queryKey: ["facility", profile?.facility_id],
-    queryFn: async () => {
-      if (!profile?.facility_id) return null;
-      const facilities = await base44.entities.Facility.filter({ id: profile.facility_id });
-      return facilities[0];
-    },
-    enabled: !!profile?.facility_id,
-  });
-
   const { data: checkIns = [] } = useQuery({
-    queryKey: ["daily-checkins", user?.email],
-    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 90),
+    queryKey: ["checkins-dash", user?.email],
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 7),
     enabled: !!user,
   });
 
-  const { data: phaseCompletions = [] } = useQuery({
-    queryKey: ["phase-completions", user?.email],
-    queryFn: () => base44.entities.PhaseCompletion.filter({ participant_email: user.email }),
+  const { data: goals = [] } = useQuery({
+    queryKey: ["goals-dash", user?.email],
+    queryFn: () => base44.entities.Goal.filter({ created_by: user.email }),
     enabled: !!user,
   });
 
-  const { data: allTasks = [] } = useQuery({
-    queryKey: ["all-tasks"],
-    queryFn: () => base44.entities.ReintegrationTask.list(),
+  const { data: allGoals = [] } = useQuery({
+    queryKey: ["goals-dash-demo"],
+    queryFn: () => base44.entities.Goal.list("-created_date", 3),
+    enabled: !userLoading && goals.length === 0,
   });
 
-  const today = new Date().toISOString().split('T')[0];
+  const { data: resources = [] } = useQuery({
+    queryKey: ["resources-dash"],
+    queryFn: () => base44.entities.USRecoveryResource.list("-created_date", 3),
+  });
+
+  const isDemo = !user;
+  const displayCheckIns = checkIns.length > 0 ? checkIns : (isDemo ? DEMO_CHECKINS : []);
+  const displayGoals = goals.length > 0 ? goals : (allGoals.length > 0 ? allGoals : DEMO_GOALS);
+  const displayResources = resources.length > 0 ? resources : DEMO_RESOURCES;
+
+  const firstName = user?.full_name?.split(" ")[0] || "Friend";
+  const today = new Date().toISOString().split("T")[0];
   const hasCheckedInToday = checkIns.some(c => c.check_in_date === today);
+  const latestCheckin = displayCheckIns[0];
 
-  // Calculate engagement streak
-  const calculateStreak = () => {
-    if (!checkIns.length) return 0;
-    let streak = 0;
-    const sortedCheckIns = [...checkIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
-    
-    let currentDate = new Date();
-    for (let checkIn of sortedCheckIns) {
-      const checkInDate = new Date(checkIn.check_in_date);
-      const daysDiff = Math.floor((currentDate - checkInDate) / (1000 * 60 * 60 * 24));
-      
-      if (daysDiff <= 1) {
-        streak++;
-        currentDate = checkInDate;
-      } else {
-        break;
-      }
+  // Streak
+  const streak = (() => {
+    if (!displayCheckIns.length) return 0;
+    const sorted = [...displayCheckIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+    let count = 0;
+    let cur = new Date(); cur.setHours(0,0,0,0);
+    for (const c of sorted) {
+      const d = new Date(c.check_in_date); d.setHours(0,0,0,0);
+      if (Math.round((cur - d) / 86400000) <= 1) { count++; cur = d; } else break;
     }
-    return streak;
-  };
+    return count;
+  })();
 
-  // Calculate 7-day engagement compliance
-  const calculateEngagementCompliance = () => {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const last7DaysCheckIns = checkIns.filter(c => new Date(c.check_in_date) >= sevenDaysAgo);
-    return Math.round((last7DaysCheckIns.length / 7) * 100);
-  };
+  const MOOD_EMOJI = ["", "😢", "😕", "😐", "🙂", "😊"];
+  const moodEmoji = latestCheckin ? MOOD_EMOJI[latestCheckin.mood_rating] || "🙂" : null;
+  const cravingColor = !latestCheckin ? BLUE : latestCheckin.craving_intensity >= 7 ? ROSE : latestCheckin.craving_intensity >= 4 ? GOLD : EMERALD;
 
-  // Calculate 90-day phase progress
-  const calculatePhaseProgress = () => {
-    const totalTasks = allTasks.length;
-    const completedPhases = phaseCompletions.length;
-    if (totalTasks === 0) return 0;
-    const tasksPerPhase = Math.ceil(totalTasks / 3);
-    const estimatedCompleted = completedPhases * tasksPerPhase;
-    return Math.min(Math.round((estimatedCompleted / totalTasks) * 100), 100);
-  };
+  const activeGoals = displayGoals.filter(g => g.status === "active");
 
-  // This week's meeting count
-  const getWeekMeetingCount = () => {
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    const thisWeekCheckIns = checkIns.filter(c => new Date(c.check_in_date) >= weekAgo);
-    return thisWeekCheckIns.filter(c => c.attended_meeting).length;
-  };
-
-  // Calculate days since last check-in for status indicator
-  const getDaysSinceLastCheckIn = () => {
-    if (!checkIns.length) return 999;
-    const mostRecent = checkIns.sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date))[0];
-    const daysDiff = Math.floor((new Date() - new Date(mostRecent.check_in_date)) / (1000 * 60 * 60 * 24));
-    return daysDiff;
-  };
-
-  const streak = calculateStreak();
-  const engagementCompliance = calculateEngagementCompliance();
-  const phaseProgress = calculatePhaseProgress();
-  const meetingCount = getWeekMeetingCount();
-  const daysSinceLastCheckIn = getDaysSinceLastCheckIn();
-  const accentColor = facility?.primary_color || '#fbbf24';
-
-  // Status indicator
-  const getStatusColor = () => {
-    if (daysSinceLastCheckIn === 0) return '#22c55e'; // Green - Active
-    if (daysSinceLastCheckIn === 1) return '#fbbf24'; // Yellow - Missed 1 day
-    return '#ef4444'; // Red - Missed 3+ days
-  };
-
-  const getStatusText = () => {
-    if (daysSinceLastCheckIn === 0) return 'Active';
-    if (daysSinceLastCheckIn === 1) return 'Missed 1 Day';
-    return `Missed ${daysSinceLastCheckIn} Days`;
-  };
-
-  const lastUpdated = new Date().toLocaleString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    hour: 'numeric', 
-    minute: '2-digit',
-    hour12: true 
-  });
+  if (userLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#F5F5F7" }}>
+        <Loader2 className="w-6 h-6 animate-spin" style={{ color: BLUE }} />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: 'var(--bg-secondary)' }}>
-      {/* Header */}
-      <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 style={{ color: 'var(--text-primary)' }}>How you're doing</h1>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Your progress this week</p>
+    <div className="min-h-screen pb-24" style={{ background: "#F5F5F7" }}>
+      {isDemo && (
+        <div style={{ background: BLUE, color: "#FFF", textAlign: "center", padding: "10px 16px", fontSize: 13 }}>
+          👋 Demo mode — <button onClick={() => base44.auth.redirectToLogin()} style={{ fontWeight: 700, textDecoration: "underline", background: "none", border: "none", color: "#FFF", cursor: "pointer" }}>Sign in</button> to track your own recovery journey
+        </div>
+      )}
+
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 16px" }}>
+
+        {/* Header */}
+        <div style={{ paddingTop: 28, paddingBottom: 16 }}>
+          <p style={{ fontSize: 13, color: "#8E8E93", marginBottom: 2 }}>
+            {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+          </p>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1E1E1E", lineHeight: 1.2 }}>
+            {isDemo ? "Welcome to Unbound" : `Hey, ${firstName}`} 👋
+          </h1>
+          <p style={{ fontSize: 14, color: "#5A5A5A", marginTop: 4 }}>
+            {isDemo ? "Your recovery journey starts here." : streak > 0 ? `${streak} day streak — keep going.` : "Ready to check in today?"}
+          </p>
+        </div>
+
+        {/* Streak / Check-in Banner */}
+        <Link to={createPageUrl("DailyCheckIn")} style={{ textDecoration: "none", display: "block", marginBottom: 14 }}>
+          <div style={{
+            background: hasCheckedInToday ? "rgba(16,185,129,0.08)" : "#FFFFFF",
+            border: `1px solid ${hasCheckedInToday ? "rgba(16,185,129,0.3)" : "#D1D1D6"}`,
+            borderRadius: 16, padding: "16px 18px",
+            display: "flex", alignItems: "center", gap: 14,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+          }}>
+            <div style={{ fontSize: 32 }}>🔥</div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E" }}>
+                {hasCheckedInToday ? `${streak} day streak!` : streak > 0 ? `${streak} day streak` : "Start your streak"}
+              </p>
+              <p style={{ fontSize: 13, color: "#8E8E93" }}>
+                {hasCheckedInToday ? "Check-in complete for today ✓" : "Tap to check in for today →"}
+              </p>
+            </div>
+            {!hasCheckedInToday && (
+              <div style={{ background: BLUE, color: "#FFF", borderRadius: 10, padding: "6px 12px", fontSize: 12, fontWeight: 700 }}>
+                Check In
+              </div>
+            )}
           </div>
-          {facility?.logo_url && (
-            <img src={facility.logo_url} alt={facility.facility_name} className="h-10 w-auto" />
+        </Link>
+
+        {/* Mood + Craving Snapshot */}
+        {latestCheckin && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
+            <div style={{ background: "#FFFFFF", border: "1px solid #D1D1D6", borderRadius: 14, padding: "14px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+              <p style={{ fontSize: 11, color: "#8E8E93", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: 6 }}>Mood</p>
+              <p style={{ fontSize: 28, lineHeight: 1 }}>{moodEmoji}</p>
+              <p style={{ fontSize: 13, color: "#5A5A5A", marginTop: 4 }}>
+                {["", "Very low", "Struggling", "Getting by", "Okay", "Good"][latestCheckin.mood_rating] || "—"}
+              </p>
+            </div>
+            <div style={{ background: "#FFFFFF", border: "1px solid #D1D1D6", borderRadius: 14, padding: "14px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+              <p style={{ fontSize: 11, color: "#8E8E93", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: 6 }}>Craving</p>
+              <p style={{ fontSize: 28, fontWeight: 800, lineHeight: 1, color: cravingColor }}>
+                {latestCheckin.craving_intensity ?? "—"}
+                <span style={{ fontSize: 14, fontWeight: 500, color: "#8E8E93" }}>/10</span>
+              </p>
+              <p style={{ fontSize: 13, color: "#5A5A5A", marginTop: 4 }}>
+                {(latestCheckin.craving_intensity ?? 5) >= 7 ? "High — get support" : (latestCheckin.craving_intensity ?? 5) >= 4 ? "Moderate" : "Manageable"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Crisis Bar */}
+        <div style={{ background: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.15)", borderRadius: 14, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 12 }}>
+          <AlertCircle style={{ width: 18, height: 18, color: ROSE, flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "#1E1E1E" }}>Need help right now?</p>
+            <p style={{ fontSize: 12, color: "#5A5A5A" }}>988 Suicide & Crisis Lifeline · SAMHSA 1-800-662-4357</p>
+          </div>
+          <a href="tel:988" style={{ background: ROSE, color: "#FFF", borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+            Call
+          </a>
+        </div>
+
+        {/* Active Goals */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.8px" }}>Active Goals</p>
+            <Link to={createPageUrl("Goals")} style={{ fontSize: 12, color: BLUE, textDecoration: "none", fontWeight: 600 }}>View all →</Link>
+          </div>
+          {activeGoals.length === 0 ? (
+            <Link to={createPageUrl("Goals")} style={{ textDecoration: "none" }}>
+              <div style={{ background: "#FFFFFF", border: "1px dashed #D1D1D6", borderRadius: 14, padding: "18px 16px", textAlign: "center" }}>
+                <Target style={{ width: 24, height: 24, color: "#C7C7CC", margin: "0 auto 8px" }} />
+                <p style={{ fontSize: 14, color: "#8E8E93" }}>No goals yet — tap to set your first goal</p>
+              </div>
+            </Link>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {activeGoals.slice(0, 3).map((g, i) => (
+                <Link key={g.id || i} to={createPageUrl("Goals")} style={{ textDecoration: "none" }}>
+                  <div style={{ background: "#FFFFFF", border: "1px solid #D1D1D6", borderRadius: 12, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12, boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+                    <Circle style={{ width: 18, height: 18, color: "#C7C7CC", flexShrink: 0 }} />
+                    <p style={{ fontSize: 14, color: "#1E1E1E", flex: 1 }}>{g.title}</p>
+                    <ChevronRight style={{ width: 14, height: 14, color: "#C7C7CC", flexShrink: 0 }} />
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
         </div>
 
-        {/* Status Indicator */}
-        <div className="flex items-center gap-2 mt-4">
-          <div className="w-3 h-3 rounded-full" style={{ background: getStatusColor() }} />
-          <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-            {daysSinceLastCheckIn === 0 ? "You checked in today 👍" : daysSinceLastCheckIn === 1 ? "Missed yesterday — check in today" : `${daysSinceLastCheckIn} days since last check-in`}
-          </span>
-        </div>
-      </div>
-
-      <div className="px-6 py-6" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-section)' }}>
-        {/* Engagement Metrics */}
-        <div>
-          <div className="grid grid-cols-2 gap-3 mb-3">
-            <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Check-in streak</p>
-              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{streak}</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>days in a row 🔥</p>
+        {/* My Plan (30/60/90) */}
+        <Link to={createPageUrl("ForwardPlan")} style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
+          <div style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08))", border: "1px solid rgba(139,92,246,0.25)", borderRadius: 16, padding: "16px 18px", display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ fontSize: 28 }}>📋</div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 700, fontSize: 15, color: "#1E1E1E" }}>My 90-Day Roadmap</p>
+              <p style={{ fontSize: 13, color: "#5A5A5A" }}>Housing · Jobs · Legal · Health · and more</p>
             </div>
-
-            <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Staying on track</p>
-              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{engagementCompliance}%</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>last 7 days</p>
-            </div>
-
-            <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Steps complete</p>
-              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{phaseProgress}%</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>of your 90-day plan</p>
-            </div>
-
-            <div className="card">
-              <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Meetings this week</p>
-              <p className="text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{meetingCount}</p>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>keep showing up</p>
-            </div>
+            <ChevronRight style={{ width: 18, height: 18, color: "#8E8E93" }} />
           </div>
-          <p className="text-xs text-right" style={{ color: 'var(--text-muted)' }}>Last Updated: {lastUpdated}</p>
+        </Link>
+
+        {/* Quick Actions Grid */}
+        <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12 }}>Quick Actions</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
+          {[
+            { label: "Find Help Near Me", icon: "📍", page: "FindHelpNow", color: BLUE },
+            { label: "Meetings", icon: "🤝", page: "Meetings", color: EMERALD },
+            { label: "Daily Check-In", icon: "✅", page: "DailyCheckIn", color: GOLD },
+            { label: "Recovery Network", icon: "🌐", page: "RecoveryNetwork", color: PURPLE },
+          ].map(item => (
+            <Link key={item.page} to={createPageUrl(item.page)} style={{ textDecoration: "none" }}>
+              <div style={{ background: "#FFFFFF", border: "1px solid #D1D1D6", borderRadius: 14, padding: "16px 14px", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+                <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
+                <p style={{ fontSize: 13, fontWeight: 600, color: "#1E1E1E" }}>{item.label}</p>
+              </div>
+            </Link>
+          ))}
         </div>
 
-        {/* Daily Check-In CTA */}
-        {!hasCheckedInToday ? (
-          <Link to={createPageUrl("DailyCheckIn")}>
-            <div className="card text-center" style={{ borderColor: 'var(--primary)', borderWidth: '2px' }}>
-              <Calendar className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--primary)' }} strokeWidth={2} />
-              <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>Check in for today</h3>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Takes less than 30 seconds</p>
-            </div>
-          </Link>
-        ) : (
-          <div className="card text-center" style={{ background: 'rgba(34,197,94,0.1)', borderColor: 'rgba(34,197,94,0.3)' }}>
-            <Calendar className="w-10 h-10 mx-auto mb-3" style={{ color: '#22c55e' }} strokeWidth={2} />
-            <h3 style={{ color: '#22c55e', marginBottom: '4px' }}>Check-In Completed</h3>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Next check-in available tomorrow</p>
+        {/* Featured Resources */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.8px" }}>Helpful Resources</p>
+            <Link to={createPageUrl("FindHelpNow")} style={{ fontSize: 12, color: BLUE, textDecoration: "none", fontWeight: 600 }}>See all →</Link>
           </div>
-        )}
-
-        {/* Quick Access */}
-        <div>
-          <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Keep going</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <Link to={createPageUrl("ReintegrationMap")}>
-              <div className="card flex items-center gap-4">
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.15)', borderRadius: 'var(--radius)' }}>
-                  <Calendar className="w-5 h-5" style={{ color: 'var(--accent)' }} strokeWidth={2} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {displayResources.map((r, i) => (
+              <div key={r.id || i} style={{ background: "#FFFFFF", border: "1px solid #D1D1D6", borderRadius: 12, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12, boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+                <div style={{ fontSize: 22, flexShrink: 0 }}>
+                  {r.resource_category === "Food Pantry" ? "🍽️" : r.resource_category === "Peer Support" ? "🤝" : r.resource_category === "Reentry Services" ? "🔄" : r.resource_category === "Housing" ? "🏠" : r.resource_category === "Mental Health" ? "🧠" : "📍"}
                 </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>My 90-Day Steps</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>See what's next on your plan</p>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: "#1E1E1E" }}>{r.organization_name}</p>
+                  <p style={{ fontSize: 12, color: "#8E8E93" }}>{r.resource_category}{r.city ? ` · ${r.city}` : ""}</p>
                 </div>
+                {r.phone && (
+                  <a href={`tel:${r.phone}`} style={{ color: BLUE, flexShrink: 0 }}>
+                    <Phone style={{ width: 16, height: 16 }} />
+                  </a>
+                )}
               </div>
-            </Link>
-
-            <Link to={createPageUrl("ForwardPlan")}>
-              <div className="card flex items-center gap-4">
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(74,144,226,0.15)', borderRadius: 'var(--radius)' }}>
-                  <TrendingUp className="w-5 h-5" style={{ color: 'var(--primary)' }} strokeWidth={2} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>My Plan</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Your goals and where you're headed</p>
-                </div>
-              </div>
-            </Link>
-
-            <Link to={createPageUrl("FindHelpNow")}>
-              <div className="card flex items-center gap-4">
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(96,165,250,0.15)', borderRadius: 'var(--radius)' }}>
-                  <MapPin className="w-5 h-5" style={{ color: '#60a5fa' }} strokeWidth={2} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Help Near Me</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Housing, food, jobs, meetings & more</p>
-                </div>
-              </div>
-            </Link>
-
-            <Link to={createPageUrl("ParticipantMessages")}>
-              <div className="card flex items-center gap-4">
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.15)', borderRadius: 'var(--radius)' }}>
-                  <MessageCircle className="w-5 h-5" style={{ color: '#22c55e' }} strokeWidth={2} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Messages</p>
-                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Stay in touch with your support team</p>
-                </div>
-              </div>
-            </Link>
+            ))}
           </div>
         </div>
 
-        {/* Emergency Resources */}
-        <div className="p-5" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 'var(--radius)' }}>
-          <h3 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#ef4444' }}>
-            <AlertCircle className="w-5 h-5" strokeWidth={2} />
-            Need help right now?
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <a href="tel:911" className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
-              911 — Emergency Services
-            </a>
-            <a href="tel:988" className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
-              988 — Crisis Lifeline
-            </a>
-            {facility?.crisis_phone && (
-              <a href={`tel:${facility.crisis_phone}`} className="block p-3 font-medium text-sm" style={{ background: 'rgba(239,68,68,0.15)', color: 'var(--text-primary)', borderRadius: 'var(--radius)' }}>
-                {facility.crisis_phone} — {facility.facility_name}
-              </a>
-            )}
-          </div>
+        {/* Crisis Hotlines */}
+        <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 12 }}>Always Free · Always Available</p>
+        <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+          <a href="tel:988" style={{ flex: 1, background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.2)", borderRadius: 14, padding: "14px 8px", textAlign: "center", textDecoration: "none" }}>
+            <p style={{ fontWeight: 900, color: ROSE, fontSize: 20 }}>988</p>
+            <p style={{ fontSize: 11, color: "#5A5A5A", marginTop: 3 }}>Crisis Line</p>
+          </a>
+          <a href="tel:18006624357" style={{ flex: 1, background: "rgba(234,88,12,0.08)", border: "1px solid rgba(234,88,12,0.2)", borderRadius: 14, padding: "14px 8px", textAlign: "center", textDecoration: "none" }}>
+            <p style={{ fontWeight: 700, color: "#EA580C", fontSize: 11 }}>1-800-662-HELP</p>
+            <p style={{ fontSize: 11, color: "#5A5A5A", marginTop: 3 }}>SAMHSA</p>
+          </a>
+          <a href="sms:741741" style={{ flex: 1, background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 14, padding: "14px 8px", textAlign: "center", textDecoration: "none" }}>
+            <p style={{ fontWeight: 700, color: BLUE, fontSize: 12 }}>Text HOME</p>
+            <p style={{ fontSize: 11, color: "#5A5A5A", marginTop: 3 }}>to 741741</p>
+          </a>
         </div>
 
-        {/* Family Support Contacts */}
-        <FamilySettings participantEmail={user?.email} />
-
-        {/* Legal Disclaimer */}
-        <div className="p-4 text-xs" style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 'var(--radius)' }}>
-          <p style={{ color: 'var(--text-secondary)' }}>
-            Unbound helps you stay connected and track your own progress. It is not a medical service. If you are in danger, call 911.
-          </p>
-        </div>
-
-        {/* Footer */}
-        {facility && (
-          <p className="text-center text-xs" style={{ color: 'var(--text-muted)' }}>
-            Powered by Unbound
-          </p>
-        )}
       </div>
     </div>
   );
