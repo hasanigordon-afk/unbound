@@ -264,15 +264,15 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
             <GoalFeedbackPanel participantEmail={metrics.email} counselorEmail={counselorEmail} />
           </div>
         </div>
-      </div>
 
-      {showSummaryModal && (
-        <WeeklySummaryModal
-          metrics={metrics}
-          counselorEmail={counselorEmail}
-          onClose={() => setShowSummaryModal(false)}
-        />
-      )}
+        {showSummaryModal && (
+          <WeeklySummaryModal
+            metrics={metrics}
+            counselorEmail={counselorEmail}
+            onClose={() => setShowSummaryModal(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }
