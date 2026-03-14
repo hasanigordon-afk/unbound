@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Bookmark, BookmarkCheck, Heart, Share2, ExternalLink, Calendar } from "lucide-react";
 const CAT_COLORS = {
   "Recovery":           { bg: "#EBF5FF", color: "#2563EB" },

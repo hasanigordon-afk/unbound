@@ -115,7 +115,7 @@ export default function VoicesOfRecovery() {
 
   const likeMutation = useMutation({
     mutationFn: async (post) => {
-      await base44.entities.PostLike.create({ content_type: "community_post", content_id: post.id });
+      await base44.entities.ArticleLike.create({ target_id: post.id, target_type: "community_like" });
       return base44.entities.CommunityPost.update(post.id, { like_count: (post.like_count || 0) + 1 });
     },
     onSuccess: () => queryClient.invalidateQueries(["community-posts"]),
