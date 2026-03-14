@@ -48,6 +48,8 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AftercareMonitoring from './pages/AftercareMonitoring';
+import BenefitsAssistance from './pages/BenefitsAssistance';
+import BillingDashboard from './pages/BillingDashboard';
 import ClientProgress from './pages/ClientProgress';
 import ClientSettings from './pages/ClientSettings';
 import Community from './pages/Community';
@@ -59,6 +61,9 @@ import CounselorPortal from './pages/CounselorPortal';
 import CravingControlCenter from './pages/CravingControlCenter';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Discover from './pages/Discover';
+import EHRIntegration from './pages/EHRIntegration';
+import EmploymentOpportunities from './pages/EmploymentOpportunities';
+import FacilityAdmin from './pages/FacilityAdmin';
 import FacilityDashboard from './pages/FacilityDashboard';
 import FacilitySignup from './pages/FacilitySignup';
 import FamilyView from './pages/FamilyView';
@@ -67,6 +72,7 @@ import ForwardPlan from './pages/ForwardPlan';
 import GoalBoard from './pages/GoalBoard';
 import Goals from './pages/Goals';
 import Home from './pages/Home';
+import HousingAssistance from './pages/HousingAssistance';
 import IdentityBridge from './pages/IdentityBridge';
 import Journal from './pages/Journal';
 import Lifeline from './pages/Lifeline';
@@ -77,6 +83,7 @@ import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
 import ModerationQueue from './pages/ModerationQueue';
 import MyGoals from './pages/MyGoals';
+import NJTreatmentFacilities from './pages/NJTreatmentFacilities';
 import NearbyResources from './pages/NearbyResources';
 import Onboarding from './pages/Onboarding';
 import ParticipantDashboard from './pages/ParticipantDashboard';
@@ -99,21 +106,18 @@ import SecondChanceMap from './pages/SecondChanceMap';
 import Splash from './pages/Splash';
 import StateManagement from './pages/StateManagement';
 import SupportChat from './pages/SupportChat';
+import TelehealthHub from './pages/TelehealthHub';
 import UrgentHelp from './pages/UrgentHelp';
 import utils from './pages/utils';
-import TelehealthHub from './pages/TelehealthHub';
-import EmploymentOpportunities from './pages/EmploymentOpportunities';
-import HousingAssistance from './pages/HousingAssistance';
-import BenefitsAssistance from './pages/BenefitsAssistance';
-import BillingDashboard from './pages/BillingDashboard';
-import EHRIntegration from './pages/EHRIntegration';
-import NJTreatmentFacilities from './pages/NJTreatmentFacilities';
-import FacilityAdmin from './pages/FacilityAdmin';
+import RecoveryHub from './pages/RecoveryHub';
+import ContentAdmin from './pages/ContentAdmin';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AftercareMonitoring": AftercareMonitoring,
+    "BenefitsAssistance": BenefitsAssistance,
+    "BillingDashboard": BillingDashboard,
     "ClientProgress": ClientProgress,
     "ClientSettings": ClientSettings,
     "Community": Community,
@@ -125,6 +129,9 @@ export const PAGES = {
     "CravingControlCenter": CravingControlCenter,
     "DailyCheckIn": DailyCheckIn,
     "Discover": Discover,
+    "EHRIntegration": EHRIntegration,
+    "EmploymentOpportunities": EmploymentOpportunities,
+    "FacilityAdmin": FacilityAdmin,
     "FacilityDashboard": FacilityDashboard,
     "FacilitySignup": FacilitySignup,
     "FamilyView": FamilyView,
@@ -133,6 +140,7 @@ export const PAGES = {
     "GoalBoard": GoalBoard,
     "Goals": Goals,
     "Home": Home,
+    "HousingAssistance": HousingAssistance,
     "IdentityBridge": IdentityBridge,
     "Journal": Journal,
     "Lifeline": Lifeline,
@@ -143,6 +151,7 @@ export const PAGES = {
     "Messages": Messages,
     "ModerationQueue": ModerationQueue,
     "MyGoals": MyGoals,
+    "NJTreatmentFacilities": NJTreatmentFacilities,
     "NearbyResources": NearbyResources,
     "Onboarding": Onboarding,
     "ParticipantDashboard": ParticipantDashboard,
@@ -165,16 +174,11 @@ export const PAGES = {
     "Splash": Splash,
     "StateManagement": StateManagement,
     "SupportChat": SupportChat,
+    "TelehealthHub": TelehealthHub,
     "UrgentHelp": UrgentHelp,
     "utils": utils,
-    "TelehealthHub": TelehealthHub,
-    "EmploymentOpportunities": EmploymentOpportunities,
-    "HousingAssistance": HousingAssistance,
-    "BenefitsAssistance": BenefitsAssistance,
-    "BillingDashboard": BillingDashboard,
-    "EHRIntegration": EHRIntegration,
-    "NJTreatmentFacilities": NJTreatmentFacilities,
-    "FacilityAdmin": FacilityAdmin,
+    "RecoveryHub": RecoveryHub,
+    "ContentAdmin": ContentAdmin,
 }
 
 export const pagesConfig = {
