@@ -137,9 +137,10 @@ export default function Home() {
   const meetingScore  = recent7.length ? (recent7.filter(c => c.attended_meeting).length / recent7.length) * 25 : 0;
   const sponsorScore  = recent7.length ? (recent7.filter(c => c.connected_with_sponsor).length / recent7.length) * 25 : 0;
   const cravingScore  = Math.max(0, (10 - avgCraving) / 10) * 25;
-  const stabilityScore = Math.round(checkinScore + meetingScore + sponsorScore + cravingScore);
-  const stabilityLabel = stabilityScore >= 75 ? "Stable" : stabilityScore >= 50 ? "At Risk" : "High Risk";
-  const stabilityColor = stabilityScore >= 75 ? EMERALD : stabilityScore >= 50 ? GOLD : "#EF4444";
+  const hasCheckInData = recent7.length > 0;
+  const stabilityScore = hasCheckInData ? Math.round(checkinScore + meetingScore + sponsorScore + cravingScore) : null;
+  const stabilityLabel = !hasCheckInData ? "Start Tracking" : stabilityScore >= 75 ? "Stable" : stabilityScore >= 50 ? "At Risk" : "High Risk";
+  const stabilityColor = !hasCheckInData ? BLUE : stabilityScore >= 75 ? EMERALD : stabilityScore >= 50 ? GOLD : "#EF4444";
 
   const indicators = [
     { label: "Check-ins",   done: recent7.length >= 4 },

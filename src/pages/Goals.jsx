@@ -23,7 +23,16 @@ export default function Goals() {
     enabled: !!user,
   });
 
-  const filteredGoals = goals.filter(g => filter === "all" || g.status === filter);
+  // Demo/fallback: show all goals when user has none or is not logged in
+  const { data: allGoals = [] } = useQuery({
+    queryKey: ["all-goals-demo"],
+    queryFn: () => base44.entities.Goal.list("-created_date", 12),
+    enabled: !isLoading && goals.length === 0,
+  });
+
+  const displayGoals = goals.length > 0 ? goals : allGoals;
+  const isDemoMode = goals.length === 0 && allGoals.length > 0;
+  const filteredGoals = displayGoals.filter(g => filter === "all" || g.status === filter);
 
   if (isLoading) {
     return (
