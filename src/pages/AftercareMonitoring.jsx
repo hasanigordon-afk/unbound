@@ -23,19 +23,21 @@ export default function AftercareMonitoring() {
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
-  const { data: assignedProfiles = [], isLoading: profilesLoading } = useQuery({
+  // Assigned profiles when logged in
+  const { data: assignedProfiles = [], isLoading: assignedLoading } = useQuery({
     queryKey: ["aftercare-profiles", user?.email],
     queryFn: () => base44.entities.ParticipantProfile.filter({ assigned_counselor_email: user.email }),
     enabled: !!user,
   });
 
-  // Fall back to all profiles for demo / admin view when no clients are assigned
-  const { data: allProfiles = [] } = useQuery({
+  // Always load all profiles for demo / fallback (no auth required)
+  const { data: allProfiles = [], isLoading: allLoading } = useQuery({
     queryKey: ["aftercare-all-profiles"],
     queryFn: () => base44.entities.ParticipantProfile.list("-created_date", 50),
-    enabled: !!user && assignedProfiles.length === 0,
+    enabled: !user || assignedProfiles.length === 0,
   });
 
+  const profilesLoading = assignedLoading || allLoading;
   const profiles = assignedProfiles.length > 0 ? assignedProfiles : allProfiles;
 
   const clientEmails = profiles.map((p) => p.participant_email);
@@ -47,9 +49,9 @@ export default function AftercareMonitoring() {
   });
 
   const { data: alerts = [] } = useQuery({
-    queryKey: ["aftercare-alerts", user?.email],
+    queryKey: ["aftercare-alerts"],
     queryFn: () => base44.entities.EngagementAlert.filter({ status: "active" }),
-    enabled: !!user,
+    // always load alerts — no auth required
   });
 
   const clientMetrics = useMemo(() => {

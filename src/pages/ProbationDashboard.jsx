@@ -19,11 +19,10 @@ export default function ProbationDashboard() {
     queryFn: () => base44.auth.me(),
   });
 
-  // For demo/preview: load all participant profiles
+  // Load all profiles — no auth gate so demo/shared mode always shows data
   const { data: clients = [] } = useQuery({
     queryKey: ["all-participants-probation"],
     queryFn: () => base44.entities.ParticipantProfile.list("-created_date", 50),
-    enabled: !!user,
   });
 
   const { data: allCheckIns = [] } = useQuery({
@@ -31,6 +30,8 @@ export default function ProbationDashboard() {
     queryFn: () => base44.entities.DailyCheckIn.list("-check_in_date", 500),
     enabled: clients.length > 0,
   });
+
+  const isDemo = !user;
 
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
