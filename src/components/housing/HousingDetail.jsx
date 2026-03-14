@@ -33,13 +33,13 @@ function Pill({ icon, label, color, bg }) {
   );
 }
 
-function InfoRow({ icon: Icon, label, value, color }) {
+function InfoRow({ icon: IconComp, label, value, color }) {
   if (!value) return null;
   return (
     <div style={{ display: "flex", gap: 12, padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
       <div style={{ width: 32, height: 32, borderRadius: 10, background: "rgba(255,255,255,0.06)",
         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-        <Icon style={{ width: 15, height: 15, color: color || C.muted }} />
+        <IconComp style={{ width: 15, height: 15, color: color || C.muted }} />
       </div>
       <div>
         <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>{label}</p>
