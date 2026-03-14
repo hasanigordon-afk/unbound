@@ -11,9 +11,11 @@ const NAV_ITEMS = [
   { name: "Profile",    icon: User,          page: "Profile" },
 ];
 
+const HIDE_EXTRA_PAGES = ["TelehealthHub","EmploymentOpportunities","HousingAssistance","BenefitsAssistance","ComplianceReports","BillingDashboard","EHRIntegration"];
 
 
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn"];
+
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn", "TelehealthHub", "EmploymentOpportunities", "HousingAssistance", "BenefitsAssistance", "ComplianceReports", "BillingDashboard", "EHRIntegration"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
