@@ -77,7 +77,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {profile?.location_city && (
+        {profile?.location_city ? (
           <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4">
             <div className="flex items-center gap-3 text-slate-600">
               <MapPin className="w-4 h-4 text-slate-400" />
@@ -87,9 +87,16 @@ export default function Profile() {
               </span>
             </div>
           </div>
+        ) : (
+          <div className="bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-5 mb-4">
+            <div className="flex items-center gap-3 text-slate-400">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm">No location set — add it during onboarding to find local resources</span>
+            </div>
+          </div>
         )}
 
-        {profile?.challenges?.length > 0 && (
+        {profile?.challenges?.length > 0 ? (
           <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-4">
             <p className="text-sm font-medium text-slate-500 mb-3">What I'm focused on</p>
             <div className="flex flex-wrap gap-2">
@@ -99,6 +106,10 @@ export default function Profile() {
                 </Badge>
               ))}
             </div>
+          </div>
+        ) : (
+          <div className="bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-5 mb-4">
+            <p className="text-sm text-slate-400">Complete onboarding to set your focus areas and get personalized support.</p>
           </div>
         )}
 
