@@ -561,16 +561,31 @@ export default function DischargePlan() {
                   Save & Continue <ChevronRight style={{ width: 16, height: 16 }} />
                 </button>
               ) : (
-                <button onClick={handleFinalize} disabled={saveMutation.isPending || !form.participant_email} style={{
-                  flex: 2, padding: "13px", borderRadius: 12,
-                  background: "linear-gradient(135deg,#10B981,#059669)",
-                  border: "none", color: "#fff", fontWeight: 800, fontSize: 14, cursor: "pointer",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                  boxShadow: "0 6px 20px rgba(16,185,129,0.3)",
-                  opacity: !form.participant_email ? 0.5 : 1,
-                }}>
-                  <CheckCircle2 style={{ width: 16, height: 16 }} /> Finalize Plan
-                </button>
+                <>
+                  <button onClick={handleFinalize} disabled={saveMutation.isPending || !form.participant_email} style={{
+                    flex: 2, padding: "13px", borderRadius: 12,
+                    background: "linear-gradient(135deg,#10B981,#059669)",
+                    border: "none", color: "#fff", fontWeight: 800, fontSize: 14, cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                    boxShadow: "0 6px 20px rgba(16,185,129,0.3)",
+                    opacity: !form.participant_email ? 0.5 : 1,
+                  }}>
+                    <CheckCircle2 style={{ width: 16, height: 16 }} /> Finalize Plan
+                  </button>
+                  <button
+                    onClick={() => generateDischargePlanPDF(form, contacts)}
+                    disabled={!form.participant_email}
+                    style={{
+                      padding: "13px 16px", borderRadius: 12,
+                      background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)",
+                      color: "#10B981", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                      display: "flex", alignItems: "center", gap: 6, flexShrink: 0,
+                      opacity: !form.participant_email ? 0.5 : 1,
+                    }}
+                  >
+                    <Download style={{ width: 15, height: 15 }} /> PDF
+                  </button>
+                </>
               )}
             </div>
           )}
