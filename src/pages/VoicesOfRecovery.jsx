@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Loader2, Users, Heart, Shield, LayoutList, CircleDot } from "lucide-react";
+import { Plus, Loader2, Heart, Shield, LayoutList, CircleDot } from "lucide-react";
 import DailyPrompt from "@/components/community/DailyPrompt";
 import RecoveryPostCard, { POST_CATEGORIES } from "@/components/community/RecoveryPostCard";
 import ComposePostModal from "@/components/community/ComposePostModal";
