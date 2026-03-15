@@ -329,6 +329,16 @@ export default function VoicesOfRecovery() {
             )
           )}
 
+          {/* ════════════════════ PEERS TAB ════════════════════ */}
+          {activeTab === "peers" && (
+            <PeopleLikeMeTab user={user} />
+          )}
+
+          {/* ════════════════════ MENTORS TAB ════════════════════ */}
+          {activeTab === "mentors" && (
+            <MentorshipNetwork user={user} />
+          )}
+
           {/* ════════════════════ SAFE SPACE TAB ════════════════════ */}
           {activeTab === "safe" && (
             <div>
