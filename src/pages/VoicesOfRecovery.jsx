@@ -19,7 +19,7 @@ const C = {
 const TABS = [
   { id: "feed",    label: "Feed",    icon: <LayoutList style={{ width: 14, height: 14 }} /> },
   { id: "support", label: "Support", icon: <Heart style={{ width: 14, height: 14 }} /> },
-  { id: "groups",  label: "Groups",  icon: <Users style={{ width: 14, height: 14 }} /> },
+  { id: "circles", label: "Circles", icon: <CircleDot style={{ width: 14, height: 14 }} /> },
   { id: "safe",    label: "Safe",    icon: <Shield style={{ width: 14, height: 14 }} /> },
 ];
 
