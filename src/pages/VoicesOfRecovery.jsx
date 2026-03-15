@@ -63,17 +63,30 @@ export default function VoicesOfRecovery() {
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
   const { data: posts = [], isLoading } = useQuery({
-    queryKey: ["community-posts", activeTab, feedFilter, activeGroup],
+    queryKey: ["community-posts", activeTab, feedFilter],
     queryFn: () => {
       const filter = { moderation_status: "approved" };
-      if (activeTab === "support") {
-        // fetch need_support + craving_now — do two queries and merge isn't easy, so filter client-side
-      }
-      if (activeGroup) filter.group_id = activeGroup;
       if (feedFilter !== "all" && activeTab === "feed") filter.category = feedFilter;
       return base44.entities.CommunityPost.filter(filter, "-created_date", 60);
     },
+    enabled: activeTab !== "circles",
   });
+
+  const handleJoinCircle = (id) => {
+    setJoinedCircles(prev => {
+      const updated = [...prev, id];
+      localStorage.setItem("joined_circles", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleLeaveCircle = (id) => {
+    setJoinedCircles(prev => {
+      const updated = prev.filter(x => x !== id);
+      localStorage.setItem("joined_circles", JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   // Client-side filtering for tabs
   const displayPosts = useMemo(() => {
