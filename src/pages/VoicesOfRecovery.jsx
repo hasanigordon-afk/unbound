@@ -159,7 +159,7 @@ export default function VoicesOfRecovery() {
           </div>
 
           {/* Tabs */}
-          <div style={{ display: "flex", gap: 2, marginBottom: 0 }}>
+          <div style={{ display: "flex", gap: 1, marginBottom: 0, overflowX: "auto", scrollbarWidth: "none" }}>
             {TABS.map(tab => (
               <button
                 key={tab.id}
