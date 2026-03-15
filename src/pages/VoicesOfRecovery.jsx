@@ -93,11 +93,8 @@ export default function VoicesOfRecovery() {
     if (activeTab === "support") {
       return posts.filter(p => SUPPORT_CATEGORIES.includes(p.category) || p.post_type === "support_request");
     }
-    if (activeTab === "feed" && feedFilter !== "all") {
-      return posts.filter(p => p.category === feedFilter);
-    }
     return posts;
-  }, [posts, activeTab, feedFilter]);
+  }, [posts, activeTab]);
 
   // Urgent posts (for feed tab — surface at top)
   const urgentPosts = useMemo(() =>
