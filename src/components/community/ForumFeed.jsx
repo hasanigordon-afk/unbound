@@ -68,7 +68,7 @@ export default function ForumFeed() {
 
       <div className="space-y-3">
         {posts.map(post => {
-          const categoryStyle = CATEGORY_COLORS[post.category];
+          const categoryStyle = CATEGORY_COLORS[post.category] || { bg: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', label: post.category || 'Post' };
           return (
             <div
               key={post.id}
