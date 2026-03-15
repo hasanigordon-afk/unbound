@@ -304,49 +304,25 @@ export default function VoicesOfRecovery() {
             </>
           )}
 
-          {/* ════════════════════ GROUPS TAB ════════════════════ */}
-          {activeTab === "groups" && (
-            <>
-              <AccountabilityGroups onSelectGroup={setActiveGroup} activeGroup={activeGroup} />
-
-              {activeGroup && (
-                <div style={{ marginTop: 20 }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>Group Posts</p>
-                    <button onClick={() => openCompose("daily_win")} style={{
-                      padding: "6px 14px", borderRadius: 10,
-                      background: "rgba(62,207,191,0.15)", border: "1px solid rgba(62,207,191,0.3)",
-                      color: C.teal, fontWeight: 700, fontSize: 12, cursor: "pointer",
-                    }}>
-                      + Post to Group
-                    </button>
-                  </div>
-
-                  {isLoading
-                    ? <div style={{ textAlign: "center", paddingTop: 30 }}><Loader2 style={{ width: 22, height: 22, color: C.teal }} className="animate-spin" /></div>
-                    : displayPosts.length === 0
-                      ? (
-                        <div style={{ textAlign: "center", padding: "40px 20px",
-                          background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 18 }}>
-                          <p style={{ fontSize: 13, color: C.muted }}>No posts in this group yet. Be the first!</p>
-                        </div>
-                      )
-                      : displayPosts.map(post => (
-                          <RecoveryPostCard key={post.id} post={post} user={user} onCrisisClick={setCrisisPost} />
-                        ))
-                  }
-                </div>
-              )}
-
-              {!activeGroup && (
-                <div style={{ marginTop: 20, padding: "24px 20px", textAlign: "center",
-                  background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 18 }}>
-                  <p style={{ fontSize: 24, marginBottom: 10 }}>👆</p>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 6 }}>Select a group above</p>
-                  <p style={{ fontSize: 13, color: C.muted }}>Choose a group to see posts and connect with peers on a similar path.</p>
-                </div>
-              )}
-            </>
+          {/* ════════════════════ CIRCLES TAB ════════════════════ */}
+          {activeTab === "circles" && (
+            openCircle ? (
+              <RecoveryCircleDetail
+                circle={openCircle}
+                joined={joinedCircles.includes(openCircle.id)}
+                onJoin={handleJoinCircle}
+                onLeave={handleLeaveCircle}
+                onBack={() => setOpenCircle(null)}
+                user={user}
+              />
+            ) : (
+              <RecoveryCirclesBrowser
+                joinedIds={joinedCircles}
+                onJoin={handleJoinCircle}
+                onLeave={handleLeaveCircle}
+                onOpenCircle={setOpenCircle}
+              />
+            )
           )}
 
           {/* ════════════════════ SAFE SPACE TAB ════════════════════ */}
