@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Save, CheckCircle2, Loader2, Plus, Trash2, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Save, CheckCircle2, Loader2, Plus, Trash2, Lock, Download } from "lucide-react";
 import DischargeReview from "@/components/discharge/DischargeReview";
+import { generateDischargePlanPDF } from "@/components/discharge/DischargePlanPDF";
 
 // ── Design tokens ─────────────────────────────────────────────
 const C = {
