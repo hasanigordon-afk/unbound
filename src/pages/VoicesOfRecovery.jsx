@@ -54,8 +54,11 @@ export default function VoicesOfRecovery() {
   const [showCompose, setShowCompose] = useState(false);
   const [composeInitContent, setComposeInitContent] = useState("");
   const [composeInitCat, setComposeInitCat] = useState("daily_win");
-  const [activeGroup, setActiveGroup] = useState(null);
   const [crisisPost, setCrisisPost] = useState(null);
+  const [joinedCircles, setJoinedCircles] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("joined_circles") || "[]"); } catch { return []; }
+  });
+  const [openCircle, setOpenCircle] = useState(null);
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
