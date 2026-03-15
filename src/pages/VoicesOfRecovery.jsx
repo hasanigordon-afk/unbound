@@ -1,13 +1,15 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Loader2, Heart, Shield, LayoutList, CircleDot } from "lucide-react";
+import { Plus, Loader2, Heart, Shield, LayoutList, CircleDot, Users, Star } from "lucide-react";
 import DailyPrompt from "@/components/community/DailyPrompt";
 import RecoveryPostCard, { POST_CATEGORIES } from "@/components/community/RecoveryPostCard";
 import ComposePostModal from "@/components/community/ComposePostModal";
 import CrisisSupportPanel from "@/components/community/CrisisSupportPanel";
 import RecoveryCirclesBrowser from "@/components/community/RecoveryCirclesBrowser";
 import RecoveryCircleDetail from "@/components/community/RecoveryCircleDetail";
+import PeopleLikeMeTab from "@/components/community/PeopleLikeMeTab";
+import MentorshipNetwork from "@/components/community/MentorshipNetwork";
 
 // ── Tokens ──────────────────────────────────────────────────────
 const C = {
@@ -17,10 +19,12 @@ const C = {
 };
 
 const TABS = [
-  { id: "feed",    label: "Feed",    icon: <LayoutList style={{ width: 14, height: 14 }} /> },
-  { id: "support", label: "Support", icon: <Heart style={{ width: 14, height: 14 }} /> },
-  { id: "circles", label: "Circles", icon: <CircleDot style={{ width: 14, height: 14 }} /> },
-  { id: "safe",    label: "Safe",    icon: <Shield style={{ width: 14, height: 14 }} /> },
+  { id: "feed",     label: "Feed",    icon: <LayoutList style={{ width: 13, height: 13 }} /> },
+  { id: "support",  label: "Support", icon: <Heart style={{ width: 13, height: 13 }} /> },
+  { id: "circles",  label: "Circles", icon: <CircleDot style={{ width: 13, height: 13 }} /> },
+  { id: "peers",    label: "Peers",   icon: <Users style={{ width: 13, height: 13 }} /> },
+  { id: "mentors",  label: "Mentors", icon: <Star style={{ width: 13, height: 13 }} /> },
+  { id: "safe",     label: "Safe",    icon: <Shield style={{ width: 13, height: 13 }} /> },
 ];
 
 const FEED_CATEGORIES = [
