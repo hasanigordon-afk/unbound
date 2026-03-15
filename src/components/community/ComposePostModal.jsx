@@ -28,7 +28,7 @@ const MOODS = [
 
 const CRISIS_CATEGORIES = ["craving_now", "need_support"];
 
-export default function ComposePostModal({ onClose, initialContent = "", initialCategory = "daily_win" }) {
+export default function ComposePostModal({ onClose, initialContent = "", initialCategory = "daily_win", circleId = null }) {
   const [step, setStep] = useState(1); // 1=category 2=content 3=options
   const [category, setCategory] = useState(initialCategory);
   const [title, setTitle] = useState("");
@@ -75,7 +75,8 @@ Respond with JSON only.`,
         title: title.trim() || null,
         content: content.trim(),
         category,
-        post_type: isCrisis ? "support_request" : "feed",
+        post_type: circleId ? "group_post" : isCrisis ? "support_request" : "feed",
+        group_id: circleId || null,
         mood_tag: mood || null,
         is_anonymous: isAnonymous,
         moderation_status: moderationStatus,
