@@ -73,7 +73,7 @@ export default function VoicesOfRecovery() {
       if (feedFilter !== "all" && activeTab === "feed") filter.category = feedFilter;
       return base44.entities.CommunityPost.filter(filter, "-created_date", 60);
     },
-    enabled: activeTab !== "circles",
+    enabled: activeTab !== "circles" && activeTab !== "peers" && activeTab !== "mentors",
   });
 
   const handleJoinCircle = (id) => {
