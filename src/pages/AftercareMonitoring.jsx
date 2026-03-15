@@ -305,11 +305,12 @@ export default function AftercareMonitoring() {
         </div>
       ) : (
         <div style={{ padding:"16px 16px" }}>
-          {activeTab === "clients"    && <AftercareClientList clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
-          {activeTab === "risk"       && <CravingAlertPanel   clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
-          {activeTab === "predictive" && <PredictiveRiskPanel clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
-          {activeTab === "alerts"     && <AftercareAlerts     clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
-          {activeTab === "calendar"   && <CounselorCalendar   counselorEmail={user?.email} clientMetrics={clientMetrics}/>}
+          {activeTab === "clients"    && <AftercareClientList    clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "early"      && <EarlyWarningDashboard clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "risk"       && <CravingAlertPanel     clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "predictive" && <PredictiveRiskPanel   clientMetrics={clientMetrics} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "alerts"     && <AftercareAlerts       clientMetrics={clientMetrics} counselorEmail={user?.email} onSelectClient={(m) => setSelectedClient({ email: m.email })}/>}
+          {activeTab === "calendar"   && <CounselorCalendar     counselorEmail={user?.email} clientMetrics={clientMetrics}/>}
         </div>
       )}
     </div>
