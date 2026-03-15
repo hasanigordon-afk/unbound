@@ -15,7 +15,7 @@ const HIDE_EXTRA_PAGES = ["TelehealthHub","EmploymentOpportunities","HousingAssi
 
 
 
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "GuidedProfileSetup", "CounselorGuide", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn", "TelehealthHub", "EmploymentOpportunities", "HousingAssistance", "BenefitsAssistance", "ComplianceReports", "BillingDashboard", "EHRIntegration", "NJTreatmentFacilities", "FacilityAdmin", "ResourceHub", "VoicesOfRecovery", "ContentAdmin"];
+const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "GuidedProfileSetup", "CounselorGuide", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn", "TelehealthHub", "EmploymentOpportunities", "HousingAssistance", "BenefitsAssistance", "ComplianceReports", "BillingDashboard", "EHRIntegration", "NJTreatmentFacilities", "FacilityAdmin", "ResourceHub", "VoicesOfRecovery", "ContentAdmin", "EachOneTeachOne"];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
