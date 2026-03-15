@@ -273,7 +273,11 @@ export default function AftercareMonitoring() {
           <div style={{ display:"flex", gap:4, overflowX:"auto", scrollbarWidth:"none", paddingBottom:0 }}>
             {TABS.map(({ id, label, icon: TabIcon }) => {
               const active = activeTab === id;
-              const badge = id==="alerts" ? (alertCount||0) : id==="risk" ? (riskCount||0) : id==="predictive" ? (predictiveCount||0) : 0;
+              const earlyWarnCount = clientMetrics.filter(m => {
+                const { level } = calcEarlyWarningScore({ checkIns: m.checkIns || [] });
+                return level !== "Low Risk";
+              }).length;
+              const badge = id==="alerts" ? (alertCount||0) : id==="risk" ? (riskCount||0) : id==="predictive" ? (predictiveCount||0) : id==="early" ? (earlyWarnCount||0) : 0;
               const badgeColor = id==="alerts"||id==="risk" ? (hasRedRisk?"#EF4444":"#F59E0B") : "#F59E0B";
               return (
                 <button key={id} onClick={() => setActiveTab(id)} style={{
