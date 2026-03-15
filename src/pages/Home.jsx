@@ -9,6 +9,7 @@ import {
   Flame, Home as HomeIcon, FileText, MessageCircle, Building2
 } from "lucide-react";
 import RecoveryJourneyTimeline from "@/components/home/RecoveryJourneyTimeline";
+import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 
 // ─── Tokens ───────────────────────────────────────────────────────
 const C = {
