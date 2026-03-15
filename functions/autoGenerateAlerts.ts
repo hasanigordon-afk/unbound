@@ -1,5 +1,59 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+/**
+ * Relapse Early Warning Score (server-side version, 0–100)
+ */
+function calcEarlyWarningScore(checkIns = [], cravingPostCount = 0) {
+  const now = new Date();
+  const sevenAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  const today = now.toISOString().split("T")[0];
+
+  const last7 = checkIns
+    .filter(c => new Date(c.check_in_date) >= sevenAgo)
+    .sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+  const last3 = [...checkIns]
+    .sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date))
+    .slice(0, 3);
+  const last5 = [...checkIns]
+    .sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date))
+    .slice(0, 5);
+
+  let score = 0;
+  const negativeSignals = [];
+
+  // Positive
+  score += Math.min(last7.length, 7) * 10;
+  score += last7.filter(c => c.attended_meeting).length * 8;
+  score += last7.filter(c => c.connected_with_sponsor).length * 5;
+
+  // Negative
+  const checkedInToday = checkIns.some(c => c.check_in_date === today);
+  if (!checkedInToday) { score -= 10; negativeSignals.push("missed_checkin_today"); }
+
+  const meetingDays = last7.filter(c => c.attended_meeting).length;
+  if (meetingDays < 2) { score -= 8; negativeSignals.push("low_meeting_attendance"); }
+
+  if (cravingPostCount > 0) {
+    const pts = 6 * Math.min(cravingPostCount, 3);
+    score -= pts;
+    negativeSignals.push(`craving_posts_${cravingPostCount}`);
+  }
+
+  const isolationFlag = last5.length >= 5 &&
+    last5.every(c => !c.attended_meeting) &&
+    last5.every(c => !c.connected_with_sponsor);
+  if (isolationFlag) { score -= 5; negativeSignals.push("isolation_behavior"); }
+
+  const negativeMoodStreak = last3.length >= 3 &&
+    last3.every(c => c.mood_rating !== null && c.mood_rating <= 2);
+  if (negativeMoodStreak) { score -= 4; negativeSignals.push("negative_mood_streak"); }
+
+  score = Math.max(0, Math.min(100, score));
+
+  const level = score >= 70 ? "low" : score >= 45 ? "medium" : "high";
+  return { score, level, negativeSignals };
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -11,8 +65,6 @@ Deno.serve(async (req) => {
 
     const profiles = await base44.asServiceRole.entities.ParticipantProfile.list();
     const today = new Date().toISOString().split('T')[0];
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - 14);
 
     const allCheckIns = await base44.asServiceRole.entities.DailyCheckIn.list('-check_in_date', 2000);
     const existingAlerts = await base44.asServiceRole.entities.EngagementAlert.filter({ status: 'active' });
@@ -28,63 +80,46 @@ Deno.serve(async (req) => {
         .filter(c => c.participant_email === email)
         .sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
 
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      const last7 = myCheckIns.filter(c => new Date(c.check_in_date) >= sevenDaysAgo);
-      const last3 = myCheckIns.slice(0, 3);
-      const last5 = myCheckIns.slice(0, 5);
+      const cravingPostCount = myCheckIns
+        .filter(c => {
+          const d = new Date(c.check_in_date);
+          return (new Date() - d) <= 7 * 86400000;
+        })
+        .filter(c => (c.craving_intensity ?? 0) >= 7).length;
 
-      const lastCheckIn = myCheckIns[0]?.check_in_date || null;
-      const daysSince = lastCheckIn
-        ? Math.floor((new Date() - new Date(lastCheckIn)) / 86400000)
-        : 99;
+      const { score, level, negativeSignals } = calcEarlyWarningScore(myCheckIns, cravingPostCount);
 
-      const avgCraving = last7.length
-        ? last7.reduce((s, c) => s + (c.craving_intensity ?? 5), 0) / last7.length
-        : 5;
+      // Only alert on medium or high risk
+      if (level === "low" || negativeSignals.length === 0) continue;
 
-      // Recovery Stability Score
-      const s1 = Math.min(last7.length / 7, 1) * 25;
-      const s2 = last7.length ? (last7.filter(c => c.attended_meeting).length / last7.length) * 25 : 0;
-      const s3 = last7.length ? (last7.filter(c => c.connected_with_sponsor).length / last7.length) * 25 : 0;
-      const s4 = Math.max(0, (10 - avgCraving) / 10) * 25;
-      const stabilityScore = Math.round(s1 + s2 + s3 + s4);
-
-      const triggers = [];
-      if (daysSince >= 3) triggers.push('missed_checkin_3_days');
-      if (last7.length > 0 && last7.every(c => !c.attended_meeting)) triggers.push('no_meeting_attendance');
-      if (last7.length > 0 && last7.every(c => !c.connected_with_sponsor)) triggers.push('no_mentor_contact');
-      if (stabilityScore < 50) triggers.push('stability_score_critical');
-      else if (stabilityScore < 80) triggers.push('stability_score_at_risk');
-      if (last3.some(c => c.relapse_risk_flag)) triggers.push('relapse_risk_flag');
-
-      if (triggers.length === 0) continue;
-
-      // Dedupe: skip if an active alert of same type already exists for this client today
+      // Dedupe: skip if already alerted today
       const alreadyAlerted = existingAlerts.some(
         a => a.participant_email === email && a.alert_date === today
       );
       if (alreadyAlerted) continue;
 
-      const riskLevel = stabilityScore < 50 ? 'high' : 'medium';
-      const riskScore = 100 - stabilityScore;
+      const sevenAgo = new Date(Date.now() - 7 * 86400000);
+      const last7 = myCheckIns.filter(c => new Date(c.check_in_date) >= sevenAgo);
 
       await base44.asServiceRole.entities.EngagementAlert.create({
         participant_email: email,
-        alert_type: triggers.includes('relapse_risk_flag') ? 'composite_high_risk' : 'composite_medium_risk',
-        risk_score: riskScore,
-        risk_level: riskLevel,
+        alert_type: level === 'high' ? 'composite_high_risk' : 'composite_medium_risk',
+        risk_score: score,
+        risk_level: level,
         alert_date: today,
-        contributing_factors: triggers,
+        contributing_factors: negativeSignals,
         status: 'active',
         checkin_rate_7d: last7.length / 7,
         meeting_rate_7d: last7.length ? last7.filter(c => c.attended_meeting).length / last7.length : 0,
         sponsor_contact_rate_7d: last7.length ? last7.filter(c => c.connected_with_sponsor).length / last7.length : 0,
-        craving_avg_7d: parseFloat(avgCraving.toFixed(1)),
+        craving_avg_7d: last7.length
+          ? parseFloat((last7.reduce((s, c) => s + (c.craving_intensity ?? 0), 0) / last7.length).toFixed(1))
+          : 0,
+        facility_id: profile.facility_id || null,
       });
 
       created++;
-      results.push({ email, triggers, stabilityScore, riskLevel });
+      results.push({ email, score, level, negativeSignals });
     }
 
     return Response.json({ success: true, alerts_created: created, details: results });
