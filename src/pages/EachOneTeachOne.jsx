@@ -11,6 +11,7 @@ import CreatorCard from "@/components/eachone/CreatorCard";
 import PostTalentModal from "@/components/eachone/PostTalentModal";
 import ServiceRequestModal from "@/components/eachone/ServiceRequestModal";
 import CreatorProfileModal from "@/components/eachone/CreatorProfileModal";
+import SuccessStoriesStrip from "@/components/eachone/SuccessStoriesStrip";
 
 const POST_CATS = [
   { value: "all", label: "All" },
