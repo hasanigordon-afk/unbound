@@ -296,6 +296,18 @@ export default function Home() {
           </div>
 
           {/* ═══════════════════════════════════════════════════════
+              §2b — EARLY WARNING BANNER (shown if at risk)
+          ═══════════════════════════════════════════════════════ */}
+          {user && (
+            <EarlyWarningBanner
+              checkIns={checkIns}
+              journalCount={0}
+              communityPostCount={0}
+              cravingPostCount={checkIns.filter(c => (c.craving_intensity ?? 0) >= 7).length}
+            />
+          )}
+
+          {/* ═══════════════════════════════════════════════════════
               §3 — DAILY MOMENTUM / CHECK-IN BLOCK
           ═══════════════════════════════════════════════════════ */}
           <SLabel icon="⚡">Daily Momentum</SLabel>
