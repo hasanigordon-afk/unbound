@@ -584,6 +584,18 @@ export default function DischargePlan() {
               }}>
                 View Full Plan
               </button>
+              <button
+                onClick={() => generateDischargePlanPDF({ ...form, status: "finalized" }, contacts)}
+                style={{
+                  flex: 1, padding: "13px", borderRadius: 12,
+                  background: "linear-gradient(135deg,#10B981,#059669)",
+                  border: "none", color: "#fff", fontWeight: 800, fontSize: 14, cursor: "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                  boxShadow: "0 6px 20px rgba(16,185,129,0.3)",
+                }}
+              >
+                <Download style={{ width: 16, height: 16 }} /> Download PDF
+              </button>
             </div>
           )}
         </div>
