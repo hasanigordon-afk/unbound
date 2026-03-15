@@ -159,7 +159,7 @@ export default function VoicesOfRecovery() {
             {TABS.map(tab => (
               <button
                 key={tab.id}
-                onClick={() => { setActiveTab(tab.id); setFeedFilter("all"); setActiveGroup(null); }}
+                onClick={() => { setActiveTab(tab.id); setFeedFilter("all"); setOpenCircle(null); }}
                 style={{
                   flex: 1, padding: "10px 4px", borderRadius: "12px 12px 0 0",
                   background: activeTab === tab.id ? "rgba(255,255,255,0.07)" : "transparent",
