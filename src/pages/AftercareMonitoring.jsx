@@ -1,18 +1,20 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, AlertTriangle, TrendingUp, Shield, Loader2, CalendarDays } from "lucide-react";
+import { Users, AlertTriangle, TrendingUp, Shield, Loader2, CalendarDays, Zap } from "lucide-react";
 import AftercareClientList from "@/components/aftercare/AftercareClientList";
 import AftercareClientDetail from "@/components/aftercare/AftercareClientDetail";
 import AftercareAlerts from "@/components/aftercare/AftercareAlerts";
 import PredictiveRiskPanel from "@/components/aftercare/PredictiveRiskPanel";
 import CravingAlertPanel from "@/components/aftercare/CravingAlertPanel";
-import { calcEngagementScore } from "@/components/aftercare/engagementScore";
+import EarlyWarningDashboard from "@/components/aftercare/EarlyWarningDashboard";
+import { calcEngagementScore, calcEarlyWarningScore } from "@/components/aftercare/engagementScore";
 import { calcPredictiveRisk } from "@/components/aftercare/predictiveRisk";
 import CounselorCalendar from "@/components/calendar/CounselorCalendar";
 
 const TABS = [
   { id: "clients",    label: "Clients",      icon: Users },
+  { id: "early",      label: "Early Warning",icon: Zap },
   { id: "risk",       label: "Risk Monitor", icon: Shield },
   { id: "predictive", label: "Predictive",   icon: TrendingUp },
   { id: "alerts",     label: "Alerts",       icon: AlertTriangle },
