@@ -252,6 +252,15 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
               <FileText className="w-3.5 h-3.5" />
               Weekly PDF Summary
             </button>
+
+            <Link
+              to={`/PatientSummaryDashboard?patient_email=${encodeURIComponent(metrics.email)}`}
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium"
+              style={{ background: "#F0FDF4", color: "#16A34A", border: "1px solid #86EFAC" }}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              Full Patient Dashboard
+            </Link>
           </div>
         </div>
 
