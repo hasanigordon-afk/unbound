@@ -296,7 +296,7 @@ export default function RecoveryCircleDetail({ circle, joined, onJoin, onLeave, 
       )}
 
       {/* Check-In Tab */}
-      {tab === "checkin" && <CheckInThread circle={circle} user={user} />}
+      {tab === "checkin" && <AccountabilityCheckIn circle={circle} user={user} />}
 
       {/* Resources Tab */}
       {tab === "resources" && (
