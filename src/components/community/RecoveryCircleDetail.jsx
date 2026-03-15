@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Loader2, Plus, MessageCircle, CalendarCheck, BookOpen, ShieldCheck, Flag } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, MessageCircle, CalendarCheck, BookOpen } from "lucide-react";
 import RecoveryPostCard from "./RecoveryPostCard";
 import ComposePostModal from "./ComposePostModal";
 import CrisisSupportPanel from "./CrisisSupportPanel";
+import AccountabilityCheckIn from "./AccountabilityCheckIn";
 
 const C = {
   muted: "rgba(255,255,255,0.3)",
