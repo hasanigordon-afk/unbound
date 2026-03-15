@@ -188,6 +188,7 @@ export default function EachOneTeachOne() {
           {activeTab === "feed" && (
             <>
               <FeaturedCreatorBanner onViewCreator={setViewingCreator} />
+              <SuccessStoriesStrip />
               <CategoryChips cats={POST_CATS} value={postFilter} onChange={setPostFilter} />
 
               {/* Motivational banner */}
