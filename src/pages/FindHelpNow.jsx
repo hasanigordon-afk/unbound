@@ -174,6 +174,31 @@ export default function FindHelpNow() {
         )}
       </div>
 
+      {/* Map view promo */}
+      <div className="px-5 pt-3">
+        <Link
+          to="/RecoveryMapFinder"
+          style={{
+            display: "flex", alignItems: "center", gap: 10,
+            background: "linear-gradient(135deg,#EBF3FD,#F0FDF4)",
+            border: "1px solid #D1E9FC", borderRadius: 12, padding: "12px 14px",
+            textDecoration: "none",
+          }}
+        >
+          <div style={{
+            width: 36, height: 36, borderRadius: 10, background: "#4A90E2",
+            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+            <Map style={{ width: 16, height: 16, color: "#fff" }} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#1E1E1E" }}>Open Map View</p>
+            <p style={{ fontSize: 11, color: "#5A5A5A" }}>See meetings, treatment & shelters on a map</p>
+          </div>
+          <span style={{ fontSize: 11, color: "#4A90E2", fontWeight: 600 }}>→</span>
+        </Link>
+      </div>
+
       {/* Emergency Help Buttons */}
       <div className="px-5 pt-4 pb-2">
         <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#8E8E93" }}>Most urgent needs</p>
