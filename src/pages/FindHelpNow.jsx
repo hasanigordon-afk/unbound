@@ -174,6 +174,31 @@ export default function FindHelpNow() {
         )}
       </div>
 
+      {/* Reviews promo */}
+      <div className="px-5 pt-3">
+        <Link
+          to="/FacilityReviews"
+          style={{
+            display: "flex", alignItems: "center", gap: 10,
+            background: "linear-gradient(135deg,#EBF3FD,#F5F0FF)",
+            border: "1px solid #DDD6FE", borderRadius: 12, padding: "12px 14px",
+            textDecoration: "none", marginBottom: 10,
+          }}
+        >
+          <div style={{
+            width: 36, height: 36, borderRadius: 10, background: "#8B5CF6",
+            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+            <span style={{ fontSize: 18 }}>💬</span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#1E1E1E" }}>Community Reviews</p>
+            <p style={{ fontSize: 11, color: "#5A5A5A" }}>Real ratings from people who've been through treatment</p>
+          </div>
+          <span style={{ fontSize: 11, color: "#8B5CF6", fontWeight: 600 }}>→</span>
+        </Link>
+      </div>
+
       {/* Map view promo */}
       <div className="px-5 pt-3">
         <Link
