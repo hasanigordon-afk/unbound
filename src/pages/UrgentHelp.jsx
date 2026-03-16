@@ -560,6 +560,20 @@ export default function UrgentHelp() {
           })}
         </div>
 
+        {/* Safety Plan shortcut */}
+        <Link to="/MySafetyPlan" style={{
+          display: "flex", alignItems: "center", gap: 14, marginTop: 20,
+          background: "#F5F0FF", border: "1px solid #DDD6FE", borderRadius: 16,
+          padding: "16px 20px", textDecoration: "none",
+        }}>
+          <span style={{ fontSize: 24 }}>🛡️</span>
+          <div style={{ flex: 1 }}>
+            <p style={{ color: "#5B21B6", fontWeight: 700, fontSize: 15 }}>Open My Safety Plan</p>
+            <p style={{ color: "#7C3AED", fontSize: 13, opacity: 0.8 }}>Alert contacts · Coping tools · Crisis message</p>
+          </div>
+          <ChevronRight className="w-4 h-4" style={{ color: "#7C3AED" }} />
+        </Link>
+
         <CrisisStrip />
       </div>
     </div>
