@@ -8,6 +8,7 @@ import PageNotFound from './lib/PageNotFound';
 import DischargePlan from './pages/DischargePlan';
 import EachOneTeachOne from './pages/EachOneTeachOne';
 import RecoveryMapFinder from './pages/RecoveryMapFinder';
+import FacilityReviews from './pages/FacilityReviews';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -68,6 +69,7 @@ const AuthenticatedApp = () => {
       <Route path="/DischargePlan" element={<LayoutWrapper currentPageName="DischargePlan"><DischargePlan /></LayoutWrapper>} />
       <Route path="/EachOneTeachOne" element={<LayoutWrapper currentPageName="EachOneTeachOne"><EachOneTeachOne /></LayoutWrapper>} />
       <Route path="/RecoveryMapFinder" element={<LayoutWrapper currentPageName="RecoveryMapFinder"><RecoveryMapFinder /></LayoutWrapper>} />
+      <Route path="/FacilityReviews" element={<LayoutWrapper currentPageName="FacilityReviews"><FacilityReviews /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
