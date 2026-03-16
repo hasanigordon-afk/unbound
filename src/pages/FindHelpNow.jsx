@@ -174,6 +174,26 @@ export default function FindHelpNow() {
         )}
       </div>
 
+      {/* Truth About Recovery promo */}
+      <div className="px-5 pt-3">
+        <Link
+          to="/TruthAboutRecovery"
+          style={{
+            display: "flex", alignItems: "center", gap: 10,
+            background: "linear-gradient(135deg,#1E1E2E,#2D2D44)",
+            border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px",
+            textDecoration: "none", marginBottom: 10,
+          }}
+        >
+          <div style={{ fontSize: 32 }}>📰</div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>The Truth About Addiction Recovery</p>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginTop: 2 }}>Real stories. Real outcomes. Real lessons.</p>
+          </div>
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>→</span>
+        </Link>
+      </div>
+
       {/* Reviews promo */}
       <div className="px-5 pt-3">
         <Link
