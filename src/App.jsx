@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import DischargePlan from './pages/DischargePlan';
 import EachOneTeachOne from './pages/EachOneTeachOne';
+import RecoveryMapFinder from './pages/RecoveryMapFinder';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
