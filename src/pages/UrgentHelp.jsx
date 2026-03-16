@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { ChevronLeft, ChevronRight, Phone, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // ─── Design tokens ────────────────────────────────────────────────────────
 const C = {
