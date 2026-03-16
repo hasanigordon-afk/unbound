@@ -10,6 +10,7 @@ import EachOneTeachOne from './pages/EachOneTeachOne';
 import RecoveryMapFinder from './pages/RecoveryMapFinder';
 import FacilityReviews from './pages/FacilityReviews';
 import TruthAboutRecovery from './pages/TruthAboutRecovery';
+import MySafetyPlan from './pages/MySafetyPlan';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
       <Route path="/RecoveryMapFinder" element={<LayoutWrapper currentPageName="RecoveryMapFinder"><RecoveryMapFinder /></LayoutWrapper>} />
       <Route path="/FacilityReviews" element={<LayoutWrapper currentPageName="FacilityReviews"><FacilityReviews /></LayoutWrapper>} />
       <Route path="/TruthAboutRecovery" element={<LayoutWrapper currentPageName="TruthAboutRecovery"><TruthAboutRecovery /></LayoutWrapper>} />
+      <Route path="/MySafetyPlan" element={<LayoutWrapper currentPageName="MySafetyPlan"><MySafetyPlan /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

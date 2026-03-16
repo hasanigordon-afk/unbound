@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Check } from "lucide-react";
 
 export function WizardProgressBar({ step, totalSteps, stepLabels }) {
