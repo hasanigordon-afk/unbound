@@ -153,11 +153,16 @@ function ClientCard({ participant, onMessage, onAlert, onView }) {
 
 // ── Main Component ─────────────────────────────────────────────────────────
 export default function CounselorPortal() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [riskFilter, setRiskFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedParticipant, setSelectedParticipant] = useState(null);
   const [messagingTab, setMessagingTab] = useState(null);
+
+  const handleViewParticipant = (participant) => {
+    navigate(`/PatientSummaryDashboard?email=${encodeURIComponent(participant.participant_email)}`);
+  };
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
