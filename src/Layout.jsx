@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
 import { Home, Compass, Users, MessageCircle, User, Sparkles, LayoutDashboard } from "lucide-react";
-import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
   { name: "Home",       icon: Home,            page: "Home" },
@@ -40,14 +39,7 @@ export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
   const isStaffPage = STAFF_PAGES.includes(currentPageName);
 
-  const { data: user } = useQuery({
-    queryKey: ["layout-user"],
-    queryFn: () => base44.auth.me(),
-    staleTime: 60_000,
-    retry: false,
-  });
-
-  const isStaff = user?.role === "admin" || user?.role === "counselor" || user?.role === "staff";
+  const { user, isStaff } = useCurrentUser();
   const navItems = (isStaff || isStaffPage) ? STAFF_NAV : PARTICIPANT_NAV;
 
   return (
