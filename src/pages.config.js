@@ -84,7 +84,6 @@ import Meetings from './pages/Meetings';
 import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
-import ModerationQueue from './pages/ModerationQueue';
 import MyGoals from './pages/MyGoals';
 import NJTreatmentFacilities from './pages/NJTreatmentFacilities';
 import NearbyResources from './pages/NearbyResources';
@@ -156,7 +155,6 @@ export const PAGES = {
     "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
-    "ModerationQueue": ModerationQueue,
     "MyGoals": MyGoals,
     "NJTreatmentFacilities": NJTreatmentFacilities,
     "NearbyResources": NearbyResources,
