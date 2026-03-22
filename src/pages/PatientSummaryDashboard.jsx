@@ -45,7 +45,7 @@ export default function PatientSummaryDashboard() {
 
   // Get participantEmail from URL params
   const urlParams = new URLSearchParams(window.location.search);
-  const participantEmail = urlParams.get("email");
+  const participantEmail = urlParams.get("email") || urlParams.get("patient_email");
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 

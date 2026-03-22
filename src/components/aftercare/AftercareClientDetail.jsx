@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -254,7 +255,7 @@ export default function AftercareClientDetail({ metrics, counselorEmail, onBack 
             </button>
 
             <Link
-              to={`/PatientSummaryDashboard?patient_email=${encodeURIComponent(metrics.email)}`}
+              to={`/PatientSummaryDashboard?email=${encodeURIComponent(metrics.email)}`}
               className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium"
               style={{ background: "#F0FDF4", color: "#16A34A", border: "1px solid #86EFAC" }}
             >
