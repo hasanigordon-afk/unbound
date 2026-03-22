@@ -2,6 +2,7 @@
  * PatientSummaryDashboard — Staff view of a single participant's full summary
  * Used by counselors, care managers, and facility staff
  */
+// PatientSummaryDashboard
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
