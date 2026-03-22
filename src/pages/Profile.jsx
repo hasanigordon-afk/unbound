@@ -398,10 +398,12 @@ export default function Profile() {
         <SLabel icon="🔗">Quick Access</SLabel>
         <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:24 }}>
           {[
-            { icon:<Bookmark style={{width:18,height:18}}/>, label:"Saved Resources",  href:"SavedResources", color:C.teal    },
-            { icon:<Calendar style={{width:18,height:18}}/>, label:"Daily Check-In",   href:"DailyCheckIn",   color:C.emerald },
-            { icon:<Target   style={{width:18,height:18}}/>, label:"My Forward Plan",  href:"ForwardPlan",    color:C.gold    },
-            { icon:<Heart    style={{width:18,height:18}}/>, label:"Find Help Near Me",href:"FindHelpNow",    color:"#F472B6" },
+            { icon:<Bookmark style={{width:18,height:18}}/>, label:"Saved Resources",    href:"SavedResources",      color:C.teal    },
+            { icon:<Calendar style={{width:18,height:18}}/>, label:"Daily Check-In",     href:"DailyCheckIn",         color:C.emerald },
+            { icon:<Target   style={{width:18,height:18}}/>, label:"My Forward Plan",    href:"ForwardPlan",          color:C.gold    },
+            { icon:<Heart    style={{width:18,height:18}}/>, label:"Find Help Near Me",  href:"FindHelpNow",          color:"#F472B6" },
+            { icon:<ArrowRight style={{width:18,height:18}}/>, label:"Privacy Settings", href:"PrivacySettings",      color:"#818CF8" },
+            { icon:<ArrowRight style={{width:18,height:18}}/>, label:"My Dashboard",     href:"ParticipantDashboard", color:C.indigo  },
           ].map(item => (
             <Link key={item.label} to={createPageUrl(item.href)} style={{ textDecoration:"none" }}>
               <div style={{ display:"flex", alignItems:"center", gap:14, padding:"14px 18px", borderRadius:16,
