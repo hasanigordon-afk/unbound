@@ -82,7 +82,7 @@ const AuthenticatedApp = () => {
       ))}
 
       {/* ── Pages not in pagesConfig (new standalone pages) ── */}
-      <Route path="/ParticipantDashboard"    element={<LW name="ParticipantDashboard"><ParticipantDashboard /></LW>} />
+      {/* ParticipantDashboard is in pagesConfig loop — no duplicate needed */}
       <Route path="/RecoveryMapFinder"       element={<LW name="RecoveryMapFinder"><RecoveryMapFinder /></LW>} />
       <Route path="/FacilityReviews"         element={<LW name="FacilityReviews"><FacilityReviews /></LW>} />
       <Route path="/TruthAboutRecovery"      element={<LW name="TruthAboutRecovery"><TruthAboutRecovery /></LW>} />
