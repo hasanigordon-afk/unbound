@@ -11,6 +11,9 @@ import RecoveryMapFinder from './pages/RecoveryMapFinder';
 import FacilityReviews from './pages/FacilityReviews';
 import TruthAboutRecovery from './pages/TruthAboutRecovery';
 import MySafetyPlan from './pages/MySafetyPlan';
+import StaffDashboard from './pages/StaffDashboard';
+import PrivacySettings from './pages/PrivacySettings';
+import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -74,6 +77,9 @@ const AuthenticatedApp = () => {
       <Route path="/FacilityReviews" element={<LayoutWrapper currentPageName="FacilityReviews"><FacilityReviews /></LayoutWrapper>} />
       <Route path="/TruthAboutRecovery" element={<LayoutWrapper currentPageName="TruthAboutRecovery"><TruthAboutRecovery /></LayoutWrapper>} />
       <Route path="/MySafetyPlan" element={<LayoutWrapper currentPageName="MySafetyPlan"><MySafetyPlan /></LayoutWrapper>} />
+      <Route path="/StaffDashboard" element={<LayoutWrapper currentPageName="StaffDashboard"><StaffDashboard /></LayoutWrapper>} />
+      <Route path="/PrivacySettings" element={<LayoutWrapper currentPageName="PrivacySettings"><PrivacySettings /></LayoutWrapper>} />
+      <Route path="/ParticipantDashboard" element={<LayoutWrapper currentPageName="ParticipantDashboard"><ParticipantDashboard /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
