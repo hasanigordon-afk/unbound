@@ -63,12 +63,13 @@ export default function Home() {
   const navigate = useNavigate();
 
   // Role-based redirect for staff landing on participant home
-  const { data: currentUser } = useQuery({ queryKey: ["current-user-role"], queryFn: () => base44.auth.me(), staleTime: 60_000 });
   useEffect(() => {
-    if (currentUser?.role && ["admin","counselor","staff"].includes(currentUser.role)) {
-      navigate("/StaffDashboard", { replace: true });
-    }
-  }, [currentUser, navigate]);
+    base44.auth.me().then(u => {
+      if (u?.role && ["admin","counselor","staff"].includes(u.role)) {
+        navigate("/StaffDashboard", { replace: true });
+      }
+    }).catch(() => {});
+  }, [navigate]);
 
   useEffect(() => {
     const p = document.body.style.background;
