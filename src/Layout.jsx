@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
 import { Home, Compass, Users, MessageCircle, User, Sparkles, LayoutDashboard } from "lucide-react";
 import { base44 } from "@/api/base44Client";
