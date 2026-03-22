@@ -34,7 +34,7 @@ const TABS = [
   { id: "messaging",    label: "Messages",       icon: MessageSquare },
 ];
 
-function StatCard({ label, value, sub, color = C.blue, icon: IconComp }) {
+function StatCard({ label, value, sub, color = C.blue, icon: IconComp = null }) {
   return (
     <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: `${color}10` }} />
