@@ -461,7 +461,7 @@ export default function CounselorPortal() {
                     participant={p}
                     onMessage={setMessagingTab}
                     onAlert={setMessagingTab}
-                    onView={setSelectedParticipant}
+                    onView={handleViewParticipant}
                   />
                 ))}
               </div>
