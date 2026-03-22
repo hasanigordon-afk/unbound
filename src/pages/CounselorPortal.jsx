@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import MessagingPanel from "../components/counselor/MessagingPanel";
 import LifelineEventsTab from "../components/counselor/LifelineEventsTab";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
