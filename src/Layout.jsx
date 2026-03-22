@@ -5,6 +5,7 @@ import {
   Shield, Activity, Calendar, BookOpen, Sparkles
 } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
+import NotificationBell from "@/components/notifications/NotificationBell";
 
 // ── Nav config ────────────────────────────────────────────────────────────────
 const PARTICIPANT_NAV = [
