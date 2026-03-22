@@ -1,143 +1,185 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "./utils";
-import { Shield, Eye, EyeOff, Lock, ChevronLeft, Loader2, Check, AlertTriangle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Shield, ChevronLeft, AlertTriangle, Lock, Eye, EyeOff, Info, CheckCircle2 } from "lucide-react";
+import { PageLoader } from "@/components/shared/LoadingSpinner";
 
-const C = {
-  teal:   "#3ECFBF",
-  navy:   "#0B1220",
-  blue:   "#3B82F6",
-  green:  "#10B981",
-  red:    "#EF4444",
-  amber:  "#F59E0B",
-  slate:  "rgba(255,255,255,0.55)",
-  muted:  "rgba(255,255,255,0.28)",
-  glass:  { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" },
-};
-
-const SHARING_OPTIONS = [
+// ── Privacy toggle definitions ────────────────────────────────────────────────
+const SHARING_CONFIG = [
   {
-    key: "share_checkins_counselor",
-    label: "Share Check-In Data with Counselor",
-    desc: "Your daily mood, cravings, and attendance data",
-    defaultOn: true,
-    icon: "📋",
-    warningIfOff: null,
+    section: "Care Team",
+    icon: "🩺",
+    items: [
+      {
+        key: "share_checkins_counselor",
+        label: "Daily Check-In Data",
+        description: "Share mood, craving, and meeting attendance with your assigned counselor.",
+        default: true,
+        critical: false,
+      },
+      {
+        key: "share_goals_counselor",
+        label: "Goals & Progress",
+        description: "Allow your counselor to view and comment on your recovery goals.",
+        default: true,
+        critical: false,
+      },
+      {
+        key: "share_journal_counselor",
+        label: "Journal Entries",
+        description: "Share selected journal entries with your counselor.",
+        default: false,
+        critical: false,
+      },
+    ],
   },
   {
-    key: "share_checkins_sponsor",
-    label: "Share Check-In Summary with Sponsor",
-    desc: "Weekly summary of your check-in streaks only",
-    defaultOn: false,
-    icon: "🤝",
-    warningIfOff: null,
+    section: "Sponsor / Mentor",
+    icon: "🫂",
+    items: [
+      {
+        key: "share_checkins_sponsor",
+        label: "Check-In Summaries",
+        description: "Let your sponsor see weekly check-in summaries.",
+        default: true,
+        critical: false,
+      },
+      {
+        key: "share_streak_sponsor",
+        label: "Recovery Streak",
+        description: "Show your sobriety streak and milestone progress to your sponsor.",
+        default: true,
+        critical: false,
+      },
+    ],
   },
   {
-    key: "share_goals_counselor",
-    label: "Share Goals with Counselor",
-    desc: "Your forward plan, milestones, and goal progress",
-    defaultOn: true,
-    icon: "🎯",
-    warningIfOff: null,
-  },
-  {
-    key: "share_journal_counselor",
-    label: "Share Journal with Counselor",
-    desc: "Private journal entries — OFF by default for your safety",
-    defaultOn: false,
-    icon: "📓",
-    warningIfOff: null,
-  },
-  {
-    key: "share_location_counselor",
-    label: "Share Location City with Counselor",
-    desc: "General city-level location only, never exact address",
-    defaultOn: true,
-    icon: "📍",
-    warningIfOff: null,
-  },
-  {
-    key: "share_engagement_probation",
-    label: "Share Engagement Summary with Probation",
-    desc: "Check-in rate, meeting attendance, milestone completions — no personal notes",
-    defaultOn: false,
+    section: "Probation / Legal",
     icon: "⚖️",
-    warningIfOff: null,
+    items: [
+      {
+        key: "share_compliance_probation",
+        label: "Compliance Reports",
+        description: "Share attendance and program completion reports with your probation officer.",
+        default: false,
+        critical: true,
+        warning: "This is often required by court order. Consult your legal team before disabling.",
+      },
+    ],
   },
   {
-    key: "allow_crisis_escalation",
-    label: "Allow Crisis Alert Escalation",
-    desc: "Enables your counselor to be automatically notified if a crisis flag is detected",
-    defaultOn: true,
-    icon: "🚨",
-    warningIfOff: "Turning this off means your counselor won't be automatically alerted in a crisis. You can still manually reach out.",
+    section: "Crisis & Safety",
+    icon: "🆘",
+    items: [
+      {
+        key: "allow_crisis_escalation",
+        label: "Crisis Escalation Alerts",
+        description: "Allow the system to automatically notify your support contacts if a relapse risk is detected.",
+        default: true,
+        critical: true,
+        locked: true,
+        lockReason: "This setting cannot be disabled for your safety. It ensures your care team can reach you in a crisis.",
+      },
+    ],
   },
   {
-    key: "anonymous_community",
-    label: "Post Anonymously in Community",
-    desc: "Your name will not appear on community posts unless you choose otherwise",
-    defaultOn: true,
-    icon: "🛡️",
-    warningIfOff: null,
+    section: "Community",
+    icon: "👥",
+    items: [
+      {
+        key: "public_profile",
+        label: "Public Creator Profile",
+        description: "Allow other community members to find and follow your creator profile.",
+        default: false,
+        critical: false,
+      },
+      {
+        key: "show_in_peer_directory",
+        label: "Peer Directory",
+        description: "Appear in the peer support directory so others in recovery can connect with you.",
+        default: false,
+        critical: false,
+      },
+    ],
   },
 ];
 
-function ToggleRow({ setting, value, onChange }) {
+function Toggle({ enabled, onChange, locked }) {
+  return (
+    <button
+      onClick={() => !locked && onChange(!enabled)}
+      style={{
+        width: 44, height: 24, borderRadius: 12, flexShrink: 0,
+        background: enabled ? (locked ? "#94A3B8" : "#10B981") : "rgba(255,255,255,0.12)",
+        border: "none", cursor: locked ? "not-allowed" : "pointer",
+        position: "relative", transition: "background 0.2s ease",
+        opacity: locked ? 0.7 : 1,
+      }}
+    >
+      <div style={{
+        width: 18, height: 18, borderRadius: "50%",
+        background: "#fff",
+        position: "absolute",
+        top: 3, left: enabled ? 23 : 3,
+        transition: "left 0.2s ease",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+      }} />
+    </button>
+  );
+}
+
+function ToggleRow({ item, value, onChange }) {
   const [showWarning, setShowWarning] = useState(false);
 
-  const handleToggle = () => {
-    if (value && setting.warningIfOff) {
+  const handleChange = (newVal) => {
+    if (!newVal && item.warning) {
       setShowWarning(true);
-      return;
+    } else {
+      onChange(newVal);
     }
-    onChange(!value);
   };
 
   return (
-    <div style={{ ...C.glass, borderRadius: 16, padding: "16px 18px", marginBottom: 10 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <div style={{ width: 42, height: 42, borderRadius: 12, flexShrink: 0, fontSize: 20,
-          background: value ? "rgba(62,207,191,0.1)" : "rgba(255,255,255,0.04)",
-          display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {setting.icon}
-        </div>
+    <div style={{ padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, justifyContent: "space-between" }}>
         <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 3 }}>{setting.label}</p>
-          <p style={{ fontSize: 12, color: C.muted, lineHeight: 1.45 }}>{setting.desc}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>{item.label}</p>
+            {item.locked && <Lock style={{ width: 12, height: 12, color: "#94A3B8" }} />}
+            {item.critical && !item.locked && (
+              <span style={{ fontSize: 10, padding: "1px 6px", borderRadius: 20,
+                background: "rgba(245,158,11,0.15)", color: "#F59E0B", fontWeight: 700 }}>Important</span>
+            )}
+          </div>
+          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.5 }}>{item.description}</p>
+          {item.locked && (
+            <p style={{ fontSize: 11, color: "#94A3B8", marginTop: 4, fontStyle: "italic" }}>{item.lockReason}</p>
+          )}
         </div>
-        <button
-          onClick={handleToggle}
-          style={{
-            width: 48, height: 28, borderRadius: 14, flexShrink: 0, cursor: "pointer", border: "none",
-            background: value ? C.teal : "rgba(255,255,255,0.15)",
-            transition: "background .2s ease", position: "relative",
-          }}>
-          <div style={{
-            position: "absolute", top: 4, left: value ? 24 : 4, width: 20, height: 20, borderRadius: "50%",
-            background: "#fff", transition: "left .2s ease",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-          }} />
-        </button>
+        <Toggle enabled={value} onChange={handleChange} locked={item.locked} />
       </div>
 
+      {/* Warning confirmation */}
       {showWarning && (
-        <div style={{ marginTop: 12, padding: "12px 14px", background: "rgba(245,158,11,0.12)",
-          border: "1px solid rgba(245,158,11,0.3)", borderRadius: 10 }}>
-          <p style={{ fontSize: 12, color: "#FCD34D", lineHeight: 1.55, marginBottom: 10 }}>
-            ⚠️ {setting.warningIfOff}
-          </p>
+        <div style={{ marginTop: 10, padding: "12px", borderRadius: 10,
+          background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)" }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+            <AlertTriangle style={{ color: "#F59E0B", width: 16, height: 16, flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>{item.warning}</p>
+          </div>
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={() => { onChange(false); setShowWarning(false); }}
-              style={{ flex: 1, padding: "8px", borderRadius: 8, background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.3)",
-                color: "#FCA5A5", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-              Turn Off Anyway
+              style={{ flex: 1, padding: "8px", borderRadius: 8,
+                background: "rgba(245,158,11,0.2)", border: "1px solid rgba(245,158,11,0.3)",
+                color: "#F59E0B", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+              I Understand — Disable
             </button>
             <button onClick={() => setShowWarning(false)}
-              style={{ flex: 1, padding: "8px", borderRadius: 8, background: "rgba(62,207,191,0.15)", border: "1px solid rgba(62,207,191,0.3)",
-                color: C.teal, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-              Keep On
+              style={{ flex: 1, padding: "8px", borderRadius: 8,
+                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+              Keep Enabled
             </button>
           </div>
         </div>
@@ -147,124 +189,168 @@ function ToggleRow({ setting, value, onChange }) {
 }
 
 export default function PrivacySettings() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ["current-user"],
+    queryFn: () => base44.auth.me(),
+  });
+
+  // Load existing consent record
+  const { data: existingConsent, isLoading: consentLoading } = useQuery({
+    queryKey: ["privacy-consent", user?.email],
+    queryFn: () => base44.entities.Consent.filter({ created_by: user.email }),
+    enabled: !!user,
+    select: data => data[0] || null,
+  });
+
+  // Build default settings from config
+  const buildDefaults = () => {
+    const defaults = {};
+    SHARING_CONFIG.forEach(section => {
+      section.items.forEach(item => {
+        defaults[item.key] = item.default;
+        if (item.locked) defaults[item.key] = true;
+      });
+    });
+    return defaults;
+  };
+
+  const [settings, setSettings] = useState(buildDefaults());
   const [saved, setSaved] = useState(false);
 
-  const { data: user, isLoading: uL } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
-
-  const { data: profiles, isLoading: pL } = useQuery({
-    queryKey: ["my-profile", user?.email],
-    queryFn: () => base44.entities.MemberProfile.filter({ created_by: user.email }),
-    enabled: !!user,
-  });
-
-  const profile = profiles?.[0] || {};
-
-  const [settings, setSettings] = useState(() => {
-    const defaults = {};
-    SHARING_OPTIONS.forEach(s => { defaults[s.key] = s.defaultOn; });
-    return defaults;
-  });
-
-  // Sync saved settings from profile when loaded
-  React.useEffect(() => {
-    if (profile?.privacy_settings) {
-      setSettings(prev => ({ ...prev, ...profile.privacy_settings }));
+  // Populate from DB when loaded
+  useEffect(() => {
+    if (existingConsent?.privacy_settings) {
+      setSettings(prev => ({
+        ...prev,
+        ...existingConsent.privacy_settings,
+        allow_crisis_escalation: true, // Always locked on
+      }));
     }
-  }, [profile?.id]);
+  }, [existingConsent]);
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const p = profiles?.[0];
-      if (p?.id) {
-        await base44.entities.MemberProfile.update(p.id, { privacy_settings: settings });
+      const payload = { privacy_settings: settings, last_updated: new Date().toISOString() };
+      if (existingConsent?.id) {
+        await base44.entities.Consent.update(existingConsent.id, payload);
+      } else {
+        await base44.entities.Consent.create({
+          ...payload,
+          user_email: user.email,
+          consent_type: "privacy_settings",
+          accepted: true,
+        });
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["my-profile"]);
+      queryClient.invalidateQueries({ queryKey: ["privacy-consent"] });
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => setSaved(false), 3000);
     },
   });
 
-  if (uL) {
-    return (
-      <div style={{ background: C.navy, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Loader2 style={{ width: 28, height: 28, color: C.teal }} className="animate-spin" />
-      </div>
-    );
-  }
+  const handleToggle = (key, val) => {
+    setSettings(prev => ({ ...prev, [key]: val }));
+    setSaved(false);
+  };
+
+  const isLoading = userLoading || consentLoading;
+
+  if (isLoading) return (
+    <div style={{ background: "#070D1C", minHeight: "100vh" }}>
+      <PageLoader label="Loading privacy settings…" />
+    </div>
+  );
 
   return (
-    <div style={{ background: `linear-gradient(170deg,#070D1C 0%,#0B1424 55%,#080E1C 100%)`, minHeight: "100vh", paddingBottom: 100 }}>
+    <div style={{ background: "linear-gradient(170deg,#070D1C 0%,#0B1424 100%)", minHeight: "100vh", paddingBottom: 100 }}>
+      <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
-      {/* Header */}
-      <div style={{ background: "linear-gradient(155deg,#0E1D3A,#081426)", padding: "52px 24px 24px", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: -60, right: -60, width: 240, height: 240, borderRadius: "50%",
-          background: "radial-gradient(circle,rgba(62,207,191,0.08) 0%,transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <Link to={createPageUrl("Profile")} style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16, textDecoration: "none" }}>
-            <ChevronLeft style={{ width: 16, height: 16, color: C.muted }} />
-            <span style={{ fontSize: 13, color: C.muted }}>Back to Profile</span>
-          </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 14, background: "rgba(62,207,191,0.12)",
+        {/* ── Header ── */}
+        <div style={{ background: "linear-gradient(150deg,#0E1D3A 0%,#081426 100%)", padding: "60px 20px 24px" }}>
+          <button onClick={() => navigate(-1)} style={{ display: "flex", alignItems: "center", gap: 6,
+            background: "none", border: "none", color: "rgba(255,255,255,0.5)", cursor: "pointer",
+            fontSize: 13, marginBottom: 16, padding: 0 }}>
+            <ChevronLeft style={{ width: 16, height: 16 }} /> Back
+          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14,
+              background: "rgba(62,207,191,0.12)", border: "1px solid rgba(62,207,191,0.2)",
               display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Shield style={{ width: 22, height: 22, color: C.teal }} />
+              <Shield style={{ color: "#3ECFBF", width: 22, height: 22 }} />
             </div>
             <div>
-              <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.2 }}>Privacy & Data Sharing</h1>
-              <p style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>Control what your support team can see</p>
+              <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 3 }}>Privacy & Sharing</h1>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Control who can see your recovery data</p>
             </div>
           </div>
         </div>
-      </div>
 
-      <div style={{ maxWidth: 560, margin: "0 auto", padding: "20px 16px" }}>
+        <div style={{ padding: "20px 16px" }}>
 
-        {/* Info banner */}
-        <div style={{ ...C.glass, borderRadius: 16, padding: "16px 18px", marginBottom: 24,
-          background: "rgba(62,207,191,0.05)", border: "1px solid rgba(62,207,191,0.2)" }}>
-          <p style={{ fontSize: 13, color: C.teal, fontWeight: 700, marginBottom: 6 }}>🔒 You are in control</p>
-          <p style={{ fontSize: 13, color: C.slate, lineHeight: 1.6 }}>
-            Your personal recovery data is private by default. Only you decide what your counselor, sponsor, or probation officer can see. Journal entries are always private unless you explicitly share them.
-          </p>
-        </div>
+          {/* ── HIPAA note ── */}
+          <div style={{ borderRadius: 14, padding: "14px 16px", marginBottom: 20,
+            background: "rgba(62,207,191,0.06)", border: "1px solid rgba(62,207,191,0.15)" }}>
+            <div style={{ display: "flex", gap: 10 }}>
+              <Info style={{ color: "#3ECFBF", width: 16, height: 16, flexShrink: 0, marginTop: 1 }} />
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
+                Your health information is protected. Only people you explicitly authorize can see your data.
+                Crisis escalation alerts are always enabled to keep you safe.
+              </p>
+            </div>
+          </div>
 
-        {/* Settings groups */}
-        <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 12 }}>
-          Data Sharing Preferences
-        </p>
+          {/* ── Settings sections ── */}
+          {SHARING_CONFIG.map(section => (
+            <div key={section.section} style={{ marginBottom: 20,
+              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: 18, padding: "16px 18px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 18 }}>{section.icon}</span>
+                <p style={{ fontSize: 14, fontWeight: 800, color: "#fff" }}>{section.section}</p>
+              </div>
+              <div>
+                {section.items.map(item => (
+                  <ToggleRow
+                    key={item.key}
+                    item={item}
+                    value={settings[item.key] ?? item.default}
+                    onChange={(val) => handleToggle(item.key, val)}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
 
-        {SHARING_OPTIONS.map(setting => (
-          <ToggleRow
-            key={setting.key}
-            setting={setting}
-            value={settings[setting.key] ?? setting.defaultOn}
-            onChange={val => setSettings(prev => ({ ...prev, [setting.key]: val }))}
-          />
-        ))}
+          {/* ── Save button ── */}
+          <button
+            onClick={() => saveMutation.mutate()}
+            disabled={saveMutation.isPending}
+            style={{
+              width: "100%", padding: "16px",
+              borderRadius: 16, border: "none", cursor: "pointer",
+              background: saved ? "rgba(16,185,129,0.15)" : "linear-gradient(135deg,#3ECFBF,#2CB8AE)",
+              border: saved ? "1px solid rgba(16,185,129,0.3)" : "none",
+              color: saved ? "#10B981" : "#fff",
+              fontWeight: 800, fontSize: 16,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              marginBottom: 12,
+            }}
+          >
+            {saveMutation.isPending ? (
+              <span>Saving…</span>
+            ) : saved ? (
+              <><CheckCircle2 style={{ width: 18, height: 18 }} /> Settings Saved</>
+            ) : (
+              "Save Privacy Settings"
+            )}
+          </button>
 
-        {/* Save button */}
-        <button
-          onClick={() => saveMutation.mutate()}
-          disabled={saveMutation.isPending}
-          style={{ width: "100%", padding: "15px", borderRadius: 14, marginTop: 16,
-            background: saved ? "rgba(16,185,129,0.15)" : `linear-gradient(135deg,${C.teal},#2CB8AE)`,
-            border: saved ? "1px solid rgba(16,185,129,0.3)" : "none",
-            color: saved ? C.green : "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-          {saveMutation.isPending ? <Loader2 style={{ width: 18, height: 18 }} className="animate-spin" /> :
-           saved ? <><Check style={{ width: 18, height: 18 }} /> Saved</> : "Save Privacy Settings"}
-        </button>
-
-        {/* HIPAA-conscious disclaimer */}
-        <div style={{ marginTop: 20, padding: "14px 16px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12 }}>
-          <p style={{ fontSize: 11, color: C.muted, lineHeight: 1.7 }}>
-            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Privacy Note:</strong> Unbound is designed with your privacy in mind. 
-            Your data is shared only with the support team members you authorize. 
-            Crisis escalation features are in place for your safety.
-            For full data deletion requests, contact your facility or program administrator.
+          <p style={{ textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.25)", lineHeight: 1.6 }}>
+            You can update these settings at any time. Changes take effect immediately.
           </p>
         </div>
       </div>
