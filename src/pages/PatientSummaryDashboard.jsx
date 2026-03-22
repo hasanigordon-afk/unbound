@@ -1,467 +1,429 @@
-import React from "react";
+/**
+ * PatientSummaryDashboard — Staff view of a single participant's full summary
+ * Used by counselors, care managers, and facility staff
+ */
+import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "./utils";
 import {
-  AlertTriangle, CheckCircle2, Calendar, Phone, FileText,
-  Home, Briefcase, Shield, Clock, ChevronRight, Loader2, ArrowLeft
+  ChevronLeft, User, Activity, Target, Calendar,
+  MessageCircle, Shield, FileText, TrendingUp,
+  CheckCircle2, AlertTriangle, Clock, Heart
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "./utils";
+import { Link } from "react-router-dom";
 
-// ── Tokens ──────────────────────────────────────────────────────
 const C = {
-  teal:    "#3ECFBF",
-  gold:    "#C9A96E",
-  red:     "#EF4444",
-  emerald: "#10B981",
-  indigo:  "#818CF8",
-  navy:    "#0B1220",
-  slate:   "rgba(255,255,255,0.65)",
-  muted:   "rgba(255,255,255,0.3)",
+  navy: "#0F172A", blue: "#3B82F6", green: "#10B981",
+  red: "#EF4444", amber: "#F59E0B", indigo: "#6366F1",
+  slate: "#64748B", muted: "#94A3B8", border: "#E2E8F0",
+  bg: "#F8FAFC", white: "#FFFFFF",
 };
 
-// ── Helpers ──────────────────────────────────────────────────────
-const today = new Date();
-today.setHours(0, 0, 0, 0);
+const SECTION_TABS = [
+  { id: "overview",  label: "Overview",   icon: Activity },
+  { id: "checkins",  label: "Check-Ins",  icon: CheckCircle2 },
+  { id: "goals",     label: "Goals",      icon: Target },
+  { id: "sessions",  label: "Sessions",   icon: Calendar },
+  { id: "plan",      label: "Plan",       icon: FileText },
+];
 
-function daysUntil(dateStr) {
-  if (!dateStr) return null;
-  const d = new Date(dateStr);
-  d.setHours(0, 0, 0, 0);
-  return Math.round((d - today) / 86400000);
-}
-
-function fmt(dateStr) {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
-
-function urgencyColor(days) {
-  if (days === null) return C.muted;
-  if (days < 0)  return C.red;
-  if (days <= 3) return "#FB923C";
-  if (days <= 7) return C.gold;
-  return C.emerald;
-}
-
-function urgencyLabel(days) {
-  if (days === null) return "";
-  if (days < 0)  return `${Math.abs(days)}d overdue`;
-  if (days === 0) return "Today";
-  if (days === 1) return "Tomorrow";
-  return `In ${days} days`;
-}
-
-// ── Sub-components ───────────────────────────────────────────────
-function SectionLabel({ children, icon }) {
+function InfoRow({ label, value, color }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-      {icon && <span style={{ fontSize: 14 }}>{icon}</span>}
-      <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: "1px" }}>{children}</p>
-      <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.06)" }} />
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
+      padding: "9px 0", borderBottom: `1px solid ${C.border}` }}>
+      <p style={{ fontSize: 13, color: C.slate }}>{label}</p>
+      <p style={{ fontSize: 13, fontWeight: 700, color: color || C.navy }}>{value || "—"}</p>
     </div>
   );
 }
 
-function RiskBadge({ label, detail, color }) {
-  return (
-    <div style={{
-      display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 14px",
-      background: `${color}12`, border: `1px solid ${color}35`, borderRadius: 12, marginBottom: 8,
-    }}>
-      <AlertTriangle style={{ width: 14, height: 14, color, flexShrink: 0, marginTop: 1 }} />
-      <div>
-        <p style={{ fontSize: 13, fontWeight: 700, color }}>{label}</p>
-        {detail && <p style={{ fontSize: 12, color: C.slate, marginTop: 2, lineHeight: 1.5 }}>{detail}</p>}
-      </div>
-    </div>
-  );
-}
-
-function AppointmentRow({ icon, label, dateStr, provider, phone }) {
-  const days = daysUntil(dateStr);
-  const color = urgencyColor(days);
-  return (
-    <div style={{
-      display: "flex", alignItems: "center", gap: 12, padding: "12px 14px",
-      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-      borderRadius: 12, marginBottom: 8,
-    }}>
-      <div style={{ width: 36, height: 36, borderRadius: 10, background: `${color}18`,
-        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-        {icon}
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{label}</p>
-        {provider && <p style={{ fontSize: 12, color: C.muted, marginTop: 1 }}>{provider}</p>}
-      </div>
-      <div style={{ textAlign: "right", flexShrink: 0 }}>
-        <p style={{ fontSize: 12, fontWeight: 800, color }}>{urgencyLabel(days)}</p>
-        <p style={{ fontSize: 11, color: C.muted, marginTop: 1 }}>{fmt(dateStr)}</p>
-      </div>
-    </div>
-  );
-}
-
-function ProgressPill({ label, value, filled }) {
-  return (
-    <div style={{
-      padding: "10px 14px", borderRadius: 12,
-      background: filled ? "rgba(16,185,129,0.08)" : "rgba(255,255,255,0.03)",
-      border: `1px solid ${filled ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.07)"}`,
-      display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8,
-    }}>
-      <p style={{ fontSize: 13, color: filled ? C.emerald : C.muted, fontWeight: 600 }}>{label}</p>
-      {filled
-        ? <CheckCircle2 style={{ width: 14, height: 14, color: C.emerald, flexShrink: 0 }} />
-        : <span style={{ fontSize: 11, color: C.muted }}>—</span>
-      }
-      {value && <p style={{ fontSize: 12, color: C.slate, maxWidth: 120, textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{value}</p>}
-    </div>
-  );
-}
-
-// ── Main Page ────────────────────────────────────────────────────
 export default function PatientSummaryDashboard() {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // Get participantEmail from URL params
   const urlParams = new URLSearchParams(window.location.search);
-  const patientEmail = urlParams.get("patient_email");
+  const participantEmail = urlParams.get("email");
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
-  // Resolve email: URL param → current user
-  const email = patientEmail || user?.email;
-
-  const { data: plans = [], isLoading: planLoading } = useQuery({
-    queryKey: ["discharge-plan-summary", email],
-    queryFn: () => base44.entities.DischargePlan.filter({ participant_email: email }, "-created_date", 1),
-    enabled: !!email,
+  const { data: profiles = [] } = useQuery({
+    queryKey: ["psd-profile", participantEmail],
+    queryFn: () => base44.entities.ParticipantProfile.filter(
+      participantEmail ? { participant_email: participantEmail } : {}
+    ),
+    enabled: !!user,
   });
+  const profile = profiles[0] || null;
 
   const { data: checkIns = [] } = useQuery({
-    queryKey: ["checkins-summary", email],
-    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: email }, "-check_in_date", 30),
-    enabled: !!email,
+    queryKey: ["psd-checkins", participantEmail],
+    queryFn: () => base44.entities.DailyCheckIn.filter(
+      participantEmail ? { participant_email: participantEmail } : {},
+      "-check_in_date", 90
+    ),
+    enabled: !!user,
+  });
+
+  const { data: goals = [] } = useQuery({
+    queryKey: ["psd-goals", participantEmail],
+    queryFn: () => base44.entities.Goal.filter(
+      participantEmail ? { participant_email: participantEmail } : {}
+    ),
+    enabled: !!user,
   });
 
   const { data: sessions = [] } = useQuery({
-    queryKey: ["sessions-summary", email],
-    queryFn: () => base44.entities.TelehealthSession.filter({ participant_email: email }, "scheduled_date", 10),
-    enabled: !!email,
+    queryKey: ["psd-sessions", participantEmail],
+    queryFn: () => base44.entities.TelehealthSession.filter(
+      participantEmail ? { participant_email: participantEmail } : {},
+      "-scheduled_date", 30
+    ),
+    enabled: !!user,
   });
 
-  const plan = plans[0];
-
-  if (!email) return (
-    <div style={{ background: C.navy, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <p style={{ color: C.muted }}>No patient email provided.</p>
-    </div>
-  );
-
-  if (planLoading) return (
-    <div style={{ background: C.navy, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <Loader2 style={{ width: 28, height: 28, color: C.teal }} className="animate-spin" />
-    </div>
-  );
-
-  // ── Derived data ─────────────────────────────────────────────
-
-  // Upcoming appointments from discharge plan
-  const appointments = [];
-  if (plan) {
-    if (plan.pcp_appointment_date)            appointments.push({ key: "pcp",    icon: <Phone style={{ width: 15, height: 15, color: C.teal }} />,    label: "Primary Care",     dateStr: plan.pcp_appointment_date,             provider: plan.primary_care_provider,   phone: plan.pcp_phone });
-    if (plan.psychiatrist_appointment_date)   appointments.push({ key: "psych",  icon: <Calendar style={{ width: 15, height: 15, color: C.indigo }} />, label: "Psychiatry",       dateStr: plan.psychiatrist_appointment_date,     provider: plan.psychiatrist_name,       phone: plan.psychiatrist_phone });
-    if (plan.therapist_appointment_date)      appointments.push({ key: "therapy",icon: <Calendar style={{ width: 15, height: 15, color: "#A78BFA" }} />, label: "Therapy",          dateStr: plan.therapist_appointment_date,        provider: plan.therapist_name,          phone: plan.therapist_phone });
-    if (plan.first_aftercare_appointment)     appointments.push({ key: "after",  icon: <CheckCircle2 style={{ width: 15, height: 15, color: C.emerald }} />, label: "First Aftercare Appt", dateStr: plan.first_aftercare_appointment, provider: plan.aftercare_provider });
-    if (plan.pcp_appointment_date && plan.employment_start_date) appointments.push({ key: "work",   icon: <Briefcase style={{ width: 15, height: 15, color: C.gold }} />, label: "Employment Start",  dateStr: plan.employment_start_date,            provider: plan.employer_name });
-  }
-
-  // Telehealth sessions (upcoming)
-  const upcomingSessions = sessions.filter(s => {
-    const d = new Date(s.scheduled_date);
-    d.setHours(0, 0, 0, 0);
-    return d >= today && s.status === "scheduled";
+  const { data: alerts = [] } = useQuery({
+    queryKey: ["psd-alerts", participantEmail],
+    queryFn: () => base44.entities.EngagementAlert.filter(
+      participantEmail ? { participant_email: participantEmail, status: "active" } : { status: "active" }
+    ),
+    enabled: !!user,
   });
 
-  // Merge & sort
-  const allAppts = [
-    ...appointments,
-    ...upcomingSessions.map(s => ({
-      key: s.id, icon: <Calendar style={{ width: 15, height: 15, color: C.teal }} />,
-      label: s.title || s.session_type?.replace(/_/g, " "),
-      dateStr: s.scheduled_date, provider: s.provider_name,
-    })),
-  ].filter(a => a.dateStr).sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr));
+  const { data: forwardPlan } = useQuery({
+    queryKey: ["psd-plan", participantEmail],
+    queryFn: async () => {
+      const plans = await base44.entities.ForwardPlan.filter(
+        participantEmail ? { participant_email: participantEmail } : {}
+      );
+      return plans[0] || null;
+    },
+    enabled: !!user,
+  });
 
-  // ── Risk flags ───────────────────────────────────────────────
-  const riskFlags = [];
+  const metrics = useMemo(() => {
+    const today = new Date();
+    const sevenAgo = new Date(); sevenAgo.setDate(sevenAgo.getDate() - 7);
+    const thirtyAgo = new Date(); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
 
-  if (plan) {
-    if (plan.has_legal_obligations === "yes" && plan.court_dates)
-      riskFlags.push({ label: "Pending Court Date", detail: plan.court_dates, color: C.red, priority: 1 });
-    if (plan.warning_signs)
-      riskFlags.push({ label: "Relapse Warning Signs Documented", detail: plan.warning_signs, color: "#FB923C", priority: 2 });
-    if (plan.triggers_text)
-      riskFlags.push({ label: "Known Triggers on File", detail: plan.triggers_text, color: "#FBBF24", priority: 3 });
-    if (plan.has_legal_obligations === "yes" && plan.drug_testing_requirements)
-      riskFlags.push({ label: "Drug Testing Required", detail: plan.drug_testing_requirements, color: "#FB923C", priority: 2 });
-    if (!plan.housing_status || plan.housing_status === "unknown")
-      riskFlags.push({ label: "Housing Status Unknown", detail: "No stable housing arrangement confirmed.", color: C.red, priority: 1 });
-    if (plan.license_status === "suspended" || plan.license_status === "revoked")
-      riskFlags.push({ label: `License ${plan.license_status}`, detail: "Transportation barrier identified.", color: "#FBBF24", priority: 3 });
-    if (plan.transportation_method === "none")
-      riskFlags.push({ label: "No Transportation", detail: "Patient has no reliable transport to appointments.", color: "#FB923C", priority: 2 });
-  }
+    const sorted = [...checkIns].sort((a,b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+    const last7 = sorted.filter(c => new Date(c.check_in_date) >= sevenAgo);
+    const last30 = sorted.filter(c => new Date(c.check_in_date) >= thirtyAgo);
+    const lastCI = sorted[0];
+    const daysSince = lastCI ? Math.floor((today - new Date(lastCI.check_in_date)) / 86400000) : 99;
 
-  // Check-in risk signals (last 7 days)
-  const last7 = checkIns.slice(0, 7);
-  if (last7.some(c => c.relapse_risk_flag))
-    riskFlags.push({ label: "Relapse Risk Self-Reported", detail: "Patient flagged relapse risk in a recent check-in.", color: C.red, priority: 0 });
-  const avgCraving = last7.length ? last7.reduce((s, c) => s + (c.craving_intensity || 0), 0) / last7.length : 0;
-  if (avgCraving >= 7)
-    riskFlags.push({ label: "High Craving Intensity (7-day avg)", detail: `Average craving level: ${avgCraving.toFixed(1)}/10`, color: C.red, priority: 0 });
-  const last3Mood = last7.slice(0, 3);
-  if (last3Mood.length >= 3 && last3Mood.every(c => c.mood_rating <= 2))
-    riskFlags.push({ label: "Persistent Low Mood (3 days)", detail: "Mood rated 1-2 for 3 consecutive check-ins.", color: "#FB923C", priority: 1 });
-
-  riskFlags.sort((a, b) => a.priority - b.priority);
-
-  // ── Treatment progress ───────────────────────────────────────
-  const progress = [];
-  if (plan) {
-    progress.push({ label: "Discharge Plan", filled: true, value: plan.status === "finalized" ? "Finalized" : "Draft" });
-    progress.push({ label: "Aftercare Scheduled", filled: !!plan.aftercare_provider, value: plan.aftercare_provider });
-    progress.push({ label: "Housing Confirmed", filled: plan.housing_status && plan.housing_status !== "unknown", value: plan.housing_status?.replace(/_/g, " ") });
-    progress.push({ label: "Primary Care Set", filled: !!plan.primary_care_provider, value: plan.primary_care_provider });
-    progress.push({ label: "Therapist Assigned", filled: !!plan.therapist_name, value: plan.therapist_name });
-    progress.push({ label: "Sponsor / Mentor", filled: !!plan.sponsor_name, value: plan.sponsor_name });
-    progress.push({ label: "Goals Documented", filled: !!(plan.goals_30_day || plan.goals_60_day), value: plan.goals_30_day ? "30-day set" : null });
-    progress.push({ label: "Emergency Contacts", filled: !!(plan.emergency_contacts?.length && plan.emergency_contacts[0]?.name), value: plan.emergency_contacts?.[0]?.name });
-  }
-
-  const filledCount = progress.filter(p => p.filled).length;
-  const progressPct = progress.length ? Math.round((filledCount / progress.length) * 100) : 0;
-
-  // ── 7-day check-in stats ─────────────────────────────────────
-  const streak = (() => {
-    let n = 0, cur = new Date(); cur.setHours(0, 0, 0, 0);
-    for (const c of checkIns) {
-      const d = new Date(c.check_in_date); d.setHours(0, 0, 0, 0);
-      if (Math.round((cur - d) / 86400000) <= 1) { n++; cur = d; } else break;
+    let streak = 0;
+    let cur = new Date(); cur.setHours(0,0,0,0);
+    for (const c of sorted) {
+      const d = new Date(c.check_in_date); d.setHours(0,0,0,0);
+      if (Math.round((cur - d) / 86400000) <= 1) { streak++; cur = d; } else break;
     }
-    return n;
-  })();
+
+    const avgMood = last7.length ? (last7.reduce((s,c) => s + (c.mood_rating||0), 0) / last7.length).toFixed(1) : null;
+    const avgCraving = last7.length ? (last7.reduce((s,c) => s + (c.craving_intensity||0), 0) / last7.length).toFixed(1) : null;
+    const meetings7 = last7.filter(c => c.attended_meeting).length;
+    const sponsor7 = last7.filter(c => c.connected_with_sponsor).length;
+
+    const stability = last7.length > 0 ? Math.round(
+      Math.min(last7.length/7,1)*25 +
+      (last7.filter(c=>c.attended_meeting).length/last7.length)*25 +
+      (last7.filter(c=>c.connected_with_sponsor).length/last7.length)*25 +
+      Math.max(0,(10-(parseFloat(avgCraving)||5))/10)*25
+    ) : null;
+
+    const upcomingSessions = sessions.filter(s => s.status === "scheduled" && new Date(s.scheduled_date) >= today);
+    const completedSessions = sessions.filter(s => s.status === "completed").length;
+
+    const activeGoals = goals.filter(g => g.status === "active").length;
+    const completedGoals = goals.filter(g => g.status === "completed").length;
+
+    const sobrietyDays = profile?.sobriety_start_date
+      ? Math.floor((today - new Date(profile.sobriety_start_date)) / 86400000)
+      : null;
+
+    return {
+      daysSince, streak, avgMood, avgCraving, meetings7, sponsor7, stability,
+      last7, last30, upcomingSessions, completedSessions,
+      activeGoals, completedGoals, sobrietyDays,
+    };
+  }, [checkIns, sessions, goals, profile]);
+
+  const displayName = participantEmail?.split("@")[0] || "Participant";
+  const stabColor = !metrics.stability ? C.blue
+    : metrics.stability >= 75 ? C.green
+    : metrics.stability >= 50 ? C.amber
+    : C.red;
 
   return (
-    <div style={{ background: "linear-gradient(170deg,#070D1C,#0B1424)", minHeight: "100vh", paddingBottom: 80 }}>
-      <div style={{ maxWidth: 560, margin: "0 auto" }}>
+    <div style={{ minHeight: "100vh", background: C.bg, paddingBottom: 60 }}>
+      {/* Header */}
+      <div style={{ background: C.navy, color: "#fff", padding: "40px 24px 0" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <button onClick={() => navigate(-1)} style={{ display: "flex", alignItems: "center", gap: 6,
+            background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer",
+            fontSize: 13, marginBottom: 16, padding: 0 }}>
+            <ChevronLeft style={{ width: 15, height: 15 }} /> Back
+          </button>
 
-        {/* ── Header ── */}
-        <div style={{ background: "linear-gradient(155deg,#0E1D3A,#081426)", padding: "52px 20px 24px", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: -60, right: -60, width: 260, height: 260, borderRadius: "50%",
-            background: "radial-gradient(circle,rgba(62,207,191,0.1) 0%,transparent 70%)", pointerEvents: "none" }} />
-          <div style={{ position: "relative", zIndex: 1 }}>
-            {patientEmail && (
-              <button onClick={() => window.history.back()} style={{
-                display: "flex", alignItems: "center", gap: 6, background: "none", border: "none",
-                color: C.teal, fontSize: 13, fontWeight: 700, cursor: "pointer", marginBottom: 14, padding: 0,
-              }}>
-                <ArrowLeft style={{ width: 15, height: 15 }} /> Back
+          {/* Active alerts banner */}
+          {alerts.length > 0 && (
+            <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)",
+              borderRadius: 10, padding: "10px 14px", marginBottom: 16,
+              display: "flex", alignItems: "center", gap: 8 }}>
+              <AlertTriangle style={{ width: 15, height: 15, color: C.red, flexShrink: 0 }} />
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#FCA5A5" }}>
+                {alerts.length} active alert{alerts.length > 1 ? "s" : ""} — {alerts[0]?.alert_type || "Engagement concern"}
+              </p>
+            </div>
+          )}
+
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 20 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(59,130,246,0.18)",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <User style={{ width: 24, height: 24, color: C.blue }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{displayName}</h1>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
+                {profile?.program_type?.replace(/_/g, " ") || "Program not set"}
+                {profile?.location_city ? ` · ${profile.location_city}` : ""}
+                {profile?.assigned_counselor_email ? ` · Counselor: ${profile.assigned_counselor_email.split("@")[0]}` : ""}
+              </p>
+            </div>
+            <Link to={`/ParticipantMessages?to=${participantEmail}`} style={{ textDecoration: "none" }}>
+              <button style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 14px",
+                background: "rgba(59,130,246,0.18)", border: "1px solid rgba(59,130,246,0.3)",
+                borderRadius: 10, color: "#93C5FD", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                <MessageCircle style={{ width: 13, height: 13 }} /> Message
               </button>
-            )}
-            <p style={{ fontSize: 11, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>
-              Patient Summary
-            </p>
-            <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.2, marginBottom: 4 }}>Recovery Dashboard</h1>
-            <p style={{ fontSize: 13, color: C.muted, marginBottom: 16 }}>{email}</p>
+            </Link>
+          </div>
 
-            {/* Plan status badge */}
-            {plan ? (
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <span style={{
-                  fontSize: 12, fontWeight: 800, padding: "4px 12px", borderRadius: 20,
-                  background: plan.status === "finalized" ? "rgba(16,185,129,0.15)" : "rgba(245,158,11,0.15)",
-                  color: plan.status === "finalized" ? C.emerald : "#F59E0B",
-                  border: `1px solid ${plan.status === "finalized" ? "rgba(16,185,129,0.3)" : "rgba(245,158,11,0.3)"}`,
-                }}>
-                  {plan.status === "finalized" ? "✅ Plan Finalized" : "📝 Plan in Progress"}
-                </span>
-                {plan.discharge_date && (
-                  <span style={{ fontSize: 12, fontWeight: 700, padding: "4px 12px", borderRadius: 20,
-                    background: "rgba(255,255,255,0.06)", color: C.slate }}>
-                    Discharged: {plan.discharge_date}
+          {/* Key stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
+            {[
+              { label: "Stability", value: metrics.stability !== null ? `${metrics.stability}%` : "—", color: stabColor },
+              { label: "Streak",    value: `${metrics.streak}d`,  color: "#A78BFA" },
+              { label: "Avg Mood",  value: metrics.avgMood || "—", color: C.blue },
+              { label: "Sober Days",value: metrics.sobrietyDays !== null ? metrics.sobrietyDays : "—", color: C.green },
+            ].map(s => (
+              <div key={s.label} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 10, padding: "12px 10px", textAlign: "center" }}>
+                <p style={{ fontSize: 20, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</p>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", marginTop: 3 }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Tabs */}
+          <div style={{ display: "flex", borderBottom: "1px solid rgba(255,255,255,0.08)", overflowX: "auto", scrollbarWidth: "none" }}>
+            {SECTION_TABS.map(({ id, label, icon: Icon }) => (
+              <button key={id} onClick={() => setActiveTab(id)} style={{
+                display: "flex", alignItems: "center", gap: 6, padding: "12px 16px", whiteSpace: "nowrap",
+                background: "none", border: "none", cursor: "pointer",
+                borderBottom: activeTab === id ? "2px solid #3ECFBF" : "2px solid transparent",
+                color: activeTab === id ? "#fff" : "rgba(255,255,255,0.4)",
+                fontWeight: activeTab === id ? 700 : 500, fontSize: 13,
+              }}>
+                <Icon style={{ width: 13, height: 13 }} strokeWidth={1.5} />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "24px 20px" }}>
+
+        {/* OVERVIEW */}
+        {activeTab === "overview" && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+            {/* Profile info */}
+            <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "18px 20px" }}>
+              <p style={{ fontSize: 14, fontWeight: 800, color: C.navy, marginBottom: 12 }}>Profile</p>
+              <InfoRow label="Program Type" value={profile?.program_type?.replace(/_/g, " ")} />
+              <InfoRow label="Location" value={[profile?.location_city, profile?.location_state].filter(Boolean).join(", ")} />
+              <InfoRow label="Discharge Date" value={profile?.discharge_date} />
+              <InfoRow label="Sobriety Start" value={profile?.sobriety_start_date} />
+              <InfoRow label="Counselor" value={profile?.assigned_counselor_email?.split("@")[0]} />
+            </div>
+
+            {/* 7-day snapshot */}
+            <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "18px 20px" }}>
+              <p style={{ fontSize: 14, fontWeight: 800, color: C.navy, marginBottom: 12 }}>7-Day Snapshot</p>
+              <InfoRow label="Check-Ins" value={`${metrics.last7.length}/7`} color={metrics.last7.length >= 5 ? C.green : C.amber} />
+              <InfoRow label="Avg Mood" value={metrics.avgMood ? `${metrics.avgMood}/5` : "—"} />
+              <InfoRow label="Avg Cravings" value={metrics.avgCraving ? `${metrics.avgCraving}/10` : "—"} color={parseFloat(metrics.avgCraving) >= 7 ? C.red : C.navy} />
+              <InfoRow label="Meetings Attended" value={`${metrics.meetings7}/7`} color={metrics.meetings7 >= 3 ? C.green : C.amber} />
+              <InfoRow label="Sponsor Contacts" value={metrics.sponsor7} />
+            </div>
+
+            {/* Goals & plan */}
+            <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "18px 20px" }}>
+              <p style={{ fontSize: 14, fontWeight: 800, color: C.navy, marginBottom: 12 }}>Goals & Plan</p>
+              <InfoRow label="Active Goals" value={metrics.activeGoals} />
+              <InfoRow label="Completed Goals" value={metrics.completedGoals} color={C.green} />
+              <InfoRow label="Sessions Done" value={metrics.completedSessions} />
+              <InfoRow label="Sessions Upcoming" value={metrics.upcomingSessions.length} />
+              {forwardPlan && <InfoRow label="Plan Completion" value={`${forwardPlan.overall_completion_percentage || 0}%`} color={C.blue} />}
+            </div>
+          </div>
+        )}
+
+        {/* CHECK-INS */}
+        {activeTab === "checkins" && (
+          <div>
+            <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+              {[
+                { label: "30-Day Check-Ins", value: metrics.last30.length, color: C.blue },
+                { label: "Avg Craving (7d)", value: metrics.avgCraving || "—", color: parseFloat(metrics.avgCraving) >= 7 ? C.red : C.navy },
+                { label: "Avg Mood (7d)", value: metrics.avgMood || "—", color: C.green },
+                { label: "Current Streak", value: `${metrics.streak}d`, color: "#A78BFA" },
+              ].map(s => (
+                <div key={s.label} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 12, padding: "14px 16px", flex: "1 1 140px" }}>
+                  <p style={{ fontSize: 11, color: C.muted, fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 5 }}>{s.label}</p>
+                  <p style={{ fontSize: 24, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+              <div style={{ padding: "14px 18px", borderBottom: `1px solid ${C.border}` }}>
+                <p style={{ fontSize: 14, fontWeight: 800, color: C.navy }}>Check-In History (90 days)</p>
+              </div>
+              {checkIns.length === 0 ? (
+                <p style={{ fontSize: 13, color: C.muted, textAlign: "center", padding: "40px 0" }}>No check-ins on record</p>
+              ) : (
+                <div>
+                  {checkIns.slice(0, 30).map(ci => (
+                    <div key={ci.id} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 18px",
+                      borderBottom: `1px solid ${C.border}` }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                        background: ci.relapse_risk_flag ? "#FEF2F2" : "#F0FDF4",
+                        display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {ci.relapse_risk_flag
+                          ? <AlertTriangle style={{ width: 15, height: 15, color: C.red }} />
+                          : <CheckCircle2 style={{ width: 15, height: 15, color: C.green }} />
+                        }
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy }}>{ci.check_in_date}</p>
+                        <p style={{ fontSize: 12, color: C.muted }}>
+                          Mood: {ci.mood_rating}/5 · Cravings: {ci.craving_intensity ?? "—"}/10 · Stress: {ci.stress_level ?? "—"}/10
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                        {ci.attended_meeting && <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: 20, background: "#F0FDF4", color: C.green, fontWeight: 700 }}>Meeting</span>}
+                        {ci.connected_with_sponsor && <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: 20, background: "#EFF6FF", color: C.blue, fontWeight: 700 }}>Sponsor</span>}
+                        {ci.relapse_risk_flag && <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: 20, background: "#FEF2F2", color: C.red, fontWeight: 700 }}>Risk Flag</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* GOALS */}
+        {activeTab === "goals" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {goals.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "60px 0", background: C.white, borderRadius: 14, border: `1px solid ${C.border}` }}>
+                <Target style={{ width: 32, height: 32, color: C.muted, margin: "0 auto 10px", display: "block" }} strokeWidth={1} />
+                <p style={{ fontSize: 15, fontWeight: 700, color: C.navy }}>No goals set yet</p>
+              </div>
+            ) : goals.map(goal => (
+              <div key={goal.id} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>{goal.title}</p>
+                  <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 20, fontWeight: 700,
+                    background: goal.status === "completed" ? "#F0FDF4" : goal.status === "paused" ? "#F1F5F9" : "#EFF6FF",
+                    color: goal.status === "completed" ? C.green : goal.status === "paused" ? C.slate : C.blue,
+                  }}>
+                    {goal.status}
                   </span>
+                </div>
+                <p style={{ fontSize: 12, color: C.muted, marginBottom: 8 }}>{goal.category?.replace(/_/g, " ")} · {goal.target_date || "No target date"}</p>
+                <div style={{ background: "#F1F5F9", borderRadius: 4, height: 6, overflow: "hidden" }}>
+                  <div style={{ height: "100%", borderRadius: 4, width: `${goal.progress_percentage || 0}%`, background: goal.status === "completed" ? C.green : C.blue }} />
+                </div>
+                <p style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>{goal.progress_percentage || 0}% complete</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* SESSIONS */}
+        {activeTab === "sessions" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {sessions.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "60px 0", background: C.white, borderRadius: 14, border: `1px solid ${C.border}` }}>
+                <Calendar style={{ width: 32, height: 32, color: C.muted, margin: "0 auto 10px", display: "block" }} strokeWidth={1} />
+                <p style={{ fontSize: 15, fontWeight: 700, color: C.navy }}>No sessions on record</p>
+              </div>
+            ) : sessions.map(s => (
+              <div key={s.id} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 18px",
+                borderLeft: `4px solid ${s.status === "completed" ? C.green : s.status === "cancelled" ? C.red : C.blue}` }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>{s.title || s.session_type?.replace(/_/g, " ")}</p>
+                  <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 20, fontWeight: 700,
+                    background: s.status === "completed" ? "#F0FDF4" : s.status === "cancelled" ? "#FEF2F2" : "#EFF6FF",
+                    color: s.status === "completed" ? C.green : s.status === "cancelled" ? C.red : C.blue,
+                  }}>{s.status}</span>
+                </div>
+                <p style={{ fontSize: 12, color: C.muted }}>
+                  {s.scheduled_date} · {s.scheduled_time} · {s.duration_minutes || 50}min
+                  {s.provider_name ? ` · ${s.provider_name}` : ""}
+                </p>
+                {s.session_notes && (
+                  <p style={{ fontSize: 12, color: C.slate, marginTop: 8, padding: "8px 10px", background: "#F8FAFC", borderRadius: 8, lineHeight: 1.5 }}>
+                    📝 {s.session_notes}
+                  </p>
                 )}
               </div>
-            ) : (
-              <span style={{ fontSize: 12, color: C.muted, fontStyle: "italic" }}>No discharge plan on file</span>
-            )}
+            ))}
           </div>
-        </div>
+        )}
 
-        <div style={{ padding: "16px 20px" }}>
-
-          {/* ── Risk Flags ── */}
-          {riskFlags.length > 0 && (
-            <div style={{ marginBottom: 24 }}>
-              <SectionLabel icon="🚨">High-Risk Flags</SectionLabel>
-              {riskFlags.map((f, i) => (
-                <RiskBadge key={i} label={f.label} detail={f.detail} color={f.color} />
-              ))}
-            </div>
-          )}
-
-          {/* ── Treatment Progress ── */}
-          {plan && (
-            <div style={{ marginBottom: 24 }}>
-              <SectionLabel icon="📊">Treatment Plan Progress</SectionLabel>
-
-              {/* Big score */}
-              <div style={{
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                borderRadius: 16, padding: "16px 18px", marginBottom: 12,
-              }}>
-                <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 10 }}>
-                  <div>
-                    <p style={{ fontSize: 42, fontWeight: 900, color: progressPct >= 75 ? C.emerald : progressPct >= 50 ? C.gold : "#F87171", lineHeight: 1 }}>
-                      {progressPct}<span style={{ fontSize: 18, fontWeight: 600, color: C.muted }}>%</span>
-                    </p>
-                    <p style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>{filledCount} of {progress.length} sections complete</p>
-                  </div>
-                  <div style={{ fontSize: 28 }}>
-                    {progressPct >= 75 ? "🟢" : progressPct >= 50 ? "🟡" : "🔴"}
-                  </div>
-                </div>
-                <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 6, height: 6, overflow: "hidden" }}>
-                  <div style={{
-                    height: "100%", borderRadius: 6, width: `${progressPct}%`,
-                    background: progressPct >= 75 ? `linear-gradient(90deg,${C.emerald},#059669)` : `linear-gradient(90deg,${C.gold},#D97706)`,
-                    transition: "width 0.5s ease",
-                  }} />
-                </div>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {progress.map((p) => <ProgressPill key={p.label} {...p} />)}
-              </div>
-            </div>
-          )}
-
-          {/* ── Upcoming Appointments ── */}
-          <div style={{ marginBottom: 24 }}>
-            <SectionLabel icon="📅">Upcoming Appointments</SectionLabel>
-            {allAppts.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "32px 20px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14 }}>
-                <p style={{ fontSize: 13, color: C.muted }}>No upcoming appointments on file.</p>
+        {/* PLAN */}
+        {activeTab === "plan" && (
+          <div>
+            {!forwardPlan ? (
+              <div style={{ textAlign: "center", padding: "60px 0", background: C.white, borderRadius: 14, border: `1px solid ${C.border}` }}>
+                <FileText style={{ width: 32, height: 32, color: C.muted, margin: "0 auto 10px", display: "block" }} strokeWidth={1} />
+                <p style={{ fontSize: 15, fontWeight: 700, color: C.navy }}>No forward plan created yet</p>
               </div>
             ) : (
-              allAppts.slice(0, 8).map((a) => (
-                <AppointmentRow key={a.key} {...a} />
-              ))
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "18px 20px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                    <p style={{ fontSize: 15, fontWeight: 800, color: C.navy }}>Forward Plan Overview</p>
+                    <span style={{ fontSize: 16, fontWeight: 900, color: C.blue }}>{forwardPlan.overall_completion_percentage || 0}%</span>
+                  </div>
+                  <div style={{ height: 8, borderRadius: 4, background: "#F1F5F9", overflow: "hidden", marginBottom: 16 }}>
+                    <div style={{ height: "100%", borderRadius: 4, background: C.blue, width: `${forwardPlan.overall_completion_percentage || 0}%` }} />
+                  </div>
+                  {[
+                    ["Housing Goal", forwardPlan.housing_goal],
+                    ["Employment Goal", forwardPlan.employment_goal],
+                    ["Education Goal", forwardPlan.education_goal],
+                    ["Financial Goal", forwardPlan.financial_goal],
+                    ["Health Goal", forwardPlan.health_goal],
+                    ["Relationships Goal", forwardPlan.relationships_goal],
+                    ["Legal Goal", forwardPlan.legal_goal],
+                  ].filter(([, val]) => val).map(([label, val]) => (
+                    <div key={label} style={{ padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
+                      <p style={{ fontSize: 12, color: C.muted, fontWeight: 600, marginBottom: 3 }}>{label}</p>
+                      <p style={{ fontSize: 13, color: C.navy, lineHeight: 1.5 }}>{val}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
-
-          {/* ── 7-Day Check-In Summary ── */}
-          <div style={{ marginBottom: 24 }}>
-            <SectionLabel icon="⚡">7-Day Check-In Activity</SectionLabel>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
-              {[
-                { label: "Day Streak", value: streak, color: streak >= 7 ? C.emerald : streak >= 3 ? C.gold : "#F87171" },
-                { label: "Check-Ins", value: `${last7.length}/7`, color: last7.length >= 5 ? C.emerald : last7.length >= 3 ? C.gold : "#F87171" },
-                { label: "Avg Craving", value: avgCraving > 0 ? `${avgCraving.toFixed(1)}/10` : "—", color: avgCraving >= 7 ? "#F87171" : avgCraving >= 4 ? C.gold : C.emerald },
-              ].map(stat => (
-                <div key={stat.label} style={{
-                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 14, padding: "14px 12px", textAlign: "center",
-                }}>
-                  <p style={{ fontSize: 24, fontWeight: 900, color: stat.color, lineHeight: 1 }}>{stat.value}</p>
-                  <p style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>{stat.label}</p>
-                </div>
-              ))}
-            </div>
-            {/* Mini calendar strip */}
-            <div style={{ display: "flex", gap: 4 }}>
-              {Array.from({ length: 7 }, (_, i) => {
-                const d = new Date(); d.setDate(d.getDate() - (6 - i));
-                const ds = d.toISOString().split("T")[0];
-                const ci = checkIns.find(c => c.check_in_date === ds);
-                const isToday = i === 6;
-                return (
-                  <div key={ds} style={{ flex: 1, textAlign: "center" }}>
-                    <p style={{ fontSize: 9, color: C.muted, marginBottom: 4 }}>
-                      {d.toLocaleDateString("en-US", { weekday: "short" }).charAt(0)}
-                    </p>
-                    <div style={{
-                      height: 28, borderRadius: 8,
-                      background: ci ? (ci.mood_rating >= 4 ? "rgba(16,185,129,0.3)" : ci.mood_rating <= 2 ? "rgba(239,68,68,0.3)" : "rgba(245,158,11,0.3)") : "rgba(255,255,255,0.05)",
-                      border: isToday ? `1px solid ${C.teal}` : "1px solid transparent",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      {ci && <p style={{ fontSize: 11, fontWeight: 800, color: "#fff" }}>{ci.mood_rating}</p>}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* ── Relapse Prevention Quick View ── */}
-          {plan && (plan.warning_signs || plan.coping_strategies_text || plan.people_to_call_in_crisis) && (
-            <div style={{ marginBottom: 24 }}>
-              <SectionLabel icon="🛡️">Relapse Prevention Plan</SectionLabel>
-              {plan.warning_signs && (
-                <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 12, padding: "12px 14px", marginBottom: 8 }}>
-                  <p style={{ fontSize: 11, fontWeight: 700, color: C.red, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 6 }}>Warning Signs</p>
-                  <p style={{ fontSize: 13, color: C.slate, lineHeight: 1.6 }}>{plan.warning_signs}</p>
-                </div>
-              )}
-              {plan.coping_strategies_text && (
-                <div style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 12, padding: "12px 14px", marginBottom: 8 }}>
-                  <p style={{ fontSize: 11, fontWeight: 700, color: C.emerald, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 6 }}>Coping Strategies</p>
-                  <p style={{ fontSize: 13, color: C.slate, lineHeight: 1.6 }}>{plan.coping_strategies_text}</p>
-                </div>
-              )}
-              {plan.people_to_call_in_crisis && (
-                <div style={{ background: "rgba(62,207,191,0.06)", border: "1px solid rgba(62,207,191,0.2)", borderRadius: 12, padding: "12px 14px" }}>
-                  <p style={{ fontSize: 11, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 6 }}>Crisis Contacts</p>
-                  <p style={{ fontSize: 13, color: C.slate, lineHeight: 1.6 }}>{plan.people_to_call_in_crisis}</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ── Quick Actions ── */}
-          <div style={{ marginBottom: 16 }}>
-            <SectionLabel icon="⚙️">Quick Actions</SectionLabel>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {[
-                { label: "Open Full Discharge Plan", sub: "View & edit all 11 sections", icon: <FileText style={{ width: 16, height: 16 }} />, color: C.teal,    href: plan ? `DischargePlan?plan_id=${plan.id}` : "DischargePlan" },
-                { label: "Daily Check-In",           sub: "Log today's mood & activity",  icon: <CheckCircle2 style={{ width: 16, height: 16 }} />, color: C.emerald, href: "DailyCheckIn" },
-                { label: "My Forward Plan",          sub: "Review milestones & goals",     icon: <Calendar style={{ width: 16, height: 16 }} />,    color: C.gold,    href: "ForwardPlan" },
-                { label: "Messages",                 sub: "Reach your counselor",          icon: <Phone style={{ width: 16, height: 16 }} />,       color: C.indigo,  href: "ParticipantMessages" },
-              ].map(item => (
-                <Link key={item.label} to={createPageUrl(item.href)} style={{ textDecoration: "none" }}>
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: 14, padding: "13px 16px",
-                    background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 14,
-                  }}>
-                    <div style={{ width: 38, height: 38, borderRadius: 12, background: `${item.color}18`,
-                      color: item.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      {item.icon}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>{item.label}</p>
-                      <p style={{ fontSize: 12, color: C.muted }}>{item.sub}</p>
-                    </div>
-                    <ChevronRight style={{ width: 15, height: 15, color: C.muted, flexShrink: 0 }} />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-        </div>
+        )}
       </div>
     </div>
   );
