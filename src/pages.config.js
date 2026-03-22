@@ -163,7 +163,6 @@ export const PAGES = {
     "PatientDashboard": PatientDashboard,
     "PlatformAdmin": PlatformAdmin,
     "PrivacyControls": PrivacyControls,
-    "ProbationDashboard": ProbationDashboard,
     "ProbationOfficerDashboard": ProbationOfficerDashboard,
     "ProfessionalPortal": ProfessionalPortal,
     "Profile": Profile,
