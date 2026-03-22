@@ -79,7 +79,7 @@ export default function DailyCheckIn() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["daily-checkins"]);
+      queryClient.invalidateQueries({ queryKey: ["daily-checkins"] });
       if (formData.relapse_risk_flag) {
         setStep(8); // go straight to crisis support
       } else {
