@@ -1,214 +1,269 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import {
-  Users, AlertTriangle, Activity, Calendar, MessageSquare, BarChart3,
-  Shield, FileText, Settings, ArrowRight, Loader2, Building2, ChevronRight
+  Users, AlertTriangle, BarChart2, Settings, MessageCircle,
+  CalendarDays, Shield, FileText, TrendingUp, Home, ChevronRight,
+  Bell, Activity, BookOpen,
 } from "lucide-react";
+import { useCurrentUser } from "@/lib/useCurrentUser";
+import { PageLoader } from "@/components/shared/LoadingSpinner";
+import EmptyState from "@/components/shared/EmptyState";
 
+// ── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
   blue:   "#3B82F6",
-  green:  "#10B981",
+  teal:   "#3ECFBF",
   amber:  "#F59E0B",
   red:    "#EF4444",
-  navy:   "#0F172A",
-  slate:  "#64748B",
-  muted:  "#94A3B8",
-  border: "#E2E8F0",
-  bg:     "#F8FAFC",
+  emerald:"#10B981",
+  indigo: "#6366F1",
   white:  "#FFFFFF",
+  navy:   "#0B1220",
+  card:   "rgba(255,255,255,0.04)",
+  border: "rgba(255,255,255,0.09)",
 };
 
-const ROLE_PORTALS = {
-  counselor: [
-    { icon: "👥", label: "My Caseload",        sub: "View all assigned clients",         href: "CounselorPortal",      color: C.blue  },
-    { icon: "⚡", label: "Live Risk Monitor",   sub: "Real-time engagement alerts",       href: "AftercareMonitoring",  color: C.red   },
-    { icon: "📅", label: "Schedule",            sub: "Appointments & group sessions",     href: "AftercareMonitoring",  color: "#8B5CF6" },
-    { icon: "💬", label: "Messages",            sub: "Participant communications",        href: "CounselorMessaging",   color: C.green },
-    { icon: "📋", label: "Discharge Planning",  sub: "Create & manage plans",            href: "DischargePlan",        color: C.amber },
-    { icon: "📊", label: "Reports",             sub: "Engagement & outcome data",        href: "ComplianceReports",    color: C.slate },
-  ],
-  admin: [
-    { icon: "🏥", label: "Facility Dashboard",  sub: "Org overview & settings",          href: "FacilityDashboard",    color: C.blue  },
-    { icon: "👥", label: "Manage Staff",         sub: "Invite, assign & configure roles", href: "FacilityAdmin",        color: "#8B5CF6" },
-    { icon: "📊", label: "Analytics",           sub: "Platform-wide usage & outcomes",   href: "ComplianceReports",    color: C.green },
-    { icon: "📝", label: "Content Admin",        sub: "Announcements, articles, groups",  href: "ContentAdmin",         color: C.amber },
-    { icon: "🔔", label: "Moderation Queue",    sub: "Flagged content & reports",        href: "ModerationQueue",      color: C.red   },
-    { icon: "⚙️", label: "Platform Settings",   sub: "Integrations & configuration",     href: "FacilityAdmin",        color: C.slate },
-  ],
-};
+// ── Counselor nav cards ───────────────────────────────────────────────────────
+const COUNSELOR_TOOLS = [
+  { icon: Users,        label: "My Caseload",        sub: "Participants assigned to me", href: "CounselorPortal",      color: C.blue   },
+  { icon: Activity,     label: "Aftercare Monitor",  sub: "Engagement & risk tracking", href: "AftercareMonitoring",  color: C.teal   },
+  { icon: CalendarDays, label: "Sessions",           sub: "Schedule & telehealth",      href: "TelehealthHub",        color: C.indigo },
+  { icon: MessageCircle,label: "Messages",           sub: "Participant messaging",       href: "CounselorMessaging",   color: C.emerald},
+  { icon: FileText,     label: "Discharge Plans",    sub: "Create & manage plans",      href: "DischargePlan",        color: C.amber  },
+  { icon: Shield,       label: "Safety Plans",       sub: "Review safety protocols",    href: "MySafetyPlan",         color: C.red    },
+];
 
-function PortalCard({ icon, label, sub, href, color }) {
+const ADMIN_TOOLS = [
+  { icon: Settings,     label: "Facility Admin",     sub: "Staff, settings & billing",  href: "FacilityAdmin",        color: C.indigo },
+  { icon: BarChart2,    label: "Reports",            sub: "Compliance & outcomes",      href: "ComplianceReports",    color: C.blue   },
+  { icon: BookOpen,     label: "Content Admin",      sub: "Articles & moderation",      href: "ContentAdmin",         color: C.teal   },
+  { icon: AlertTriangle,label: "Moderation",         sub: "Flagged content & reports",  href: "ModerationQueue",      color: C.amber  },
+  { icon: TrendingUp,   label: "Analytics",          sub: "Platform-wide metrics",      href: "PlatformAdmin",        color: C.emerald},
+  { icon: Users,        label: "All Participants",   sub: "Platform participant list",   href: "AftercareMonitoring",  color: C.red    },
+];
+
+function PortalCard({ icon: Icon, label, sub, href, color }) {
   return (
     <Link to={createPageUrl(href)} style={{ textDecoration: "none" }}>
-      <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px",
-        transition: "all .15s ease", cursor: "pointer" }}
-        onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.07)"; e.currentTarget.style.borderColor = color; }}
-        onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.border; }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: `${color}15`,
-            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-            {icon}
-          </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, marginBottom: 3 }}>{label}</p>
-            <p style={{ fontSize: 12, color: C.muted, lineHeight: 1.4 }}>{sub}</p>
-          </div>
-          <ChevronRight style={{ width: 16, height: 16, color: C.muted, flexShrink: 0 }} />
+      <div style={{
+        background: C.card, border: `1px solid ${C.border}`,
+        borderRadius: 16, padding: "18px 16px",
+        transition: "all 0.15s ease", cursor: "pointer",
+        display: "flex", flexDirection: "column", gap: 10,
+      }}>
+        <div style={{
+          width: 40, height: 40, borderRadius: 12,
+          background: `${color}18`, color,
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <Icon style={{ width: 18, height: 18 }} />
+        </div>
+        <div>
+          <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 2 }}>{label}</p>
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.3 }}>{sub}</p>
         </div>
       </div>
     </Link>
   );
 }
 
-export default function StaffDashboard() {
-  const { data: user, isLoading } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+function StatCard({ label, value, sub, color = C.blue }) {
+  return (
+    <div style={{
+      background: C.card, border: `1px solid ${C.border}`,
+      borderRadius: 14, padding: "16px",
+    }}>
+      <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase",
+        letterSpacing: ".08em", marginBottom: 8 }}>{label}</p>
+      <p style={{ fontSize: 28, fontWeight: 900, color, lineHeight: 1, marginBottom: 4 }}>{value}</p>
+      {sub && <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>{sub}</p>}
+    </div>
+  );
+}
 
-  const { data: counselorProfile } = useQuery({
-    queryKey: ["counselor-profile-staff", user?.email],
-    queryFn: async () => {
-      const profiles = await base44.entities.CounselorProfile.filter({ counselor_email: user.email });
-      return profiles[0];
-    },
+export default function StaffDashboard() {
+  const navigate = useNavigate();
+  const { user, isAdmin, isCounselor, isLoading: userLoading } = useCurrentUser();
+
+  const { data: profiles = [], isLoading: profilesLoading } = useQuery({
+    queryKey: ["staff-all-profiles"],
+    queryFn: () => base44.entities.ParticipantProfile.list("-created_date", 100),
     enabled: !!user,
   });
 
-  const { data: participants = [] } = useQuery({
-    queryKey: ["staff-participants", counselorProfile?.facility_id],
-    queryFn: () => base44.entities.ParticipantProfile.filter({ facility_id: counselorProfile.facility_id }),
-    enabled: !!counselorProfile?.facility_id,
-  });
-
-  const { data: activeAlerts = [] } = useQuery({
+  const { data: alerts = [] } = useQuery({
     queryKey: ["staff-alerts"],
     queryFn: () => base44.entities.EngagementAlert.filter({ status: "active" }),
     enabled: !!user,
   });
 
-  const { data: facility } = useQuery({
-    queryKey: ["facility-staff", counselorProfile?.facility_id],
-    queryFn: async () => {
-      const facilities = await base44.entities.Facility.filter({ id: counselorProfile.facility_id });
-      return facilities[0];
-    },
-    enabled: !!counselorProfile?.facility_id,
+  const { data: checkIns = [] } = useQuery({
+    queryKey: ["staff-recent-checkins"],
+    queryFn: () => base44.entities.DailyCheckIn.list("-check_in_date", 200),
+    enabled: !!user,
   });
 
-  if (isLoading) {
-    return (
-      <div style={{ background: C.bg, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Loader2 style={{ width: 28, height: 28, color: C.blue }} className="animate-spin" />
-      </div>
+  const { data: sessions = [] } = useQuery({
+    queryKey: ["staff-upcoming-sessions"],
+    queryFn: () => base44.entities.TelehealthSession.filter({ status: "scheduled" }, "scheduled_date", 20),
+    enabled: !!user,
+  });
+
+  const stats = useMemo(() => {
+    if (!profiles.length) return null;
+    const today = new Date().toISOString().split("T")[0];
+    const sevenAgo = new Date(); sevenAgo.setDate(sevenAgo.getDate() - 7);
+
+    const activeToday = checkIns.filter(c => c.check_in_date === today).length;
+    const recentCheckIns = checkIns.filter(c => new Date(c.check_in_date) >= sevenAgo);
+
+    // At-risk: high craving (>=7) in recent check-ins per unique participant
+    const atRiskEmails = new Set(
+      recentCheckIns.filter(c => (c.craving_intensity ?? 0) >= 7 || c.relapse_risk_flag).map(c => c.participant_email)
     );
-  }
 
-  if (!user) {
-    return (
-      <div style={{ background: C.bg, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-        <div style={{ maxWidth: 400, textAlign: "center" }}>
-          <p style={{ fontSize: 40, marginBottom: 16 }}>🔒</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: C.navy, marginBottom: 8 }}>Sign In Required</h2>
-          <p style={{ fontSize: 14, color: C.slate, marginBottom: 24, lineHeight: 1.6 }}>Access to the staff portal requires authentication.</p>
-          <button onClick={() => base44.auth.redirectToLogin()}
-            style={{ padding: "13px 32px", borderRadius: 12, background: C.navy, color: "#fff", border: "none", fontWeight: 700, fontSize: 15, cursor: "pointer" }}>
-            Sign In to Continue
-          </button>
-        </div>
-      </div>
-    );
-  }
+    // Missing check-ins (no check-in in 3+ days)
+    const recentEmails = new Set(recentCheckIns.map(c => c.participant_email));
+    const missedCount = profiles.filter(p => !recentEmails.has(p.participant_email)).length;
 
-  const isAdmin = user.role === "admin";
-  const portals = ROLE_PORTALS[isAdmin ? "admin" : "counselor"];
-  const firstName = user.full_name?.split(" ")[0] || "there";
+    return {
+      total: profiles.length,
+      activeToday,
+      atRisk: atRiskEmails.size,
+      missed: missedCount,
+      openAlerts: alerts.length,
+      upcomingSessions: sessions.length,
+    };
+  }, [profiles, checkIns, alerts, sessions]);
 
-  const today = new Date().toISOString().split("T")[0];
+  if (userLoading) return (
+    <div style={{ background: C.navy, minHeight: "100vh" }}>
+      <PageLoader label="Loading staff dashboard…" />
+    </div>
+  );
+
+  const firstName = user?.full_name?.split(" ")[0] || "there";
 
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", paddingBottom: 60 }}>
+    <div style={{ background: `linear-gradient(170deg,${C.navy} 0%,#0E1A2E 100%)`, minHeight: "100vh", paddingBottom: 100 }}>
+      <div style={{ maxWidth: 600, margin: "0 auto" }}>
 
-      {/* ── Header ─────────────────────────────────────────────── */}
-      <div style={{ background: C.navy, padding: "28px 24px 24px" }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(62,207,191,0.8)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 }}>UNBOUND · Staff Portal</p>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.2, marginBottom: 4 }}>
-              Welcome back, {firstName}
-            </h1>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
-              {facility?.name || "Staff Portal"} · {isAdmin ? "Administrator" : "Counselor/Case Manager"}
+        {/* ── Header ── */}
+        <div style={{
+          background: "linear-gradient(150deg,#0E1D3A 0%,#081426 100%)",
+          padding: "60px 24px 28px", position: "relative", overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", top: -80, right: -60, width: 300, height: 300, borderRadius: "50%",
+            background: "radial-gradient(circle,rgba(59,130,246,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
+
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(96,165,250,0.8)", letterSpacing: ".1em",
+              textTransform: "uppercase", marginBottom: 4 }}>
+              {isAdmin ? "Admin Portal" : "Staff Portal"}
             </p>
-          </div>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: "rgba(255,255,255,0.1)",
-            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
-            {isAdmin ? "🏥" : "👩‍⚕️"}
-          </div>
-        </div>
+            <h1 style={{ fontSize: 26, fontWeight: 900, color: "#fff", marginBottom: 4, lineHeight: 1.2 }}>
+              Welcome, {firstName}
+            </h1>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 24 }}>
+              {isAdmin ? "Full facility management access" : "Counselor & care coordination tools"}
+            </p>
 
-        {/* Quick stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginTop: 20 }}>
-          {[
-            { label: "Clients",       value: participants.length, color: "#60A5FA" },
-            { label: "Active Alerts", value: activeAlerts.length, color: activeAlerts.length > 0 ? "#F87171" : "#34D399" },
-            { label: "Today",         value: new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }), color: "rgba(255,255,255,0.5)", small: true },
-          ].map(stat => (
-            <div key={stat.label} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 12, padding: "12px", textAlign: "center" }}>
-              <p style={{ fontSize: stat.small ? 12 : 22, fontWeight: 900, color: stat.color, lineHeight: 1, marginBottom: 4 }}>{stat.value}</p>
-              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".05em" }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px 20px" }}>
-
-        {/* Active alerts banner */}
-        {activeAlerts.length > 0 && (
-          <Link to={createPageUrl("AftercareMonitoring")} style={{ textDecoration: "none", display: "block", marginBottom: 16 }}>
-            <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 14, padding: "14px 18px",
-              display: "flex", alignItems: "center", gap: 12 }}>
-              <AlertTriangle style={{ width: 20, height: 20, color: C.red, flexShrink: 0 }} />
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: C.red }}>{activeAlerts.length} alert{activeAlerts.length > 1 ? "s" : ""} require your attention</p>
-                <p style={{ fontSize: 12, color: "#7F1D1D", marginTop: 2 }}>Tap to view and respond to active flags</p>
+            {/* Quick stat row */}
+            {stats && (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+                <StatCard label="Participants" value={stats.total}           color={C.blue}   />
+                <StatCard label="Active Today" value={stats.activeToday}     color={C.emerald}/>
+                <StatCard label="Open Alerts"  value={stats.openAlerts}      color={stats.openAlerts > 0 ? C.red : C.teal} />
               </div>
-              <ChevronRight style={{ width: 16, height: 16, color: C.red }} />
+            )}
+          </div>
+        </div>
+
+        <div style={{ padding: "20px 16px" }}>
+
+          {/* ── Active alerts banner ── */}
+          {alerts.length > 0 && (
+            <div style={{ borderRadius: 16, padding: "14px 16px", marginBottom: 16,
+              background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <Bell style={{ color: C.red, width: 18, height: 18 }} />
+                <p style={{ fontSize: 14, fontWeight: 800, color: "#fff" }}>
+                  {alerts.length} Active Alert{alerts.length !== 1 ? "s" : ""}
+                </p>
+              </div>
+              {alerts.slice(0, 3).map(alert => (
+                <div key={alert.id} style={{ padding: "8px 10px", borderRadius: 10,
+                  background: "rgba(239,68,68,0.08)", marginBottom: 6, display: "flex",
+                  alignItems: "center", justifyContent: "space-between" }}>
+                  <div>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{alert.participant_email?.split("@")[0]}</p>
+                    <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{alert.alert_type || "Engagement alert"}</p>
+                  </div>
+                  <ChevronRight style={{ color: "rgba(255,255,255,0.3)", width: 14, height: 14 }} />
+                </div>
+              ))}
+              <Link to={createPageUrl("AftercareMonitoring")}
+                style={{ fontSize: 12, color: C.red, fontWeight: 700, textDecoration: "none" }}>
+                View all alerts →
+              </Link>
+            </div>
+          )}
+
+          {/* ── Second stat row ── */}
+          {stats && (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+              <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "14px 16px" }}>
+                <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase",
+                  letterSpacing: ".08em", marginBottom: 6 }}>At Risk (7d)</p>
+                <p style={{ fontSize: 26, fontWeight: 900, color: stats.atRisk > 0 ? C.amber : C.emerald, lineHeight: 1 }}>
+                  {stats.atRisk}
+                </p>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 4 }}>high craving or relapse flag</p>
+              </div>
+              <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "14px 16px" }}>
+                <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase",
+                  letterSpacing: ".08em", marginBottom: 6 }}>Missed Check-In</p>
+                <p style={{ fontSize: 26, fontWeight: 900, color: stats.missed > 0 ? C.amber : C.emerald, lineHeight: 1 }}>
+                  {stats.missed}
+                </p>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 4 }}>no check-in in 7 days</p>
+              </div>
+            </div>
+          )}
+
+          {/* ── Counselor tools ── */}
+          <div style={{ marginBottom: 20 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.35)", textTransform: "uppercase",
+              letterSpacing: "1px", marginBottom: 10 }}>🩺 Care Tools</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {COUNSELOR_TOOLS.map(tool => <PortalCard key={tool.href} {...tool} />)}
+            </div>
+          </div>
+
+          {/* ── Admin tools (admin only) ── */}
+          {isAdmin && (
+            <div style={{ marginBottom: 20 }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.35)", textTransform: "uppercase",
+                letterSpacing: "1px", marginBottom: 10 }}>⚙️ Admin Controls</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {ADMIN_TOOLS.map(tool => <PortalCard key={tool.href} {...tool} />)}
+              </div>
+            </div>
+          )}
+
+          {/* ── Switch to participant view ── */}
+          <Link to={createPageUrl("Home")} style={{ textDecoration: "none", display: "block" }}>
+            <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: 14, padding: "14px 16px", display: "flex", alignItems: "center", gap: 12 }}>
+              <Home style={{ color: "rgba(255,255,255,0.3)", width: 18, height: 18 }} />
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", flex: 1 }}>Switch to Participant View</p>
+              <ChevronRight style={{ color: "rgba(255,255,255,0.2)", width: 14, height: 14 }} />
             </div>
           </Link>
-        )}
-
-        {/* Portal navigation */}
-        <div style={{ marginBottom: 8 }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 14 }}>
-            {isAdmin ? "Administration" : "My Caseload Tools"}
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
-            {portals.map(p => <PortalCard key={p.href} {...p} />)}
-          </div>
         </div>
-
-        {/* Switch to participant view */}
-        <div style={{ marginTop: 24, padding: "16px 20px", background: C.white, border: `1px solid ${C.border}`, borderRadius: 14,
-          display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontSize: 20 }}>🔄</span>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>Switch to Participant View</p>
-            <p style={{ fontSize: 12, color: C.muted }}>See what your clients experience in the app</p>
-          </div>
-          <Link to={createPageUrl("Home")} style={{ textDecoration: "none" }}>
-            <button style={{ padding: "8px 16px", borderRadius: 10, background: C.bg, border: `1px solid ${C.border}`, color: C.navy, fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-              View →
-            </button>
-          </Link>
-        </div>
-
-        {/* Sign out */}
-        <button onClick={() => base44.auth.logout()} style={{ marginTop: 16, width: "100%", padding: "13px", borderRadius: 12,
-          background: "transparent", border: `1px solid ${C.border}`, color: C.slate, fontWeight: 600, fontSize: 14, cursor: "pointer" }}>
-          Sign Out
-        </button>
       </div>
     </div>
   );
