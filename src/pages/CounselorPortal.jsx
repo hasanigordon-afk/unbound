@@ -33,14 +33,13 @@ const TABS = [
   { id: "messaging",    label: "Messages",       icon: MessageSquare },
 ];
 
-function StatCard({ label, value, sub, color = C.blue, icon: IconComponent }) {
-  const Icon = IconComponent;
+function StatCard({ label, value, sub, color = C.blue, icon: IconComp }) {
   return (
     <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: `${color}10` }} />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
         <p style={{ fontSize: 12, fontWeight: 600, color: C.slate, textTransform: "uppercase", letterSpacing: ".06em" }}>{label}</p>
-        {Icon && <Icon style={{ width: 16, height: 16, color }} strokeWidth={1.5} />}
+        {IconComp && <IconComp style={{ width: 16, height: 16, color }} strokeWidth={1.5} />}
       </div>
       <p style={{ fontSize: 32, fontWeight: 800, color: C.navy, lineHeight: 1, marginBottom: 4 }}>{value}</p>
       {sub && <p style={{ fontSize: 12, color: C.muted }}>{sub}</p>}
