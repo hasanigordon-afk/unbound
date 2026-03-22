@@ -81,18 +81,18 @@ const AuthenticatedApp = () => {
         <Route key={path} path={`/${path}`} element={<LW name={path}><Page /></LW>} />
       ))}
 
-      {/* ── Participant pages ── */}
-      <Route path="/ParticipantDashboard"  element={<LW name="ParticipantDashboard"><ParticipantDashboard /></LW>} />
-      <Route path="/DischargePlan"         element={<LW name="DischargePlan"><DischargePlan /></LW>} />
-      <Route path="/EachOneTeachOne"       element={<LW name="EachOneTeachOne"><EachOneTeachOne /></LW>} />
-      <Route path="/RecoveryMapFinder"     element={<LW name="RecoveryMapFinder"><RecoveryMapFinder /></LW>} />
-      <Route path="/FacilityReviews"       element={<LW name="FacilityReviews"><FacilityReviews /></LW>} />
-      <Route path="/TruthAboutRecovery"    element={<LW name="TruthAboutRecovery"><TruthAboutRecovery /></LW>} />
-      <Route path="/MySafetyPlan"          element={<LW name="MySafetyPlan"><MySafetyPlan /></LW>} />
-      <Route path="/PrivacySettings"       element={<LW name="PrivacySettings"><PrivacySettings /></LW>} />
-      <Route path="/NJHousingSearch"       element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
+      {/* ── Pages not in pagesConfig (new standalone pages) ── */}
+      <Route path="/ParticipantDashboard"    element={<LW name="ParticipantDashboard"><ParticipantDashboard /></LW>} />
+      <Route path="/RecoveryMapFinder"       element={<LW name="RecoveryMapFinder"><RecoveryMapFinder /></LW>} />
+      <Route path="/FacilityReviews"         element={<LW name="FacilityReviews"><FacilityReviews /></LW>} />
+      <Route path="/TruthAboutRecovery"      element={<LW name="TruthAboutRecovery"><TruthAboutRecovery /></LW>} />
+      <Route path="/MySafetyPlan"            element={<LW name="MySafetyPlan"><MySafetyPlan /></LW>} />
+      <Route path="/PrivacySettings"         element={<LW name="PrivacySettings"><PrivacySettings /></LW>} />
+      <Route path="/NJHousingSearch"         element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
+      <Route path="/DischargePlan"           element={<LW name="DischargePlan"><DischargePlan /></LW>} />
+      <Route path="/EachOneTeachOne"         element={<LW name="EachOneTeachOne"><EachOneTeachOne /></LW>} />
 
-      {/* ── Staff-protected pages ── */}
+      {/* ── Staff-protected pages (not in pagesConfig loop) ── */}
       <Route path="/StaffDashboard"          element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
       <Route path="/ProbationDashboard"      element={<SW name="ProbationDashboard"><ProbationDashboard /></SW>} />
