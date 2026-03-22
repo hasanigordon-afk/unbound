@@ -32,7 +32,7 @@ const HIDE_NAV_PAGES = [
 const STAFF_PAGES = [
   "StaffDashboard","CounselorPortal","AftercareMonitoring","CounselorMessaging",
   "FacilityDashboard","FacilityAdmin","ModerationQueue","ContentAdmin","ComplianceReports",
-  "PatientSummaryDashboard","ProbationDashboard",
+  "PatientSummaryDashboard","ProbationDashboard","ProbationOfficerDashboard",
 ];
 
 export default function Layout({ children, currentPageName }) {

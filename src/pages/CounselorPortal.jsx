@@ -84,6 +84,7 @@ function ClientCard({ participant, onMessage, onAlert, onView }) {
       onMouseEnter={e => e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.07)"}
       onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
       onClick={() => onView?.(participant)}
+      onKeyDown={e => e.key === "Enter" && onView?.(participant)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
         {/* Avatar */}
