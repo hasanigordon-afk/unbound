@@ -19,7 +19,6 @@ import TruthAboutRecovery from './pages/TruthAboutRecovery';
 import MySafetyPlan from './pages/MySafetyPlan';
 import StaffDashboard from './pages/StaffDashboard';
 import PrivacySettings from './pages/PrivacySettings';
-import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import ProbationDashboard from './pages/ProbationDashboard';
