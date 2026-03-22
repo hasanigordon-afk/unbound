@@ -23,6 +23,8 @@ import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import ProbationDashboard from './pages/ProbationDashboard';
 import ModerationQueue from './pages/ModerationQueue';
+import NotificationPreferences from './pages/NotificationPreferences';
+import AutomationAdmin from './pages/AutomationAdmin';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -97,7 +99,9 @@ const AuthenticatedApp = () => {
       <Route path="/StaffDashboard"          element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
       <Route path="/ProbationDashboard"      element={<SW name="ProbationDashboard"><ProbationDashboard /></SW>} />
-      <Route path="/ModerationQueue"         element={<AW name="ModerationQueue"><ModerationQueue /></AW>} />
+      <Route path="/ModerationQueue"            element={<AW name="ModerationQueue"><ModerationQueue /></AW>} />
+      <Route path="/NotificationPreferences"   element={<LW name="NotificationPreferences"><NotificationPreferences /></LW>} />
+      <Route path="/AutomationAdmin"           element={<AW name="AutomationAdmin"><AutomationAdmin /></AW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
