@@ -93,9 +93,12 @@ export default function Layout({ children, currentPageName }) {
               <p style={{ fontSize: 10, color: "rgba(96,165,250,0.7)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em" }}>
                 Staff Portal
               </p>
-              <Link to="/" style={{ fontSize: 10, color: "rgba(96,165,250,0.5)", textDecoration: "none" }}>
-                Participant View
-              </Link>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                {user && <NotificationBell user={user} />}
+                <Link to="/" style={{ fontSize: 10, color: "rgba(96,165,250,0.5)", textDecoration: "none" }}>
+                  Participant View
+                </Link>
+              </div>
             </div>
           )}
 
