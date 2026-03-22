@@ -93,8 +93,10 @@ const AuthenticatedApp = () => {
       <Route path="/NJHousingSearch"       element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
 
       {/* ── Staff-protected pages ── */}
-      <Route path="/StaffDashboard"         element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
+      <Route path="/StaffDashboard"          element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
+      <Route path="/ProbationDashboard"      element={<SW name="ProbationDashboard"><ProbationDashboard /></SW>} />
+      <Route path="/ModerationQueue"         element={<AW name="ModerationQueue"><ModerationQueue /></AW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
