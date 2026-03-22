@@ -5,6 +5,11 @@ import NavigationTracker from '@/lib/NavigationTracker'
 import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
+import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { StaffRoute, AdminRoute } from '@/components/auth/ProtectedRoute';
+
+// ── Pages not yet in pagesConfig ─────────────────────────────────────────────
 import DischargePlan from './pages/DischargePlan';
 import EachOneTeachOne from './pages/EachOneTeachOne';
 import RecoveryMapFinder from './pages/RecoveryMapFinder';
@@ -16,78 +21,84 @@ import PrivacySettings from './pages/PrivacySettings';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
-import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 
-const LayoutWrapper = ({ children, currentPageName }) => Layout ?
-  <Layout currentPageName={currentPageName}>{children}</Layout>
+// ── Layout wrapper ────────────────────────────────────────────────────────────
+const LW = ({ name, children }) => Layout
+  ? <Layout currentPageName={name}>{children}</Layout>
   : <>{children}</>;
+
+// ── Staff-protected wrapper ───────────────────────────────────────────────────
+const SW = ({ name, children }) => (
+  <StaffRoute>
+    <LW name={name}>{children}</LW>
+  </StaffRoute>
+);
+
+// ── Admin-protected wrapper ───────────────────────────────────────────────────
+const AW = ({ name, children }) => (
+  <AdminRoute>
+    <LW name={name}>{children}</LW>
+  </AdminRoute>
+);
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
-  // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div className="fixed inset-0 flex items-center justify-center" style={{ background: "#070D1C" }}>
+        <div style={{
+          width: 36, height: 36,
+          border: "3px solid rgba(62,207,191,0.2)",
+          borderTopColor: "#3ECFBF",
+          borderRadius: "50%",
+          animation: "spin 0.8s linear infinite",
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
 
-  // Handle authentication errors
   if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
-    }
+    if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
+    if (authError.type === 'auth_required') { navigateToLogin(); return null; }
   }
 
-  // Render the main app
   return (
     <Routes>
-      <Route path="/" element={
-        <LayoutWrapper currentPageName={mainPageKey}>
-          <MainPage />
-        </LayoutWrapper>
-      } />
+      {/* ── Main page ── */}
+      <Route path="/" element={<LW name={mainPageKey}><MainPage /></LW>} />
+
+      {/* ── pagesConfig loop (existing pages) ── */}
       {Object.entries(Pages).map(([path, Page]) => (
-        <Route
-          key={path}
-          path={`/${path}`}
-          element={
-            <LayoutWrapper currentPageName={path}>
-              <Page />
-            </LayoutWrapper>
-          }
-        />
+        <Route key={path} path={`/${path}`} element={<LW name={path}><Page /></LW>} />
       ))}
-      <Route path="/PatientSummaryDashboard" element={<LayoutWrapper currentPageName="PatientSummaryDashboard"><PatientSummaryDashboard /></LayoutWrapper>} />
-      <Route path="/NJHousingSearch" element={<LayoutWrapper currentPageName="NJHousingSearch"><NJHousingSearch /></LayoutWrapper>} />
-      <Route path="/DischargePlan" element={<LayoutWrapper currentPageName="DischargePlan"><DischargePlan /></LayoutWrapper>} />
-      <Route path="/EachOneTeachOne" element={<LayoutWrapper currentPageName="EachOneTeachOne"><EachOneTeachOne /></LayoutWrapper>} />
-      <Route path="/RecoveryMapFinder" element={<LayoutWrapper currentPageName="RecoveryMapFinder"><RecoveryMapFinder /></LayoutWrapper>} />
-      <Route path="/FacilityReviews" element={<LayoutWrapper currentPageName="FacilityReviews"><FacilityReviews /></LayoutWrapper>} />
-      <Route path="/TruthAboutRecovery" element={<LayoutWrapper currentPageName="TruthAboutRecovery"><TruthAboutRecovery /></LayoutWrapper>} />
-      <Route path="/MySafetyPlan" element={<LayoutWrapper currentPageName="MySafetyPlan"><MySafetyPlan /></LayoutWrapper>} />
-      <Route path="/StaffDashboard" element={<LayoutWrapper currentPageName="StaffDashboard"><StaffDashboard /></LayoutWrapper>} />
-      <Route path="/PrivacySettings" element={<LayoutWrapper currentPageName="PrivacySettings"><PrivacySettings /></LayoutWrapper>} />
-      <Route path="/ParticipantDashboard" element={<LayoutWrapper currentPageName="ParticipantDashboard"><ParticipantDashboard /></LayoutWrapper>} />
+
+      {/* ── Participant pages ── */}
+      <Route path="/ParticipantDashboard"  element={<LW name="ParticipantDashboard"><ParticipantDashboard /></LW>} />
+      <Route path="/DischargePlan"         element={<LW name="DischargePlan"><DischargePlan /></LW>} />
+      <Route path="/EachOneTeachOne"       element={<LW name="EachOneTeachOne"><EachOneTeachOne /></LW>} />
+      <Route path="/RecoveryMapFinder"     element={<LW name="RecoveryMapFinder"><RecoveryMapFinder /></LW>} />
+      <Route path="/FacilityReviews"       element={<LW name="FacilityReviews"><FacilityReviews /></LW>} />
+      <Route path="/TruthAboutRecovery"    element={<LW name="TruthAboutRecovery"><TruthAboutRecovery /></LW>} />
+      <Route path="/MySafetyPlan"          element={<LW name="MySafetyPlan"><MySafetyPlan /></LW>} />
+      <Route path="/PrivacySettings"       element={<LW name="PrivacySettings"><PrivacySettings /></LW>} />
+      <Route path="/NJHousingSearch"       element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
+
+      {/* ── Staff-protected pages ── */}
+      <Route path="/StaffDashboard"         element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
+      <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
 
-
 function App() {
-
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
@@ -98,7 +109,7 @@ function App() {
         <Toaster />
       </QueryClientProvider>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
