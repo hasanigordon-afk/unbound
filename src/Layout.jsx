@@ -1,25 +1,54 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, MessageCircle, User, Sparkles } from "lucide-react";
+import { Home, Compass, Users, MessageCircle, User, Sparkles, LayoutDashboard } from "lucide-react";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
 
-const NAV_ITEMS = [
-  { name: "Home",       icon: Home,          page: "Home" },
-  { name: "Resources",  icon: Compass,       page: "FindHelpNow" },
-  { name: "Create",     icon: Sparkles,      page: "EachOneTeachOne" },
-  { name: "Community",  icon: Users,         page: "VoicesOfRecovery" },
-  { name: "Profile",    icon: User,          page: "Profile" },
+const PARTICIPANT_NAV = [
+  { name: "Home",       icon: Home,            page: "Home" },
+  { name: "Resources",  icon: Compass,         page: "FindHelpNow" },
+  { name: "Create",     icon: Sparkles,        page: "EachOneTeachOne" },
+  { name: "Community",  icon: Users,           page: "VoicesOfRecovery" },
+  { name: "Profile",    icon: User,            page: "Profile" },
 ];
 
-const HIDE_EXTRA_PAGES = ["TelehealthHub","EmploymentOpportunities","HousingAssistance","BenefitsAssistance","ComplianceReports","BillingDashboard","EHRIntegration"];
+const STAFF_NAV = [
+  { name: "Dashboard",  icon: LayoutDashboard, page: "StaffDashboard" },
+  { name: "Caseload",   icon: Users,           page: "CounselorPortal" },
+  { name: "Monitor",    icon: Home,            page: "AftercareMonitoring" },
+  { name: "Messages",   icon: MessageCircle,   page: "CounselorMessaging" },
+  { name: "Profile",    icon: User,            page: "Profile" },
+];
 
+const HIDE_NAV_PAGES = [
+  "Splash","RoleSelect","GuidedProfileSetup","CounselorGuide","CounselorDashboard",
+  "ProbationDashboard","FamilyView","Onboarding","UrgentHelp","ProfessionalPortal",
+  "CravingControlCenter","DailyCheckIn","TelehealthHub","EmploymentOpportunities",
+  "HousingAssistance","BenefitsAssistance","ComplianceReports","BillingDashboard",
+  "EHRIntegration","NJTreatmentFacilities","FacilityAdmin","ResourceHub",
+  "VoicesOfRecovery","ContentAdmin","EachOneTeachOne",
+];
 
-
-const HIDE_NAV_PAGES = ["Splash", "RoleSelect", "GuidedProfileSetup", "CounselorGuide", "CounselorDashboard", "ProbationDashboard", "FamilyView", "Onboarding", "UrgentHelp", "ProfessionalPortal", "CravingControlCenter", "DailyCheckIn", "TelehealthHub", "EmploymentOpportunities", "HousingAssistance", "BenefitsAssistance", "ComplianceReports", "BillingDashboard", "EHRIntegration", "NJTreatmentFacilities", "FacilityAdmin", "ResourceHub", "VoicesOfRecovery", "ContentAdmin", "EachOneTeachOne"];
+const STAFF_PAGES = [
+  "StaffDashboard","CounselorPortal","AftercareMonitoring","CounselorMessaging",
+  "FacilityDashboard","FacilityAdmin","ModerationQueue","ContentAdmin","ComplianceReports",
+  "PatientSummaryDashboard","ProbationDashboard",
+];
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
-  const showFooter = !HIDE_NAV_PAGES.includes(currentPageName);
+  const isStaffPage = STAFF_PAGES.includes(currentPageName);
+
+  const { data: user } = useQuery({
+    queryKey: ["layout-user"],
+    queryFn: () => base44.auth.me(),
+    staleTime: 60_000,
+    retry: false,
+  });
+
+  const isStaff = user?.role === "admin" || user?.role === "counselor" || user?.role === "staff";
+  const navItems = (isStaff || isStaffPage) ? STAFF_NAV : PARTICIPANT_NAV;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0A0F1E' }}>
@@ -44,9 +73,7 @@ export default function Layout({ children, currentPageName }) {
           --shadow-subtle: 0 1px 3px rgba(0,0,0,0.04);
         }
         
-        * {
-          font-family: var(--font-sans);
-        }
+        * { font-family: var(--font-sans); }
         
         body {
           font-family: var(--font-sans);
@@ -56,13 +83,11 @@ export default function Layout({ children, currentPageName }) {
           color: var(--text-primary);
         }
         
-        /* Typography Scale */
         h1 { font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--text-primary); }
         h2 { font-size: 20px; font-weight: 600; line-height: 1.3; color: var(--text-primary); }
         h3 { font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
         h4 { font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
         
-        /* Card Styles */
         .card {
           background: var(--bg-card);
           border: 1px solid var(--border);
@@ -71,7 +96,6 @@ export default function Layout({ children, currentPageName }) {
           box-shadow: var(--shadow-subtle);
         }
         
-        /* Metric Card */
         .metric-card {
           background: var(--bg-card);
           border: 1px solid var(--border);
@@ -96,7 +120,6 @@ export default function Layout({ children, currentPageName }) {
           letter-spacing: 0.5px;
         }
         
-        /* Button Styles */
         .btn-primary {
           background: var(--primary);
           color: #FFFFFF;
@@ -123,40 +146,49 @@ export default function Layout({ children, currentPageName }) {
         }
         .btn-secondary:hover:not(:disabled) { background: rgba(0,0,0,0.03); }
         
-        /* Remove animations */
         *, *::before, *::after {
           animation-duration: 0s !important;
           transition-duration: 0.15s !important;
         }
         
-        /* Icon standardization */
-        svg {
-          stroke-width: 1.5;
-        }
+        svg { stroke-width: 1.5; }
       `}</style>
 
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 z-50" style={{
-          background: 'rgba(10,15,30,0.92)',
-          borderTop: '1px solid rgba(255,255,255,0.1)',
+          background: isStaff || isStaffPage ? 'rgba(15,23,42,0.96)' : 'rgba(10,15,30,0.92)',
+          borderTop: isStaff || isStaffPage ? '1px solid rgba(59,130,246,0.2)' : '1px solid rgba(255,255,255,0.1)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)'
         }}>
+          {/* Staff mode indicator */}
+          {(isStaff || isStaffPage) && (
+            <div style={{ background: "rgba(59,130,246,0.1)", borderBottom: "1px solid rgba(59,130,246,0.15)",
+              padding: "4px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 10, color: "rgba(96,165,250,0.8)", fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase" }}>
+                Staff Portal
+              </p>
+              <Link to={createPageUrl("Home")} style={{ fontSize: 10, color: "rgba(96,165,250,0.6)", textDecoration: "none" }}>
+                Switch to Participant View
+              </Link>
+            </div>
+          )}
           <div className="max-w-lg mx-auto flex">
-            {NAV_ITEMS.map(({ name, icon: Icon, page }) => {
+            {navItems.map(({ name, icon: Icon, page }) => {
               const isActive = currentPageName === page;
+              const activeColor = isStaff || isStaffPage ? '#60A5FA' : '#3B82F6';
               return (
                 <Link
                   key={page}
                   to={createPageUrl(page)}
                   className="flex-1 flex flex-col items-center gap-1 py-3"
-                  style={{ color: isActive ? '#3B82F6' : 'rgba(255,255,255,0.4)', textDecoration: 'none' }}
+                  style={{ color: isActive ? activeColor : 'rgba(255,255,255,0.4)', textDecoration: 'none' }}
                 >
                   <div style={{
                     padding: '4px 12px',
                     borderRadius: 10,
-                    background: isActive ? 'rgba(59,130,246,0.15)' : 'transparent',
+                    background: isActive ? `${activeColor}20` : 'transparent',
                     transition: 'background 0.15s ease',
                   }}>
                     <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
@@ -173,7 +205,7 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </div>
 
-      {showFooter && (
+      {showNav && (
         <footer className="border-t py-4 px-6 text-center" style={{ background: 'rgba(10,15,30,0.8)', borderColor: 'rgba(255,255,255,0.08)' }}>
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
             Unbound is a support tool, not a medical provider. In an emergency, call 911 or 988.
