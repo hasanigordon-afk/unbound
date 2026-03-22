@@ -22,6 +22,8 @@ import PrivacySettings from './pages/PrivacySettings';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
+import ProbationDashboard from './pages/ProbationDashboard';
+import ModerationQueue from './pages/ModerationQueue';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
