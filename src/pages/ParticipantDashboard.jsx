@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { PageLoader } from "@/components/shared/LoadingSpinner";
 import EmptyState from "@/components/shared/EmptyState";
+import MoodCravingChart from "@/components/dashboard/MoodCravingChart";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -248,6 +249,13 @@ export default function ParticipantDashboard() {
               )}
             </div>
           )}
+
+          {/* ── Mood & Craving chart ── */}
+          <div style={{ marginBottom: 16 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.35)", textTransform: "uppercase",
+              letterSpacing: "1px", marginBottom: 10 }}>📈 30-Day Trends</p>
+            <MoodCravingChart checkIns={checkIns} />
+          </div>
 
           {/* ── Active goals ── */}
           <div style={{ marginBottom: 16 }}>
