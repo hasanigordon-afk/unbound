@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, MessageCircle, User, Sparkles, LayoutDashboard } from "lucide-react";
+import { Home, Compass, Users, MessageCircle, User, Sparkles, LayoutDashboard, Brain } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
   { name: "Home",       icon: Home,            page: "Home" },
   { name: "Resources",  icon: Compass,         page: "FindHelpNow" },
-  { name: "Create",     icon: Sparkles,        page: "EachOneTeachOne" },
+  { name: "Reset",      icon: Brain,           page: "MentalReset" },
   { name: "Community",  icon: Users,           page: "VoicesOfRecovery" },
   { name: "Profile",    icon: User,            page: "Profile" },
 ];

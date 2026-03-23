@@ -21,6 +21,7 @@ import StaffDashboard from './pages/StaffDashboard';
 import PrivacySettings from './pages/PrivacySettings';
 import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
+import MentalReset from './pages/MentalReset';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -89,6 +90,7 @@ const AuthenticatedApp = () => {
       <Route path="/MySafetyPlan"          element={<LW name="MySafetyPlan"><MySafetyPlan /></LW>} />
       <Route path="/PrivacySettings"       element={<LW name="PrivacySettings"><PrivacySettings /></LW>} />
       <Route path="/NJHousingSearch"       element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
+      <Route path="/MentalReset"           element={<LW name="MentalReset"><MentalReset /></LW>} />
 
       {/* ── Staff-protected pages ── */}
       <Route path="/StaffDashboard"         element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
