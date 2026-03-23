@@ -62,15 +62,6 @@ const NEXT_STEPS = [
 export default function Home() {
   const navigate = useNavigate();
 
-  // Role-based redirect for staff landing on participant home
-  useEffect(() => {
-    base44.auth.me().then(u => {
-      if (u?.role && ["admin","counselor","staff"].includes(u.role)) {
-        navigate("/StaffDashboard", { replace: true });
-      }
-    }).catch(() => {});
-  }, [navigate]);
-
   useEffect(() => {
     const p = document.body.style.background;
     document.body.style.background = C.navy;

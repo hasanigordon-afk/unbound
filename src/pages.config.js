@@ -84,6 +84,7 @@ import Meetings from './pages/Meetings';
 import MentorOnboarding from './pages/MentorOnboarding';
 import Mentors from './pages/Mentors';
 import Messages from './pages/Messages';
+import ModerationQueue from './pages/ModerationQueue';
 import MyGoals from './pages/MyGoals';
 import NJTreatmentFacilities from './pages/NJTreatmentFacilities';
 import NearbyResources from './pages/NearbyResources';
@@ -93,6 +94,7 @@ import ParticipantMessages from './pages/ParticipantMessages';
 import PatientDashboard from './pages/PatientDashboard';
 import PlatformAdmin from './pages/PlatformAdmin';
 import PrivacyControls from './pages/PrivacyControls';
+import ProbationDashboard from './pages/ProbationDashboard';
 import ProbationOfficerDashboard from './pages/ProbationOfficerDashboard';
 import ProfessionalPortal from './pages/ProfessionalPortal';
 import Profile from './pages/Profile';
@@ -112,6 +114,7 @@ import SupportChat from './pages/SupportChat';
 import TelehealthHub from './pages/TelehealthHub';
 import UrgentHelp from './pages/UrgentHelp';
 import VoicesOfRecovery from './pages/VoicesOfRecovery';
+import utils from './pages/utils';
 import __Layout from './Layout.jsx';
 
 
@@ -153,6 +156,7 @@ export const PAGES = {
     "MentorOnboarding": MentorOnboarding,
     "Mentors": Mentors,
     "Messages": Messages,
+    "ModerationQueue": ModerationQueue,
     "MyGoals": MyGoals,
     "NJTreatmentFacilities": NJTreatmentFacilities,
     "NearbyResources": NearbyResources,
@@ -162,6 +166,7 @@ export const PAGES = {
     "PatientDashboard": PatientDashboard,
     "PlatformAdmin": PlatformAdmin,
     "PrivacyControls": PrivacyControls,
+    "ProbationDashboard": ProbationDashboard,
     "ProbationOfficerDashboard": ProbationOfficerDashboard,
     "ProfessionalPortal": ProfessionalPortal,
     "Profile": Profile,
@@ -181,6 +186,7 @@ export const PAGES = {
     "TelehealthHub": TelehealthHub,
     "UrgentHelp": UrgentHelp,
     "VoicesOfRecovery": VoicesOfRecovery,
+    "utils": utils,
 }
 
 export const pagesConfig = {

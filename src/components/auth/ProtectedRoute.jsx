@@ -2,50 +2,54 @@
  * ProtectedRoute — wraps pages that require a minimum role level.
  * Redirects unauthorized users to the appropriate page.
  */
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 import { useCurrentUser } from "@/lib/useCurrentUser";
-import { STAFF_ROLES } from "@/lib/roles";
-import { base44 } from "@/api/base44Client";
+import { STAFF_ROLES, ADMIN_ONLY_PAGES } from "@/lib/roles";
 
 export function StaffRoute({ children }) {
   const { user, isLoading } = useCurrentUser();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
+  if (isLoading) return <LoadingScreen />;
+  if (!user) {
+    // Redirect to login
+    import("@/api/base44Client").then(({ base44 }) => {
       base44.auth.redirectToLogin(window.location.href);
-    }
-  }, [isLoading, user]);
-
-  if (isLoading || !user) return <LoadingScreen />;
-  if (!STAFF_ROLES.includes(user.role)) return <Navigate to="/" replace />;
+    });
+    return <LoadingScreen />;
+  }
+  if (!STAFF_ROLES.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
   return children;
 }
 
 export function AdminRoute({ children }) {
   const { user, isLoading } = useCurrentUser();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
+  if (isLoading) return <LoadingScreen />;
+  if (!user) {
+    import("@/api/base44Client").then(({ base44 }) => {
       base44.auth.redirectToLogin(window.location.href);
-    }
-  }, [isLoading, user]);
-
-  if (isLoading || !user) return <LoadingScreen />;
-  if (user.role !== "admin") return <Navigate to="/StaffDashboard" replace />;
+    });
+    return <LoadingScreen />;
+  }
+  if (user.role !== "admin") {
+    return <Navigate to="/StaffDashboard" replace />;
+  }
   return children;
 }
 
 export function AuthRoute({ children }) {
   const { user, isLoading } = useCurrentUser();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
+  if (isLoading) return <LoadingScreen />;
+  if (!user) {
+    import("@/api/base44Client").then(({ base44 }) => {
       base44.auth.redirectToLogin(window.location.href);
-    }
-  }, [isLoading, user]);
-
-  if (isLoading || !user) return <LoadingScreen />;
+    });
+    return <LoadingScreen />;
+  }
   return children;
 }
 

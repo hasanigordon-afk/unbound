@@ -19,23 +19,18 @@ import TruthAboutRecovery from './pages/TruthAboutRecovery';
 import MySafetyPlan from './pages/MySafetyPlan';
 import StaffDashboard from './pages/StaffDashboard';
 import PrivacySettings from './pages/PrivacySettings';
+import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
-import ProbationDashboard from './pages/ProbationDashboard';
-import ModerationQueue from './pages/ModerationQueue';
-import NotificationPreferences from './pages/NotificationPreferences';
-import AutomationAdmin from './pages/AutomationAdmin';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 
-// ── Layout wrapper (with per-page error boundary) ─────────────────────────────
-const LW = ({ name, children }) => (
-  <ErrorBoundary key={name}>
-    {Layout ? <Layout currentPageName={name}>{children}</Layout> : children}
-  </ErrorBoundary>
-);
+// ── Layout wrapper ────────────────────────────────────────────────────────────
+const LW = ({ name, children }) => Layout
+  ? <Layout currentPageName={name}>{children}</Layout>
+  : <>{children}</>;
 
 // ── Staff-protected wrapper ───────────────────────────────────────────────────
 const SW = ({ name, children }) => (
@@ -84,24 +79,20 @@ const AuthenticatedApp = () => {
         <Route key={path} path={`/${path}`} element={<LW name={path}><Page /></LW>} />
       ))}
 
-      {/* ── Pages not in pagesConfig (new standalone pages) ── */}
-      {/* ParticipantDashboard is in pagesConfig loop — no duplicate needed */}
-      <Route path="/RecoveryMapFinder"       element={<LW name="RecoveryMapFinder"><RecoveryMapFinder /></LW>} />
-      <Route path="/FacilityReviews"         element={<LW name="FacilityReviews"><FacilityReviews /></LW>} />
-      <Route path="/TruthAboutRecovery"      element={<LW name="TruthAboutRecovery"><TruthAboutRecovery /></LW>} />
-      <Route path="/MySafetyPlan"            element={<LW name="MySafetyPlan"><MySafetyPlan /></LW>} />
-      <Route path="/PrivacySettings"         element={<LW name="PrivacySettings"><PrivacySettings /></LW>} />
-      <Route path="/NJHousingSearch"         element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
-      <Route path="/DischargePlan"           element={<LW name="DischargePlan"><DischargePlan /></LW>} />
-      <Route path="/EachOneTeachOne"         element={<LW name="EachOneTeachOne"><EachOneTeachOne /></LW>} />
+      {/* ── Participant pages ── */}
+      <Route path="/ParticipantDashboard"  element={<LW name="ParticipantDashboard"><ParticipantDashboard /></LW>} />
+      <Route path="/DischargePlan"         element={<LW name="DischargePlan"><DischargePlan /></LW>} />
+      <Route path="/EachOneTeachOne"       element={<LW name="EachOneTeachOne"><EachOneTeachOne /></LW>} />
+      <Route path="/RecoveryMapFinder"     element={<LW name="RecoveryMapFinder"><RecoveryMapFinder /></LW>} />
+      <Route path="/FacilityReviews"       element={<LW name="FacilityReviews"><FacilityReviews /></LW>} />
+      <Route path="/TruthAboutRecovery"    element={<LW name="TruthAboutRecovery"><TruthAboutRecovery /></LW>} />
+      <Route path="/MySafetyPlan"          element={<LW name="MySafetyPlan"><MySafetyPlan /></LW>} />
+      <Route path="/PrivacySettings"       element={<LW name="PrivacySettings"><PrivacySettings /></LW>} />
+      <Route path="/NJHousingSearch"       element={<LW name="NJHousingSearch"><NJHousingSearch /></LW>} />
 
-      {/* ── Staff-protected pages (not in pagesConfig loop) ── */}
-      <Route path="/StaffDashboard"          element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
+      {/* ── Staff-protected pages ── */}
+      <Route path="/StaffDashboard"         element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
-      <Route path="/ProbationDashboard"      element={<SW name="ProbationDashboard"><ProbationDashboard /></SW>} />
-      <Route path="/ModerationQueue"            element={<AW name="ModerationQueue"><ModerationQueue /></AW>} />
-      <Route path="/NotificationPreferences"   element={<LW name="NotificationPreferences"><NotificationPreferences /></LW>} />
-      <Route path="/AutomationAdmin"           element={<AW name="AutomationAdmin"><AutomationAdmin /></AW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

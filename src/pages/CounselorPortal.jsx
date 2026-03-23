@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import MessagingPanel from "../components/counselor/MessagingPanel";
 import LifelineEventsTab from "../components/counselor/LifelineEventsTab";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
@@ -33,7 +33,7 @@ const TABS = [
   { id: "messaging",    label: "Messages",       icon: MessageSquare },
 ];
 
-function StatCard({ label, value, sub, color = C.blue, icon: IconComp = null }) {
+function StatCard({ label, value, sub, color = C.blue, icon: IconComp }) {
   return (
     <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: `${color}10` }} />
@@ -84,7 +84,6 @@ function ClientCard({ participant, onMessage, onAlert, onView }) {
       onMouseEnter={e => e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.07)"}
       onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
       onClick={() => onView?.(participant)}
-      onKeyDown={e => e.key === "Enter" && onView?.(participant)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
         {/* Avatar */}
@@ -152,16 +151,11 @@ function ClientCard({ participant, onMessage, onAlert, onView }) {
 
 // ── Main Component ─────────────────────────────────────────────────────────
 export default function CounselorPortal() {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [riskFilter, setRiskFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedParticipant, setSelectedParticipant] = useState(null);
   const [messagingTab, setMessagingTab] = useState(null);
-
-  const handleViewParticipant = (participant) => {
-    navigate(`/PatientSummaryDashboard?email=${encodeURIComponent(participant.participant_email)}`);
-  };
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
@@ -460,7 +454,7 @@ export default function CounselorPortal() {
                     participant={p}
                     onMessage={setMessagingTab}
                     onAlert={setMessagingTab}
-                    onView={handleViewParticipant}
+                    onView={setSelectedParticipant}
                   />
                 ))}
               </div>

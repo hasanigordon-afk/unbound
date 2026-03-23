@@ -8,9 +8,9 @@ import { isStaff, isAdmin, isCounselor, isParticipant, hasPermission } from "@/l
 
 export function useCurrentUser() {
   const { data: user, isLoading, error, refetch } = useQuery({
-    queryKey: ["user"],          // unified key — same as every other query in the app
+    queryKey: ["current-user"],
     queryFn: () => base44.auth.me(),
-    staleTime: 5 * 60 * 1000,   // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
   });
 
