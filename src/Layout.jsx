@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, MessageCircle, User, Sparkles, LayoutDashboard, Brain } from "lucide-react";
+import { Home, Compass, Users, User, Brain, LayoutDashboard, MessageCircle } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
@@ -43,7 +43,7 @@ export default function Layout({ children, currentPageName }) {
   const navItems = (isStaff || isStaffPage) ? STAFF_NAV : PARTICIPANT_NAV;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0A0F1E' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--rebos-bg, #07090F)' }}>
       <style>{`
         .top-nav-safe { padding-top: env(safe-area-inset-top, 0px); }
       `}</style>
@@ -58,134 +58,78 @@ export default function Layout({ children, currentPageName }) {
           --bg-primary: #F5F5F7;
           --bg-secondary: #FFFFFF;
           --bg-card: #FFFFFF;
-          --border: #D1D1D6;
-          --radius: 6px;
-          --spacing-section: 32px;
-          --spacing-card: 24px;
-          --shadow-subtle: 0 1px 3px rgba(0,0,0,0.04);
-        }
-        
-        * { font-family: var(--font-sans); }
-        
         body {
           font-family: var(--font-sans);
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          background: var(--bg-primary);
-          color: var(--text-primary);
+          background: var(--rebos-bg);
+          color: var(--rebos-text);
         }
-        
-        h1 { font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--text-primary); }
-        h2 { font-size: 20px; font-weight: 600; line-height: 1.3; color: var(--text-primary); }
-        h3 { font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
-        h4 { font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
-        
-        .card {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          padding: var(--spacing-card);
-          box-shadow: var(--shadow-subtle);
+
+        h1,h2,h3,h4,h5,h6 { font-family: var(--font-sans); letter-spacing: -0.02em; }
+
+        .rebos-card {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.07);
+          border-radius: 20px;
+          backdrop-filter: blur(12px);
         }
-        
-        .metric-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          padding: 20px;
-          box-shadow: var(--shadow-subtle);
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+
+        .rebos-glow-teal {
+          box-shadow: 0 0 24px rgba(45,212,191,0.2), 0 0 8px rgba(45,212,191,0.1);
         }
-        .metric-card .metric-value {
-          font-size: 32px;
-          font-weight: 700;
-          color: var(--text-primary);
-          line-height: 1;
+
+        .rebos-glow-blue {
+          box-shadow: 0 0 24px rgba(99,102,241,0.25), 0 0 8px rgba(99,102,241,0.12);
         }
-        .metric-card .metric-label {
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
+
+        .rebos-glow-purple {
+          box-shadow: 0 0 24px rgba(139,92,246,0.25);
         }
-        
-        .btn-primary {
-          background: var(--primary);
-          color: #FFFFFF;
-          border: none;
-          border-radius: var(--radius);
-          font-weight: 500;
-          font-size: 14px;
-          padding: 10px 20px;
-          transition: opacity 0.15s ease;
-          box-shadow: none;
-        }
-        .btn-primary:hover:not(:disabled) { opacity: 0.85; }
-        
-        .btn-secondary {
-          background: transparent;
-          color: var(--text-primary);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          font-weight: 500;
-          font-size: 14px;
-          padding: 10px 20px;
-          transition: background 0.15s ease;
-          box-shadow: none;
-        }
-        .btn-secondary:hover:not(:disabled) { background: rgba(0,0,0,0.03); }
-        
-        *, *::before, *::after {
-          animation-duration: 0s !important;
-          transition-duration: 0.15s !important;
-        }
-        
+
         svg { stroke-width: 1.5; }
       `}</style>
 
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 z-50" style={{
-          background: isStaff || isStaffPage ? 'rgba(15,23,42,0.96)' : 'rgba(10,15,30,0.92)',
-          borderTop: isStaff || isStaffPage ? '1px solid rgba(59,130,246,0.2)' : '1px solid rgba(255,255,255,0.1)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+          background: 'rgba(7,9,15,0.96)',
+          borderTop: isStaff || isStaffPage ? '1px solid rgba(99,102,241,0.2)' : '1px solid rgba(255,255,255,0.06)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}>
-          {/* Staff mode indicator */}
           {(isStaff || isStaffPage) && (
-            <div style={{ background: "rgba(59,130,246,0.1)", borderBottom: "1px solid rgba(59,130,246,0.15)",
-              padding: "4px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 10, color: "rgba(96,165,250,0.8)", fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase" }}>
-                Staff Portal
-              </p>
-              <Link to={createPageUrl("Home")} style={{ fontSize: 10, color: "rgba(96,165,250,0.6)", textDecoration: "none" }}>
-                Switch to Participant View
-              </Link>
-            </div>
+          <div style={{ background:"rgba(99,102,241,0.08)", borderBottom:"1px solid rgba(99,102,241,0.12)",
+            padding:"4px 16px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <p style={{ fontSize:10, color:"rgba(139,92,246,0.8)", fontWeight:700, letterSpacing:".06em", textTransform:"uppercase" }}>
+              Staff Portal · Rebos
+            </p>
+            <Link to={createPageUrl("Home")} style={{ fontSize:10, color:"rgba(139,92,246,0.5)", textDecoration:"none" }}>
+              Participant View
+            </Link>
+          </div>
           )}
           <div className="max-w-lg mx-auto flex">
             {navItems.map(({ name, icon: Icon, page }) => {
               const isActive = currentPageName === page;
-              const activeColor = isStaff || isStaffPage ? '#60A5FA' : '#3B82F6';
+              const activeColor = isStaff || isStaffPage ? '#8B5CF6' : '#2DD4BF';
               return (
                 <Link
                   key={page}
                   to={createPageUrl(page)}
                   className="flex-1 flex flex-col items-center gap-1 py-3"
-                  style={{ color: isActive ? activeColor : 'rgba(255,255,255,0.4)', textDecoration: 'none' }}
+                  style={{ color: isActive ? activeColor : 'rgba(255,255,255,0.3)', textDecoration: 'none' }}
                 >
                   <div style={{
-                    padding: '4px 12px',
-                    borderRadius: 10,
-                    background: isActive ? `${activeColor}20` : 'transparent',
-                    transition: 'background 0.15s ease',
+                    padding: '5px 14px',
+                    borderRadius: 12,
+                    background: isActive ? `${activeColor}18` : 'transparent',
+                    boxShadow: isActive ? `0 0 14px ${activeColor}30` : 'none',
+                    transition: 'all 0.2s ease',
                   }}>
-                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2.2 : 1.5} />
                   </div>
-                  <span className="text-[10px] font-medium">{name}</span>
+                  <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: '.03em' }}>{name}</span>
                 </Link>
               );
             })}
@@ -193,14 +137,18 @@ export default function Layout({ children, currentPageName }) {
         </nav>
       )}
 
-      <div className="flex-1 pb-16">
+      <div className="flex-1 pb-20">
         {children}
       </div>
 
       {showNav && (
-        <footer className="border-t py-4 px-6 text-center" style={{ background: 'rgba(10,15,30,0.8)', borderColor: 'rgba(255,255,255,0.08)' }}>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            Unbound is a support tool, not a medical provider. In an emergency, call 911 or 988.
+        <footer className="border-t py-4 px-6 text-center" style={{ background: 'rgba(7,9,15,0.9)', borderColor: 'rgba(255,255,255,0.05)' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, marginBottom:4 }}>
+            <span style={{ fontSize:13, fontWeight:800, color:'#2DD4BF', letterSpacing:'-.02em' }}>Rebos</span>
+            <span style={{ fontSize:11, color:'rgba(255,255,255,0.2)', fontWeight:400 }}>by Unbound</span>
+          </div>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
+            Support tool only. Emergency: call 911 or 988.
           </p>
         </footer>
       )}

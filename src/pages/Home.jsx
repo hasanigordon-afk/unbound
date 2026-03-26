@@ -13,14 +13,15 @@ import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 
 // ─── Tokens ───────────────────────────────────────────────────────
 const C = {
-  teal:    "#3ECFBF",
+  teal:    "#2DD4BF",
   gold:    "#C9A96E",
-  navy:    "#0B1220",
-  indigo:  "#5B6EF5",
+  navy:    "#07090F",
+  indigo:  "#6366F1",
   emerald: "#10B981",
-  slate:   "rgba(255,255,255,0.55)",
-  muted:   "rgba(255,255,255,0.28)",
-  glass:   { background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.09)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)" },
+  purple:  "#8B5CF6",
+  slate:   "rgba(241,245,249,0.55)",
+  muted:   "rgba(241,245,249,0.28)",
+  glass:   { background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.07)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)" },
 };
 
 const STAGES = [
@@ -188,27 +189,33 @@ export default function Home() {
           </svg>
 
           <div style={{ position:"relative", zIndex:1, padding:"72px 24px 0" }}>
-            <p className="u-fadeIn" style={{ animationDelay:".04s", fontSize:12, fontWeight:700, color:C.teal, letterSpacing:".1em", textTransform:"uppercase", marginBottom:16 }}>
-              {greeting}, {firstName}
-            </p>
+            {/* Brand lockup */}
+            <div className="u-fadeIn" style={{ display:'flex', alignItems:'center', gap:8, marginBottom:20, animationDelay:'.04s' }}>
+              <span style={{ fontSize:22, fontWeight:900, color:'#2DD4BF', letterSpacing:'-.03em', lineHeight:1 }}>Rebos</span>
+              <span style={{ fontSize:11, color:'rgba(255,255,255,0.25)', fontWeight:400, letterSpacing:'.02em' }}>by Unbound</span>
+              <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.06)', marginLeft:4 }}/>
+              <p style={{ fontSize:11, fontWeight:600, color:'rgba(45,212,191,0.7)', letterSpacing:'.06em', textTransform:'uppercase' }}>
+                {greeting}
+              </p>
+            </div>
 
-            <h1 className="u-fadeUp" style={{ fontSize:36, fontWeight:900, lineHeight:1.12, color:"#fff", letterSpacing:"-.5px", marginBottom:18, animationDelay:".1s" }}>
-              Welcome to the rest of your{" "}
-              <span className="u-shimmer">sober and successful</span> life.
+            <h1 className="u-fadeUp" style={{ fontSize:32, fontWeight:900, lineHeight:1.12, color:"#fff", letterSpacing:"-.5px", marginBottom:14, animationDelay:".1s" }}>
+              Welcome back,{" "}
+              <span className="u-shimmer">{firstName}.</span>
             </h1>
 
-            <p className="u-fadeUp" style={{ fontSize:15, color:C.slate, lineHeight:1.68, marginBottom:36, animationDelay:".18s", maxWidth:360 }}>
-              A place to stay accountable, rebuild with purpose, and move forward one honest day at a time.
+            <p className="u-fadeUp" style={{ fontSize:15, color:"rgba(255,255,255,0.45)", lineHeight:1.65, marginBottom:32, animationDelay:".18s", maxWidth:340 }}>
+              Your calm, structured companion for recovery — one honest day at a time.
             </p>
 
             <div className="u-fadeUp" style={{ display:"flex", gap:12, animationDelay:".26s" }}>
               <Link to={createPageUrl("DailyCheckIn")} style={{ flex:1, textDecoration:"none" }}>
                 <button className="lift" style={{
                   width:"100%", padding:"15px 20px",
-                  background:`linear-gradient(135deg,${C.teal},#2CB8AE)`,
-                  border:"none", borderRadius:16, color:"#fff",
+                  background:`linear-gradient(135deg,#2DD4BF,#22C5B0)`,
+                  border:"none", borderRadius:16, color:"#07090F",
                   fontWeight:800, fontSize:15, cursor:"pointer",
-                  boxShadow:`0 10px 36px rgba(62,207,191,0.32)`,
+                  boxShadow:`0 8px 32px rgba(45,212,191,0.28)`,
                 }}>
                   {checked ? "Continue My Journey →" : "Check In Now →"}
                 </button>
@@ -216,15 +223,15 @@ export default function Home() {
               <Link to={createPageUrl("RecoveryHub")} style={{ textDecoration:"none" }}>
                 <button className="lift" style={{
                   padding:"15px 20px", whiteSpace:"nowrap",
-                  background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.13)",
-                  borderRadius:16, color:C.slate, fontWeight:700, fontSize:14, cursor:"pointer",
+                  background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)",
+                  borderRadius:16, color:"rgba(255,255,255,0.6)", fontWeight:700, fontSize:14, cursor:"pointer",
                 }}>
-                  Explore Resources
+                  Explore
                 </button>
               </Link>
             </div>
 
-            {/* Stage dot strip */}
+              {/* Stage dot strip */}
             <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:30 }}>
               {STAGES.map((s,i) => (
                 <div key={s.name} style={{
