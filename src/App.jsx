@@ -23,6 +23,8 @@ import ParticipantDashboard from './pages/ParticipantDashboard';
 import NJHousingSearch from './pages/NJHousingSearch';
 import MentalReset from './pages/MentalReset';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
+import PayItForward from './pages/PayItForward';
+import PayItForwardAdmin from './pages/PayItForwardAdmin';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -95,6 +97,8 @@ const AuthenticatedApp = () => {
       {/* ── Staff-protected pages ── */}
       <Route path="/StaffDashboard"         element={<SW name="StaffDashboard"><StaffDashboard /></SW>} />
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
+      <Route path="/PayItForward"            element={<LW name="PayItForward"><PayItForward /></LW>} />
+      <Route path="/PayItForwardAdmin"       element={<AW name="PayItForwardAdmin"><PayItForwardAdmin /></AW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
