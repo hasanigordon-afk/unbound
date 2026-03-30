@@ -27,6 +27,7 @@ import PayItForward from './pages/PayItForward';
 import PayItForwardAdmin from './pages/PayItForwardAdmin';
 import TopFiveFocus from './pages/TopFiveFocus';
 import SupportUserDashboard from './pages/SupportUserDashboard';
+import FacilityDashboard from './pages/FacilityDashboard';
 import ClientConnectionsPage from './pages/ClientConnectionsPage';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -104,6 +105,7 @@ const AuthenticatedApp = () => {
       <Route path="/PayItForwardAdmin"       element={<AW name="PayItForwardAdmin"><PayItForwardAdmin /></AW>} />
       <Route path="/TopFiveFocus"             element={<LW name="TopFiveFocus"><TopFiveFocus /></LW>} />
       <Route path="/SupportUserDashboard"      element={<LW name="SupportUserDashboard"><SupportUserDashboard /></LW>} />
+      <Route path="/FacilityDashboard"          element={<LW name="FacilityDashboard"><FacilityDashboard /></LW>} />
       <Route path="/ClientConnectionsPage"     element={<LW name="ClientConnectionsPage"><ClientConnectionsPage /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />

@@ -1,0 +1,44 @@
+{
+  "name": "StaffNote",
+  "type": "object",
+  "properties": {
+    "client_email": {
+      "type": "string"
+    },
+    "staff_email": {
+      "type": "string"
+    },
+    "staff_name": {
+      "type": "string"
+    },
+    "facility_id": {
+      "type": "string"
+    },
+    "note_text": {
+      "type": "string"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "internal_only"
+      ],
+      "default": "internal_only"
+    },
+    "note_type": {
+      "type": "string",
+      "enum": [
+        "general",
+        "follow_up",
+        "concern",
+        "encouragement_sent",
+        "checkin_requested"
+      ],
+      "default": "general"
+    }
+  },
+  "required": [
+    "client_email",
+    "staff_email",
+    "note_text"
+  ]
+}

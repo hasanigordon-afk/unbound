@@ -1,0 +1,34 @@
+{
+  "name": "FacilityStaff",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "role_type": {
+      "type": "string",
+      "enum": [
+        "facility_admin",
+        "counselor",
+        "sponsor",
+        "probation_support"
+      ],
+      "default": "counselor"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "facility_id",
+    "user_email",
+    "role_type"
+  ]
+}

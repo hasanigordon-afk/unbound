@@ -1,0 +1,46 @@
+{
+  "name": "ClientAlert",
+  "type": "object",
+  "properties": {
+    "client_email": {
+      "type": "string"
+    },
+    "facility_id": {
+      "type": "string"
+    },
+    "alert_type": {
+      "type": "string",
+      "enum": [
+        "no_activity_48h",
+        "streak_broken",
+        "low_weekly_engagement",
+        "no_meeting_logged",
+        "no_sponsor_contact"
+      ]
+    },
+    "alert_status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "reviewed",
+        "resolved"
+      ],
+      "default": "new"
+    },
+    "detail": {
+      "type": "string"
+    },
+    "resolved_by": {
+      "type": "string"
+    },
+    "resolved_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "client_email",
+    "alert_type",
+    "alert_status"
+  ]
+}

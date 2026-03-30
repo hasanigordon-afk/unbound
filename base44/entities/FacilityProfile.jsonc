@@ -1,0 +1,62 @@
+{
+  "name": "FacilityProfile",
+  "type": "object",
+  "properties": {
+    "facility_name": {
+      "type": "string"
+    },
+    "facility_type": {
+      "type": "string",
+      "enum": [
+        "residential",
+        "outpatient",
+        "iop",
+        "php",
+        "halfway_house",
+        "correctional",
+        "community",
+        "other"
+      ]
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "contact_email": {
+      "type": "string"
+    },
+    "contact_phone": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "alert_thresholds": {
+      "type": "object",
+      "properties": {
+        "inactivity_hours": {
+          "type": "number",
+          "default": 48
+        },
+        "min_weekly_engagement_pct": {
+          "type": "number",
+          "default": 50
+        },
+        "no_meeting_days": {
+          "type": "number",
+          "default": 7
+        },
+        "no_sponsor_contact_days": {
+          "type": "number",
+          "default": 7
+        }
+      }
+    }
+  },
+  "required": [
+    "facility_name"
+  ]
+}

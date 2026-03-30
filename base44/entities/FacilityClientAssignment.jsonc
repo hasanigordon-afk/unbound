@@ -1,0 +1,44 @@
+{
+  "name": "FacilityClientAssignment",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "client_display_name": {
+      "type": "string"
+    },
+    "assigned_staff_email": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "discharged"
+      ],
+      "default": "active"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "follow_up_needed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "facility_id",
+    "client_email",
+    "assigned_staff_email"
+  ]
+}
