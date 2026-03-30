@@ -5,13 +5,15 @@
 
 // ── Role Definitions ─────────────────────────────────────────────────────────
 export const ROLES = {
-  ADMIN:       "admin",
-  COUNSELOR:   "counselor",
-  STAFF:       "staff",
-  PARTICIPANT: "user",       // default Base44 role for participants
-  PROBATION:   "probation",
-  FAMILY:      "family",
-  MENTOR:      "mentor",
+  ADMIN:        "admin",
+  COUNSELOR:    "counselor",
+  STAFF:        "staff",
+  PARTICIPANT:  "user",        // default Base44 role for participants
+  PROBATION:    "probation",
+  FAMILY:       "family",
+  MENTOR:       "mentor",
+  CLIENT:       "client",      // Dual Portal: client (personal recovery)
+  SUPPORT_USER: "support_user",// Dual Portal: support person (sponsor, coach, etc.)
 };
 
 // ── Role Groups ───────────────────────────────────────────────────────────────
@@ -60,7 +62,15 @@ export function isCounselor(user) {
 }
 
 export function isParticipant(user) {
-  return user?.role === ROLES.PARTICIPANT || !user?.role;
+  return user?.role === ROLES.PARTICIPANT || user?.role === ROLES.CLIENT || !user?.role;
+}
+
+export function isSupportUser(user) {
+  return user?.role === ROLES.SUPPORT_USER;
+}
+
+export function isClientRole(user) {
+  return user?.role === ROLES.CLIENT || user?.role === ROLES.PARTICIPANT || !user?.role;
 }
 
 export function hasPermission(user, permission) {
@@ -81,6 +91,8 @@ export function getDefaultPage(user) {
       return "ProbationDashboard";
     case ROLES.FAMILY:
       return "FamilyView";
+    case ROLES.SUPPORT_USER:
+      return "SupportUserDashboard";
     default:
       return "Home";
   }

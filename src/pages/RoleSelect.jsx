@@ -55,9 +55,16 @@ export default function RoleSelect() {
     })();
   }, [navigate]);
 
-  const handleClient = () => {
+  const handleClient = async () => {
     sessionStorage.setItem("unbound_role", "client");
+    try { await base44.auth.updateMe({ role: "client" }); } catch {}
     navigate(createPageUrl("Home"));
+  };
+
+  const handleSupportUser = async () => {
+    sessionStorage.setItem("unbound_role", "support_user");
+    try { await base44.auth.updateMe({ role: "support_user" }); } catch {}
+    navigate("/SupportUserDashboard");
   };
 
   const handleProfessional = (roleId) => {
@@ -106,7 +113,24 @@ export default function RoleSelect() {
           <span style={{ fontSize: 20, color: CLIENT_OPTION.color, alignSelf: "center" }}>›</span>
         </button>
 
-        {/* Professional section */}
+        {/* Support User option */}
+        <button onClick={handleSupportUser}
+          style={{
+            width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
+            background: "#F5F3FF", border: "2px solid #8B5CF6",
+            cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
+          }}>
+          <div style={{ width: 48, height: 48, borderRadius: 14, background: "#8B5CF6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <span style={{ fontSize: 22 }}>🤝</span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 4 }}>I'm a Support Person</p>
+            <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.5 }}>Sponsor, coach, counselor, or family member. View client progress with their consent.</p>
+          </div>
+          <span style={{ fontSize: 20, color: "#8B5CF6", alignSelf: "center" }}>›</span>
+        </button>
+
+        {/* Professional / Facility section */}
         <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 16, overflow: "hidden" }}>
           <button
             onClick={() => setShowProfessionalExpanded(!showProfessionalExpanded)}
@@ -118,8 +142,8 @@ export default function RoleSelect() {
               <span style={{ fontSize: 22 }}>💼</span>
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 2 }}>I'm a support professional</p>
-              <p style={{ fontSize: 13, color: "#64748B" }}>Counselor, officer, sponsor, coach, or admin</p>
+              <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 2 }}>Facility / Clinical Staff</p>
+              <p style={{ fontSize: 13, color: "#64748B" }}>Counselor portal, compliance, EHR, billing</p>
             </div>
             <span style={{ fontSize: 18, color: "#94A3B8", transform: showProfessionalExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>›</span>
           </button>

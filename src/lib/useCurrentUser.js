@@ -4,7 +4,7 @@
  */
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { isStaff, isAdmin, isCounselor, isParticipant, hasPermission } from "@/lib/roles";
+import { isStaff, isAdmin, isCounselor, isParticipant, hasPermission, isSupportUser, isClientRole } from "@/lib/roles";
 
 export function useCurrentUser() {
   const { data: user, isLoading, error, refetch } = useQuery({
@@ -24,6 +24,8 @@ export function useCurrentUser() {
     isAdmin:       isAdmin(user),
     isCounselor:   isCounselor(user),
     isParticipant: isParticipant(user),
+    isSupportUser: isSupportUser(user),
+    isClientRole:  isClientRole(user),
     // Permission checker
     can: (permission) => hasPermission(user, permission),
     // Auth state

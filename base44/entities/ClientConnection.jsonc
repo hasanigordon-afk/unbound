@@ -1,0 +1,50 @@
+{
+  "name": "ClientConnection",
+  "type": "object",
+  "properties": {
+    "client_email": {
+      "type": "string",
+      "description": "Email of the client user"
+    },
+    "support_user_email": {
+      "type": "string",
+      "description": "Email of the support user"
+    },
+    "support_user_name": {
+      "type": "string"
+    },
+    "support_user_role_label": {
+      "type": "string",
+      "description": "e.g. Counselor, Sponsor, Coach"
+    },
+    "connection_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "revoked"
+      ],
+      "default": "pending"
+    },
+    "permission_level": {
+      "type": "string",
+      "enum": [
+        "view_only",
+        "limited_input"
+      ],
+      "default": "view_only"
+    },
+    "invite_code": {
+      "type": "string",
+      "description": "Short code client can share to invite a support user"
+    },
+    "invite_message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_email",
+    "support_user_email",
+    "connection_status"
+  ]
+}

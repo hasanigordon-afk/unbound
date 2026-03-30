@@ -26,6 +26,8 @@ import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import PayItForward from './pages/PayItForward';
 import PayItForwardAdmin from './pages/PayItForwardAdmin';
 import TopFiveFocus from './pages/TopFiveFocus';
+import SupportUserDashboard from './pages/SupportUserDashboard';
+import ClientConnectionsPage from './pages/ClientConnectionsPage';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -101,6 +103,8 @@ const AuthenticatedApp = () => {
       <Route path="/PayItForward"            element={<LW name="PayItForward"><PayItForward /></LW>} />
       <Route path="/PayItForwardAdmin"       element={<AW name="PayItForwardAdmin"><PayItForwardAdmin /></AW>} />
       <Route path="/TopFiveFocus"             element={<LW name="TopFiveFocus"><TopFiveFocus /></LW>} />
+      <Route path="/SupportUserDashboard"      element={<LW name="SupportUserDashboard"><SupportUserDashboard /></LW>} />
+      <Route path="/ClientConnectionsPage"     element={<LW name="ClientConnectionsPage"><ClientConnectionsPage /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
