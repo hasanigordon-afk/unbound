@@ -100,7 +100,7 @@ const AuthenticatedApp = () => {
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
       <Route path="/PayItForward"            element={<LW name="PayItForward"><PayItForward /></LW>} />
       <Route path="/PayItForwardAdmin"       element={<AW name="PayItForwardAdmin"><PayItForwardAdmin /></AW>} />
-      <Route path="/TopFiveFocus"             element={<LW name="TopFiveFocus"><TopFiveFocus /></LW>} />             element={<LW name="TopFiveocus"><TopFiveFocus /></LW>} />
+      <Route path="/TopFiveFocus"             element={<LW name="TopFiveFocus"><TopFiveFocus /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
