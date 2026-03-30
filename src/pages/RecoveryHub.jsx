@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Search, X, Loader2, BookOpen, Users, TrendingUp, Star } from "lucide-react";
+import { Search, X, Loader2, BookOpen, Users, TrendingUp, Star, MapPin, Briefcase, Home, ChevronRight } from "lucide-react";
 import ArticleCard from "@/components/content/ArticleCard";
 import ArticleDetail from "@/components/content/ArticleDetail";
 import ShareMenu from "@/components/content/ShareMenu";
@@ -10,9 +10,18 @@ import CommunityPostCard from "@/components/content/CommunityPostCard";
 const CATEGORIES = ["All", "Recovery", "Relapse Prevention", "Reentry", "Employment", "Housing", "Mental Health", "Motivation", "Legal", "Life Skills", "Community"];
 const TABS = [
   { id: "articles",   label: "Articles",  icon: BookOpen },
+  { id: "resources",  label: "Resources", icon: MapPin },
   { id: "community",  label: "Community", icon: Users },
   { id: "featured",   label: "Featured",  icon: Star },
 ];
+
+const RESOURCE_TYPES = ["All", "Facilities", "Employment", "Housing"];
+
+const RESOURCE_TYPE_META = {
+  facility:   { icon: MapPin,     color: "#6366F1", bg: "rgba(99,102,241,0.1)",  label: "Facility"    },
+  employment: { icon: Briefcase,  color: "#F59E0B", bg: "rgba(245,158,11,0.1)",  label: "Job"         },
+  housing:    { icon: Home,       color: "#10B981", bg: "rgba(16,185,129,0.1)",   label: "Housing"     },
+};
 
 export default function RecoveryHub() {
   const queryClient = useQueryClient();
@@ -26,6 +35,7 @@ export default function RecoveryHub() {
   const [newPostCategory, setNewPostCategory] = useState("support");
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+  const [resourceType, setResourceType] = useState("All");
 
   const { data: articles = [], isLoading: articlesLoading } = useQuery({
     queryKey: ["articles"],
@@ -123,6 +133,50 @@ export default function RecoveryHub() {
 
   const featuredArticles = useMemo(() => articles.filter(a => a.featured), [articles]);
 
+  const { data: facilities = [], isLoading: facilitiesLoading } = useQuery({
+    queryKey: ["us-recovery-resources"],
+    queryFn: () => base44.entities.USRecoveryResource.list("-created_date", 200),
+    enabled: tab === "resources",
+  });
+
+  const { data: jobs = [], isLoading: jobsLoading } = useQuery({
+    queryKey: ["employment-listings"],
+    queryFn: () => base44.entities.EmploymentListing.list("-created_date", 200),
+    enabled: tab === "resources",
+  });
+
+  const { data: housing = [], isLoading: housingLoading } = useQuery({
+    queryKey: ["nj-housing-resources"],
+    queryFn: () => base44.entities.NJHousingResource.list("-created_date", 200),
+    enabled: tab === "resources",
+  });
+
+  const allResources = useMemo(() => [
+    ...facilities.map(r => ({ ...r, _type: "facility",   _name: r.name || r.facility_name || r.title, _desc: r.description || r.services, _tags: r.tags || [], _category: r.category || r.service_type })),
+    ...jobs.map(r =>        ({ ...r, _type: "employment", _name: r.title || r.company,                  _desc: r.description || r.requirements, _tags: r.tags || [], _category: r.category || r.job_type })),
+    ...housing.map(r =>     ({ ...r, _type: "housing",    _name: r.name || r.facility_name || r.title,  _desc: r.description || r.address,     _tags: r.tags || [], _category: r.housing_type || r.category })),
+  ], [facilities, jobs, housing]);
+
+  const filteredResources = useMemo(() => {
+    const q = search.toLowerCase();
+    return allResources.filter(r => {
+      const typeMatch = resourceType === "All"
+        || (resourceType === "Facilities"  && r._type === "facility")
+        || (resourceType === "Employment"  && r._type === "employment")
+        || (resourceType === "Housing"     && r._type === "housing");
+      if (!typeMatch) return false;
+      if (!q) return true;
+      return (
+        r._name?.toLowerCase().includes(q) ||
+        r._desc?.toLowerCase().includes(q) ||
+        r._category?.toLowerCase().includes(q) ||
+        r._tags?.some(t => t.toLowerCase().includes(q))
+      );
+    });
+  }, [allResources, search, resourceType]);
+
+  const resourcesLoading = tab === "resources" && (facilitiesLoading || jobsLoading || housingLoading);
+
   if (selectedArticle) {
     return (
       <ArticleDetail
@@ -206,6 +260,87 @@ export default function RecoveryHub() {
             )}
           </div>
         </>
+      )}
+
+      {/* Resources Tab */}
+      {tab === "resources" && (
+        <div className="pb-4">
+          {/* Resource type filter */}
+          <div className="px-5 py-3 flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+            {RESOURCE_TYPES.map(t => (
+              <button key={t} onClick={() => setResourceType(t)}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap flex-shrink-0"
+                style={{ background: resourceType === t ? "#1E1E1E" : "#F7F7F8", color: resourceType === t ? "#FFF" : "#5A5A5A", border: "1px solid #E5E7EB" }}>
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {/* Results count */}
+          {!resourcesLoading && (
+            <p className="px-5 pb-2 text-xs" style={{ color: "#8E8E93" }}>
+              {filteredResources.length} result{filteredResources.length !== 1 ? "s" : ""}
+              {search ? ` for "${search}"` : ""}
+            </p>
+          )}
+
+          <div className="px-5 space-y-3">
+            {resourcesLoading ? (
+              <div className="text-center py-16"><Loader2 className="w-7 h-7 mx-auto animate-spin opacity-30" /></div>
+            ) : filteredResources.length === 0 ? (
+              <div className="text-center py-16 rounded-2xl" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
+                <Search className="w-10 h-10 mx-auto mb-3 opacity-20" />
+                <p className="text-sm font-medium" style={{ color: "#1E1E1E" }}>No resources found.</p>
+                <p className="text-xs mt-1" style={{ color: "#8E8E93" }}>Try a different search or filter.</p>
+              </div>
+            ) : (
+              filteredResources.map(r => {
+                const meta = RESOURCE_TYPE_META[r._type];
+                const Icon = meta.icon;
+                const city = r.city || r.location_city || "";
+                const state = r.state || r.location_state || r.state_name || "";
+                const location = [city, state].filter(Boolean).join(", ");
+                return (
+                  <div key={`${r._type}-${r.id}`}
+                    className="rounded-2xl p-4"
+                    style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ background: meta.bg }}>
+                        <Icon className="w-5 h-5" style={{ color: meta.color }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: meta.bg, color: meta.color }}>
+                            {meta.label}
+                          </span>
+                          {r._category && (
+                            <span className="text-xs" style={{ color: "#8E8E93" }}>{r._category}</span>
+                          )}
+                        </div>
+                        <p className="text-sm font-bold mb-1" style={{ color: "#1E1E1E" }}>{r._name || "—"}</p>
+                        {r._desc && (
+                          <p className="text-xs mb-2" style={{ color: "#5A5A5A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                            {r._desc}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-3 flex-wrap">
+                          {location && (
+                            <span className="text-xs flex items-center gap-1" style={{ color: "#8E8E93" }}>
+                              <MapPin className="w-3 h-3" /> {location}
+                            </span>
+                          )}
+                          {r._tags?.slice(0, 3).map(tag => (
+                            <span key={tag} className="text-xs px-2 py-0.5 rounded-full" style={{ background: "#F7F7F8", color: "#5A5A5A", border: "1px solid #E5E7EB" }}>{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
       )}
 
       {/* Community Tab */}
