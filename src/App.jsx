@@ -25,6 +25,7 @@ import MentalReset from './pages/MentalReset';
 import PatientSummaryDashboard from './pages/PatientSummaryDashboard';
 import PayItForward from './pages/PayItForward';
 import PayItForwardAdmin from './pages/PayItForwardAdmin';
+import TopFiveFocus from './pages/TopFiveFocus';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -99,6 +100,7 @@ const AuthenticatedApp = () => {
       <Route path="/PatientSummaryDashboard" element={<SW name="PatientSummaryDashboard"><PatientSummaryDashboard /></SW>} />
       <Route path="/PayItForward"            element={<LW name="PayItForward"><PayItForward /></LW>} />
       <Route path="/PayItForwardAdmin"       element={<AW name="PayItForwardAdmin"><PayItForwardAdmin /></AW>} />
+      <Route path="/TopFiveFocus"             element={<LW name="TopFiveFocus"><TopFiveFocus /></LW>} />             element={<LW name="TopFiveocus"><TopFiveFocus /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

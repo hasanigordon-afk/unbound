@@ -9,6 +9,7 @@ import {
   Flame, Home as HomeIcon, FileText, MessageCircle, Building2
 } from "lucide-react";
 import RecoveryJourneyTimeline from "@/components/home/RecoveryJourneyTimeline";
+import TopFiveFocusWidget from "@/components/home/TopFiveFocusWidget";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 
 // ─── Tokens ───────────────────────────────────────────────────────
@@ -313,6 +314,11 @@ export default function Home() {
               cravingPostCount={checkIns.filter(c => (c.craving_intensity ?? 0) >= 7).length}
             />
           )}
+
+          {/* ═══════════════════════════════════════════════════════
+              §2c — TOP 5 FOCUS WIDGET
+          ═══════════════════════════════════════════════════════ */}
+          {user && <TopFiveFocusWidget user={user} />}
 
           {/* ═══════════════════════════════════════════════════════
               §3 — DAILY MOMENTUM / CHECK-IN BLOCK

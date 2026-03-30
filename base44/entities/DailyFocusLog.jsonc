@@ -1,0 +1,32 @@
+{
+  "name": "DailyFocusLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "log_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "category_key": {
+      "type": "string"
+    },
+    "category_name": {
+      "type": "string"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email",
+    "log_date",
+    "category_key"
+  ]
+}
