@@ -1,0 +1,73 @@
+{
+  "name": "DischargeItinerary",
+  "type": "object",
+  "properties": {
+    "plan_id": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "meeting",
+              "job_interview",
+              "job_shift",
+              "probation_reporting",
+              "medical",
+              "housing",
+              "transport",
+              "court",
+              "other"
+            ]
+          },
+          "confirmed": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "general_notes": {
+      "type": "string"
+    },
+    "transport_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_email",
+    "discharge_date"
+  ]
+}

@@ -4,6 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Save, CheckCircle2, Loader2, Plus, Trash2, Lock, Download } from "lucide-react";
 import DischargeReview from "@/components/discharge/DischargeReview";
 import { generateDischargePlanPDF } from "@/components/discharge/DischargePlanPDF";
+import DischargeSummaryReport from "@/components/discharge/DischargeSummaryReport";
+import DischargeSignoffChecklist from "@/components/discharge/DischargeSignoffChecklist";
+import DischargeDayItinerary from "@/components/discharge/DischargeDayItinerary";
 
 // ── Design tokens ─────────────────────────────────────────────
 const C = {
@@ -27,6 +30,9 @@ const STEPS = [
   { id: "relapse",      title: "Relapse Prevention",        emoji: "🛡️" },
   { id: "goals",        title: "30 / 60 / 90 Day Goals",   emoji: "🎯" },
   { id: "contacts",     title: "Emergency Contacts",        emoji: "📞" },
+  { id: "summary",      title: "Summary Report",           emoji: "📊" },
+  { id: "signoff",      title: "Staff Sign-Off",           emoji: "✍️" },
+  { id: "itinerary",    title: "Departure Day",            emoji: "🗓" },
   { id: "review",       title: "Review & Finalize",        emoji: "✅" },
 ];
 
@@ -421,6 +427,9 @@ export default function DischargePlan() {
       case "relapse":     return <StepRelapse form={form} set={set} />;
       case "goals":       return <StepGoals form={form} set={set} />;
       case "contacts":    return <StepContacts contacts={contacts} setContacts={setContacts} />;
+      case "summary":     return <DischargeSummaryReport clientEmail={form.participant_email} formData={form} />;
+      case "signoff":     return <DischargeSignoffChecklist planId={planId} staffEmail={user?.email} finalized={finalized} />;
+      case "itinerary":   return <DischargeDayItinerary planId={planId} clientEmail={form.participant_email} dischargeDate={form.discharge_date} staffEmail={user?.email} finalized={finalized} />;
       case "review":      return <DischargeReview formData={form} contacts={contacts} />;
       default:            return null;
     }
