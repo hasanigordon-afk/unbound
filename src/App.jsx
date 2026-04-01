@@ -29,6 +29,7 @@ import TopFiveFocus from './pages/TopFiveFocus';
 import SupportUserDashboard from './pages/SupportUserDashboard';
 import FacilityDashboard from './pages/FacilityDashboard';
 import ClientConnectionsPage from './pages/ClientConnectionsPage';
+import RecoveryPath from './pages/RecoveryPath';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -107,6 +108,7 @@ const AuthenticatedApp = () => {
       <Route path="/SupportUserDashboard"      element={<LW name="SupportUserDashboard"><SupportUserDashboard /></LW>} />
       <Route path="/FacilityDashboard"          element={<LW name="FacilityDashboard"><FacilityDashboard /></LW>} />
       <Route path="/ClientConnectionsPage"     element={<LW name="ClientConnectionsPage"><ClientConnectionsPage /></LW>} />
+      <Route path="/RecoveryPath"              element={<LW name="RecoveryPath"><RecoveryPath /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

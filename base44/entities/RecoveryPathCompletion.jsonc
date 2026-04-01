@@ -1,0 +1,47 @@
+{
+  "name": "RecoveryPathCompletion",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "task_title": {
+      "type": "string"
+    },
+    "task_category": {
+      "type": "string"
+    },
+    "task_priority": {
+      "type": "string"
+    },
+    "completion_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "done",
+        "skipped",
+        "snoozed"
+      ],
+      "default": "done"
+    },
+    "skip_reason": {
+      "type": "string"
+    },
+    "points_earned": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "user_email",
+    "task_id",
+    "completion_date",
+    "status"
+  ]
+}

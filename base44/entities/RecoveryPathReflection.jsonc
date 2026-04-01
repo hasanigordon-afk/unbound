@@ -1,0 +1,36 @@
+{
+  "name": "RecoveryPathReflection",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "reflection_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "went_well": {
+      "type": "string"
+    },
+    "challenged_you": {
+      "type": "string"
+    },
+    "improve_tomorrow": {
+      "type": "string"
+    },
+    "mood": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "effort_level": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    }
+  },
+  "required": [
+    "user_email",
+    "reflection_date"
+  ]
+}

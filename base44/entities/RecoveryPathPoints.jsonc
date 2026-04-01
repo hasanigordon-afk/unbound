@@ -1,0 +1,39 @@
+{
+  "name": "RecoveryPathPoints",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "log_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "points": {
+      "type": "number"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "bonus_type": {
+      "type": "string",
+      "enum": [
+        "task",
+        "full_day",
+        "streak_3",
+        "streak_7",
+        "recovery_bonus",
+        "priority_bonus"
+      ]
+    }
+  },
+  "required": [
+    "user_email",
+    "log_date",
+    "points",
+    "reason"
+  ]
+}

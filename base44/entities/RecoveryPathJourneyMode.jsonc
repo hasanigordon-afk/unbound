@@ -1,0 +1,39 @@
+{
+  "name": "RecoveryPathJourneyMode",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "mode_type": {
+      "type": "string",
+      "enum": [
+        "recovery_focused",
+        "job_search",
+        "mental_reset",
+        "wellness",
+        "accountability",
+        "custom"
+      ]
+    },
+    "custom_name": {
+      "type": "string"
+    },
+    "week_start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "low_energy_mode": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_email",
+    "mode_type"
+  ]
+}
