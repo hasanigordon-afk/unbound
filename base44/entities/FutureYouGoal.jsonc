@@ -1,0 +1,53 @@
+{
+  "name": "FutureYouGoal",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "timeframe": {
+      "type": "string",
+      "enum": [
+        "6_months",
+        "1_year",
+        "5_years"
+      ],
+      "default": "1_year"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "motivations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "health",
+        "family",
+        "career",
+        "freedom",
+        "relationships",
+        "personal",
+        "financial",
+        "spiritual"
+      ],
+      "default": "personal"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "user_email",
+    "title",
+    "timeframe"
+  ]
+}

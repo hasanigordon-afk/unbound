@@ -39,6 +39,7 @@ import Momentum from './pages/Momentum';
 import BuildYourself from './pages/BuildYourself';
 import LearnRecovery from './pages/LearnRecovery';
 import Lifeline from './pages/Lifeline';
+import FutureYou from './pages/FutureYou';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -127,6 +128,7 @@ const AuthenticatedApp = () => {
       <Route path="/BuildYourself"             element={<LW name="BuildYourself"><BuildYourself /></LW>} />
       <Route path="/LearnRecovery"             element={<LW name="LearnRecovery"><LearnRecovery /></LW>} />
       <Route path="/Lifeline"                  element={<LW name="Lifeline"><Lifeline /></LW>} />
+      <Route path="/FutureYou"                 element={<LW name="FutureYou"><FutureYou /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
