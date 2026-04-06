@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, User, Brain, LayoutDashboard, MessageCircle, RotateCcw } from "lucide-react";
+import { Home, Compass, Users, User, Brain, LayoutDashboard, MessageCircle, RotateCcw, Phone } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
@@ -89,6 +89,20 @@ export default function Layout({ children, currentPageName }) {
 
         svg { stroke-width: 1.5; }
       `}</style>
+
+      {/* Floating Lifeline Button — always visible */}
+      {showNav && (
+        <Link to="/Lifeline" style={{ position: "fixed", bottom: 140, right: 18, zIndex: 51, textDecoration: "none" }}>
+          <div style={{
+            width: 50, height: 50, borderRadius: "50%",
+            background: "linear-gradient(135deg,#EF4444,#DC2626)",
+            boxShadow: "0 4px 20px rgba(239,68,68,0.4), 0 0 0 3px rgba(239,68,68,0.12)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <Phone style={{ color: "#fff", width: 20, height: 20 }} strokeWidth={2.5} />
+          </div>
+        </Link>
+      )}
 
       {/* Floating Reset Button — always visible */}
       {showNav && (
