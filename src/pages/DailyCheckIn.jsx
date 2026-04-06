@@ -129,8 +129,8 @@ export default function DailyCheckIn() {
     if (!canSubmit) return [];
     const list = [];
     if (form.mood_rating <= 2) {
-      list.push({ icon: RotateCcw, label: "Reset Button",  sub: "Breathing, meditation & grounding tools", href: "MentalReset",           color: C.teal   });
-      list.push({ icon: Users,     label: "Inner Circle",  sub: "Reach out to someone in your network",   href: "ClientConnectionsPage", color: C.indigo });
+      list.push({ icon: RotateCcw, label: "Reset Button",  sub: "Breathing, meditation & grounding tools", href: "MentalReset",  color: C.teal   });
+      list.push({ icon: Users,     label: "Inner Circle",  sub: "Call or message someone who cares",       href: "InnerCircle", color: C.rose });
     }
     if (!form.attended_meeting) {
       list.push({ icon: CalendarPlus, label: "Find a Meeting", sub: "Search for AA, NA, and other meetings", href: "RecoveryMapFinder", color: C.gold });
