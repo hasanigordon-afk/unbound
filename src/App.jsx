@@ -32,6 +32,7 @@ import ClientConnectionsPage from './pages/ClientConnectionsPage';
 import RecoveryPath from './pages/RecoveryPath';
 import MyFoundation from './pages/MyFoundation';
 import InnerCircle from './pages/InnerCircle';
+import MyPath from './pages/MyPath';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -113,6 +114,7 @@ const AuthenticatedApp = () => {
       <Route path="/RecoveryPath"              element={<LW name="RecoveryPath"><RecoveryPath /></LW>} />
       <Route path="/MyFoundation"              element={<LW name="MyFoundation"><MyFoundation /></LW>} />
       <Route path="/InnerCircle"               element={<LW name="InnerCircle"><InnerCircle /></LW>} />
+      <Route path="/MyPath"                    element={<LW name="MyPath"><MyPath /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

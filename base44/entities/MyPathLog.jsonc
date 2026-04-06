@@ -1,0 +1,34 @@
+{
+  "name": "MyPathLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "routine_id": {
+      "type": "string"
+    },
+    "routine_title": {
+      "type": "string"
+    },
+    "routine_category": {
+      "type": "string"
+    },
+    "log_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": true
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "routine_id",
+    "log_date"
+  ]
+}
