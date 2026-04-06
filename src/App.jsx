@@ -37,6 +37,7 @@ import DailyFlow from './pages/DailyFlow';
 import ResetButton from './pages/ResetButton';
 import Momentum from './pages/Momentum';
 import BuildYourself from './pages/BuildYourself';
+import LearnRecovery from './pages/LearnRecovery';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -123,6 +124,7 @@ const AuthenticatedApp = () => {
       <Route path="/ResetButton"               element={<LW name="ResetButton"><ResetButton /></LW>} />
       <Route path="/Momentum"                  element={<LW name="Momentum"><Momentum /></LW>} />
       <Route path="/BuildYourself"             element={<LW name="BuildYourself"><BuildYourself /></LW>} />
+      <Route path="/LearnRecovery"             element={<LW name="LearnRecovery"><LearnRecovery /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
