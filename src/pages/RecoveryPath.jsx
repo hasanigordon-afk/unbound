@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Map, CalendarDays, TrendingUp, Compass, Loader2 } from "lucide-react";
+import { Map, CalendarDays, TrendingUp, Compass, Loader2, Sparkles } from "lucide-react";
+import RecoveryCoach from "@/components/recoverypath/RecoveryCoach";
 import DailyDashboard from "@/components/recoverypath/DailyDashboard";
 import WeeklyBuilder from "@/components/recoverypath/WeeklyBuilder";
 import PathProgress from "@/components/recoverypath/PathProgress";
@@ -17,6 +18,7 @@ const TABS = [
   { id: "weekly",  label: "My Plan",  icon: CalendarDays },
   { id: "progress",label: "Progress", icon: TrendingUp   },
   { id: "journey", label: "Journey",  icon: Compass      },
+  { id: "coach",   label: "Coach",    icon: Sparkles     },
 ];
 
 export default function RecoveryPath() {
@@ -93,6 +95,7 @@ export default function RecoveryPath() {
           {tab === "weekly"   && <WeeklyBuilder  user={user} />}
           {tab === "progress" && <PathProgress   user={user} />}
           {tab === "journey"  && <JourneyModeSetup user={user} onModeSet={() => setTab("today")} />}
+          {tab === "coach"    && <RecoveryCoach user={user} />}
         </div>
       </div>
     </div>
