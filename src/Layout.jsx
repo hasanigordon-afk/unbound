@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, User, Brain, LayoutDashboard, MessageCircle } from "lucide-react";
+import { Home, Compass, Users, User, Brain, LayoutDashboard, MessageCircle, RotateCcw } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
@@ -89,6 +89,20 @@ export default function Layout({ children, currentPageName }) {
 
         svg { stroke-width: 1.5; }
       `}</style>
+
+      {/* Floating Reset Button — always visible */}
+      {showNav && (
+        <Link to="/ResetButton" style={{ position: "fixed", bottom: 82, right: 18, zIndex: 51, textDecoration: "none" }}>
+          <div style={{
+            width: 50, height: 50, borderRadius: "50%",
+            background: "linear-gradient(135deg,#2DD4BF,#22C5B0)",
+            boxShadow: "0 4px 20px rgba(45,212,191,0.4), 0 0 0 3px rgba(45,212,191,0.12)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <RotateCcw style={{ color: "#07090F", width: 20, height: 20 }} strokeWidth={2.5} />
+          </div>
+        </Link>
+      )}
 
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 z-50" style={{

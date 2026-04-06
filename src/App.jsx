@@ -34,6 +34,7 @@ import MyFoundation from './pages/MyFoundation';
 import InnerCircle from './pages/InnerCircle';
 import MyPath from './pages/MyPath';
 import DailyFlow from './pages/DailyFlow';
+import ResetButton from './pages/ResetButton';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -117,6 +118,7 @@ const AuthenticatedApp = () => {
       <Route path="/InnerCircle"               element={<LW name="InnerCircle"><InnerCircle /></LW>} />
       <Route path="/MyPath"                    element={<LW name="MyPath"><MyPath /></LW>} />
       <Route path="/DailyFlow"                 element={<LW name="DailyFlow"><DailyFlow /></LW>} />
+      <Route path="/ResetButton"               element={<LW name="ResetButton"><ResetButton /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
