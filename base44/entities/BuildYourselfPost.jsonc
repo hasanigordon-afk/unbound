@@ -1,0 +1,47 @@
+{
+  "name": "BuildYourselfPost",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "interest_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "content": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "post_type": {
+      "type": "string",
+      "enum": [
+        "milestone",
+        "work",
+        "reflection",
+        "goal",
+        "share"
+      ],
+      "default": "share"
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0
+    },
+    "is_public": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "user_email",
+    "content"
+  ]
+}
