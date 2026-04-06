@@ -1,40 +1,81 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Loader2, Phone } from "lucide-react";
+import { Flame, CheckCircle2, Loader2, RotateCcw, Users, Phone, CalendarPlus, ChevronLeft, ArrowRight } from "lucide-react";
 
-const MOOD_OPTIONS = [
-  { value: 1, emoji: "😢", label: "Really rough" },
-  { value: 2, emoji: "😕", label: "Struggling" },
-  { value: 3, emoji: "😐", label: "Getting by" },
-  { value: 4, emoji: "🙂", label: "Doing okay" },
-  { value: 5, emoji: "😊", label: "Feeling good" },
+const C = {
+  teal:    "#2DD4BF",
+  gold:    "#C9A96E",
+  emerald: "#10B981",
+  amber:   "#F59E0B",
+  red:     "#EF4444",
+  indigo:  "#6366F1",
+  rose:    "#F472B6",
+  navy:    "#07090F",
+};
+
+const MOODS = [
+  { value: 1, emoji: "😢", label: "Really rough",  color: C.red     },
+  { value: 2, emoji: "😕", label: "Struggling",    color: C.amber   },
+  { value: 3, emoji: "😐", label: "Getting by",    color: C.gold    },
+  { value: 4, emoji: "🙂", label: "Doing okay",    color: C.teal    },
+  { value: 5, emoji: "😊", label: "Feeling good",  color: C.emerald },
 ];
 
-const MEETING_TYPES = ["AA", "NA", "SMART Recovery", "Virtual", "Other"];
+function cravingColor(v) {
+  if (v >= 8) return C.red;
+  if (v >= 6) return C.amber;
+  if (v >= 4) return C.gold;
+  return C.emerald;
+}
 
-function getIntensityColor(val) {
-  if (val >= 8) return "#DC2626";
-  if (val >= 6) return "#EA580C";
-  if (val >= 4) return "#F59E0B";
-  return "#22C55E";
+function SupportMessage({ mood, attended, craving }) {
+  const lines = [];
+
+  if (mood >= 4) lines.push("You showed up today — that's real.");
+  else if (mood === 3) lines.push("Getting through the day is enough sometimes. You did it.");
+  else lines.push("Hard days are part of the path. You still checked in. That matters.");
+
+  if (craving >= 7) lines.push("Cravings that strong take real strength to sit with. You're not alone in this.");
+  else if (craving >= 4) lines.push("Stay close to your support system today.");
+
+  if (!attended) lines.push("Try to make it to a meeting soon — even one call or text counts.");
+  else lines.push("Going to a meeting is one of the strongest things you can do. Keep that habit.");
+
+  return lines.join(" ");
+}
+
+function SuggestionCard({ icon: Icon, label, sub, href, color, external }) {
+  const inner = (
+    <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px",
+      borderRadius: 14, background: `${color}0A`, border: `1px solid ${color}25`,
+      cursor: "pointer" }}>
+      <div style={{ width: 40, height: 40, borderRadius: 12, flexShrink: 0,
+        background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Icon style={{ color, width: 18, height: 18 }} />
+      </div>
+      <div style={{ flex: 1 }}>
+        <p style={{ fontSize: 14, fontWeight: 800, color: "#fff", marginBottom: 2 }}>{label}</p>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{sub}</p>
+      </div>
+      <ArrowRight style={{ color: "rgba(255,255,255,0.25)", width: 14, height: 14 }} />
+    </div>
+  );
+  if (external) return <a href={href} style={{ textDecoration: "none" }}>{inner}</a>;
+  return <Link to={createPageUrl(href)} style={{ textDecoration: "none" }}>{inner}</Link>;
 }
 
 export default function DailyCheckIn() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const qc = useQueryClient();
+  const [step, setStep] = useState(0); // 0=form, 1=success
+  const [form, setForm] = useState({
     mood_rating: null,
-    craving_intensity: 3,
-    stress_level: 3,
+    craving_intensity: 0,
+    craving_enabled: false,
     attended_meeting: null,
-    meeting_type: null,
     connected_with_sponsor: null,
-    needs_help: null,
-    relapse_risk_flag: false,
     notes: "",
   });
 
@@ -42,424 +83,319 @@ export default function DailyCheckIn() {
 
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins", user?.email],
-    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 30),
-    enabled: !!user,
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 60),
+    enabled: !!user?.email,
   });
 
-  const streak = (() => {
-    if (!checkIns.length) return 0;
+  const streak = useMemo(() => {
     const sorted = [...checkIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
-    let count = 0;
-    let current = new Date();
-    current.setHours(0, 0, 0, 0);
+    let n = 0, cur = new Date(); cur.setHours(0, 0, 0, 0);
     for (const c of sorted) {
-      const d = new Date(c.check_in_date);
-      d.setHours(0, 0, 0, 0);
-      const diff = Math.round((current - d) / 86400000);
-      if (diff <= 1) { count++; current = d; }
-      else break;
+      const d = new Date(c.check_in_date); d.setHours(0, 0, 0, 0);
+      if (Math.round((cur - d) / 86400000) <= 1) { n++; cur = d; } else break;
     }
-    return count;
-  })();
+    return n;
+  }, [checkIns]);
 
-  const submitCheckInMutation = useMutation({
-    mutationFn: async () => {
-      const today = new Date().toISOString().split("T")[0];
-      await base44.entities.DailyCheckIn.create({
-        participant_email: user.email,
-        check_in_date: today,
-        mood_rating: formData.mood_rating,
-        attended_meeting: formData.attended_meeting,
-        meeting_type: formData.attended_meeting ? formData.meeting_type : null,
-        connected_with_sponsor: formData.connected_with_sponsor,
-        craving_intensity: formData.craving_intensity,
-        stress_level: formData.stress_level,
-        relapse_risk_flag: formData.relapse_risk_flag || false,
-        notes: formData.notes || null,
-      });
-    },
+  const today = new Date().toISOString().split("T")[0];
+  const alreadyDone = checkIns.some(c => c.check_in_date === today);
+
+  const submitMutation = useMutation({
+    mutationFn: () => base44.entities.DailyCheckIn.create({
+      participant_email: user.email,
+      check_in_date: today,
+      mood_rating: form.mood_rating,
+      craving_intensity: form.craving_enabled ? form.craving_intensity : null,
+      attended_meeting: form.attended_meeting,
+      connected_with_sponsor: form.connected_with_sponsor,
+      notes: form.notes || null,
+      relapse_risk_flag: false,
+    }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["daily-checkins"] });
-      if (formData.relapse_risk_flag) {
-        setStep(8); // go straight to crisis support
-      } else {
-        setStep(7); // success screen
-        if (formData.needs_help) {
-          setTimeout(() => navigate(createPageUrl("UrgentHelp")), 2200);
-        }
-      }
+      qc.invalidateQueries({ queryKey: ["daily-checkins"] });
+      qc.invalidateQueries({ queryKey: ["foundation-checkins"] });
+      setStep(1);
     },
   });
 
-  const TOTAL_STEPS = 6;
+  const canSubmit = form.mood_rating !== null && form.attended_meeting !== null && form.connected_with_sponsor !== null;
 
-  const canProceed = () => {
-    if (step === 1) return formData.mood_rating !== null;
-    if (step === 2) return true; // sliders always have a value
-    if (step === 3) return formData.attended_meeting !== null;
-    if (step === 4) return !formData.attended_meeting || formData.meeting_type !== null;
-    if (step === 5) return formData.connected_with_sponsor !== null;
-    if (step === 6) return formData.needs_help !== null;
-    return false;
-  };
+  const supportMsg = canSubmit
+    ? SupportMessage({ mood: form.mood_rating, attended: form.attended_meeting, craving: form.craving_intensity })
+    : "";
 
-  const handleNext = () => {
-    if (step === 3 && !formData.attended_meeting) { setStep(5); return; }
-    if (step === 6) { submitCheckInMutation.mutate(); return; }
-    setStep(step + 1);
-  };
+  // Build smart suggestions
+  const suggestions = useMemo(() => {
+    if (!canSubmit) return [];
+    const list = [];
+    if (form.mood_rating <= 2) {
+      list.push({ icon: RotateCcw, label: "Reset Button",  sub: "Breathing, meditation & grounding tools", href: "MentalReset",           color: C.teal   });
+      list.push({ icon: Users,     label: "Inner Circle",  sub: "Reach out to someone in your network",   href: "ClientConnectionsPage", color: C.indigo });
+    }
+    if (!form.attended_meeting) {
+      list.push({ icon: CalendarPlus, label: "Find a Meeting", sub: "Search for AA, NA, and other meetings", href: "RecoveryMapFinder", color: C.gold });
+    }
+    if (form.craving_enabled && form.craving_intensity >= 7) {
+      list.push({ icon: Phone, label: "988 Crisis Line", sub: "Free, confidential, 24/7 support", href: "tel:988", color: C.red, external: true });
+    }
+    if (!form.connected_with_sponsor) {
+      list.push({ icon: Users, label: "Message Your Support", sub: "A quick text goes a long way", href: "ParticipantMessages", color: C.rose });
+    }
+    return list.slice(0, 3);
+  }, [form, canSubmit]);
 
-  const handleBack = () => {
-    if (step === 5 && !formData.attended_meeting) { setStep(3); return; }
-    setStep(step - 1);
-  };
+  const newStreak = streak + 1;
+  const selectedMood = MOODS.find(m => m.value === form.mood_rating);
 
-  const BG = "#FAFAFA";
-  const CARD_BG = "#FFFFFF";
-  const SELECTED_BG = "#EBF5FF";
-  const SELECTED_BORDER = "#4A90E2";
-  const TEXT = "#1E1E1E";
-  const TEXT_MUTED = "#8E8E93";
-  const BTN_BG = "#4A90E2";
-
-  // Crisis screen (relapse flag)
-  if (step === 8) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#FEF2F2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤝</div>
-        <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "8px" }}>You are not alone right now.</h2>
-        <p style={{ fontSize: "15px", color: "#5A5A5A", marginBottom: "8px", lineHeight: "1.6", maxWidth: "320px" }}>
-          Reaching out is the right move. Your support team has been notified.
-        </p>
-        <p style={{ fontSize: "13px", color: "#8E8E93", marginBottom: "28px", maxWidth: "320px" }}>
-          Let's get you connected to immediate support right now.
-        </p>
-        <div style={{ width: "100%", maxWidth: "360px", display: "flex", flexDirection: "column", gap: "12px" }}>
-          <a href="tel:988" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#DC2626", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
-            <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
-            <div style={{ textAlign: "left" }}>
-              <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>Call 988 — Crisis Line</p>
-              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>Free, confidential, 24/7</p>
-            </div>
-          </a>
-          <a href="sms:741741" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#2563EB", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
-            <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
-            <div style={{ textAlign: "left" }}>
-              <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>Text HOME to 741741</p>
-              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>Crisis Text Line — free &amp; anonymous</p>
-            </div>
-          </a>
-          <a href="tel:18006624357" style={{ display: "flex", alignItems: "center", gap: "14px", background: "#EA580C", borderRadius: "14px", padding: "18px 20px", textDecoration: "none" }}>
-            <Phone className="w-6 h-6" style={{ color: "#FFF", flexShrink: 0 }} strokeWidth={2} />
-            <div style={{ textAlign: "left" }}>
-              <p style={{ color: "#FFF", fontWeight: "700", fontSize: "16px" }}>SAMHSA Helpline</p>
-              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "13px" }}>1-800-662-4357 — Treatment referrals</p>
-            </div>
-          </a>
-          <button
-            onClick={() => navigate(createPageUrl("Home"))}
-            style={{ background: "#FFF", border: "1px solid #D1D1D6", borderRadius: "14px", padding: "16px", fontSize: "15px", fontWeight: "600", color: "#1E1E1E", cursor: "pointer", marginTop: "8px" }}
-          >
-            Back to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // Already done today
+  if (alreadyDone && step === 0) return (
+    <div style={{ background: C.navy, minHeight: "100vh", display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
+      <p style={{ fontSize: 52, marginBottom: 14 }}>✅</p>
+      <h2 style={{ fontSize: 24, fontWeight: 900, color: "#fff", marginBottom: 8 }}>Already checked in today</h2>
+      <p style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 28, lineHeight: 1.6 }}>
+        🔥 {streak} day streak. Come back tomorrow to keep it going.
+      </p>
+      <Link to={createPageUrl("MyFoundation")} style={{ textDecoration: "none", width: "100%", maxWidth: 340 }}>
+        <div style={{ padding: "15px", borderRadius: 14, background: `linear-gradient(135deg,${C.teal},#22C5B0)`,
+          color: "#07090F", fontWeight: 800, fontSize: 15 }}>Back to My Foundation</div>
+      </Link>
+    </div>
+  );
 
   // Success screen
-  if (step === 7) {
-    const newStreak = streak + 1;
-    return (
-      <div style={{ minHeight: "100vh", background: "#F0FDF4", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: "56px", marginBottom: "16px" }}>✅</div>
-        <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#15803D", marginBottom: "8px" }}>You showed up today.</h2>
-        <p style={{ fontSize: "15px", color: "#16A34A", marginBottom: "8px" }}>
-          {newStreak > 1 ? `${newStreak} days in a row. Keep moving forward.` : "That's a real first step. Come back tomorrow."}
-        </p>
-        <p style={{ fontSize: "14px", color: "#5A5A5A", marginBottom: "32px" }}>
-          Progress still counts, even on hard days.
-        </p>
-        {formData.mood_rating <= 2 && (
-          <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: "12px", padding: "16px 20px", marginBottom: "20px", maxWidth: "340px" }}>
-            <p style={{ fontSize: "14px", color: "#92400E", lineHeight: "1.5" }}>
-              Sounds like today was rough. You don't have to carry this alone — your support team is here.
-            </p>
-            <Link to={createPageUrl("ParticipantMessages")}>
-              <button style={{ marginTop: "10px", background: "#EA580C", color: "#FFF", border: "none", borderRadius: "8px", padding: "10px 20px", fontWeight: "600", fontSize: "13px", cursor: "pointer" }}>
-                Message support
-              </button>
-            </Link>
+  if (step === 1) return (
+    <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0A0F1A 100%)", minHeight: "100vh",
+      padding: "60px 20px 100px" }}>
+      <div style={{ maxWidth: 440, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <p style={{ fontSize: 52, marginBottom: 12 }}>
+            {selectedMood?.emoji || "✅"}
+          </p>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#fff", marginBottom: 8, lineHeight: 1.2 }}>
+            {newStreak > 1 ? `${newStreak} days in a row.` : "You showed up today."}
+          </h2>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 14px",
+            borderRadius: 20, background: "rgba(201,169,110,0.12)", border: "1px solid rgba(201,169,110,0.25)",
+            marginBottom: 16 }}>
+            <Flame style={{ color: C.gold, width: 14, height: 14 }} />
+            <p style={{ fontSize: 13, fontWeight: 800, color: C.gold }}>{newStreak} day streak</p>
           </div>
-        )}
-        <button
-          onClick={() => navigate(createPageUrl("Home"))}
-          style={{ background: "#16A34A", color: "#FFF", border: "none", borderRadius: "14px", padding: "18px 48px", fontSize: "16px", fontWeight: "700", cursor: "pointer", width: "100%", maxWidth: "340px" }}
-        >
-          Done
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column" }}>
-      {/* Header */}
-      <div style={{ background: CARD_BG, padding: "20px 20px 16px", borderBottom: "1px solid #E5E7EB" }}>
-        <p style={{ fontSize: "12px", fontWeight: "700", color: TEXT_MUTED, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "4px" }}>
-          Daily Check-In
-        </p>
-        <p style={{ fontSize: "15px", color: "#5A5A5A" }}>
-          {streak > 0 ? `🔥 ${streak} days in a row — you're showing up` : "Quick check-in. No wrong answers."}
-        </p>
-      </div>
-
-      {/* Progress bar */}
-      <div style={{ padding: "16px 20px 0", background: CARD_BG }}>
-        <div style={{ display: "flex", gap: "6px", marginBottom: "16px" }}>
-          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <div key={i} style={{ flex: 1, height: "4px", borderRadius: "2px", background: i < step ? "#4A90E2" : "#E5E7EB" }} />
-          ))}
         </div>
-        <p style={{ fontSize: "12px", color: TEXT_MUTED, marginBottom: "16px" }}>
-          Step {Math.min(step, TOTAL_STEPS)} of {TOTAL_STEPS}
-        </p>
-      </div>
 
-      {/* Question area */}
-      <div style={{ flex: 1, padding: "24px 20px", overflowY: "auto" }}>
-        <div style={{ maxWidth: "440px", margin: "0 auto" }}>
+        {/* Supportive message */}
+        <div style={{ borderRadius: 18, padding: "18px 20px", marginBottom: 20,
+          background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.65)", lineHeight: 1.75,
+            fontStyle: "italic", borderLeft: `3px solid ${C.teal}50`, paddingLeft: 14 }}>
+            "{supportMsg}"
+          </p>
+        </div>
 
-          {/* Step 1: Mood */}
-          {step === 1 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                How are you feeling today?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>Wherever you are — that's a valid place to start.</p>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
-                {MOOD_OPTIONS.map(opt => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setFormData({ ...formData, mood_rating: opt.value })}
-                    style={{
-                      background: formData.mood_rating === opt.value ? SELECTED_BG : CARD_BG,
-                      border: `2px solid ${formData.mood_rating === opt.value ? SELECTED_BORDER : "#E5E7EB"}`,
-                      borderRadius: "12px",
-                      padding: "14px 6px",
-                      cursor: "pointer",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    <span style={{ fontSize: "26px" }}>{opt.emoji}</span>
-                    <span style={{ fontSize: "10px", fontWeight: "600", color: formData.mood_rating === opt.value ? SELECTED_BORDER : TEXT_MUTED, textAlign: "center", lineHeight: "1.2" }}>
-                      {opt.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
+        {/* Smart suggestions */}
+        {suggestions.length > 0 && (
+          <>
+            <p style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.3)",
+              textTransform: "uppercase", letterSpacing: "1px", marginBottom: 10 }}>Suggested for you</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+              {suggestions.map((s, i) => <SuggestionCard key={i} {...s} />)}
             </div>
-          )}
+          </>
+        )}
 
-          {/* Step 2: Craving + Stress sliders (NEW) */}
-          {step === 2 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                Cravings &amp; stress today?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>
-                Honest answers help us support you better. No judgment here.
-              </p>
+        <Link to={createPageUrl("MyFoundation")} style={{ textDecoration: "none" }}>
+          <div style={{ width: "100%", padding: "15px", borderRadius: 14, textAlign: "center",
+            background: `linear-gradient(135deg,${C.teal},#22C5B0)`,
+            color: "#07090F", fontWeight: 800, fontSize: 15,
+            boxShadow: "0 6px 24px rgba(45,212,191,0.2)" }}>
+            Back to My Foundation →
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
 
-              {/* Craving intensity */}
-              <div style={{ background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "14px", padding: "20px", marginBottom: "14px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                  <p style={{ fontWeight: "700", fontSize: "15px", color: TEXT }}>🔥 Craving Intensity</p>
-                  <span style={{ fontWeight: "800", fontSize: "22px", color: getIntensityColor(formData.craving_intensity), lineHeight: 1 }}>
-                    {formData.craving_intensity}
-                    <span style={{ fontSize: "12px", fontWeight: "500", color: TEXT_MUTED }}>/10</span>
-                  </span>
+  // Check-in form
+  return (
+    <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0A0F1A 100%)", minHeight: "100vh",
+      paddingBottom: 110 }}>
+      <div style={{ maxWidth: 440, margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ padding: "56px 20px 24px", position: "relative", overflow: "hidden",
+          background: "linear-gradient(155deg,#0D1428,#080E1C)" }}>
+          <div style={{ position: "absolute", top: -60, right: -60, width: 220, height: 220, borderRadius: "50%",
+            background: "radial-gradient(circle,rgba(45,212,191,0.08) 0%,transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: C.teal, textTransform: "uppercase",
+              letterSpacing: ".12em", marginBottom: 4 }}>Daily Check-In</p>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#fff", marginBottom: 4, lineHeight: 1.2 }}>
+              How are you today?
+            </h1>
+            {streak > 0 && (
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 8,
+                padding: "5px 12px", borderRadius: 20,
+                background: "rgba(201,169,110,0.1)", border: "1px solid rgba(201,169,110,0.2)" }}>
+                <Flame style={{ color: C.gold, width: 13, height: 13 }} />
+                <p style={{ fontSize: 12, fontWeight: 800, color: C.gold }}>{streak} day streak — keep it going</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div style={{ padding: "20px 16px" }}>
+
+          {/* ── Mood ── */}
+          <div style={{ borderRadius: 20, padding: "18px", marginBottom: 12,
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 14 }}>Mood today</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              {MOODS.map(m => {
+                const sel = form.mood_rating === m.value;
+                return (
+                  <button key={m.value} onClick={() => setForm(f => ({ ...f, mood_rating: m.value }))}
+                    style={{ flex: 1, padding: "12px 4px", borderRadius: 14, border: "none", cursor: "pointer",
+                      background: sel ? `${m.color}18` : "rgba(255,255,255,0.04)",
+                      border: `1.5px solid ${sel ? m.color + "50" : "rgba(255,255,255,0.07)"}`,
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 5,
+                      transition: "all 0.15s ease" }}>
+                    <span style={{ fontSize: 24 }}>{m.emoji}</span>
+                    <span style={{ fontSize: 9, fontWeight: 700, color: sel ? m.color : "rgba(255,255,255,0.3)",
+                      textAlign: "center", lineHeight: 1.2 }}>{m.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ── Craving ── */}
+          <div style={{ borderRadius: 20, padding: "18px", marginBottom: 12,
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>Craving level</p>
+              <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+                <input type="checkbox" checked={form.craving_enabled}
+                  onChange={e => setForm(f => ({ ...f, craving_enabled: e.target.checked }))}
+                  style={{ width: 14, height: 14, cursor: "pointer", accentColor: C.teal }} />
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>Track today</span>
+              </label>
+            </div>
+            {form.craving_enabled ? (
+              <>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>Slide to set intensity</p>
+                  <p style={{ fontSize: 22, fontWeight: 900, color: cravingColor(form.craving_intensity), lineHeight: 1 }}>
+                    {form.craving_intensity}<span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>/10</span>
+                  </p>
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  step="1"
-                  value={formData.craving_intensity}
-                  onChange={e => setFormData({ ...formData, craving_intensity: parseInt(e.target.value) })}
-                  style={{ width: "100%", accentColor: getIntensityColor(formData.craving_intensity), cursor: "pointer" }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px", fontSize: "11px", color: TEXT_MUTED }}>
-                  <span>No cravings</span>
-                  <span>Overwhelming</span>
+                <input type="range" min="0" max="10" step="1" value={form.craving_intensity}
+                  onChange={e => setForm(f => ({ ...f, craving_intensity: parseInt(e.target.value) }))}
+                  style={{ width: "100%", accentColor: cravingColor(form.craving_intensity), cursor: "pointer" }} />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>None</span>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>Overwhelming</span>
                 </div>
-                {formData.craving_intensity >= 8 && (
-                  <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: "8px", padding: "10px 12px", marginTop: "12px" }}>
-                    <p style={{ fontSize: "12px", color: "#DC2626", fontWeight: "600" }}>
-                      That's intense. You're not alone — your support team will be notified.
+                {form.craving_intensity >= 8 && (
+                  <div style={{ marginTop: 10, padding: "10px 12px", borderRadius: 10,
+                    background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}>
+                    <p style={{ fontSize: 12, color: "#F87171", fontWeight: 600 }}>
+                      That's a lot to carry. You're not alone — reach out to someone you trust.
                     </p>
                   </div>
                 )}
-              </div>
+              </>
+            ) : (
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.25)", fontStyle: "italic" }}>Optional — tap "Track today" to log your craving level.</p>
+            )}
+          </div>
 
-              {/* Stress level */}
-              <div style={{ background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "14px", padding: "20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                  <p style={{ fontWeight: "700", fontSize: "15px", color: TEXT }}>💭 Stress Level</p>
-                  <span style={{ fontWeight: "800", fontSize: "22px", color: getIntensityColor(formData.stress_level), lineHeight: 1 }}>
-                    {formData.stress_level}
-                    <span style={{ fontSize: "12px", fontWeight: "500", color: TEXT_MUTED }}>/10</span>
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  step="1"
-                  value={formData.stress_level}
-                  onChange={e => setFormData({ ...formData, stress_level: parseInt(e.target.value) })}
-                  style={{ width: "100%", accentColor: getIntensityColor(formData.stress_level), cursor: "pointer" }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px", fontSize: "11px", color: TEXT_MUTED }}>
-                  <span>Calm</span>
-                  <span>Very stressed</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Meeting attendance */}
-          {step === 3 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                Did you go to a meeting today?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>AA, NA, SMART Recovery, or anything similar.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {[
-                  { val: true, label: "Yes, I went", sub: "Good. Any support counts." },
-                  { val: false, label: "Not today", sub: "That's okay. Tomorrow is another chance." },
-                ].map(opt => (
-                  <button key={String(opt.val)} onClick={() => setFormData({ ...formData, attended_meeting: opt.val, meeting_type: opt.val ? formData.meeting_type : null })}
-                    style={{ background: formData.attended_meeting === opt.val ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.attended_meeting === opt.val ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer" }}>
-                    <p style={{ fontWeight: "700", fontSize: "16px", color: TEXT, marginBottom: "3px" }}>{opt.label}</p>
-                    <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
+          {/* ── Meeting ── */}
+          <div style={{ borderRadius: 20, padding: "18px", marginBottom: 12,
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 12 }}>Did you attend a meeting today?</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              {[{ val: true, label: "Yes ✓" }, { val: false, label: "Not today" }].map(o => {
+                const sel = form.attended_meeting === o.val;
+                return (
+                  <button key={String(o.val)} onClick={() => setForm(f => ({ ...f, attended_meeting: o.val }))}
+                    style={{ flex: 1, padding: "13px", borderRadius: 12, border: "none", cursor: "pointer",
+                      background: sel
+                        ? (o.val ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.08)")
+                        : "rgba(255,255,255,0.04)",
+                      border: `1.5px solid ${sel ? (o.val ? "rgba(16,185,129,0.4)" : "rgba(245,158,11,0.3)") : "rgba(255,255,255,0.07)"}`,
+                      color: sel ? (o.val ? C.emerald : C.amber) : "rgba(255,255,255,0.5)",
+                      fontWeight: 700, fontSize: 14, transition: "all 0.15s ease" }}>
+                    {o.label}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          )}
+          </div>
 
-          {/* Step 4: Meeting type (conditional) */}
-          {step === 4 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                What kind of meeting?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>Pick whichever fits best.</p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                {MEETING_TYPES.map(type => (
-                  <button key={type} onClick={() => setFormData({ ...formData, meeting_type: type })}
-                    style={{ background: formData.meeting_type === type ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.meeting_type === type ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "12px", padding: "16px", fontWeight: "600", fontSize: "15px", color: formData.meeting_type === type ? SELECTED_BORDER : TEXT, cursor: "pointer" }}>
-                    {type}
+          {/* ── Sponsor ── */}
+          <div style={{ borderRadius: 20, padding: "18px", marginBottom: 12,
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 12 }}>Did you contact your sponsor?</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              {[{ val: true, label: "Yes ✓" }, { val: false, label: "Not today" }].map(o => {
+                const sel = form.connected_with_sponsor === o.val;
+                return (
+                  <button key={String(o.val)} onClick={() => setForm(f => ({ ...f, connected_with_sponsor: o.val }))}
+                    style={{ flex: 1, padding: "13px", borderRadius: 12, border: "none", cursor: "pointer",
+                      background: sel
+                        ? (o.val ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.08)")
+                        : "rgba(255,255,255,0.04)",
+                      border: `1.5px solid ${sel ? (o.val ? "rgba(16,185,129,0.4)" : "rgba(245,158,11,0.3)") : "rgba(255,255,255,0.07)"}`,
+                      color: sel ? (o.val ? C.emerald : C.amber) : "rgba(255,255,255,0.5)",
+                      fontWeight: 700, fontSize: 14, transition: "all 0.15s ease" }}>
+                    {o.label}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          )}
+          </div>
 
-          {/* Step 5: Sponsor contact */}
-          {step === 5 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                Did you connect with someone today?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>A sponsor, mentor, counselor, or someone you trust.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {[
-                  { val: true, label: "Yes, I reached out", sub: "Connection matters. Good work." },
-                  { val: false, label: "Not today", sub: "Try sending a quick message tomorrow." },
-                ].map(opt => (
-                  <button key={String(opt.val)} onClick={() => setFormData({ ...formData, connected_with_sponsor: opt.val })}
-                    style={{ background: formData.connected_with_sponsor === opt.val ? SELECTED_BG : CARD_BG, border: `2px solid ${formData.connected_with_sponsor === opt.val ? SELECTED_BORDER : "#E5E7EB"}`, borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer" }}>
-                    <p style={{ fontWeight: "700", fontSize: "16px", color: TEXT, marginBottom: "3px" }}>{opt.label}</p>
-                    <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* ── Notes ── */}
+          <div style={{ borderRadius: 20, padding: "18px", marginBottom: 20,
+            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 10 }}>Anything on your mind? <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.3)" }}>(optional)</span></p>
+            <textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+              rows={3} placeholder="Say whatever you need to say…"
+              style={{ width: "100%", padding: "12px 14px", borderRadius: 12,
+                border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)",
+                color: "#fff", fontSize: 14, resize: "none", outline: "none",
+                boxSizing: "border-box", lineHeight: 1.6, fontFamily: "inherit" }} />
+          </div>
 
-          {/* Step 6: Needs help + relapse flag */}
-          {step === 6 && (
-            <div>
-              <h2 style={{ fontSize: "22px", fontWeight: "700", color: TEXT, marginBottom: "6px" }}>
-                Do you need any support right now?
-              </h2>
-              <p style={{ fontSize: "14px", color: TEXT_MUTED, marginBottom: "24px" }}>It's okay either way. We just want to make sure you're alright.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
-                {[
-                  { needs_help: false, rf: false, label: "I'm okay right now", sub: "Good to hear.", urgent: false },
-                  { needs_help: true, rf: false, label: "I could use some support", sub: "We'll connect you with the right help.", urgent: false },
-                  { needs_help: true, rf: true, label: "I feel like I might relapse today", sub: "We'll get you immediate support right now.", urgent: true },
-                ].map(opt => {
-                  const isSelected = formData.needs_help !== null &&
-                    formData.needs_help === opt.needs_help &&
-                    formData.relapse_risk_flag === opt.rf;
-                  return (
-                    <button
-                      key={`${opt.needs_help}-${opt.rf}`}
-                      onClick={() => setFormData({ ...formData, needs_help: opt.needs_help, relapse_risk_flag: opt.rf })}
-                      style={{
-                        background: isSelected ? (opt.urgent ? "#FEF2F2" : opt.needs_help ? "#FFF7ED" : SELECTED_BG) : CARD_BG,
-                        border: `2px solid ${isSelected ? (opt.urgent ? "#FCA5A5" : opt.needs_help ? "#FED7AA" : SELECTED_BORDER) : "#E5E7EB"}`,
-                        borderRadius: "14px", padding: "18px 20px", textAlign: "left", cursor: "pointer"
-                      }}
-                    >
-                      <p style={{ fontWeight: "700", fontSize: "16px", color: opt.urgent ? "#DC2626" : TEXT, marginBottom: "3px" }}>{opt.label}</p>
-                      <p style={{ fontSize: "13px", color: TEXT_MUTED }}>{opt.sub}</p>
-                    </button>
-                  );
-                })}
-              </div>
-              <div>
-                <p style={{ fontSize: "13px", fontWeight: "600", color: TEXT_MUTED, marginBottom: "8px" }}>Anything on your mind? (optional)</p>
-                <textarea
-                  value={formData.notes}
-                  onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Say whatever you need to say..."
-                  rows={3}
-                  style={{ width: "100%", background: CARD_BG, border: "1px solid #E5E7EB", borderRadius: "12px", padding: "14px", fontSize: "14px", color: TEXT, resize: "vertical", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <div style={{ background: CARD_BG, borderTop: "1px solid #E5E7EB", padding: "16px 20px", display: "flex", gap: "10px" }}>
-        {step > 1 && (
-          <button onClick={handleBack}
-            style={{ background: "#F5F5F7", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "16px 20px", fontSize: "15px", fontWeight: "600", color: "#5A5A5A", cursor: "pointer" }}>
-            Back
+          {/* ── Submit ── */}
+          <button onClick={() => submitMutation.mutate()}
+            disabled={!canSubmit || submitMutation.isPending}
+            style={{ width: "100%", padding: "16px", borderRadius: 16, border: "none", cursor: canSubmit ? "pointer" : "not-allowed",
+              background: canSubmit ? `linear-gradient(135deg,${C.teal},#22C5B0)` : "rgba(255,255,255,0.07)",
+              color: canSubmit ? "#07090F" : "rgba(255,255,255,0.25)",
+              fontWeight: 800, fontSize: 16, boxShadow: canSubmit ? "0 8px 28px rgba(45,212,191,0.2)" : "none",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              transition: "all 0.2s ease" }}>
+            {submitMutation.isPending
+              ? <Loader2 style={{ width: 18, height: 18 }} className="animate-spin" />
+              : <CheckCircle2 style={{ width: 18, height: 18 }} />}
+            {submitMutation.isPending ? "Saving…" : "Complete Check-In"}
           </button>
-        )}
-        <button
-          onClick={handleNext}
-          disabled={!canProceed() || submitCheckInMutation.isPending}
-          style={{
-            flex: 1, background: canProceed() ? BTN_BG : "#E5E7EB", border: "none", borderRadius: "12px",
-            padding: "16px", fontSize: "16px", fontWeight: "700",
-            color: canProceed() ? "#FFF" : "#9CA3AF", cursor: canProceed() ? "pointer" : "not-allowed",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-          }}
-        >
-          {submitCheckInMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : step === 6 ? "Done →" : "Keep Going →"}
-        </button>
+
+          {!canSubmit && (
+            <p style={{ textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.2)", marginTop: 10 }}>
+              Select mood, meeting, and sponsor answers to continue.
+            </p>
+          )}
+
+          {/* Crisis strip */}
+          <a href="tel:988" style={{ textDecoration: "none", display: "block", marginTop: 20,
+            padding: "12px 16px", borderRadius: 14,
+            background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.12)",
+            textAlign: "center" }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#F87171" }}>In crisis? Call 988 · Always available</p>
+          </a>
+        </div>
       </div>
     </div>
   );
