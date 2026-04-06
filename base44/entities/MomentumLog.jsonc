@@ -1,0 +1,55 @@
+{
+  "name": "MomentumLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "log_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "activity_type": {
+      "type": "string",
+      "enum": [
+        "gym",
+        "walk",
+        "run",
+        "bike",
+        "swim",
+        "yoga",
+        "stretch",
+        "sports",
+        "other"
+      ]
+    },
+    "duration_mins": {
+      "type": "number"
+    },
+    "steps": {
+      "type": "number"
+    },
+    "intensity": {
+      "type": "string",
+      "enum": [
+        "light",
+        "moderate",
+        "intense"
+      ],
+      "default": "moderate"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "mood_after": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    }
+  },
+  "required": [
+    "user_email",
+    "log_date",
+    "activity_type"
+  ]
+}
