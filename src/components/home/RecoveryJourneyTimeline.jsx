@@ -116,7 +116,7 @@ export default function RecoveryJourneyTimeline({ streak = 0, user }) {
           const current = !done && (i === 0 || streak >= MILESTONES[i - 1]?.days);
           const col     = done ? m.color : current ? m.color : "rgba(255,255,255,0.1)";
           return (
-            <React.Fragment key={m.days}>
+            <div key={m.days} style={{ display: "contents" }}>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, flexShrink: 0 }}>
                 {/* Node */}
                 <div style={{
@@ -145,7 +145,7 @@ export default function RecoveryJourneyTimeline({ streak = 0, user }) {
               {i < MILESTONES.length - 1 && (
                 <div style={{ flex: 1, height: 2, marginBottom: 30, minWidth: 12, background: streak >= MILESTONES[i + 1]?.days ? `linear-gradient(90deg, ${m.color}, ${MILESTONES[i+1].color})` : "rgba(255,255,255,0.08)", borderRadius: 2 }} />
               )}
-            </React.Fragment>
+            </div>
           );
         })}
       </div>
