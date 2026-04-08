@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { CheckCircle2, Circle, Calendar, TrendingUp, Edit2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -57,6 +57,7 @@ const PREDEFINED_GOALS = {
 };
 
 export default function ForwardPlan() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [activeStep, setActiveStep] = useState("vision");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -242,9 +243,9 @@ export default function ForwardPlan() {
     return (
       <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
         <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
-          <Link to={createPageUrl("PatientDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
+          <button onClick={() => navigate("/")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
             ← Back to Home
-          </Link>
+          </button>
           <h1 style={{ marginBottom: '4px' }}>My Plan</h1>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Your goals and next steps — all in one place
@@ -322,9 +323,9 @@ export default function ForwardPlan() {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'var(--bg-primary)' }}>
       <div className="px-6 pt-8 pb-6" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
-        <Link to={createPageUrl("PatientDashboard")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)' }}>
+        <button onClick={() => navigate("/")} className="text-sm mb-3 inline-block" style={{ color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
           ← Back to Home
-        </Link>
+        </button>
         <h1 style={{ marginBottom: '4px' }}>My Plan</h1>
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
           Your goals and steps forward
