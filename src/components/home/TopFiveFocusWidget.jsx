@@ -75,7 +75,7 @@ export default function TopFiveFocusWidget({ user }) {
               <p style={{ fontSize: 12, fontWeight: 800, color: C.teal }}>{streak.current_streak}</p>
             </div>
           )}
-          <Link to={createPageUrl("TopFiveocus")} style={{ display: "flex", alignItems: "center", gap: 4,
+          <Link to={createPageUrl("TopFiveFocus")} style={{ display: "flex", alignItems: "center", gap: 4,
             color: C.muted, textDecoration: "none", fontSize: 11, fontWeight: 600 }}>
             View <ArrowRight style={{ width: 12, height: 12 }} />
           </Link>
