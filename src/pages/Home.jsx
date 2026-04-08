@@ -12,6 +12,7 @@ import RecoveryJourneyTimeline from "@/components/home/RecoveryJourneyTimeline";
 import TopFiveFocusWidget from "@/components/home/TopFiveFocusWidget";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import CravingSupportWidget from "@/components/home/CravingSupportWidget";
+import AftercarePlanBanner from "@/components/home/AftercarePlanBanner";
 
 // ─── Tokens ───────────────────────────────────────────────────────
 const C = {
@@ -251,6 +252,11 @@ export default function Home() {
         </div>
 
         <div style={{ padding:"0 16px" }}>
+
+          {/* ═══════════════════════════════════════════════════════
+              §1b — AFTERCARE / TREATMENT PLAN BANNER
+          ═══════════════════════════════════════════════════════ */}
+          {user && <AftercarePlanBanner user={user} />}
 
           {/* ═══════════════════════════════════════════════════════
               §2 — PERSONALIZED WELCOME CARD
