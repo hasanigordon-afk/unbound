@@ -12,6 +12,7 @@ import RecoveryJourneyTimeline from "@/components/home/RecoveryJourneyTimeline";
 import TopFiveFocusWidget from "@/components/home/TopFiveFocusWidget";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import CravingSupportWidget from "@/components/home/CravingSupportWidget";
+import AftercarePlanBanner from "@/components/home/AftercarePlanBanner";
 
 
 // ─── Tokens ───────────────────────────────────────────────────────
@@ -322,6 +323,7 @@ export default function Home() {
           {/* ═══════════════════════════════════════════════════════
               §2c — TOP 5 FOCUS WIDGET
           ═══════════════════════════════════════════════════════ */}
+          {user && <AftercarePlanBanner user={user} />}
           {user && <TopFiveFocusWidget user={user} />}
           <CravingSupportWidget />
 
