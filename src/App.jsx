@@ -40,6 +40,7 @@ import BuildYourself from './pages/BuildYourself';
 import LearnRecovery from './pages/LearnRecovery';
 import Lifeline from './pages/Lifeline';
 import FutureYou from './pages/FutureYou';
+import SoberCalculator from './pages/SoberCalculator';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -129,6 +130,7 @@ const AuthenticatedApp = () => {
       <Route path="/LearnRecovery"             element={<LW name="LearnRecovery"><LearnRecovery /></LW>} />
       <Route path="/Lifeline"                  element={<LW name="Lifeline"><Lifeline /></LW>} />
       <Route path="/FutureYou"                 element={<LW name="FutureYou"><FutureYou /></LW>} />
+      <Route path="/SoberCalculator"            element={<LW name="SoberCalculator"><SoberCalculator /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
