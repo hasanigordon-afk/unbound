@@ -11,6 +11,7 @@ import {
 import RecoveryJourneyTimeline from "@/components/home/RecoveryJourneyTimeline";
 import TopFiveFocusWidget from "@/components/home/TopFiveFocusWidget";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
+import CravingSupportWidget from "@/components/home/CravingSupportWidget";
 
 // ─── Tokens ───────────────────────────────────────────────────────
 const C = {
@@ -319,6 +320,7 @@ export default function Home() {
               §2c — TOP 5 FOCUS WIDGET
           ═══════════════════════════════════════════════════════ */}
           {user && <TopFiveFocusWidget user={user} />}
+          <CravingSupportWidget />
 
           {/* ═══════════════════════════════════════════════════════
               §3 — DAILY MOMENTUM / CHECK-IN BLOCK
