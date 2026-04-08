@@ -43,6 +43,7 @@ import FutureYou from './pages/FutureYou';
 import SoberCalculator from './pages/SoberCalculator';
 import AftercarePlan from './pages/AftercarePlan';
 import AftercarePlanBuilder from './pages/AftercarePlanBuilder';
+import Splash from './pages/Splash';
 import HowDidYouDoIt from './pages/HowDidYouDoIt';
 import SubmitTestimonial from './pages/SubmitTestimonial';
 import TestimonialDetail from './pages/TestimonialDetail';
@@ -96,6 +97,9 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
+      {/* ── Splash ── */}
+      <Route path="/splash" element={<Splash />} />
+
       {/* ── Main page ── */}
       <Route path="/" element={<LW name={mainPageKey}><MainPage /></LW>} />
 
@@ -141,6 +145,7 @@ const AuthenticatedApp = () => {
       <Route path="/AftercarePlanBuilder"       element={<LW name="AftercarePlanBuilder"><AftercarePlanBuilder /></LW>} />
       <Route path="/AftercarePlanView"          element={<LW name="AftercarePlanView"><AftercarePlanView /></LW>} />
       <Route path="/HowDidYouDoIt"              element={<LW name="HowDidYouDoIt"><HowDidYouDoIt /></LW>} />
+      <Route path="/Splash"                      element={<Splash />} />
       <Route path="/SubmitTestimonial"          element={<LW name="SubmitTestimonial"><SubmitTestimonial /></LW>} />
       <Route path="/TestimonialDetail"          element={<LW name="TestimonialDetail"><TestimonialDetail /></LW>} />
 
