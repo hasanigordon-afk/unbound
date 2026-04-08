@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
   CheckCircle2, Circle, ArrowLeft, ClipboardList, TrendingUp,
-  Plus, AlertCircle, X, Loader2, Trash2
+  Plus, X, Loader2, Trash2, Calendar, Flame
 } from "lucide-react";
 
 const C = {
@@ -14,37 +14,94 @@ const C = {
   emerald: "#10B981",
   amber:   "#F59E0B",
   red:     "#EF4444",
+  gold:    "#C9A96E",
   muted:   "rgba(241,245,249,0.4)",
 };
 
-const TIMELINES = [
-  { key: "90_day", label: "Next 90 Days",  emoji: "🎯", color: C.teal   },
-  { key: "1_year", label: "This Year",     emoji: "📅", color: C.amber  },
-  { key: "3_year", label: "3-Year Vision", emoji: "🚀", color: C.purple },
+// Phases relative to discharge date
+const PHASES = [
+  { key: "phase1", label: "First 90 Days",  range: "Days 1–90",    emoji: "🌱", color: C.teal,   days: [1, 90]   },
+  { key: "phase2", label: "Days 91–365",    range: "Months 4–12",  emoji: "📈", color: C.amber,  days: [91, 365] },
+  { key: "phase3", label: "Year 2 & Beyond",range: "Long-term",    emoji: "🚀", color: C.purple, days: [366, Infinity] },
 ];
 
 const GOAL_CATEGORIES = [
+  { key: "recovery",      icon: "🌱", label: "Recovery"      },
   { key: "housing",       icon: "🏠", label: "Housing"       },
   { key: "employment",    icon: "💼", label: "Employment"    },
-  { key: "education",     icon: "📚", label: "Education"     },
-  { key: "financial",     icon: "💰", label: "Financial"     },
   { key: "health",        icon: "❤️", label: "Health"        },
   { key: "relationships", icon: "🤝", label: "Relationships" },
   { key: "legal",         icon: "⚖️", label: "Legal"         },
-  { key: "recovery",      icon: "🌱", label: "Recovery"      },
+  { key: "financial",     icon: "💰", label: "Financial"     },
+  { key: "education",     icon: "📚", label: "Education"     },
   { key: "other",         icon: "📌", label: "Other"         },
 ];
 
 const catMap = Object.fromEntries(GOAL_CATEGORIES.map(c => [c.key, c]));
 
-const EMPTY_FORM = { text: "", category: "recovery", timeline: "90_day" };
+function daysSince(dateStr) {
+  if (!dateStr) return null;
+  const diff = Date.now() - new Date(dateStr).getTime();
+  return Math.max(1, Math.floor(diff / 86400000) + 1);
+}
+
+function getActivePhase(dayCount) {
+  if (!dayCount) return "phase1";
+  if (dayCount <= 90)  return "phase1";
+  if (dayCount <= 365) return "phase2";
+  return "phase3";
+}
+
+// ── Sub-components ─────────────────────────────────────────────────────────
+
+function DischargeSetup({ onSave, saving }) {
+  const [date, setDate] = useState("");
+  return (
+    <div style={{ padding: "48px 24px", textAlign: "center" }}>
+      <div style={{ width: 60, height: 60, borderRadius: 20, margin: "0 auto 16px",
+        background: "rgba(99,102,241,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Calendar style={{ color: "#818CF8", width: 26, height: 26 }} />
+      </div>
+      <h2 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 8 }}>When did you discharge?</h2>
+      <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65, marginBottom: 28, maxWidth: 300, margin: "0 auto 28px" }}>
+        Your aftercare plan starts from your discharge date. We'll track your progress day by day.
+      </p>
+      <input
+        type="date"
+        value={date}
+        max={new Date().toISOString().split("T")[0]}
+        onChange={e => setDate(e.target.value)}
+        style={{
+          width: "100%", padding: "14px 16px", borderRadius: 14, border: "none", boxSizing: "border-box",
+          background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.15)",
+          color: "#fff", fontSize: 16, outline: "none", marginBottom: 16,
+          colorScheme: "dark",
+        }}
+      />
+      <button
+        onClick={() => date && onSave(date)}
+        disabled={!date || saving}
+        style={{
+          width: "100%", padding: "15px", borderRadius: 14, border: "none",
+          cursor: date ? "pointer" : "not-allowed",
+          background: date ? `linear-gradient(135deg,${C.indigo},${C.purple})` : "rgba(255,255,255,0.07)",
+          color: date ? "#fff" : C.muted, fontWeight: 800, fontSize: 15,
+          boxShadow: date ? "0 6px 24px rgba(99,102,241,0.3)" : "none",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+        }}
+      >
+        {saving ? <Loader2 style={{ width: 16, height: 16 }} className="animate-spin" /> : null}
+        {saving ? "Setting up…" : "Start My Aftercare Plan →"}
+      </button>
+    </div>
+  );
+}
 
 function MilestoneItem({ milestone, onToggle, onDelete, disabled }) {
   const cat = catMap[milestone.category] || { icon: "📌", label: milestone.category };
   return (
     <div style={{
-      display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
-      borderRadius: 16,
+      display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px", borderRadius: 16,
       background: milestone.completed ? "rgba(16,185,129,0.07)" : "rgba(255,255,255,0.04)",
       border: `1.5px solid ${milestone.completed ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.08)"}`,
       transition: "all 0.2s ease",
@@ -78,55 +135,53 @@ function MilestoneItem({ milestone, onToggle, onDelete, disabled }) {
         )}
       </div>
       <button onClick={() => onDelete(milestone)} disabled={disabled}
-        style={{ background: "none", border: "none", cursor: "pointer", padding: 4, flexShrink: 0,
-          color: "rgba(255,255,255,0.15)", marginTop: -2 }}>
+        style={{ background: "none", border: "none", cursor: "pointer", padding: 4,
+          flexShrink: 0, color: "rgba(255,255,255,0.15)", marginTop: -2 }}>
         <Trash2 style={{ width: 15, height: 15 }} />
       </button>
     </div>
   );
 }
 
-function AddMilestoneForm({ activeTimeline, onSave, saving }) {
-  const [form, setForm] = useState({ ...EMPTY_FORM, timeline: activeTimeline });
+function AddMilestoneForm({ activePhase, onSave, saving }) {
   const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({ text: "", category: "recovery", phase: activePhase });
+
+  useEffect(() => { setForm(f => ({ ...f, phase: activePhase })); }, [activePhase]);
 
   const handleSave = () => {
     if (!form.text.trim()) return;
     onSave(form, () => {
-      setForm({ ...EMPTY_FORM, timeline: activeTimeline });
+      setForm({ text: "", category: "recovery", phase: activePhase });
       setOpen(false);
     });
   };
 
-  if (!open) {
-    return (
-      <button onClick={() => setOpen(true)} style={{
-        width: "100%", padding: "13px", borderRadius: 14, border: "none", cursor: "pointer",
-        background: "rgba(99,102,241,0.08)", border: "1.5px dashed rgba(99,102,241,0.3)",
-        color: "#818CF8", fontWeight: 700, fontSize: 14,
-        display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-      }}>
-        <Plus style={{ width: 16, height: 16 }} /> Add a milestone
-      </button>
-    );
-  }
+  if (!open) return (
+    <button onClick={() => setOpen(true)} style={{
+      width: "100%", padding: "13px", borderRadius: 14, border: "none", cursor: "pointer",
+      background: "rgba(99,102,241,0.08)", border: "1.5px dashed rgba(99,102,241,0.3)",
+      color: "#818CF8", fontWeight: 700, fontSize: 14,
+      display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+    }}>
+      <Plus style={{ width: 16, height: 16 }} /> Add a milestone
+    </button>
+  );
 
   return (
     <div style={{ borderRadius: 18, padding: "18px 16px", marginBottom: 4,
       background: "rgba(99,102,241,0.07)", border: "1.5px solid rgba(99,102,241,0.25)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <p style={{ fontSize: 14, fontWeight: 800, color: "#fff" }}>New Milestone</p>
-        <button onClick={() => setOpen(false)} style={{ background: "none", border: "none",
-          cursor: "pointer", color: C.muted, padding: 0 }}>
+        <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: C.muted, padding: 0 }}>
           <X style={{ width: 16, height: 16 }} />
         </button>
       </div>
 
-      {/* Text */}
       <textarea
         value={form.text}
         onChange={e => setForm(f => ({ ...f, text: e.target.value }))}
-        placeholder="Write your milestone or goal… e.g. Attend 3 meetings per week"
+        placeholder="Write your goal or step… e.g. Attend 3 AA meetings per week"
         rows={3}
         style={{
           width: "100%", padding: "12px 14px", borderRadius: 12, boxSizing: "border-box",
@@ -136,58 +191,44 @@ function AddMilestoneForm({ activeTimeline, onSave, saving }) {
         }}
       />
 
-      {/* Category */}
-      <div style={{ marginBottom: 12 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, marginBottom: 8,
-          textTransform: "uppercase", letterSpacing: ".06em" }}>Category</p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-          {GOAL_CATEGORIES.map(cat => {
-            const sel = form.category === cat.key;
-            return (
-              <button key={cat.key} onClick={() => setForm(f => ({ ...f, category: cat.key }))}
-                style={{
-                  padding: "6px 12px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12,
-                  background: sel ? "rgba(99,102,241,0.2)" : "rgba(255,255,255,0.05)",
-                  border: `1px solid ${sel ? "rgba(99,102,241,0.5)" : "rgba(255,255,255,0.08)"}`,
-                  color: sel ? "#818CF8" : C.muted, fontWeight: sel ? 700 : 500,
-                }}>
-                {cat.icon} {cat.label}
-              </button>
-            );
-          })}
-        </div>
+      <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, marginBottom: 8, textTransform: "uppercase", letterSpacing: ".06em" }}>Category</p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
+        {GOAL_CATEGORIES.map(cat => {
+          const sel = form.category === cat.key;
+          return (
+            <button key={cat.key} onClick={() => setForm(f => ({ ...f, category: cat.key }))} style={{
+              padding: "6px 12px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12,
+              background: sel ? "rgba(99,102,241,0.2)" : "rgba(255,255,255,0.05)",
+              border: `1px solid ${sel ? "rgba(99,102,241,0.5)" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#818CF8" : C.muted, fontWeight: sel ? 700 : 500,
+            }}>{cat.icon} {cat.label}</button>
+          );
+        })}
       </div>
 
-      {/* Timeline */}
-      <div style={{ marginBottom: 16 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, marginBottom: 8,
-          textTransform: "uppercase", letterSpacing: ".06em" }}>Timeframe</p>
-        <div style={{ display: "flex", gap: 8 }}>
-          {TIMELINES.map(t => {
-            const sel = form.timeline === t.key;
-            return (
-              <button key={t.key} onClick={() => setForm(f => ({ ...f, timeline: t.key }))}
-                style={{
-                  flex: 1, padding: "9px 8px", borderRadius: 12, border: "none", cursor: "pointer",
-                  background: sel ? `${t.color}18` : "rgba(255,255,255,0.04)",
-                  border: `1.5px solid ${sel ? `${t.color}50` : "rgba(255,255,255,0.08)"}`,
-                  color: sel ? t.color : C.muted, fontWeight: sel ? 700 : 500, fontSize: 11,
-                }}>
-                {t.emoji} {t.label}
-              </button>
-            );
-          })}
-        </div>
+      <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, marginBottom: 8, textTransform: "uppercase", letterSpacing: ".06em" }}>Phase</p>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        {PHASES.map(p => {
+          const sel = form.phase === p.key;
+          return (
+            <button key={p.key} onClick={() => setForm(f => ({ ...f, phase: p.key }))} style={{
+              flex: 1, padding: "9px 6px", borderRadius: 12, border: "none", cursor: "pointer",
+              background: sel ? `${p.color}18` : "rgba(255,255,255,0.04)",
+              border: `1.5px solid ${sel ? `${p.color}50` : "rgba(255,255,255,0.08)"}`,
+              color: sel ? p.color : C.muted, fontWeight: sel ? 700 : 500, fontSize: 10, lineHeight: 1.4,
+            }}>{p.emoji}<br />{p.label}</button>
+          );
+        })}
       </div>
 
-      <button onClick={handleSave} disabled={!form.text.trim() || saving}
-        style={{
-          width: "100%", padding: "13px", borderRadius: 13, border: "none", cursor: form.text.trim() ? "pointer" : "not-allowed",
-          background: form.text.trim() ? `linear-gradient(135deg,${C.indigo},${C.purple})` : "rgba(255,255,255,0.07)",
-          color: form.text.trim() ? "#fff" : C.muted, fontWeight: 800, fontSize: 14,
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-          boxShadow: form.text.trim() ? "0 6px 20px rgba(99,102,241,0.3)" : "none",
-        }}>
+      <button onClick={handleSave} disabled={!form.text.trim() || saving} style={{
+        width: "100%", padding: "13px", borderRadius: 13, border: "none",
+        cursor: form.text.trim() ? "pointer" : "not-allowed",
+        background: form.text.trim() ? `linear-gradient(135deg,${C.indigo},${C.purple})` : "rgba(255,255,255,0.07)",
+        color: form.text.trim() ? "#fff" : C.muted, fontWeight: 800, fontSize: 14,
+        display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+        boxShadow: form.text.trim() ? "0 6px 20px rgba(99,102,241,0.3)" : "none",
+      }}>
         {saving ? <Loader2 style={{ width: 16, height: 16 }} className="animate-spin" /> : <Plus style={{ width: 16, height: 16 }} />}
         {saving ? "Saving…" : "Save Milestone"}
       </button>
@@ -195,10 +236,11 @@ function AddMilestoneForm({ activeTimeline, onSave, saving }) {
   );
 }
 
+// ── Main Page ──────────────────────────────────────────────────────────────
+
 export default function AftercarePlan() {
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [activeTimeline, setActiveTimeline] = useState("90_day");
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
@@ -209,6 +251,13 @@ export default function AftercarePlan() {
   });
 
   const plan = plans[0];
+  const dayCount = daysSince(plan?.discharge_date);
+  const currentPhase = getActivePhase(dayCount);
+  const [activePhase, setActivePhase] = useState(null);
+
+  useEffect(() => {
+    if (plan && !activePhase) setActivePhase(currentPhase);
+  }, [plan, currentPhase]);
 
   const { data: milestones = [], isLoading: msLoading } = useQuery({
     queryKey: ["aftercare-milestones", plan?.id],
@@ -222,6 +271,18 @@ export default function AftercarePlan() {
     qc.invalidateQueries({ queryKey: ["forward-milestones-home"] });
     qc.invalidateQueries({ queryKey: ["forward-plan-home"] });
   };
+
+  const createPlanMutation = useMutation({
+    mutationFn: async (dischargeDate) => {
+      await base44.entities.ForwardPlan.create({
+        participant_email: user.email,
+        title: "My Aftercare Plan",
+        discharge_date: dischargeDate,
+        overall_completion_percentage: 0,
+      });
+    },
+    onSuccess: () => { invalidate(); },
+  });
 
   const toggleMutation = useMutation({
     mutationFn: async (milestone) => {
@@ -248,7 +309,7 @@ export default function AftercarePlan() {
         participant_email: user.email,
         forward_plan_id: planId,
         category: form.category,
-        timeline: form.timeline,
+        timeline: form.phase, // store phase in timeline field
         milestone_text: form.text.trim(),
         sort_order: milestones.length,
         completed: false,
@@ -257,39 +318,35 @@ export default function AftercarePlan() {
     onSuccess: invalidate,
   });
 
-  const createPlanAndAdd = useMutation({
-    mutationFn: async (form) => {
-      const newPlan = await base44.entities.ForwardPlan.create({
-        participant_email: user.email,
-        title: "My Aftercare Plan",
-        overall_completion_percentage: 0,
-      });
-      await base44.entities.ForwardPlanMilestone.create({
-        participant_email: user.email,
-        forward_plan_id: newPlan.id,
-        category: form.category,
-        timeline: form.timeline,
-        milestone_text: form.text.trim(),
-        sort_order: 0,
-        completed: false,
-      });
-    },
-    onSuccess: invalidate,
-  });
-
   const handleAddMilestone = (form, onDone) => {
-    if (plan) {
-      addMutation.mutate({ form, planId: plan.id }, { onSuccess: onDone });
-    } else {
-      createPlanAndAdd.mutate(form, { onSuccess: onDone });
-    }
+    addMutation.mutate({ form, planId: plan.id }, { onSuccess: onDone });
   };
 
   const isLoading = planLoading || msLoading;
-  const isSaving = addMutation.isPending || createPlanAndAdd.isPending;
-  const visibleMilestones = milestones.filter(m => m.timeline === activeTimeline);
+  const isSaving = addMutation.isPending || createPlanMutation.isPending;
+  const phase = activePhase || "phase1";
+  const visibleMilestones = milestones.filter(m => m.timeline === phase);
   const donePct = milestones.length > 0 ? Math.round((milestones.filter(m => m.completed).length / milestones.length) * 100) : 0;
   const sectionDone = visibleMilestones.filter(m => m.completed).length;
+  const activePhaseInfo = PHASES.find(p => p.key === phase);
+
+  // ── No plan yet: ask for discharge date ──
+  if (!isLoading && !plan) {
+    return (
+      <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0A0F1A 100%)", minHeight: "100vh" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto" }}>
+          <div style={{ padding: "56px 20px 0" }}>
+            <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: 6,
+              background: "none", border: "none", color: C.muted, cursor: "pointer", fontSize: 13,
+              marginBottom: 24, padding: 0, fontWeight: 600 }}>
+              <ArrowLeft style={{ width: 15, height: 15 }} /> Back to Home
+            </button>
+          </div>
+          <DischargeSetup onSave={(d) => createPlanMutation.mutate(d)} saving={createPlanMutation.isPending} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0A0F1A 100%)", minHeight: "100vh", paddingBottom: 110 }}>
@@ -308,8 +365,7 @@ export default function AftercarePlan() {
 
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
               <div style={{ width: 46, height: 46, borderRadius: 15, flexShrink: 0,
-                background: "rgba(99,102,241,0.15)", display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 0 20px rgba(99,102,241,0.2)" }}>
+                background: "rgba(99,102,241,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <ClipboardList style={{ color: "#818CF8", width: 22, height: 22 }} />
               </div>
               <div>
@@ -321,26 +377,50 @@ export default function AftercarePlan() {
               </div>
             </div>
 
+            {/* Day counter */}
+            {dayCount && (
+              <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+                <div style={{ flex: 1, borderRadius: 14, padding: "12px 16px",
+                  background: "rgba(45,212,191,0.08)", border: "1px solid rgba(45,212,191,0.2)",
+                  display: "flex", alignItems: "center", gap: 10 }}>
+                  <Flame style={{ color: C.teal, width: 18, height: 18 }} />
+                  <div>
+                    <p style={{ fontSize: 26, fontWeight: 900, color: C.teal, lineHeight: 1 }}>{dayCount}</p>
+                    <p style={{ fontSize: 11, color: C.muted, fontWeight: 600 }}>Days in recovery</p>
+                  </div>
+                </div>
+                <div style={{ flex: 1, borderRadius: 14, padding: "12px 16px",
+                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <p style={{ fontSize: 11, color: C.muted, fontWeight: 600, marginBottom: 3 }}>Discharged</p>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>
+                    {new Date(plan.discharge_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  </p>
+                  <p style={{ fontSize: 11, color: activePhaseInfo?.color, fontWeight: 700, marginTop: 2 }}>
+                    {activePhaseInfo?.emoji} {activePhaseInfo?.label}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Overall progress */}
             {milestones.length > 0 && (
-              <div style={{ borderRadius: 16, padding: "14px 16px",
+              <div style={{ borderRadius: 14, padding: "12px 16px",
                 background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <TrendingUp style={{ color: "#818CF8", width: 14, height: 14 }} />
                     <p style={{ fontSize: 12, fontWeight: 700, color: "#818CF8" }}>Overall Progress</p>
                   </div>
-                  <p style={{ fontSize: 20, fontWeight: 900, color: "#818CF8" }}>{donePct}%</p>
+                  <p style={{ fontSize: 18, fontWeight: 900, color: "#818CF8" }}>{donePct}%</p>
                 </div>
-                <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 5, height: 8, overflow: "hidden" }}>
+                <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 5, height: 7, overflow: "hidden" }}>
                   <div style={{
                     height: "100%", borderRadius: 5, width: `${donePct}%`,
                     background: "linear-gradient(90deg,#6366F1,#8B5CF6)",
-                    boxShadow: "0 0 10px rgba(99,102,241,0.5)",
                     transition: "width 0.8s ease",
                   }} />
                 </div>
-                <p style={{ fontSize: 11, color: C.muted, marginTop: 6 }}>
+                <p style={{ fontSize: 11, color: C.muted, marginTop: 5 }}>
                   {milestones.filter(m => m.completed).length} of {milestones.length} milestones complete
                 </p>
               </div>
@@ -350,23 +430,28 @@ export default function AftercarePlan() {
 
         <div style={{ padding: "0 16px" }}>
 
-          {/* Timeline tabs */}
+          {/* Phase tabs */}
           <div style={{ display: "flex", gap: 8, padding: "16px 0", overflowX: "auto" }}>
-            {TIMELINES.map(t => {
-              const sec = milestones.filter(m => m.timeline === t.key);
+            {PHASES.map(p => {
+              const sec = milestones.filter(m => m.timeline === p.key);
               const secDone = sec.filter(m => m.completed).length;
-              const active = activeTimeline === t.key;
+              const active = phase === p.key;
+              const isCurrent = p.key === currentPhase;
               return (
-                <button key={t.key} onClick={() => setActiveTimeline(t.key)} style={{
-                  flexShrink: 0, padding: "10px 16px", borderRadius: 14, border: "none", cursor: "pointer",
-                  background: active ? `${t.color}18` : "rgba(255,255,255,0.04)",
-                  border: `1.5px solid ${active ? `${t.color}50` : "rgba(255,255,255,0.08)"}`,
-                  transition: "all 0.2s ease",
+                <button key={p.key} onClick={() => setActivePhase(p.key)} style={{
+                  flexShrink: 0, padding: "10px 14px", borderRadius: 14, border: "none", cursor: "pointer",
+                  background: active ? `${p.color}18` : "rgba(255,255,255,0.04)",
+                  border: `1.5px solid ${active ? `${p.color}50` : isCurrent ? `${p.color}30` : "rgba(255,255,255,0.08)"}`,
+                  transition: "all 0.2s ease", position: "relative",
                 }}>
+                  {isCurrent && !active && (
+                    <div style={{ position: "absolute", top: 6, right: 6, width: 6, height: 6,
+                      borderRadius: "50%", background: p.color }} />
+                  )}
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 14 }}>{t.emoji}</span>
+                    <span style={{ fontSize: 14 }}>{p.emoji}</span>
                     <div style={{ textAlign: "left" }}>
-                      <p style={{ fontSize: 12, fontWeight: 800, color: active ? t.color : "#fff", lineHeight: 1.2 }}>{t.label}</p>
+                      <p style={{ fontSize: 11, fontWeight: 800, color: active ? p.color : "#fff", lineHeight: 1.2 }}>{p.label}</p>
                       <p style={{ fontSize: 10, color: C.muted, marginTop: 1 }}>{secDone}/{sec.length} done</p>
                     </div>
                   </div>
@@ -375,14 +460,14 @@ export default function AftercarePlan() {
             })}
           </div>
 
-          {/* Milestones checklist */}
+          {/* Milestones */}
           {!isLoading && (
             <>
               {visibleMilestones.length > 0 && (
                 <>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                     <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, textTransform: "uppercase", letterSpacing: "1px" }}>
-                      {TIMELINES.find(t => t.key === activeTimeline)?.label}
+                      {activePhaseInfo?.label} · {activePhaseInfo?.range}
                     </p>
                     <p style={{ fontSize: 12, fontWeight: 700,
                       color: sectionDone === visibleMilestones.length ? C.emerald : C.muted }}>
@@ -393,8 +478,7 @@ export default function AftercarePlan() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
                     {visibleMilestones.map(m => (
                       <MilestoneItem
-                        key={m.id}
-                        milestone={m}
+                        key={m.id} milestone={m}
                         onToggle={(ms) => toggleMutation.mutate(ms)}
                         onDelete={(ms) => deleteMutation.mutate(ms)}
                         disabled={toggleMutation.isPending || deleteMutation.isPending}
@@ -403,11 +487,10 @@ export default function AftercarePlan() {
                   </div>
 
                   {sectionDone === visibleMilestones.length && visibleMilestones.length > 0 && (
-                    <div style={{ textAlign: "center", padding: "14px", borderRadius: 14,
-                      background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)",
-                      marginBottom: 16 }}>
+                    <div style={{ textAlign: "center", padding: "14px", borderRadius: 14, marginBottom: 16,
+                      background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)" }}>
                       <p style={{ fontSize: 15, fontWeight: 800, color: C.emerald }}>
-                        🏆 All {TIMELINES.find(t => t.key === activeTimeline)?.label} milestones complete!
+                        🏆 All {activePhaseInfo?.label} milestones complete!
                       </p>
                     </div>
                   )}
@@ -416,17 +499,12 @@ export default function AftercarePlan() {
 
               {visibleMilestones.length === 0 && (
                 <div style={{ textAlign: "center", padding: "28px 0 20px", color: C.muted }}>
-                  <p style={{ fontSize: 14, marginBottom: 4 }}>No milestones here yet.</p>
-                  <p style={{ fontSize: 12 }}>Use the form below to add your first one.</p>
+                  <p style={{ fontSize: 14, marginBottom: 4 }}>No milestones for this phase yet.</p>
+                  <p style={{ fontSize: 12 }}>Add your first goal below.</p>
                 </div>
               )}
 
-              {/* Add milestone form */}
-              <AddMilestoneForm
-                activeTimeline={activeTimeline}
-                onSave={handleAddMilestone}
-                saving={isSaving}
-              />
+              <AddMilestoneForm activePhase={phase} onSave={handleAddMilestone} saving={isSaving} />
             </>
           )}
         </div>

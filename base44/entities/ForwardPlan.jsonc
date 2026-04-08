@@ -1,0 +1,55 @@
+{
+  "name": "ForwardPlan",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant email"
+    },
+    "title": {
+      "type": "string",
+      "description": "Plan title"
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the participant was discharged from treatment"
+    },
+    "housing_goal": {
+      "type": "string",
+      "description": "Housing stability goal"
+    },
+    "employment_goal": {
+      "type": "string",
+      "description": "Employment/career goal"
+    },
+    "education_goal": {
+      "type": "string",
+      "description": "Education/skill development goal"
+    },
+    "financial_goal": {
+      "type": "string",
+      "description": "Financial stability goal"
+    },
+    "health_goal": {
+      "type": "string",
+      "description": "Health & wellness goal"
+    },
+    "relationships_goal": {
+      "type": "string",
+      "description": "Relationships/support network goal"
+    },
+    "legal_goal": {
+      "type": "string",
+      "description": "Legal/compliance status goal"
+    },
+    "overall_completion_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Overall plan completion percentage"
+    }
+  },
+  "required": [
+    "participant_email"
+  ]
+}
