@@ -323,6 +323,30 @@ export default function Home() {
           {/* ═══════════════════════════════════════════════════════
               §2c — TOP 5 FOCUS WIDGET
           ═══════════════════════════════════════════════════════ */}
+          {user && (
+            <Link to="/AftercarePlan" style={{ textDecoration: "none", display: "block", marginBottom: 16 }}>
+              <div style={{
+                borderRadius: 22, padding: "18px 20px",
+                background: "linear-gradient(135deg,rgba(99,102,241,0.15),rgba(139,92,246,0.1))",
+                border: "2px solid rgba(99,102,241,0.4)",
+                boxShadow: "0 8px 32px rgba(99,102,241,0.15)",
+                display: "flex", alignItems: "center", gap: 14,
+              }}>
+                <div style={{ width: 50, height: 50, borderRadius: 16, flexShrink: 0,
+                  background: "rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: "0 0 20px rgba(99,102,241,0.3)" }}>
+                  <span style={{ fontSize: 22 }}>📋</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: 10, fontWeight: 700, color: "rgba(129,140,248,0.8)",
+                    textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 2 }}>Important</p>
+                  <p style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 2 }}>My Aftercare Plan</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)" }}>Track your treatment milestones & goals</p>
+                </div>
+                <ArrowRight style={{ color: "#818CF8", width: 18, height: 18, flexShrink: 0 }} />
+              </div>
+            </Link>
+          )}
           {user && <AftercarePlanBanner user={user} />}
           {user && <TopFiveFocusWidget user={user} />}
           <CravingSupportWidget />
