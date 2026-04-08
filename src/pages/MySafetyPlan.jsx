@@ -371,7 +371,7 @@ export default function MySafetyPlan() {
         {wizardStep === 7 && <StepReview plan={plan} onEdit={s => setWizardStep(s)} />}
 
         {/* Nav buttons */}
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#fff", borderTop: "1px solid #E5E7EB", padding: "12px 20px", display: "flex", gap: 10, maxWidth: 540, margin: "0 auto" }}>
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#fff", borderTop: "1px solid #E5E7EB", padding: "12px 20px", display: "flex", gap: 10, zIndex: 200 }}>
           {wizardStep > 0 && (
             <button onClick={handleBack} style={{ padding: "13px 20px", borderRadius: 12, border: "1px solid #E5E7EB", background: "#F9FAFB", color: "#374151", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>
               ← Back
