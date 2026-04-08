@@ -1,0 +1,74 @@
+{
+  "name": "AftercareBuilderTask",
+  "type": "object",
+  "properties": {
+    "plan_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "recovery",
+        "legal",
+        "health",
+        "employment",
+        "housing",
+        "wellness",
+        "accountability",
+        "emergency"
+      ]
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "recurrence": {
+      "type": "string",
+      "enum": [
+        "none",
+        "daily",
+        "weekly",
+        "monthly"
+      ],
+      "default": "none"
+    },
+    "is_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "completion_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "complete",
+        "skipped"
+      ],
+      "default": "pending"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "72h",
+        "7day",
+        "30day",
+        "90day"
+      ],
+      "default": "7day"
+    }
+  },
+  "required": [
+    "plan_id",
+    "user_email",
+    "title",
+    "category"
+  ]
+}

@@ -42,6 +42,8 @@ import Lifeline from './pages/Lifeline';
 import FutureYou from './pages/FutureYou';
 import SoberCalculator from './pages/SoberCalculator';
 import AftercarePlan from './pages/AftercarePlan';
+import AftercarePlanBuilder from './pages/AftercarePlanBuilder';
+import AftercarePlanView from './pages/AftercarePlanView';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -133,6 +135,8 @@ const AuthenticatedApp = () => {
       <Route path="/FutureYou"                 element={<LW name="FutureYou"><FutureYou /></LW>} />
       <Route path="/SoberCalculator"            element={<LW name="SoberCalculator"><SoberCalculator /></LW>} />
       <Route path="/AftercarePlan"              element={<LW name="AftercarePlan"><AftercarePlan /></LW>} />
+      <Route path="/AftercarePlanBuilder"       element={<LW name="AftercarePlanBuilder"><AftercarePlanBuilder /></LW>} />
+      <Route path="/AftercarePlanView"          element={<LW name="AftercarePlanView"><AftercarePlanView /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

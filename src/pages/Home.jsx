@@ -347,6 +347,29 @@ export default function Home() {
               </div>
             </Link>
           )}
+          {user && (
+            <Link to="/AftercarePlanBuilder" style={{ textDecoration: "none", display: "block", marginBottom: 16 }}>
+              <div style={{
+                borderRadius: 22, padding: "18px 20px",
+                background: "linear-gradient(135deg,rgba(45,212,191,0.12),rgba(99,102,241,0.08))",
+                border: "2px solid rgba(45,212,191,0.35)",
+                boxShadow: "0 8px 32px rgba(45,212,191,0.1)",
+                display: "flex", alignItems: "center", gap: 14,
+              }}>
+                <div style={{ width: 50, height: 50, borderRadius: 16, flexShrink: 0,
+                  background: "rgba(45,212,191,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 22 }}>🗺️</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: 10, fontWeight: 700, color: "rgba(45,212,191,0.7)",
+                    textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 2 }}>New Feature</p>
+                  <p style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 2 }}>Aftercare Plan Builder</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)" }}>Build a personalized recovery roadmap with AI</p>
+                </div>
+                <ArrowRight style={{ color: C.teal, width: 18, height: 18, flexShrink: 0 }} />
+              </div>
+            </Link>
+          )}
           {user && <AftercarePlanBanner user={user} />}
           {user && <TopFiveFocusWidget user={user} />}
           <CravingSupportWidget />

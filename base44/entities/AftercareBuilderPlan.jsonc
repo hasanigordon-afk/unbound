@@ -1,0 +1,148 @@
+{
+  "name": "AftercareBuilderPlan",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "under_review",
+        "approved",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "discharge_setting": {
+      "type": "string",
+      "enum": [
+        "rehab",
+        "sober_living",
+        "detox",
+        "PHP",
+        "IOP",
+        "inpatient",
+        "jail",
+        "prison",
+        "other"
+      ]
+    },
+    "primary_substance": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "opioids",
+        "stimulants",
+        "benzodiazepines",
+        "cannabis",
+        "prescription_misuse",
+        "other"
+      ]
+    },
+    "polysubstance": {
+      "type": "boolean",
+      "default": false
+    },
+    "secondary_substances": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "days_sober_at_discharge": {
+      "type": "number"
+    },
+    "age_group": {
+      "type": "string",
+      "enum": [
+        "18-24",
+        "25-34",
+        "35-44",
+        "45+"
+      ]
+    },
+    "recovery_path": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "legal_requirements": {
+      "type": "object"
+    },
+    "housing_status": {
+      "type": "string"
+    },
+    "employment_status": {
+      "type": "string"
+    },
+    "transportation_access": {
+      "type": "boolean",
+      "default": false
+    },
+    "sponsor_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "therapy_interested": {
+      "type": "boolean",
+      "default": false
+    },
+    "psychiatric_followup": {
+      "type": "boolean",
+      "default": false
+    },
+    "lgbtq_affirming_requested": {
+      "type": "boolean",
+      "default": false
+    },
+    "trauma_informed_requested": {
+      "type": "boolean",
+      "default": false
+    },
+    "gender_specific_groups": {
+      "type": "boolean",
+      "default": false
+    },
+    "wellness_needs": {
+      "type": "object"
+    },
+    "reintegration_needs": {
+      "type": "object"
+    },
+    "generated_plan_json": {
+      "type": "object"
+    },
+    "counselor_notes": {
+      "type": "string"
+    },
+    "approval_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "approved_by": {
+      "type": "string"
+    },
+    "consent_given": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_email",
+    "primary_substance",
+    "discharge_date"
+  ]
+}
