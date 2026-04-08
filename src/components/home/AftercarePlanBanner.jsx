@@ -1,11 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "@/pages/utils";
 import { ClipboardList, ArrowRight, CheckCircle2, Circle } from "lucide-react";
 
 export default function AftercarePlanBanner({ user }) {
+  const navigate = useNavigate();
   const { data: plans = [] } = useQuery({
     queryKey: ["forward-plan-home", user?.email],
     queryFn: () => base44.entities.ForwardPlan.filter({ user_email: user.email }, "-created_date", 1),
@@ -23,12 +23,10 @@ export default function AftercarePlanBanner({ user }) {
   const plan = plans[0];
   if (!plan) return null;
 
-  const doneMilestones = milestones.filter(m => m.is_complete);
-  const pendingMilestones = milestones.filter(m => !m.is_complete).slice(0, 3);
   const pct = milestones.length > 0 ? Math.round((doneMilestones.length / milestones.length) * 100) : 0;
 
   return (
-    <Link to={createPageUrl("ForwardPlan")} style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
+    <div onClick={() => navigate("/ForwardPlan")} style={{ textDecoration: "none", display: "block", marginBottom: 20, cursor: "pointer" }}>
       <div style={{
         borderRadius: 22, padding: "20px 18px",
         background: "linear-gradient(135deg,rgba(99,102,241,0.1),rgba(139,92,246,0.06))",
@@ -100,6 +98,6 @@ export default function AftercarePlanBanner({ user }) {
           <p style={{ fontSize: 11, fontWeight: 700, color: "#818CF8" }}>Tap to review your full plan →</p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
