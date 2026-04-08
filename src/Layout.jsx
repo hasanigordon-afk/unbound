@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, User, Brain, LayoutDashboard, MessageCircle, RotateCcw, Phone } from "lucide-react";
+import { Home, Compass, Users, User, Brain, RotateCcw, Phone } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
@@ -9,14 +9,6 @@ const PARTICIPANT_NAV = [
   { name: "Resources",  icon: Compass,         page: "FindHelpNow" },
   { name: "Reset",      icon: Brain,           page: "MentalReset" },
   { name: "Community",  icon: Users,           page: "VoicesOfRecovery" },
-  { name: "Profile",    icon: User,            page: "Profile" },
-];
-
-const STAFF_NAV = [
-  { name: "Dashboard",  icon: LayoutDashboard, page: "StaffDashboard" },
-  { name: "Caseload",   icon: Users,           page: "CounselorPortal" },
-  { name: "Monitor",    icon: Home,            page: "AftercareMonitoring" },
-  { name: "Messages",   icon: MessageCircle,   page: "CounselorMessaging" },
   { name: "Profile",    icon: User,            page: "Profile" },
 ];
 
@@ -29,18 +21,11 @@ const HIDE_NAV_PAGES = [
   "VoicesOfRecovery","ContentAdmin","EachOneTeachOne",
 ];
 
-const STAFF_PAGES = [
-  "StaffDashboard","CounselorPortal","AftercareMonitoring","CounselorMessaging",
-  "FacilityDashboard","FacilityAdmin","ModerationQueue","ContentAdmin","ComplianceReports",
-  "PatientSummaryDashboard","ProbationDashboard",
-];
-
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
-  const isStaffPage = STAFF_PAGES.includes(currentPageName);
 
-  const { user, isStaff } = useCurrentUser();
-  const navItems = (isStaff || isStaffPage) ? STAFF_NAV : PARTICIPANT_NAV;
+  const { user } = useCurrentUser();
+  const navItems = PARTICIPANT_NAV;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--rebos-bg, #07090F)' }}>
@@ -121,26 +106,16 @@ export default function Layout({ children, currentPageName }) {
       {showNav && (
         <nav className="fixed bottom-0 left-0 right-0 z-50" style={{
           background: 'rgba(7,9,15,0.96)',
-          borderTop: isStaff || isStaffPage ? '1px solid rgba(99,102,241,0.2)' : '1px solid rgba(255,255,255,0.06)',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}>
-          {(isStaff || isStaffPage) && (
-          <div style={{ background:"rgba(99,102,241,0.08)", borderBottom:"1px solid rgba(99,102,241,0.12)",
-            padding:"4px 16px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-            <p style={{ fontSize:10, color:"rgba(139,92,246,0.8)", fontWeight:700, letterSpacing:".06em", textTransform:"uppercase" }}>
-              Staff Portal · Rebos
-            </p>
-            <Link to={createPageUrl("Home")} style={{ fontSize:10, color:"rgba(139,92,246,0.5)", textDecoration:"none" }}>
-              Participant View
-            </Link>
-          </div>
-          )}
+
           <div className="max-w-lg mx-auto flex">
             {navItems.map(({ name, icon: Icon, page }) => {
               const isActive = currentPageName === page;
-              const activeColor = isStaff || isStaffPage ? '#8B5CF6' : '#2DD4BF';
+              const activeColor = '#2DD4BF';
               return (
                 <Link
                   key={page}
