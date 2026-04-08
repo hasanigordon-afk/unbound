@@ -1,0 +1,41 @@
+{
+  "name": "TestimonialReport",
+  "type": "object",
+  "properties": {
+    "testimonial_id": {
+      "type": "string"
+    },
+    "reporter_email": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "glorifies_drug_use",
+        "promotes_illegal_activity",
+        "harassment",
+        "hate_speech",
+        "explicit_content",
+        "predatory_behavior",
+        "other"
+      ]
+    },
+    "details": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "dismissed"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "testimonial_id",
+    "reporter_email",
+    "reason"
+  ]
+}

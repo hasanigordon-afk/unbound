@@ -1,0 +1,25 @@
+{
+  "name": "TestimonialReaction",
+  "type": "object",
+  "properties": {
+    "testimonial_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "reaction_type": {
+      "type": "string",
+      "enum": [
+        "helpful",
+        "bookmark"
+      ],
+      "default": "helpful"
+    }
+  },
+  "required": [
+    "testimonial_id",
+    "user_email",
+    "reaction_type"
+  ]
+}

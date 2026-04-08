@@ -1,0 +1,93 @@
+{
+  "name": "Testimonial",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "sober_time": {
+      "type": "string"
+    },
+    "substance_category": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "opioids",
+        "stimulants",
+        "benzodiazepines",
+        "cannabis",
+        "prescription_misuse",
+        "polysubstance",
+        "other",
+        "prefer_not_to_say"
+      ]
+    },
+    "lessons_learned": {
+      "type": "string"
+    },
+    "advice_to_others": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "ai_summary": {
+      "type": "string"
+    },
+    "ai_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ai_themes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "helpful_count": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "approved",
+        "flagged",
+        "rejected"
+      ],
+      "default": "draft"
+    },
+    "discharge_setting": {
+      "type": "string"
+    },
+    "is_relapse_comeback": {
+      "type": "boolean",
+      "default": false
+    },
+    "moderation_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "title",
+    "body"
+  ]
+}

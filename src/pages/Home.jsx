@@ -372,6 +372,28 @@ export default function Home() {
           )}
           {user && <AftercarePlanBanner user={user} />}
           {user && <TopFiveFocusWidget user={user} />}
+
+          {/* How'd You Do It teaser */}
+          <Link to="/HowDidYouDoIt" style={{ textDecoration: "none", display: "block", marginBottom: 16 }}>
+            <div style={{
+              borderRadius: 22, padding: "18px 20px",
+              background: "linear-gradient(135deg,rgba(16,185,129,0.1),rgba(45,212,191,0.06))",
+              border: "2px solid rgba(16,185,129,0.3)",
+              display: "flex", alignItems: "center", gap: 14,
+            }}>
+              <div style={{ width: 50, height: 50, borderRadius: 16, flexShrink: 0,
+                background: "rgba(16,185,129,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 22 }}>🌱</span>
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "rgba(16,185,129,0.8)",
+                  textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 2 }}>Community Stories</p>
+                <p style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 2 }}>How'd You Do It?</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)" }}>Real recovery stories from real people</p>
+              </div>
+              <ArrowRight style={{ color: C.emerald, width: 18, height: 18, flexShrink: 0 }} />
+            </div>
+          </Link>
           <CravingSupportWidget />
 
           {/* ═══════════════════════════════════════════════════════
