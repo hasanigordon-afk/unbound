@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Loader2, Upload, CheckCircle2, AlertTriangle } from "lucide-react";
+import { toast } from "sonner";
 
 const C = {
   teal:    "#2DD4BF",
@@ -110,10 +111,19 @@ export default function SubmitTestimonial() {
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be under 5 MB");
+      return;
+    }
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    set("image_url", file_url);
-    setUploading(false);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      set("image_url", file_url);
+    } catch {
+      toast.error("Upload failed — please try a smaller image or check your connection.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const submitMutation = useMutation({
