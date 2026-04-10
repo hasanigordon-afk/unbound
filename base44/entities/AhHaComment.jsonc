@@ -1,0 +1,36 @@
+{
+  "name": "AhHaComment",
+  "type": "object",
+  "properties": {
+    "moment_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": false
+    },
+    "content": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "flagged",
+        "removed"
+      ],
+      "default": "approved"
+    }
+  },
+  "required": [
+    "moment_id",
+    "user_email",
+    "content"
+  ]
+}

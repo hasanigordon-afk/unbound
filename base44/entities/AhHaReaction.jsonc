@@ -1,0 +1,27 @@
+{
+  "name": "AhHaReaction",
+  "type": "object",
+  "properties": {
+    "moment_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "reaction_type": {
+      "type": "string",
+      "enum": [
+        "felt_this",
+        "gave_me_strength",
+        "not_alone",
+        "bookmark"
+      ],
+      "default": "felt_this"
+    }
+  },
+  "required": [
+    "moment_id",
+    "user_email",
+    "reaction_type"
+  ]
+}

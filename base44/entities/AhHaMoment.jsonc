@@ -1,0 +1,86 @@
+{
+  "name": "AhHaMoment",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": false
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "wake_up_call",
+        "rock_bottom",
+        "my_child_saved_me",
+        "health_scare",
+        "jail_court",
+        "tired_of_running",
+        "wanted_my_life_back",
+        "no_more_excuses"
+      ]
+    },
+    "what_happened": {
+      "type": "string"
+    },
+    "feeling_in_moment": {
+      "type": "string"
+    },
+    "tired_of_repeating": {
+      "type": "string"
+    },
+    "decision_made": {
+      "type": "string"
+    },
+    "message_to_others": {
+      "type": "string"
+    },
+    "content_warning": {
+      "type": "string"
+    },
+    "has_content_warning": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "approved",
+        "flagged",
+        "rejected"
+      ],
+      "default": "draft"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "reaction_count": {
+      "type": "number",
+      "default": 0
+    },
+    "comment_count": {
+      "type": "number",
+      "default": 0
+    },
+    "save_count": {
+      "type": "number",
+      "default": 0
+    },
+    "moderation_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "what_happened",
+    "category"
+  ]
+}

@@ -123,11 +123,11 @@ export default function Splash() {
           marginBottom: 14,
         }}>
           <p style={{
-            fontSize: 68,
+            fontSize: 64,
             fontWeight: 900,
             letterSpacing: "-3px",
             lineHeight: 1,
-            background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 40%, #2DD4BF 75%, #38bdf8 100%)",
+            background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 40%, #C9A96E 75%, #2DD4BF 100%)",
             backgroundSize: "200% auto",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -162,8 +162,7 @@ export default function Splash() {
             lineHeight: 1.4,
             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif",
           }}>
-            sober backwards,{" "}
-            <span style={{ color: "#2DD4BF", fontWeight: 500 }}>hope forward.</span>
+            The moment things change.
           </p>
         </div>
       </div>
@@ -185,7 +184,7 @@ export default function Splash() {
           textTransform: "uppercase",
           fontWeight: 500,
         }}>
-          Your companion on the journey to recovery.
+          Ah Ha by Unbound
         </p>
       </div>
 
@@ -199,7 +198,7 @@ export default function Splash() {
         transition: "opacity 1s ease 0.5s",
         pointerEvents: "none",
       }}>
-        <p style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em", fontWeight: 400 }}>
+        <p style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em", fontWeight: 400, display: "none" }}>
           by Unbound
         </p>
       </div>

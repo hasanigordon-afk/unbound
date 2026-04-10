@@ -45,8 +45,9 @@ import AftercarePlan from './pages/AftercarePlan';
 import AftercarePlanBuilder from './pages/AftercarePlanBuilder';
 import Splash from './pages/Splash';
 import HowDidYouDoIt from './pages/HowDidYouDoIt';
-import SubmitTestimonial from './pages/SubmitTestimonial';
-import TestimonialDetail from './pages/TestimonialDetail';
+import AhHaMoment from './pages/AhHaMoment';
+import SubmitAhHa from './pages/SubmitAhHa';
+import AhHaDetail from './pages/AhHaDetail';
 import AftercarePlanView from './pages/AftercarePlanView';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -148,6 +149,9 @@ const AuthenticatedApp = () => {
       <Route path="/Splash"                      element={<Splash />} />
       <Route path="/SubmitTestimonial"          element={<LW name="SubmitTestimonial"><SubmitTestimonial /></LW>} />
       <Route path="/TestimonialDetail"          element={<LW name="TestimonialDetail"><TestimonialDetail /></LW>} />
+      <Route path="/AhHaMoment"                 element={<LW name="AhHaMoment"><AhHaMoment /></LW>} />
+      <Route path="/SubmitAhHa"                 element={<LW name="SubmitAhHa"><SubmitAhHa /></LW>} />
+      <Route path="/AhHaDetail"                 element={<LW name="AhHaDetail"><AhHaDetail /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
