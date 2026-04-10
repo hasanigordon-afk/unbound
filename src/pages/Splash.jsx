@@ -115,7 +115,7 @@ export default function Splash() {
       {/* ── Brand block ── */}
       <div style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "0 32px" }}>
 
-        {/* Rebos wordmark */}
+        {/* Ah Ha wordmark */}
         <div style={{
           opacity: ["brand", "tagline"].includes(phase) ? 1 : 0,
           transform: ["brand", "tagline"].includes(phase) ? "translateY(0)" : "translateY(28px)",
