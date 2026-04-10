@@ -195,7 +195,7 @@ export default function Home() {
           <div style={{ position:"relative", zIndex:1, padding:"72px 24px 0" }}>
             {/* Brand lockup */}
             <div className="u-fadeIn" style={{ display:'flex', alignItems:'center', gap:8, marginBottom:20, animationDelay:'.04s' }}>
-              <span style={{ fontSize:22, fontWeight:900, color:'#2DD4BF', letterSpacing:'-.03em', lineHeight:1 }}>Rebos</span>
+              <span style={{ fontSize:22, fontWeight:900, color:'#C9A96E', letterSpacing:'-.03em', lineHeight:1 }}>Ah Ha</span>
               <span style={{ fontSize:11, color:'rgba(255,255,255,0.25)', fontWeight:400, letterSpacing:'.02em' }}>by Unbound</span>
               <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.06)', marginLeft:4 }}/>
               <p style={{ fontSize:11, fontWeight:600, color:'rgba(45,212,191,0.7)', letterSpacing:'.06em', textTransform:'uppercase' }}>
