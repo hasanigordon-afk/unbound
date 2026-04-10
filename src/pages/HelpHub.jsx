@@ -1,0 +1,145 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ClipboardList, CheckSquare, MapPin, Users, CalendarCheck,
+  Phone, ArrowRight, Plus, Building2, Briefcase, Home, Utensils,
+  Car, Heart, Shirt
+} from "lucide-react";
+
+const C = {
+  help:    "#6366F1",
+  teal:    "#2DD4BF",
+  gold:    "#C9A96E",
+  emerald: "#10B981",
+  muted:   "rgba(241,245,249,0.4)",
+  glass:   { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20 },
+};
+
+const RESOURCE_CATS = [
+  { icon: <Home className="w-5 h-5"/>,     label: "Housing",     color: "#6366F1", href: "/NJHousingSearch" },
+  { icon: <Utensils className="w-5 h-5"/>, label: "Food",        color: "#10B981", href: "/FindHelpNow" },
+  { icon: <Briefcase className="w-5 h-5"/>,label: "Jobs",        color: C.gold,    href: "/EmploymentOpportunities" },
+  { icon: <Car className="w-5 h-5"/>,      label: "Transport",   color: "#F59E0B", href: "/FindHelpNow" },
+  { icon: <Heart className="w-5 h-5"/>,    label: "Treatment",   color: "#F472B6", href: "/RecoveryMapFinder" },
+  { icon: <Shirt className="w-5 h-5"/>,    label: "Necessities", color: "#34D399", href: "/FindHelpNow" },
+];
+
+function ModuleCard({ icon: Icon, title, sub, href, color, badge }) {
+  return (
+    <Link to={href} style={{ textDecoration: "none" }}>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 14, padding: "16px 18px",
+        background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 18, marginBottom: 10, cursor: "pointer",
+      }}>
+        <div style={{ width: 44, height: 44, borderRadius: 14, flexShrink: 0,
+          background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center", color }}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 2 }}>{title}</p>
+          <p style={{ fontSize: 12, color: C.muted }}>{sub}</p>
+        </div>
+        {badge && (
+          <span style={{ fontSize: 11, fontWeight: 800, padding: "3px 9px", borderRadius: 20,
+            background: `${color}20`, color, border: `1px solid ${color}40` }}>{badge}</span>
+        )}
+        <ArrowRight style={{ color: C.muted, width: 15, height: 15, flexShrink: 0 }} />
+      </div>
+    </Link>
+  );
+}
+
+export default function HelpHub() {
+  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+
+  const { data: tasks = [] } = useQuery({
+    queryKey: ["help-tasks", user?.email],
+    queryFn: () => base44.entities.RecoveryPathTask.filter({ user_email: user.email, completion_status: "pending" }, "-created_date", 5),
+    enabled: !!user?.email,
+  });
+
+  const { data: checkIns = [] } = useQuery({
+    queryKey: ["help-checkins", user?.email],
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 7),
+    enabled: !!user?.email,
+  });
+
+  const meetingThisWeek = checkIns.filter(c => c.attended_meeting).length;
+  const pendingTasks = tasks.length;
+
+  return (
+    <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0A0F1A 100%)", minHeight: "100vh", paddingBottom: 110 }}>
+      <div style={{ maxWidth: 480, margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ padding: "60px 20px 28px", background: "linear-gradient(155deg,#0D1040,#080E1C)", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: -60, right: -40, width: 260, height: 260, borderRadius: "50%",
+            background: "radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
+          <p style={{ fontSize: 11, fontWeight: 800, color: "#818CF8", textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>Help</p>
+          <h1 style={{ fontSize: 28, fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 8 }}>
+            Practical Support<br/>for Right Now
+          </h1>
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
+            Your plan, tasks, resources, contacts, and meeting log — all in one place.
+          </p>
+
+          {/* Quick stats */}
+          <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+            {[
+              { label: "Pending Tasks", value: pendingTasks, color: "#818CF8" },
+              { label: "Meetings This Week", value: meetingThisWeek, color: C.teal },
+            ].map(s => (
+              <div key={s.label} style={{ flex: 1, padding: "12px 14px", borderRadius: 14,
+                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <p style={{ fontSize: 26, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</p>
+                <p style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ padding: "20px 16px" }}>
+
+          {/* My Plan */}
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 10 }}>My Plan</p>
+          <ModuleCard icon={ClipboardList} title="Aftercare Plan" sub="View goals, appointments & responsibilities" href="/AftercarePlan" color="#6366F1" />
+          <ModuleCard icon={ClipboardList} title="Build My Plan" sub="Create a personalized recovery roadmap with AI" href="/AftercarePlanBuilder" color="#8B5CF6" />
+
+          {/* My Tasks */}
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>My Tasks</p>
+          <ModuleCard icon={CheckSquare} title="Daily Tasks" sub="Check off today's recovery action steps" href="/RecoveryPath" color={C.teal} badge={pendingTasks > 0 ? `${pendingTasks} pending` : undefined} />
+          <ModuleCard icon={CheckSquare} title="Weekly Goals" sub="Set and track your weekly intentions" href="/GoalBoard" color={C.emerald} />
+
+          {/* Resources */}
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Resource Hub</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 10 }}>
+            {RESOURCE_CATS.map(r => (
+              <Link key={r.label} to={r.href} style={{ textDecoration: "none" }}>
+                <div style={{ padding: "14px 10px", borderRadius: 16, textAlign: "center",
+                  background: `${r.color}10`, border: `1px solid ${r.color}25`, cursor: "pointer" }}>
+                  <div style={{ color: r.color, display: "flex", justifyContent: "center", marginBottom: 6 }}>{r.icon}</div>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.7)" }}>{r.label}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <ModuleCard icon={MapPin} title="Find Help Near Me" sub="Housing, food, treatment & more" href="/RecoveryMapFinder" color="#F59E0B" />
+
+          {/* Support Contacts */}
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Support Contacts</p>
+          <ModuleCard icon={Users} title="My Support Circle" sub="Sponsor, counselor, mentor & emergency contacts" href="/InnerCircle" color="#F472B6" />
+          <ModuleCard icon={Phone} title="Crisis Line — 988" sub="Free, confidential, 24/7" href="tel:988" color="#EF4444" />
+
+          {/* Meetings */}
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Meetings</p>
+          <ModuleCard icon={CalendarCheck} title="Log a Meeting" sub="AA, NA, SMART Recovery & more" href="/DailyCheckIn" color={C.gold} badge={meetingThisWeek === 0 ? "Log one" : `${meetingThisWeek} this week`} />
+          <ModuleCard icon={Building2} title="Find a Meeting" sub="Search meetings near you" href="/RecoveryMapFinder" color="#818CF8" />
+
+        </div>
+      </div>
+    </div>
+  );
+}

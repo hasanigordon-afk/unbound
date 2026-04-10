@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./pages/utils";
-import { Home, Compass, Users, User, Brain, RotateCcw, Phone } from "lucide-react";
+import { Home, LifeBuoy, Star, Heart, User, RotateCcw } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
-  { name: "Home",       icon: Home,            page: "Home" },
-  { name: "Resources",  icon: Compass,         page: "FindHelpNow" },
-  { name: "Reset",      icon: Brain,           page: "MentalReset" },
-  { name: "Community",  icon: Users,           page: "VoicesOfRecovery" },
-  { name: "Profile",    icon: User,            page: "Profile" },
+  { name: "Home",    icon: Home,      page: "Home",        href: "/" },
+  { name: "Help",    icon: LifeBuoy,  page: "HelpHub",     href: "/HelpHub" },
+  { name: "Hope",    icon: Star,      page: "HopeHub",     href: "/HopeHub" },
+  { name: "Healing", icon: Heart,     page: "HealingHub",  href: "/HealingHub" },
+  { name: "Profile", icon: User,      page: "Profile",     href: "/Profile" },
 ];
 
 const HIDE_NAV_PAGES = [
@@ -130,13 +130,13 @@ export default function Layout({ children, currentPageName }) {
         }}>
 
           <div className="max-w-lg mx-auto flex">
-            {navItems.map(({ name, icon: Icon, page }) => {
+            {navItems.map(({ name, icon: Icon, page, href }) => {
               const isActive = currentPageName === page;
               const activeColor = '#2DD4BF';
               return (
                 <Link
                   key={page}
-                  to={createPageUrl(page)}
+                  to={href || "/"}
                   className="flex-1 flex flex-col items-center gap-1 py-3"
                   style={{ color: isActive ? activeColor : 'rgba(255,255,255,0.3)', textDecoration: 'none' }}
                 >

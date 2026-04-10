@@ -135,8 +135,9 @@ export default function Splash() {
             animation: ["brand", "tagline"].includes(phase) ? "shimmer 5s linear infinite" : "none",
             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif",
           }}>
-            Rebos
+            Ah Ha
           </p>
+          <p style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.4)", letterSpacing: "0.12em", marginTop: 4 }}>by Unbound</p>
         </div>
 
         {/* Divider line */}
@@ -162,8 +163,30 @@ export default function Splash() {
             lineHeight: 1.4,
             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif",
           }}>
-            The moment things change.
+            Help. Hope. Healing.
           </p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginTop: 6, letterSpacing: "0.02em" }}>
+            Real support. Real stories. Real progress.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            style={{
+              marginTop: 32,
+              padding: "14px 36px",
+              borderRadius: 14,
+              border: "none",
+              background: "linear-gradient(135deg,#2DD4BF,#22C5B0)",
+              color: "#07090F",
+              fontWeight: 800,
+              fontSize: 15,
+              cursor: "pointer",
+              boxShadow: "0 8px 28px rgba(45,212,191,0.3)",
+              opacity: phase === "tagline" ? 1 : 0,
+              transition: "opacity 0.8s ease 0.4s",
+            }}
+          >
+            Enter App →
+          </button>
         </div>
       </div>
 

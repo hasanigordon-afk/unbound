@@ -51,6 +51,9 @@ import AhHaMoment from './pages/AhHaMoment';
 import SubmitAhHa from './pages/SubmitAhHa';
 import AhHaDetail from './pages/AhHaDetail';
 import AftercarePlanView from './pages/AftercarePlanView';
+import HelpHub from './pages/HelpHub';
+import HopeHub from './pages/HopeHub';
+import HealingHub from './pages/HealingHub';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -154,6 +157,9 @@ const AuthenticatedApp = () => {
       <Route path="/AhHaMoment"                 element={<LW name="AhHaMoment"><AhHaMoment /></LW>} />
       <Route path="/SubmitAhHa"                 element={<LW name="SubmitAhHa"><SubmitAhHa /></LW>} />
       <Route path="/AhHaDetail"                 element={<LW name="AhHaDetail"><AhHaDetail /></LW>} />
+      <Route path="/HelpHub"                    element={<LW name="HelpHub"><HelpHub /></LW>} />
+      <Route path="/HopeHub"                    element={<LW name="HopeHub"><HopeHub /></LW>} />
+      <Route path="/HealingHub"                 element={<LW name="HealingHub"><HealingHub /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
