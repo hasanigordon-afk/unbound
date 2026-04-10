@@ -75,21 +75,38 @@ export default function Layout({ children, currentPageName }) {
         svg { stroke-width: 1.5; }
       `}</style>
 
-      {/* Floating Lifeline Button — always visible */}
+      {/* Floating Ah Ha Moment Button — crossroads */}
       {showNav && (
-        <Link to="/Lifeline" style={{ position: "fixed", bottom: 140, right: 18, zIndex: 51, textDecoration: "none" }}>
+        <Link to="/AhHaMoment" style={{ position: "fixed", bottom: 198, right: 18, zIndex: 51, textDecoration: "none" }}>
           <div style={{
             width: 50, height: 50, borderRadius: "50%",
-            background: "linear-gradient(135deg,#EF4444,#DC2626)",
-            boxShadow: "0 4px 20px rgba(239,68,68,0.4), 0 0 0 3px rgba(239,68,68,0.12)",
+            background: "linear-gradient(135deg,#C9A96E,#B8935A)",
+            boxShadow: "0 4px 20px rgba(201,169,110,0.45), 0 0 0 3px rgba(201,169,110,0.15)",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
-            <Phone style={{ color: "#fff", width: 20, height: 20 }} strokeWidth={2.5} />
+            {/* Crossroads SVG */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* vertical road */}
+              <rect x="10" y="2" width="4" height="20" rx="1" fill="rgba(255,255,255,0.9)"/>
+              {/* horizontal road */}
+              <rect x="2" y="10" width="20" height="4" rx="1" fill="rgba(255,255,255,0.9)"/>
+              {/* center intersection highlight */}
+              <rect x="10" y="10" width="4" height="4" rx="0.5" fill="#C9A96E"/>
+              {/* road dashes vertical top */}
+              <rect x="11.5" y="3" width="1" height="2" rx="0.5" fill="#C9A96E" opacity="0.7"/>
+              {/* road dashes vertical bottom */}
+              <rect x="11.5" y="19" width="1" height="2" rx="0.5" fill="#C9A96E" opacity="0.7"/>
+              {/* road dashes horizontal left */}
+              <rect x="3" y="11.5" width="2" height="1" rx="0.5" fill="#C9A96E" opacity="0.7"/>
+              {/* road dashes horizontal right */}
+              <rect x="19" y="11.5" width="2" height="1" rx="0.5" fill="#C9A96E" opacity="0.7"/>
+            </svg>
           </div>
         </Link>
       )}
 
-      {/* Floating Reset Button — always visible */}
+      {/* Floating Lifeline Button — always visible */}
+
       {showNav && (
         <Link to="/ResetButton" style={{ position: "fixed", bottom: 82, right: 18, zIndex: 51, textDecoration: "none" }}>
           <div style={{
