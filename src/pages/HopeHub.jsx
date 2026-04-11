@@ -101,10 +101,10 @@ export default function HopeHub() {
             background: "radial-gradient(circle,rgba(201,169,110,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
           <p style={{ fontSize: 11, fontWeight: 800, color: C.hope, textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>Hope</p>
           <h1 style={{ fontSize: 28, fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 8 }}>
-            Real Stories.<br/>Real Progress.
+            People just like you<br/>made it through.
           </h1>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
-            Encouragement, community wins, milestones, and a vision for your future.
+            Real stories, honest wins, and a reminder that you're not as alone as it sometimes feels.
           </p>
           <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
             <div style={{ flex: 1, padding: "12px 14px", borderRadius: 14, background: "rgba(201,169,110,0.08)", border: "1px solid rgba(201,169,110,0.2)" }}>
@@ -124,7 +124,7 @@ export default function HopeHub() {
           <div style={{ borderRadius: 20, padding: "18px 20px", marginBottom: 20,
             background: "linear-gradient(135deg,rgba(201,169,110,0.1),rgba(99,102,241,0.06))",
             border: "1px solid rgba(201,169,110,0.25)" }}>
-            <p style={{ fontSize: 11, fontWeight: 800, color: C.hope, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Today's Encouragement</p>
+            <p style={{ fontSize: 11, fontWeight: 800, color: C.hope, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Something to hold onto today</p>
             <Quote style={{ color: C.hope, width: 18, height: 18, marginBottom: 8, opacity: 0.6 }} />
             <p style={{ fontSize: 16, color: "rgba(255,255,255,0.85)", lineHeight: 1.7, fontStyle: "italic" }}>
               "{dailyMsg}"
@@ -136,7 +136,7 @@ export default function HopeHub() {
 
           {/* Testimonials */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px" }}>📖 Recovery Stories</p>
+            <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px" }}>📖 How they got through it</p>
             <Link to="/HowDidYouDoIt" style={{ fontSize: 13, color: C.teal, fontWeight: 700, textDecoration: "none" }}>See all →</Link>
           </div>
           <Link to="/HowDidYouDoIt" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
@@ -145,14 +145,14 @@ export default function HopeHub() {
               border: "1px solid rgba(99,102,241,0.25)" }}>
               <p style={{ fontSize: 15, fontWeight: 900, color: "#fff", marginBottom: 6 }}>How Did You Do It?</p>
               <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6 }}>
-                Real recovery testimonials from people who've been exactly where you are.
+                Honest stories from real people who've sat in the same darkness — and found their way out.
               </p>
-              <p style={{ fontSize: 13, color: "#818CF8", fontWeight: 700, marginTop: 10 }}>Read Stories →</p>
+              <p style={{ fontSize: 13, color: "#818CF8", fontWeight: 700, marginTop: 10 }}>Read Their Stories →</p>
             </div>
           </Link>
 
           {/* Why I Started */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>💡 Why I Started</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>💡 Why I'm doing this</p>
           {savedWhy ? (
             <div style={{ borderRadius: 18, padding: "16px 18px", marginBottom: 20,
               background: "rgba(201,169,110,0.08)", border: "1px solid rgba(201,169,110,0.25)" }}>
@@ -166,7 +166,7 @@ export default function HopeHub() {
           ) : whyStartedMode ? (
             <div style={{ borderRadius: 18, padding: "16px 18px", marginBottom: 20,
               background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}>
-              <p style={{ fontSize: 13, color: C.muted, marginBottom: 10 }}>Write a reminder to yourself for difficult days:</p>
+              <p style={{ fontSize: 13, color: C.muted, marginBottom: 10 }}>Write something to read on a hard day — from you, to you:</p>
               <textarea value={whyText} onChange={e => setWhyText(e.target.value)}
                 placeholder="e.g. I'm doing this for my kids, for my health, for the person I know I can be..."
                 rows={4}
@@ -183,15 +183,15 @@ export default function HopeHub() {
           ) : (
             <div onClick={() => setWhyStartedMode(true)} style={{ borderRadius: 18, padding: "16px 18px", marginBottom: 20,
               background: "rgba(255,255,255,0.03)", border: "2px dashed rgba(255,255,255,0.1)", cursor: "pointer" }}>
-              <p style={{ fontSize: 14, fontWeight: 700, color: C.muted, textAlign: "center" }}>+ Write why you started</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: C.muted, textAlign: "center" }}>+ Write something to read on a hard day</p>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.2)", textAlign: "center", marginTop: 3 }}>
-                Your personal reminder for hard days
+                From you, to future you — when it gets tough
               </p>
             </div>
           )}
 
           {/* Future Vision Board */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🌟 Future Vision</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🌟 What I'm working toward</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
             {goals.slice(0, 6).map(g => (
               <div key={g.id} style={{ padding: "8px 14px", borderRadius: 20,
@@ -201,7 +201,7 @@ export default function HopeHub() {
             ))}
           </div>
           {goals.length === 0 && (
-            <p style={{ fontSize: 13, color: C.muted, marginBottom: 10, textAlign: "center" }}>Add your future goals — what are you working toward?</p>
+            <p style={{ fontSize: 13, color: C.muted, marginBottom: 10, textAlign: "center" }}>What does life look like when you get to the other side? Add it here.</p>
           )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
             {GOAL_CATS.filter(g => !goals.some(ug => ug.title === g.label)).map(g => (
@@ -220,7 +220,7 @@ export default function HopeHub() {
           </Link>
 
           {/* Milestones */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🏆 Milestones</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🏆 Days that prove you can do this</p>
           <div style={{ display: "flex", gap: 10, overflowX: "auto", paddingBottom: 4, marginBottom: 20 }}>
             {[
               { days: 1,  label: "Day 1",    emoji: "🌱" },

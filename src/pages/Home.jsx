@@ -205,12 +205,12 @@ export default function Home() {
             </div>
 
             <h1 className="u-fadeUp" style={{ fontSize:32, fontWeight:900, lineHeight:1.12, color:"#fff", letterSpacing:"-.5px", marginBottom:14, animationDelay:".1s" }}>
-              Welcome back,{" "}
+              Good to see you,{" "}
               <span className="u-shimmer">{firstName}.</span>
             </h1>
 
             <p className="u-fadeUp" style={{ fontSize:15, color:"rgba(255,255,255,0.45)", lineHeight:1.65, marginBottom:32, animationDelay:".18s", maxWidth:340 }}>
-              Your calm, structured companion for recovery — one honest day at a time.
+              You showed up again. That's not small — that's everything. Let's take it one honest day at a time.
             </p>
 
             <div className="u-fadeUp" style={{ display:"flex", gap:12, animationDelay:".26s" }}>
@@ -222,7 +222,7 @@ export default function Home() {
                   fontWeight:800, fontSize:15, cursor:"pointer",
                   boxShadow:`0 8px 32px rgba(45,212,191,0.28)`,
                 }}>
-                  {checked ? "Continue My Journey →" : "Check In Now →"}
+                  {checked ? "Continue Where I Left Off →" : "How Am I Doing Today? →"}
                 </button>
               </Link>
               <Link to={createPageUrl("RecoveryHub")} style={{ textDecoration:"none" }}>
@@ -269,14 +269,14 @@ export default function Home() {
               </div>
               <div>
                 <p style={{ fontSize:18, fontWeight:800, color:"#fff", lineHeight:1.25 }}>
-                  Welcome back, {firstName}.
+                  You're still here, {firstName}.
                 </p>
                 <p style={{ fontSize:13, color:C.slate, marginTop:2 }}>{stage.desc}</p>
               </div>
             </div>
 
             <p style={{ fontSize:14, color:C.slate, lineHeight:1.6, marginBottom:18 }}>
-              You've built real momentum.{streak > 0 ? ` ${streak} days strong — ` : " "} Let's keep it going today.
+              {streak > 0 ? `${streak} days. Every single one mattered. Let's add one more.` : "Every long journey starts with one honest day. You're already in it."}
             </p>
 
             <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:18 }}>
@@ -304,7 +304,7 @@ export default function Home() {
                 border: checked ? "1px solid rgba(16,185,129,0.3)" : "none",
                 color: checked ? C.emerald : "#fff", fontWeight:700, fontSize:14, cursor:"pointer",
               }}>
-                {checked ? "✓ Check-In Complete — View My Next Steps" : "Complete Today's Check-In →"}
+                {checked ? "✓ Done for Today — See What's Next" : "Check In — Takes 30 Seconds →"}
               </button>
             </Link>
           </div>
@@ -380,7 +380,7 @@ export default function Home() {
           {/* ═══════════════════════════════════════════════════════
               §3 — DAILY MOMENTUM / CHECK-IN BLOCK
           ═══════════════════════════════════════════════════════ */}
-          <SLabel icon="⚡">Daily Momentum</SLabel>
+          <SLabel icon="⚡">How your week is going</SLabel>
           <div style={{ ...C.glass, borderRadius:24, padding:"24px 22px", marginBottom:20 }}>
             <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:16 }}>
               <div>
@@ -388,7 +388,7 @@ export default function Home() {
                   filter:`drop-shadow(0 0 14px ${stabColor}70)` }}>
                   {stability ?? "—"}{stability!==null && <span style={{ fontSize:22, fontWeight:600, color:C.muted }}>%</span>}
                 </p>
-                <p style={{ fontSize:12, color:C.muted, marginTop:4 }}>7-day recovery score</p>
+                <p style={{ fontSize:12, color:C.muted, marginTop:4 }}>Your week in one honest number</p>
               </div>
               <div style={{ padding:"10px 16px", borderRadius:14, background:`rgba(${rgb(stabColor)},0.1)`,
                 border:`1px solid ${stabColor}40`, textAlign:"center" }}>
@@ -428,7 +428,7 @@ export default function Home() {
           {/* ═══════════════════════════════════════════════════════
               §4 — TODAY'S FOCUS
           ═══════════════════════════════════════════════════════ */}
-          <SLabel icon="🎯">Today's Focus</SLabel>
+          <SLabel icon="🎯">Start here today</SLabel>
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:20 }}>
             {[
               { icon:<CalendarCheck className="w-5 h-5"/>, label:"Complete Check-In",        sub: checked ? "Completed ✓" : "30 seconds · Stay on track",              href:"DailyCheckIn",        color:C.teal,    done:checked },
@@ -483,7 +483,7 @@ export default function Home() {
           {/* ═══════════════════════════════════════════════════════
               §6 — NEXT RIGHT STEP
           ═══════════════════════════════════════════════════════ */}
-          <SLabel icon="🧭">Next Right Step</SLabel>
+          <SLabel icon="🧭">What could help most right now</SLabel>
           <div style={{ borderRadius:24, overflow:"hidden", border:"1px solid rgba(255,255,255,0.07)", marginBottom:20 }}>
             {NEXT_STEPS.map((item, i) => (
               <Link key={item.label} to={createPageUrl(item.href)} className="lift" style={{ textDecoration:"none", display:"block" }}>
@@ -617,11 +617,10 @@ export default function Home() {
                 Keep Going
               </p>
               <h2 style={{ fontSize:26, fontWeight:900, color:"#fff", lineHeight:1.2, marginBottom:14, letterSpacing:"-.3px" }}>
-                Your future is being{" "}
-                <span className="u-shimmer">built right now.</span>
+                You're further along<br/>than you think.
               </h2>
               <p style={{ fontSize:14, color:C.slate, lineHeight:1.65, marginBottom:28, maxWidth:320, margin:"0 auto 28px" }}>
-                Progress is happening, even when it feels slow. One honest day at a time still changes everything.
+                Recovery isn't always visible day to day. But it's happening. One honest choice at a time.
               </p>
               <Link to={createPageUrl("DailyCheckIn")} style={{ textDecoration:"none" }}>
                 <button className="lift" style={{
@@ -630,7 +629,7 @@ export default function Home() {
                   border:"none", color:"#fff", fontWeight:800, fontSize:15, cursor:"pointer",
                   boxShadow:`0 8px 30px rgba(${rgb(C.teal)},0.3)`,
                 }}>
-                  Take Today's Next Step →
+                  I'm ready — let's go →
                 </button>
               </Link>
             </div>

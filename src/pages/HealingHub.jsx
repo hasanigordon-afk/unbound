@@ -100,10 +100,10 @@ export default function HealingHub() {
             background: "radial-gradient(circle,rgba(45,212,191,0.1) 0%,transparent 70%)", pointerEvents: "none" }} />
           <p style={{ fontSize: 11, fontWeight: 800, color: C.healing, textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>Healing</p>
           <h1 style={{ fontSize: 28, fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 8 }}>
-            Restore.<br/>Reflect. Rebuild.
+            How are you<br/>actually doing?
           </h1>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
-            Your private space for mood tracking, journaling, gratitude, and calming tools.
+            A private space to breathe, feel, reflect, and slowly put yourself back together.
           </p>
         </div>
 
@@ -111,7 +111,7 @@ export default function HealingHub() {
 
           {/* Mood Check-in */}
           <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>
-            😊 Mood Check-In
+            😊 How are you feeling right now?
           </p>
 
           {todayCheckin || moodSaved ? (
@@ -138,7 +138,7 @@ export default function HealingHub() {
           ) : (
             <div style={{ borderRadius: 18, padding: "18px", marginBottom: 20,
               background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <p style={{ fontSize: 13, color: C.muted, marginBottom: 14 }}>How are you feeling right now?</p>
+              <p style={{ fontSize: 13, color: C.muted, marginBottom: 14 }}>No right or wrong answer. Just honest.</p>
               <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
                 {MOODS.map(m => {
                   const sel = moodToday === m.value;
@@ -171,15 +171,15 @@ export default function HealingHub() {
           )}
 
           {/* Journal */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>📓 Journal</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>📓 Say what you actually feel</p>
           <div style={{ borderRadius: 18, padding: "18px", marginBottom: 10,
             background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <p style={{ fontSize: 13, color: "#818CF8", fontWeight: 700, marginBottom: 10 }}>Today's prompt:</p>
+            <p style={{ fontSize: 13, color: "#818CF8", fontWeight: 700, marginBottom: 10 }}>Write to this, or ignore it — either way:</p>
             <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, fontStyle: "italic", marginBottom: 14 }}>
               "{journalPrompt}"
             </p>
             <textarea value={journalText} onChange={e => setJournalText(e.target.value)}
-              placeholder="Write freely. This is private..."
+              placeholder="This is just for you. No one else reads this."
               rows={4}
               style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)",
                 background: "rgba(255,255,255,0.04)", color: "#fff", fontSize: 14, resize: "none",
@@ -197,7 +197,7 @@ export default function HealingHub() {
           </Link>
 
           {/* Trigger & Craving Log */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>⚡ Trigger & Craving Log</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>⚡ When it gets hard</p>
           <Link to="/DailyCheckIn" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
             <div style={{ borderRadius: 18, padding: "16px 18px",
               background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.15)" }}>
@@ -207,8 +207,8 @@ export default function HealingHub() {
                   <Zap style={{ color: "#F87171", width: 18, height: 18 }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 2 }}>Log a Trigger or Craving</p>
-                  <p style={{ fontSize: 12, color: C.muted }}>Track intensity and what helped you respond</p>
+                  <p style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 2 }}>I'm feeling a craving or a trigger</p>
+                  <p style={{ fontSize: 12, color: C.muted }}>Log it. Name it. Take its power away.</p>
                 </div>
                 <ArrowRight style={{ color: C.muted, width: 14, height: 14 }} />
               </div>
@@ -216,7 +216,7 @@ export default function HealingHub() {
           </Link>
 
           {/* Guided Reset Tools */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🌬️ Guided Reset Tools</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🌬️ Tools to come back to yourself</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
             {[
               { icon: <Wind className="w-5 h-5"/>,  label: "Breathing",   sub: "Box breathing & more",   href: "/ResetButton",         color: C.healing },
@@ -236,7 +236,7 @@ export default function HealingHub() {
           </div>
 
           {/* Gratitude */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🙏 Gratitude & Reflection</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🙏 What's still good, even today</p>
           {gratitudeSaved ? (
             <div style={{ borderRadius: 18, padding: "16px 18px", marginBottom: 20,
               background: "rgba(45,212,191,0.07)", border: "1px solid rgba(45,212,191,0.25)",
@@ -252,7 +252,7 @@ export default function HealingHub() {
                 "{gratitudePrompt}"
               </p>
               <textarea value={gratitudeText} onChange={e => setGratitudeText(e.target.value)}
-                placeholder="Write your gratitude here..."
+                placeholder="Even one small thing counts..."
                 rows={3}
                 style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)",
                   background: "rgba(255,255,255,0.04)", color: "#fff", fontSize: 14, resize: "none",
@@ -275,7 +275,7 @@ export default function HealingHub() {
               display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
                 <p style={{ fontSize: 15, fontWeight: 900, color: "#fff", marginBottom: 3 }}>My Safety Plan</p>
-                <p style={{ fontSize: 12, color: C.muted }}>Know your warning signs and next steps</p>
+                <p style={{ fontSize: 12, color: C.muted }}>Know your warning signs before they sneak up on you</p>
               </div>
               <ArrowRight style={{ color: "#A78BFA", width: 16, height: 16 }} />
             </div>

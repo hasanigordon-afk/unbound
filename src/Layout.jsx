@@ -166,10 +166,10 @@ export default function Layout({ children, currentPageName }) {
           <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, marginBottom:4 }}>
             <span style={{ fontSize:13, fontWeight:800, color:'#C9A96E', letterSpacing:'-.02em' }}>Ah Ha</span>
             <span style={{ fontSize:11, color:'rgba(255,255,255,0.2)', fontWeight:400 }}>by Unbound</span>
-            <span style={{ fontSize:9, color:'rgba(255,255,255,0.12)', marginLeft:2 }}>· The moment things change.</span>
+            <span style={{ fontSize:9, color:'rgba(255,255,255,0.12)', marginLeft:2 }}>· You're not alone in this.</span>
           </div>
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-            Support tool only. Emergency: call 911 or 988.
+            This app is a support tool, not a replacement for professional care. In a crisis, call 911 or 988.
           </p>
         </footer>
       )}

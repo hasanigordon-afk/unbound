@@ -166,7 +166,7 @@ export default function Splash() {
             Help. Hope. Healing.
           </p>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginTop: 6, letterSpacing: "0.02em" }}>
-            Real support. Real stories. Real progress.
+            You don't have to figure this out alone.
           </p>
           <button
             onClick={() => navigate("/")}

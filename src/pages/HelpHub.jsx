@@ -80,10 +80,10 @@ export default function HelpHub() {
             background: "radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
           <p style={{ fontSize: 11, fontWeight: 800, color: "#818CF8", textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>Help</p>
           <h1 style={{ fontSize: 28, fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 8 }}>
-            Practical Support<br/>for Right Now
+            You don't have to<br/>figure it all out today.
           </h1>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
-            Your plan, tasks, resources, contacts, and meeting log — all in one place.
+            Your plan, your people, your tasks — one step at a time. It's all right here.
           </p>
 
           {/* Quick stats */}
@@ -105,16 +105,16 @@ export default function HelpHub() {
 
           {/* My Plan */}
           <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 10 }}>My Plan</p>
-          <ModuleCard icon={ClipboardList} title="Aftercare Plan" sub="View goals, appointments & responsibilities" href="/AftercarePlan" color="#6366F1" />
-          <ModuleCard icon={ClipboardList} title="Build My Plan" sub="Create a personalized recovery roadmap with AI" href="/AftercarePlanBuilder" color="#8B5CF6" />
+          <ModuleCard icon={ClipboardList} title="My Aftercare Plan" sub="Your goals, appointments, and what comes next" href="/AftercarePlan" color="#6366F1" />
+          <ModuleCard icon={ClipboardList} title="Build My Plan" sub="Answer a few questions — we'll build a roadmap with you" href="/AftercarePlanBuilder" color="#8B5CF6" />
 
           {/* My Tasks */}
           <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>My Tasks</p>
-          <ModuleCard icon={CheckSquare} title="Daily Tasks" sub="Check off today's recovery action steps" href="/RecoveryPath" color={C.teal} badge={pendingTasks > 0 ? `${pendingTasks} pending` : undefined} />
-          <ModuleCard icon={CheckSquare} title="Weekly Goals" sub="Set and track your weekly intentions" href="/GoalBoard" color={C.emerald} />
+          <ModuleCard icon={CheckSquare} title="Today's Action Steps" sub="Small steps. Real progress. Check them off." href="/RecoveryPath" color={C.teal} badge={pendingTasks > 0 ? `${pendingTasks} pending` : undefined} />
+          <ModuleCard icon={CheckSquare} title="My Weekly Goals" sub="What are you working toward this week?" href="/GoalBoard" color={C.emerald} />
 
           {/* Resources */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Resource Hub</p>
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Find What You Need</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 10 }}>
             {RESOURCE_CATS.map(r => (
               <Link key={r.label} to={r.href} style={{ textDecoration: "none" }}>
@@ -126,17 +126,17 @@ export default function HelpHub() {
               </Link>
             ))}
           </div>
-          <ModuleCard icon={MapPin} title="Find Help Near Me" sub="Housing, food, treatment & more" href="/RecoveryMapFinder" color="#F59E0B" />
+          <ModuleCard icon={MapPin} title="Find Help Near Me" sub="Real resources in your area — housing, food, treatment, and more" href="/RecoveryMapFinder" color="#F59E0B" />
 
           {/* Support Contacts */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Support Contacts</p>
-          <ModuleCard icon={Users} title="My Support Circle" sub="Sponsor, counselor, mentor & emergency contacts" href="/InnerCircle" color="#F472B6" />
-          <ModuleCard icon={Phone} title="Crisis Line — 988" sub="Free, confidential, 24/7" href="tel:988" color="#EF4444" />
+          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Your People</p>
+          <ModuleCard icon={Users} title="My Support Circle" sub="The people in your corner — sponsor, counselor, family, friends" href="/InnerCircle" color="#F472B6" />
+          <ModuleCard icon={Phone} title="Crisis Line — 988" sub="Available 24/7. Free. Confidential. No judgment." href="tel:988" color="#EF4444" />
 
           {/* Meetings */}
           <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginTop: 18, marginBottom: 10 }}>Meetings</p>
-          <ModuleCard icon={CalendarCheck} title="Log a Meeting" sub="AA, NA, SMART Recovery & more" href="/DailyCheckIn" color={C.gold} badge={meetingThisWeek === 0 ? "Log one" : `${meetingThisWeek} this week`} />
-          <ModuleCard icon={Building2} title="Find a Meeting" sub="Search meetings near you" href="/RecoveryMapFinder" color="#818CF8" />
+          <ModuleCard icon={CalendarCheck} title="Log a Meeting" sub="AA, NA, SMART Recovery, or wherever you showed up" href="/DailyCheckIn" color={C.gold} badge={meetingThisWeek === 0 ? "Log one" : `${meetingThisWeek} this week`} />
+          <ModuleCard icon={Building2} title="Find a Meeting" sub="Search for meetings happening near you" href="/RecoveryMapFinder" color="#818CF8" />
 
         </div>
       </div>
