@@ -16,9 +16,9 @@ const C = {
 const catMap = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
 
 const REACTIONS = [
-  { type: "felt_this",        emoji: "❤️",  label: "Felt This"         },
-  { type: "gave_me_strength", emoji: "💪",  label: "Gave Me Strength"  },
-  { type: "not_alone",        emoji: "🫂",  label: "Not Alone"         },
+  { type: "felt_this",        emoji: "❤️",  label: "I Relate"          },
+  { type: "gave_me_strength", emoji: "💪",  label: "Proud of You"      },
+  { type: "not_alone",        emoji: "🫂",  label: "Stay Strong"       },
   { type: "bookmark",         emoji: "🔖",  label: "Save"              },
 ];
 

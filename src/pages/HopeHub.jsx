@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowRight, Star, Heart, Plus, Flame, Target, Quote } from "lucide-react";
+import AhHaWidget from "@/components/ahha/AhHaWidget";
 
 const C = {
   hope:    "#C9A96E",
@@ -131,35 +132,7 @@ export default function HopeHub() {
           </div>
 
           {/* Ah Ha Moment */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px" }}>✨ Ah Ha Moments</p>
-            <Link to="/AhHaMoment" style={{ fontSize: 13, color: C.hope, fontWeight: 700, textDecoration: "none" }}>See all →</Link>
-          </div>
-          {moments.slice(0, 2).map(m => {
-            const author = m.is_anonymous ? "Anonymous" : (m.display_name || "Community Member");
-            return (
-              <Link key={m.id} to={`/AhHaDetail?id=${m.id}`} style={{ textDecoration: "none", display: "block", marginBottom: 10 }}>
-                <div style={{ borderRadius: 18, padding: "16px 18px",
-                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                  <p style={{ fontSize: 11, fontWeight: 700, color: C.hope, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6 }}>
-                    ✨ {m.category?.replace(/_/g, " ") || "Ah Ha Moment"}
-                  </p>
-                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.65,
-                    overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
-                    {m.what_happened}
-                  </p>
-                  <p style={{ fontSize: 11, color: C.muted, marginTop: 8 }}>— {author}</p>
-                </div>
-              </Link>
-            );
-          })}
-          <Link to="/SubmitAhHa" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
-            <div style={{ padding: "14px", borderRadius: 16, textAlign: "center",
-              background: "rgba(201,169,110,0.1)", border: "2px dashed rgba(201,169,110,0.3)", cursor: "pointer" }}>
-              <p style={{ fontSize: 14, fontWeight: 800, color: C.hope }}>+ Share My Ah Ha Moment</p>
-              <p style={{ fontSize: 12, color: C.muted, marginTop: 3 }}>Your story might save someone's life</p>
-            </div>
-          </Link>
+          <AhHaWidget user={user} />
 
           {/* Testimonials */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>

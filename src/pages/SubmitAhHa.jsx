@@ -71,18 +71,48 @@ export default function SubmitAhHa() {
 
   const submitMutation = useMutation({
     mutationFn: async (isDraft) => {
+      if (isDraft) {
+        await base44.entities.AhHaMoment.create({
+          ...form,
+          user_email: user.email,
+          display_name: user.full_name || "",
+          status: "draft",
+          reaction_count: 0, comment_count: 0, save_count: 0,
+        });
+        return { isDraft: true };
+      }
+
+      // AI moderation
+      const mod = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a moderation assistant for a recovery community. Review this story submission.
+
+Category: ${form.category}
+Story: ${form.what_happened}
+Feelings: ${form.feeling_in_moment}
+Message to others: ${form.message_to_others}
+
+Approve unless the content: glorifies drug use, promotes illegal activity, contains hate speech, harassment, explicit adult content, or is clearly spam.
+Recovery stories can mention difficult experiences honestly — that's expected and encouraged.
+
+Respond as JSON: { "approved": true/false, "reason": "short reason if rejected, else null" }`,
+        response_json_schema: {
+          type: "object",
+          properties: { approved: { type: "boolean" }, reason: { type: ["string", "null"] } }
+        }
+      });
+
       await base44.entities.AhHaMoment.create({
         ...form,
         user_email: user.email,
         display_name: user.full_name || "",
-        status: isDraft ? "draft" : "pending_review",
-        reaction_count: 0,
-        comment_count: 0,
-        save_count: 0,
+        status: mod.approved ? "approved" : "flagged",
+        moderation_note: mod.reason || null,
+        reaction_count: 0, comment_count: 0, save_count: 0,
       });
+      return { isDraft: false, approved: mod.approved, reason: mod.reason };
     },
-    onSuccess: (_, isDraft) => {
-      if (isDraft) {
+    onSuccess: (result) => {
+      if (result.isDraft) {
         toast.success("Draft saved.");
         navigate("/AhHaMoment");
       } else {
