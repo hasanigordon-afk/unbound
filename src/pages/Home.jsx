@@ -204,6 +204,23 @@ export default function Home() {
 
         <div style={{ padding: "20px 16px 0" }}>
 
+          {/* ── 1.5. AH HA COMMUNITY ─────────────────────────────────────────── */}
+          <Link to="/AhHaCommunity" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
+            <div style={{
+              background: "linear-gradient(135deg, rgba(184,130,58,.10), rgba(184,130,58,.04))",
+              border: "1px solid rgba(184,130,58,.28)",
+              borderRadius: 16, padding: "18px 18px",
+              display: "flex", alignItems: "center", gap: 14,
+            }}>
+              <span style={{ fontSize: 30, flexShrink: 0 }}>✨</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Ah Ha Community</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Real stories of breakthrough moments</p>
+                <p style={{ fontSize: 12, color: "#4A3F35" }}>Read how others found their turning point →</p>
+              </div>
+            </div>
+          </Link>
+
           {/* ── 2. STATS ROW ──────────────────────────────────────────────── */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 20 }}>
             {/* Streak */}
