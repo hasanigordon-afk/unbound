@@ -192,18 +192,18 @@ export default function RecoveryHub() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#F7F7F8" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#F7F3EE" }}>
       {shareTarget && (
         <ShareMenu title={shareTarget.title || shareTarget.content} url={shareTarget.source_url || window.location.href} onClose={() => setShareTarget(null)} />
       )}
 
       {/* Header */}
-      <div className="px-5 pt-8 pb-0" style={{ background: "#FFF", borderBottom: "1px solid #D1D1D6" }}>
+      <div className="px-5 pt-8 pb-0" style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9" }}>
         <h1 className="text-xl font-bold" style={{ color: "#1E1E1E" }}>Recovery + Reentry Hub</h1>
         <p className="text-sm mt-0.5 mb-4" style={{ color: "#8E8E93" }}>Real information. Real support. Built for your journey.</p>
 
         {/* Search */}
-        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-4" style={{ background: "#F7F7F8", border: "1px solid #D1D1D6" }}>
+        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-4" style={{ background: "#FDFAF6", border: "1px solid #E8E2D9" }}>
           <Search className="w-4 h-4 flex-shrink-0" style={{ color: "#8E8E93" }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search articles, topics…"
             className="flex-1 text-sm bg-transparent outline-none" style={{ color: "#1E1E1E" }} />
@@ -215,7 +215,7 @@ export default function RecoveryHub() {
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium flex-shrink-0"
-              style={{ color: tab === t.id ? "#4A90E2" : "#8E8E93", background: "none", border: "none", borderBottom: tab === t.id ? "2px solid #4A90E2" : "2px solid transparent", cursor: "pointer" }}>
+              style={{ color: tab === t.id ? "#B8823A" : "#9B8E83", background: "none", border: "none", borderBottom: tab === t.id ? "2px solid #B8823A" : "2px solid transparent", cursor: "pointer" }}>
               <t.icon className="w-4 h-4" strokeWidth={1.5} /> {t.label}
             </button>
           ))}
@@ -230,7 +230,7 @@ export default function RecoveryHub() {
             {CATEGORIES.map(c => (
               <button key={c} onClick={() => setCategory(c)}
                 className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap"
-                style={{ background: category === c ? "#1E1E1E" : "#F7F7F8", color: category === c ? "#FFF" : "#5A5A5A", border: "1px solid #E5E7EB", flexShrink: 0 }}>
+                style={{ background: category === c ? "#B8823A" : "#FDFAF6", color: category === c ? "#FFF" : "#9B8E83", border: category === c ? "1px solid #B8823A" : "1px solid #E8E2D9", flexShrink: 0 }}>
                 {c}
               </button>
             ))}
@@ -270,7 +270,7 @@ export default function RecoveryHub() {
             {RESOURCE_TYPES.map(t => (
               <button key={t} onClick={() => setResourceType(t)}
                 className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap flex-shrink-0"
-                style={{ background: resourceType === t ? "#1E1E1E" : "#F7F7F8", color: resourceType === t ? "#FFF" : "#5A5A5A", border: "1px solid #E5E7EB" }}>
+                style={{ background: resourceType === t ? "#B8823A" : "#FDFAF6", color: resourceType === t ? "#FFF" : "#9B8E83", border: resourceType === t ? "1px solid #B8823A" : "1px solid #E8E2D9" }}>
                 {t}
               </button>
             ))}
@@ -350,12 +350,12 @@ export default function RecoveryHub() {
           {user ? (
             <button onClick={() => setShowNewPost(true)}
               className="w-full px-4 py-4 rounded-2xl text-sm font-semibold text-left"
-              style={{ background: "#FFF", border: "2px dashed #D1D1D6", color: "#8E8E93" }}>
+              style={{ background: "#FDFAF6", border: "1px solid #E8E2D9", color: "#9B8E83", borderRadius: 12 }}>
               💭 Share your thoughts with the community…
             </button>
           ) : (
             <div className="px-4 py-4 rounded-2xl text-sm text-center" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
-              <button onClick={() => base44.auth.redirectToLogin()} style={{ color: "#4A90E2", fontWeight: 700, background: "none", border: "none" }}>Sign in</button> to post to the community.
+              <button onClick={() => base44.auth.redirectToLogin()} style={{ color: "#B8823A", fontWeight: 700, background: "none", border: "none" }}>Sign in</button> to post to the community.
             </div>
           )}
 
@@ -434,7 +434,7 @@ export default function RecoveryHub() {
               onClick={() => createPostMutation.mutate()}
               disabled={!newPostContent.trim() || createPostMutation.isPending}
               className="w-full py-4 rounded-2xl text-sm font-bold"
-              style={{ background: newPostContent.trim() ? "#4A90E2" : "#E5E7EB", color: "#FFF" }}>
+              style={{ background: newPostContent.trim() ? "#B8823A" : "#E8E2D9", color: "#FFF" }}>
               {createPostMutation.isPending ? "Posting…" : "Post to Community →"}
             </button>
           </div>
