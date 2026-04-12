@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, LifeBuoy, Star, Heart, User, RotateCcw } from "lucide-react";
+import { Home, LifeBuoy, Star, Heart, User } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const PARTICIPANT_NAV = [
-  { name: "Home",    icon: Home,      page: "Home",        href: "/" },
-  { name: "Help",    icon: LifeBuoy,  page: "HelpHub",     href: "/HelpHub" },
-  { name: "Hope",    icon: Star,      page: "HopeHub",     href: "/HopeHub" },
-  { name: "Healing", icon: Heart,     page: "HealingHub",  href: "/HealingHub" },
-  { name: "Profile", icon: User,      page: "Profile",     href: "/Profile" },
+  { name: "Home",    icon: Home,     page: "Home",       href: "/" },
+  { name: "Help",    icon: LifeBuoy, page: "HelpHub",    href: "/HelpHub" },
+  { name: "Hope",    icon: Star,     page: "HopeHub",    href: "/HopeHub" },
+  { name: "Healing", icon: Heart,    page: "HealingHub", href: "/HealingHub" },
+  { name: "Profile", icon: User,     page: "Profile",    href: "/Profile" },
 ];
 
 const HIDE_NAV_PAGES = [
@@ -22,43 +22,46 @@ const HIDE_NAV_PAGES = [
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
-
   const { user } = useCurrentUser();
   const navItems = PARTICIPANT_NAV;
 
   return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "var(--bg)" }}>
 
+      <div className="flex-1 pb-20">
+        {children}
+      </div>
 
-      {/* Ah Ha crossroads FAB */}
       {showNav && (
-
-      {showNav && (
-        <Link to="/ResetButton" style={{ position: "fixed", bottom: 82, right: 18, zIndex: 51, textDecoration: "none" }}> style={{
-          background: 'rgba(13,16,24,0.97)',
-          borderTop: '1px solid rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        <nav style={{
+          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
+          background: "rgba(13,16,24,0.97)",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}>
-          <div className="max-w-lg mx-auto flex">
+          <div style={{ maxWidth: 480, margin: "0 auto", display: "flex" }}>
             {navItems.map(({ name, icon: Icon, page, href }) => {
               const isActive = currentPageName === page;
               return (
                 <Link
                   key={page}
                   to={href || "/"}
-                  className="flex-1 flex flex-col items-center gap-1 py-3"
-                  style={{ color: isActive ? 'var(--teal)' : 'var(--text-dim)', textDecoration: 'none' }}
+                  style={{
+                    flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+                    gap: 4, paddingTop: 10, paddingBottom: 10,
+                    color: isActive ? "var(--teal)" : "var(--text-dim)", textDecoration: "none",
+                  }}
                 >
                   <div style={{
-                    padding: '5px 14px',
-                    borderRadius: 10,
-                    background: isActive ? 'var(--teal-dim)' : 'transparent',
-                    transition: 'all 0.2s ease',
+                    padding: "5px 14px", borderRadius: 10,
+                    background: isActive ? "var(--teal-dim)" : "transparent",
+                    transition: "all 0.2s ease",
                   }}>
-                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+                    <Icon style={{ width: 20, height: 20 }} strokeWidth={isActive ? 2 : 1.5} />
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: '.03em' }}>{name}</span>
+                  <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: ".03em" }}>{name}</span>
                 </Link>
               );
             })}
@@ -66,17 +69,16 @@ export default function Layout({ children, currentPageName }) {
         </nav>
       )}
 
-      <div className="flex-1 pb-20">
-        {children}
-      </div>
-
       {showNav && (
-        <footer style={{ borderTop: '1px solid var(--border-soft)', padding: '16px 24px', textAlign: 'center', background: 'var(--bg)' }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, marginBottom:4 }}>
-            <span style={{ fontSize:13, fontWeight:800, color:'var(--sand)', letterSpacing:'-.02em' }}>Ah Ha</span>
-            <span style={{ fontSize:11, color:'var(--text-dim)', fontWeight:400 }}>by Unbound</span>
+        <footer style={{
+          borderTop: "1px solid var(--border-soft)", padding: "16px 24px",
+          textAlign: "center", background: "var(--bg)", paddingBottom: 90,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 4 }}>
+            <span style={{ fontSize: 13, fontWeight: 800, color: "var(--sand)", letterSpacing: "-.02em" }}>Ah Ha</span>
+            <span style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 400 }}>by Unbound</span>
           </div>
-          <p style={{ fontSize:11, color:'var(--text-dim)' }}>
+          <p style={{ fontSize: 11, color: "var(--text-dim)" }}>
             Support tool only. In a crisis, call 911 or 988.
           </p>
         </footer>

@@ -219,7 +219,7 @@ export default function HealingHub() {
             ))}
           </div>
 
-          {/* Gratitude */
+          {/* Gratitude */}
           <p className="section-label">What's still good, even today</p>
           {gratitudeSaved ? (
             <div className="card" style={{ padding: "16px 18px", marginBottom: 20, borderColor: "var(--teal-border)",
