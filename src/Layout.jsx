@@ -35,8 +35,8 @@ export default function Layout({ children, currentPageName }) {
       {showNav && (
         <nav style={{
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
-          background: "rgba(26,22,18,0.97)",
-          borderTop: "1px solid rgba(215,190,155,0.08)",
+          background: "rgba(247,243,238,0.97)",
+          borderTop: "1px solid #E8E2D9",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
@@ -51,12 +51,12 @@ export default function Layout({ children, currentPageName }) {
                   style={{
                     flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
                     gap: 4, paddingTop: 10, paddingBottom: 10,
-                    color: isActive ? "var(--teal)" : "var(--text-dim)", textDecoration: "none",
+                    color: isActive ? "var(--amber)" : "var(--text-dim)", textDecoration: "none",
                   }}
                 >
                   <div style={{
                     padding: "5px 14px", borderRadius: 10,
-                    background: isActive ? "var(--teal-dim)" : "transparent",
+                    background: isActive ? "var(--sand-dim)" : "transparent",
                     transition: "all 0.2s ease",
                   }}>
                     <Icon style={{ width: 20, height: 20 }} strokeWidth={isActive ? 2 : 1.5} />
@@ -71,7 +71,7 @@ export default function Layout({ children, currentPageName }) {
 
       {showNav && (
         <footer style={{
-          borderTop: "1px solid var(--border-soft)", padding: "16px 24px",
+          borderTop: "1px solid var(--border)", padding: "16px 24px",
           textAlign: "center", background: "var(--bg)", paddingBottom: 90,
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 4 }}>

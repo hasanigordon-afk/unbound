@@ -16,7 +16,7 @@ export default function Splash() {
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 9999,
-      background: "var(--bg)",
+      background: "#F7F3EE",
       display: "flex", flexDirection: "column",
       alignItems: "center", justifyContent: "center",
       overflow: "hidden",
@@ -39,16 +39,16 @@ export default function Splash() {
 
       {/* Ambient */}
       <div style={{ position:"absolute", inset:0, pointerEvents:"none",
-        background:"radial-gradient(ellipse at 50% 30%, rgba(42,157,143,0.06) 0%, transparent 65%)",
+        background:"radial-gradient(ellipse at 50% 40%, rgba(184,130,58,0.07) 0%, transparent 65%)",
         animation:"fadeIn 1.5s ease forwards" }} />
 
       {/* Particles */}
       {[
-        { x:"42%", delay:"0.3s", dur:"4.5s", size:3,   color:"rgba(42,157,143,0.4)"  },
-        { x:"55%", delay:"1.1s", dur:"5.2s", size:2,   color:"rgba(196,168,130,0.35)"},
-        { x:"38%", delay:"0.7s", dur:"6s",   size:2.5, color:"rgba(42,157,143,0.25)" },
-        { x:"60%", delay:"1.8s", dur:"4.8s", size:2,   color:"rgba(92,107,192,0.35)" },
-        { x:"48%", delay:"2.2s", dur:"5.5s", size:3,   color:"rgba(42,157,143,0.3)"  },
+        { x:"42%", delay:"0.3s", dur:"4.5s", size:3,   color:"rgba(184,130,58,0.3)"  },
+        { x:"55%", delay:"1.1s", dur:"5.2s", size:2,   color:"rgba(184,130,58,0.2)"  },
+        { x:"38%", delay:"0.7s", dur:"6s",   size:2.5, color:"rgba(122,158,126,0.25)" },
+        { x:"60%", delay:"1.8s", dur:"4.8s", size:2,   color:"rgba(184,130,58,0.25)" },
+        { x:"48%", delay:"2.2s", dur:"5.5s", size:3,   color:"rgba(122,158,126,0.2)"  },
       ].map((p, i) => (
         <div key={i} style={{
           position:"absolute", bottom:"38%", left:p.x,
@@ -70,19 +70,19 @@ export default function Splash() {
         }}>
           <p style={{
             fontSize: 58, fontWeight: 800, letterSpacing: "-2px", lineHeight: 1,
-            background: "linear-gradient(135deg, #DDE1EA 0%, #C4A882 60%, #2A9D8F 100%)",
+            background: "linear-gradient(135deg, #1C1410 0%, #B8823A 60%, #7A9E7E 100%)",
             backgroundSize: "200% auto",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
             animation: ["brand","tagline"].includes(phase) ? "shimmer 5s linear infinite" : "none",
           }}>
             Ah Ha
           </p>
-          <p style={{ fontSize:12, fontWeight:500, color:"var(--text-dim)", letterSpacing:"0.12em", marginTop:4 }}>by Unbound</p>
+          <p style={{ fontSize:12, fontWeight:500, color:"#9B8E83", letterSpacing:"0.12em", marginTop:4 }}>by Unbound</p>
         </div>
 
         <div style={{
           width: phase === "tagline" ? 60 : 0, height:1,
-          background:"linear-gradient(90deg,transparent,rgba(42,157,143,0.5),transparent)",
+          background:"linear-gradient(90deg,transparent,rgba(184,130,58,0.5),transparent)",
           margin:"0 auto 18px", transition:"width 0.8s cubic-bezier(.22,1,.36,1) 0.1s",
         }} />
 
@@ -91,10 +91,10 @@ export default function Splash() {
           transform: phase === "tagline" ? "translateY(0)" : "translateY(14px)",
           transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(.22,1,.36,1)",
         }}>
-          <p style={{ fontSize:17, fontWeight:400, color:"var(--text-muted)", lineHeight:1.5 }}>
+          <p style={{ fontSize:17, fontWeight:400, color:"#4A3F35", lineHeight:1.5 }}>
             Help. Hope. Healing.
           </p>
-          <p style={{ fontSize:13, color:"var(--text-dim)", marginTop:6 }}>
+          <p style={{ fontSize:13, color:"#9B8E83", marginTop:6 }}>
             You don't have to figure this out alone.
           </p>
           <button
@@ -102,7 +102,7 @@ export default function Splash() {
             style={{
               marginTop:28, padding:"13px 32px",
               borderRadius:"var(--r-md)", border:"none",
-              background:"var(--teal)", color:"#0D1018",
+              background:"#B8823A", color:"#FDFAF6",
               fontWeight:700, fontSize:15, cursor:"pointer",
               opacity: phase === "tagline" ? 1 : 0,
               transition:"opacity 0.8s ease 0.4s",
@@ -117,7 +117,7 @@ export default function Splash() {
         position:"absolute", bottom:"8%", left:0, right:0, textAlign:"center",
         opacity: phase === "tagline" ? 1 : 0, transition:"opacity 1s ease 0.3s", pointerEvents:"none",
       }}>
-        <p style={{ fontSize:11, color:"var(--text-dim)", letterSpacing:"0.1em", textTransform:"uppercase", fontWeight:500 }}>
+        <p style={{ fontSize:11, color:"#9B8E83", letterSpacing:"0.1em", textTransform:"uppercase", fontWeight:500 }}>
           Ah Ha by Unbound
         </p>
       </div>
