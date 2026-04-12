@@ -2,21 +2,152 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
 
 :root {
-  --rebos-bg:       #07090F;
-  --rebos-surface:  #0D1117;
-  --rebos-card:     #111827;
+  /* ── Core surface ── */
+  --bg:           #0D1018;
+  --surface:      #141923;
+  --card:         #1A2130;
+  --card-hover:   #1F2840;
+  --border:       rgba(255,255,255,0.07);
+  --border-soft:  rgba(255,255,255,0.04);
+
+  /* ── Brand ── */
+  --teal:         #2A9D8F;
+  --teal-dim:     rgba(42,157,143,0.15);
+  --teal-border:  rgba(42,157,143,0.3);
+  --sand:         #C4A882;
+  --sand-dim:     rgba(196,168,130,0.12);
+  --sand-border:  rgba(196,168,130,0.25);
+
+  /* ── Status ── */
+  --green:        #34A882;
+  --amber:        #D4915A;
+  --red:          #C9534F;
+  --indigo:       #5C6BC0;
+  --purple:       #7C5CBF;
+
+  /* ── Typography ── */
+  --text:         #DDE1EA;
+  --text-muted:   rgba(221,225,234,0.5);
+  --text-dim:     rgba(221,225,234,0.28);
+
+  /* ── Spacing scale ── */
+  --r-sm:         10px;
+  --r-md:         14px;
+  --r-lg:         18px;
+  --r-xl:         24px;
+
+  /* ── Shadow ── */
+  --shadow:       0 2px 16px rgba(0,0,0,0.35);
+  --shadow-sm:    0 1px 6px  rgba(0,0,0,0.25);
+
+  /* Legacy aliases (keep for components that reference old vars) */
+  --rebos-bg:       #0D1018;
+  --rebos-surface:  #141923;
+  --rebos-card:     #1A2130;
   --rebos-border:   rgba(255,255,255,0.07);
-  --rebos-teal:     #2DD4BF;
-  --rebos-blue:     #6366F1;
-  --rebos-purple:   #8B5CF6;
-  --rebos-glow-teal: rgba(45,212,191,0.25);
-  --rebos-glow-blue: rgba(99,102,241,0.25);
-  --rebos-text:     #F1F5F9;
-  --rebos-muted:    rgba(241,245,249,0.4);
-  --rebos-dim:      rgba(241,245,249,0.2);
+  --rebos-teal:     #2A9D8F;
+  --rebos-blue:     #5C6BC0;
+  --rebos-purple:   #7C5CBF;
+  --rebos-text:     #DDE1EA;
+  --rebos-muted:    rgba(221,225,234,0.5);
+  --rebos-dim:      rgba(221,225,234,0.28);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; box-sizing: border-box; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: var(--bg);
+    color: var(--text);
+  }
+  h1,h2,h3,h4,h5,h6 { letter-spacing: -0.025em; font-weight: 700; }
+}
+
+/* ── Unified component primitives ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+}
+
+.card-soft {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: #0D1018;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:active { opacity: 0.75; }
+
+.btn-ghost {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-muted);
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.09); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.pill-teal { background: var(--teal-dim); color: var(--teal); border: 1px solid var(--teal-border); }
+.pill-sand { background: var(--sand-dim); color: var(--sand); border: 1px solid var(--sand-border); }
+.pill-ghost { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border); }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-soft);
+}
+
+input, textarea, select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--teal);
 }
 
 @layer base {

@@ -7,12 +7,12 @@ import {
 } from "lucide-react";
 
 const C = {
-  healing: "#2DD4BF",
-  gold:    "#C9A96E",
-  indigo:  "#6366F1",
-  purple:  "#8B5CF6",
-  emerald: "#10B981",
-  muted:   "rgba(241,245,249,0.4)",
+  healing: "var(--teal)",
+  gold:    "var(--sand)",
+  indigo:  "var(--indigo)",
+  purple:  "var(--purple)",
+  emerald: "var(--green)",
+  muted:   "var(--text-muted)",
 };
 
 const MOODS = [
@@ -91,18 +91,16 @@ export default function HealingHub() {
   });
 
   return (
-    <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0A0F1A 100%)", minHeight: "100vh", paddingBottom: 110 }}>
+    <div style={{ background: "var(--bg)", minHeight: "100vh", paddingBottom: 110 }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
         {/* Header */}
-        <div style={{ padding: "60px 20px 28px", background: "linear-gradient(155deg,#031A18,#050F0E)", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: -60, right: -40, width: 260, height: 260, borderRadius: "50%",
-            background: "radial-gradient(circle,rgba(45,212,191,0.1) 0%,transparent 70%)", pointerEvents: "none" }} />
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.healing, textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>Healing</p>
-          <h1 style={{ fontSize: 28, fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 8 }}>
+        <div style={{ padding: "60px 20px 28px", background: "var(--surface)", borderBottom: "1px solid var(--border)" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: "var(--teal)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 }}>Healing</p>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text)", lineHeight: 1.2, marginBottom: 8 }}>
             How are you<br/>actually doing?
           </h1>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
+          <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.65 }}>
             A private space to breathe, feel, reflect, and slowly put yourself back together.
           </p>
         </div>
@@ -115,8 +113,7 @@ export default function HealingHub() {
           </p>
 
           {todayCheckin || moodSaved ? (
-            <div style={{ borderRadius: 18, padding: "16px 18px", marginBottom: 20,
-              background: "rgba(45,212,191,0.07)", border: "1px solid rgba(45,212,191,0.25)" }}>
+            <div className="card" style={{ padding: "16px 18px", marginBottom: 20, borderColor: "var(--teal-border)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <CheckCircle2 style={{ color: C.healing, width: 18, height: 18 }} />
                 <p style={{ fontSize: 14, fontWeight: 700, color: C.healing }}>Mood logged for today ✓</p>
@@ -136,9 +133,8 @@ export default function HealingHub() {
               )}
             </div>
           ) : (
-            <div style={{ borderRadius: 18, padding: "18px", marginBottom: 20,
-              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <p style={{ fontSize: 13, color: C.muted, marginBottom: 14 }}>No right or wrong answer. Just honest.</p>
+            <div className="card" style={{ padding: "18px", marginBottom: 20 }}>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 14 }}>No right or wrong answer. Just honest.</p>
               <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
                 {MOODS.map(m => {
                   const sel = moodToday === m.value;
@@ -162,107 +158,89 @@ export default function HealingHub() {
                   outline: "none", boxSizing: "border-box", fontFamily: "inherit", marginBottom: 12 }} />
               <button onClick={() => user && moodToday && saveMoodMutation.mutate()}
                 disabled={!moodToday || saveMoodMutation.isPending}
-                style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", cursor: moodToday ? "pointer" : "not-allowed",
-                  background: moodToday ? `linear-gradient(135deg,${C.healing},#22C5B0)` : "rgba(255,255,255,0.06)",
-                  color: moodToday ? "#07090F" : C.muted, fontWeight: 800, fontSize: 14 }}>
+                className={moodToday ? "btn-primary" : "btn-ghost"}
+                style={{ width: "100%", padding: "12px", fontSize: 14 }}>
                 {saveMoodMutation.isPending ? "Saving..." : "Log My Mood"}
               </button>
             </div>
           )}
 
           {/* Journal */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>📓 Say what you actually feel</p>
-          <div style={{ borderRadius: 18, padding: "18px", marginBottom: 10,
-            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <p style={{ fontSize: 13, color: "#818CF8", fontWeight: 700, marginBottom: 10 }}>Write to this, or ignore it — either way:</p>
-            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, fontStyle: "italic", marginBottom: 14 }}>
+          <p className="section-label">Say what you actually feel</p>
+          <div className="card" style={{ padding: "18px", marginBottom: 8 }}>
+            <p style={{ fontSize: 13, color: "var(--teal)", fontWeight: 700, marginBottom: 10 }}>Write to this, or ignore it — either way:</p>
+            <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.6, fontStyle: "italic", marginBottom: 14 }}>
               "{journalPrompt}"
             </p>
             <textarea value={journalText} onChange={e => setJournalText(e.target.value)}
               placeholder="This is just for you. No one else reads this."
               rows={4}
-              style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)",
-                background: "rgba(255,255,255,0.04)", color: "#fff", fontSize: 14, resize: "none",
-                outline: "none", boxSizing: "border-box", fontFamily: "inherit" }} />
+              style={{ width: "100%", padding: "12px", resize: "none", boxSizing: "border-box" }} />
           </div>
           <Link to="/Journal" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 16px",
-              borderRadius: 14, background: "rgba(129,140,248,0.1)", border: "1px solid rgba(129,140,248,0.2)" }}>
+            <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 16px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <BookOpen style={{ color: "#818CF8", width: 16, height: 16 }} />
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#818CF8" }}>Open My Full Journal</p>
+                <BookOpen style={{ color: "var(--indigo)", width: 16, height: 16 }} />
+                <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text)" }}>Open My Full Journal</p>
               </div>
-              <ArrowRight style={{ color: "#818CF8", width: 14, height: 14 }} />
+              <ArrowRight style={{ color: "var(--text-dim)", width: 14, height: 14 }} />
             </div>
           </Link>
 
-          {/* Trigger & Craving Log */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>⚡ When it gets hard</p>
+          <p className="section-label">When it gets hard</p>
           <Link to="/DailyCheckIn" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
-            <div style={{ borderRadius: 18, padding: "16px 18px",
-              background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.15)" }}>
+            <div className="card" style={{ padding: "14px 16px", borderColor: "rgba(201,83,79,0.25)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(239,68,68,0.12)",
-                  display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Zap style={{ color: "#F87171", width: 18, height: 18 }} />
-                </div>
+                <Zap style={{ color: "var(--red)", width: 16, height: 16, flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 2 }}>I'm feeling a craving or a trigger</p>
-                  <p style={{ fontSize: 12, color: C.muted }}>Log it. Name it. Take its power away.</p>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text)", marginBottom: 2 }}>I'm feeling a craving or a trigger</p>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)" }}>Log it. Name it. Take its power away.</p>
                 </div>
-                <ArrowRight style={{ color: C.muted, width: 14, height: 14 }} />
+                <ArrowRight style={{ color: "var(--text-dim)", width: 13, height: 13 }} />
               </div>
             </div>
           </Link>
 
-          {/* Guided Reset Tools */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🌬️ Tools to come back to yourself</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
+          <p className="section-label">Tools to come back to yourself</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 20 }}>
             {[
-              { icon: <Wind className="w-5 h-5"/>,  label: "Breathing",   sub: "Box breathing & more",   href: "/ResetButton",         color: C.healing },
-              { icon: <Music className="w-5 h-5"/>, label: "Calming Audio",sub: "Sounds & binaural beats",href: "/MentalReset",          color: C.indigo  },
-              { icon: <Sun className="w-5 h-5"/>,   label: "Meditation",  sub: "Guided exercises",       href: "/MentalReset",          color: C.gold    },
-              { icon: <Smile className="w-5 h-5"/>, label: "Grounding",   sub: "5-4-3-2-1 technique",    href: "/CravingControlCenter", color: C.purple  },
+              { icon: <Wind className="w-4 h-4"/>,  label: "Breathing",   sub: "Box breathing & more",    href: "/ResetButton",         color: "var(--teal)"   },
+              { icon: <Music className="w-4 h-4"/>, label: "Calming Audio",sub: "Sounds & binaural beats",  href: "/MentalReset",          color: "var(--indigo)" },
+              { icon: <Sun className="w-4 h-4"/>,   label: "Meditation",  sub: "Guided exercises",         href: "/MentalReset",          color: "var(--sand)"   },
+              { icon: <Smile className="w-4 h-4"/>, label: "Grounding",   sub: "5-4-3-2-1 technique",      href: "/CravingControlCenter", color: "var(--purple)" },
             ].map(t => (
               <Link key={t.label} to={t.href} style={{ textDecoration: "none" }}>
-                <div style={{ borderRadius: 18, padding: "16px 14px",
-                  background: `${t.color}0A`, border: `1px solid ${t.color}22`, cursor: "pointer" }}>
+                <div className="card" style={{ padding: "14px 12px", cursor: "pointer" }}>
                   <div style={{ color: t.color, marginBottom: 8 }}>{t.icon}</div>
-                  <p style={{ fontSize: 14, fontWeight: 800, color: "#fff", marginBottom: 3 }}>{t.label}</p>
-                  <p style={{ fontSize: 11, color: C.muted }}>{t.sub}</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text)", marginBottom: 3 }}>{t.label}</p>
+                  <p style={{ fontSize: 11, color: "var(--text-muted)" }}>{t.sub}</p>
                 </div>
               </Link>
             ))}
           </div>
 
-          {/* Gratitude */}
-          <p style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: 12 }}>🙏 What's still good, even today</p>
+          {/* Gratitude */
+          <p className="section-label">What's still good, even today</p>
           {gratitudeSaved ? (
-            <div style={{ borderRadius: 18, padding: "16px 18px", marginBottom: 20,
-              background: "rgba(45,212,191,0.07)", border: "1px solid rgba(45,212,191,0.25)",
+            <div className="card" style={{ padding: "16px 18px", marginBottom: 20, borderColor: "var(--teal-border)",
               display: "flex", alignItems: "center", gap: 10 }}>
               <CheckCircle2 style={{ color: C.healing, width: 18, height: 18, flexShrink: 0 }} />
               <p style={{ fontSize: 14, fontWeight: 700, color: C.healing }}>Gratitude saved for today ✓</p>
             </div>
           ) : (
-            <div style={{ borderRadius: 18, padding: "18px", marginBottom: 20,
-              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <p style={{ fontSize: 13, color: C.gold, fontWeight: 700, marginBottom: 10 }}>Today's reflection:</p>
-              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, fontStyle: "italic", marginBottom: 14 }}>
+            <div className="card" style={{ padding: "18px", marginBottom: 20 }}>
+              <p style={{ fontSize: 13, color: "var(--sand)", fontWeight: 600, marginBottom: 10 }}>Today's reflection:</p>
+              <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.6, fontStyle: "italic", marginBottom: 14 }}>
                 "{gratitudePrompt}"
               </p>
               <textarea value={gratitudeText} onChange={e => setGratitudeText(e.target.value)}
                 placeholder="Even one small thing counts..."
                 rows={3}
-                style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.04)", color: "#fff", fontSize: 14, resize: "none",
-                  outline: "none", boxSizing: "border-box", fontFamily: "inherit", marginBottom: 12 }} />
+                style={{ width: "100%", padding: "12px", resize: "none", boxSizing: "border-box", marginBottom: 12 }} />
               <button onClick={() => user && gratitudeText.trim() && saveGratitudeMutation.mutate()}
                 disabled={!gratitudeText.trim() || saveGratitudeMutation.isPending}
-                style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none",
-                  cursor: gratitudeText.trim() ? "pointer" : "not-allowed",
-                  background: gratitudeText.trim() ? `linear-gradient(135deg,${C.gold},#B8935A)` : "rgba(255,255,255,0.06)",
-                  color: gratitudeText.trim() ? "#07090F" : C.muted, fontWeight: 800, fontSize: 14 }}>
+                className={gratitudeText.trim() ? "btn-primary" : "btn-ghost"}
+                style={{ width: "100%", padding: "12px", fontSize: 14 }}>
                 {saveGratitudeMutation.isPending ? "Saving..." : "Save Gratitude"}
               </button>
             </div>
@@ -270,14 +248,12 @@ export default function HealingHub() {
 
           {/* Safety Plan */}
           <Link to="/MySafetyPlan" style={{ textDecoration: "none", display: "block" }}>
-            <div style={{ borderRadius: 18, padding: "16px 18px",
-              background: "rgba(139,92,246,0.07)", border: "1px solid rgba(139,92,246,0.2)",
-              display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div className="card" style={{ padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <p style={{ fontSize: 15, fontWeight: 900, color: "#fff", marginBottom: 3 }}>My Safety Plan</p>
-                <p style={{ fontSize: 12, color: C.muted }}>Know your warning signs before they sneak up on you</p>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", marginBottom: 3 }}>My Safety Plan</p>
+                <p style={{ fontSize: 12, color: "var(--text-muted)" }}>Know your warning signs before they sneak up on you</p>
               </div>
-              <ArrowRight style={{ color: "#A78BFA", width: 16, height: 16 }} />
+              <ArrowRight style={{ color: "var(--text-dim)", width: 14, height: 14 }} />
             </div>
           </Link>
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "./pages/utils";
 import { Home, LifeBuoy, Star, Heart, User, RotateCcw } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
@@ -28,126 +27,36 @@ export default function Layout({ children, currentPageName }) {
   const navItems = PARTICIPANT_NAV;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--rebos-bg, #07090F)' }}>
-      <style>{`
-        .top-nav-safe { padding-top: env(safe-area-inset-top, 0px); }
-      `}</style>
-      <style>{`
-        :root {
-          --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-          --primary: #4A90E2;
-          --accent: #D4A574;
-          --text-primary: #1E1E1E;
-          --text-secondary: #5A5A5A;
-          --text-muted: #8E8E93;
-          --bg-primary: #F5F5F7;
-          --bg-secondary: #FFFFFF;
-          --bg-card: #FFFFFF;
-        body {
-          font-family: var(--font-sans);
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          background: var(--rebos-bg);
-          color: var(--rebos-text);
-        }
 
-        h1,h2,h3,h4,h5,h6 { font-family: var(--font-sans); letter-spacing: -0.02em; }
 
-        .rebos-card {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 20px;
-          backdrop-filter: blur(12px);
-        }
-
-        .rebos-glow-teal {
-          box-shadow: 0 0 24px rgba(45,212,191,0.2), 0 0 8px rgba(45,212,191,0.1);
-        }
-
-        .rebos-glow-blue {
-          box-shadow: 0 0 24px rgba(99,102,241,0.25), 0 0 8px rgba(99,102,241,0.12);
-        }
-
-        .rebos-glow-purple {
-          box-shadow: 0 0 24px rgba(139,92,246,0.25);
-        }
-
-        svg { stroke-width: 1.5; }
-      `}</style>
-
-      {/* Floating Ah Ha Moment Button — crossroads */}
+      {/* Ah Ha crossroads FAB */}
       {showNav && (
-        <Link to="/AhHaMoment" style={{ position: "fixed", bottom: 198, right: 18, zIndex: 51, textDecoration: "none" }}>
-          <div style={{
-            width: 50, height: 50, borderRadius: "50%",
-            background: "linear-gradient(135deg,#C9A96E,#B8935A)",
-            boxShadow: "0 4px 20px rgba(201,169,110,0.45), 0 0 0 3px rgba(201,169,110,0.15)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            {/* Crossroads SVG */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* vertical road */}
-              <rect x="10" y="2" width="4" height="20" rx="1" fill="rgba(255,255,255,0.9)"/>
-              {/* horizontal road */}
-              <rect x="2" y="10" width="20" height="4" rx="1" fill="rgba(255,255,255,0.9)"/>
-              {/* center intersection highlight */}
-              <rect x="10" y="10" width="4" height="4" rx="0.5" fill="#C9A96E"/>
-              {/* road dashes vertical top */}
-              <rect x="11.5" y="3" width="1" height="2" rx="0.5" fill="#C9A96E" opacity="0.7"/>
-              {/* road dashes vertical bottom */}
-              <rect x="11.5" y="19" width="1" height="2" rx="0.5" fill="#C9A96E" opacity="0.7"/>
-              {/* road dashes horizontal left */}
-              <rect x="3" y="11.5" width="2" height="1" rx="0.5" fill="#C9A96E" opacity="0.7"/>
-              {/* road dashes horizontal right */}
-              <rect x="19" y="11.5" width="2" height="1" rx="0.5" fill="#C9A96E" opacity="0.7"/>
-            </svg>
-          </div>
-        </Link>
-      )}
-
-      {/* Floating Lifeline Button — always visible */}
 
       {showNav && (
-        <Link to="/ResetButton" style={{ position: "fixed", bottom: 82, right: 18, zIndex: 51, textDecoration: "none" }}>
-          <div style={{
-            width: 50, height: 50, borderRadius: "50%",
-            background: "linear-gradient(135deg,#2DD4BF,#22C5B0)",
-            boxShadow: "0 4px 20px rgba(45,212,191,0.4), 0 0 0 3px rgba(45,212,191,0.12)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <RotateCcw style={{ color: "#07090F", width: 20, height: 20 }} strokeWidth={2.5} />
-          </div>
-        </Link>
-      )}
-
-      {showNav && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50" style={{
-          background: 'rgba(7,9,15,0.96)',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
+        <Link to="/ResetButton" style={{ position: "fixed", bottom: 82, right: 18, zIndex: 51, textDecoration: "none" }}> style={{
+          background: 'rgba(13,16,24,0.97)',
+          borderTop: '1px solid rgba(255,255,255,0.05)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}>
-
           <div className="max-w-lg mx-auto flex">
             {navItems.map(({ name, icon: Icon, page, href }) => {
               const isActive = currentPageName === page;
-              const activeColor = '#2DD4BF';
               return (
                 <Link
                   key={page}
                   to={href || "/"}
                   className="flex-1 flex flex-col items-center gap-1 py-3"
-                  style={{ color: isActive ? activeColor : 'rgba(255,255,255,0.3)', textDecoration: 'none' }}
+                  style={{ color: isActive ? 'var(--teal)' : 'var(--text-dim)', textDecoration: 'none' }}
                 >
                   <div style={{
                     padding: '5px 14px',
-                    borderRadius: 12,
-                    background: isActive ? `${activeColor}18` : 'transparent',
-                    boxShadow: isActive ? `0 0 14px ${activeColor}30` : 'none',
+                    borderRadius: 10,
+                    background: isActive ? 'var(--teal-dim)' : 'transparent',
                     transition: 'all 0.2s ease',
                   }}>
-                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2.2 : 1.5} />
+                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
                   </div>
                   <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: '.03em' }}>{name}</span>
                 </Link>
@@ -162,14 +71,13 @@ export default function Layout({ children, currentPageName }) {
       </div>
 
       {showNav && (
-        <footer className="border-t py-4 px-6 text-center" style={{ background: 'rgba(7,9,15,0.9)', borderColor: 'rgba(255,255,255,0.05)' }}>
+        <footer style={{ borderTop: '1px solid var(--border-soft)', padding: '16px 24px', textAlign: 'center', background: 'var(--bg)' }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, marginBottom:4 }}>
-            <span style={{ fontSize:13, fontWeight:800, color:'#C9A96E', letterSpacing:'-.02em' }}>Ah Ha</span>
-            <span style={{ fontSize:11, color:'rgba(255,255,255,0.2)', fontWeight:400 }}>by Unbound</span>
-            <span style={{ fontSize:9, color:'rgba(255,255,255,0.12)', marginLeft:2 }}>· You're not alone in this.</span>
+            <span style={{ fontSize:13, fontWeight:800, color:'var(--sand)', letterSpacing:'-.02em' }}>Ah Ha</span>
+            <span style={{ fontSize:11, color:'var(--text-dim)', fontWeight:400 }}>by Unbound</span>
           </div>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-            This app is a support tool, not a replacement for professional care. In a crisis, call 911 or 988.
+          <p style={{ fontSize:11, color:'var(--text-dim)' }}>
+            Support tool only. In a crisis, call 911 or 988.
           </p>
         </footer>
       )}
