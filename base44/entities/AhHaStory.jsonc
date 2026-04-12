@@ -1,0 +1,185 @@
+{
+  "name": "AhHaStory",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner user email"
+    },
+    "title": {
+      "type": "string"
+    },
+    "before_moment": {
+      "type": "string",
+      "description": "What life felt like before the Ah Ha moment"
+    },
+    "turning_point": {
+      "type": "string",
+      "description": "What happened that caused the realization"
+    },
+    "emotional_shift": {
+      "type": "string",
+      "description": "How that moment felt emotionally"
+    },
+    "next_action": {
+      "type": "string",
+      "description": "What action was taken after the realization"
+    },
+    "advice_to_others": {
+      "type": "string",
+      "description": "Message to someone in the same situation"
+    },
+    "story_preview": {
+      "type": "string",
+      "description": "Auto-generated excerpt for feed display (first ~200 chars of turning_point)"
+    },
+    "full_story_content": {
+      "type": "string",
+      "description": "Combined formatted version of all story sections"
+    },
+    "estimated_read_time": {
+      "type": "number",
+      "default": 1,
+      "description": "Estimated minutes to read"
+    },
+    "visibility_type": {
+      "type": "string",
+      "enum": [
+        "private",
+        "anonymous_review",
+        "first_name_review"
+      ],
+      "default": "private"
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "approved",
+        "rejected",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "display_name_mode": {
+      "type": "string",
+      "enum": [
+        "anonymous",
+        "first_name",
+        "private_only"
+      ],
+      "default": "anonymous"
+    },
+    "first_name_display": {
+      "type": "string",
+      "description": "First name shown publicly if display_name_mode = first_name"
+    },
+    "featured_status": {
+      "type": "boolean",
+      "default": false
+    },
+    "comments_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "clean_time_value": {
+      "type": "number"
+    },
+    "clean_time_unit": {
+      "type": "string",
+      "enum": [
+        "days",
+        "weeks",
+        "months",
+        "years"
+      ]
+    },
+    "substance_category": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "opioids",
+        "stimulants",
+        "benzodiazepines",
+        "marijuana",
+        "polysubstance",
+        "other",
+        "prefer_not_to_say"
+      ]
+    },
+    "age_range": {
+      "type": "string",
+      "enum": [
+        "18_24",
+        "25_34",
+        "35_44",
+        "45_54",
+        "55_plus",
+        "prefer_not_to_say"
+      ]
+    },
+    "location_broad": {
+      "type": "string",
+      "description": "Broad location e.g. city or state only"
+    },
+    "reactions_count": {
+      "type": "number",
+      "default": 0
+    },
+    "comments_count": {
+      "type": "number",
+      "default": 0
+    },
+    "saves_count": {
+      "type": "number",
+      "default": 0
+    },
+    "views_count": {
+      "type": "number",
+      "default": 0
+    },
+    "shares_count": {
+      "type": "number",
+      "default": 0
+    },
+    "moderator_feedback": {
+      "type": "string",
+      "description": "Feedback shown to user when rejected"
+    },
+    "rejection_reason": {
+      "type": "string"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "description": "Moderator user email"
+    },
+    "review_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "archived_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email",
+    "title",
+    "turning_point",
+    "approval_status",
+    "visibility_type"
+  ]
+}

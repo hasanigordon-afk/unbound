@@ -1,0 +1,22 @@
+{
+  "name": "AhHaStoryTagLink",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id"
+    },
+    "tag_id": {
+      "type": "string",
+      "description": "Relation to AhHaStoryTag.id"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Denormalized for filtering"
+    }
+  },
+  "required": [
+    "story_id",
+    "tag_id"
+  ]
+}

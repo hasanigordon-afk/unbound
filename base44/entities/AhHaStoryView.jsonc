@@ -1,0 +1,31 @@
+{
+  "name": "AhHaStoryView",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Optional \u2014 null for anonymous sessions"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Anonymous session tracking"
+    },
+    "source_page": {
+      "type": "string",
+      "enum": [
+        "community_feed",
+        "featured_story",
+        "profile",
+        "direct_link"
+      ],
+      "default": "community_feed"
+    }
+  },
+  "required": [
+    "story_id"
+  ]
+}

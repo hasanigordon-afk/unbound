@@ -1,0 +1,17 @@
+{
+  "name": "AhHaSavedStory",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id \u2014 only approved stories"
+    },
+    "user_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "story_id",
+    "user_email"
+  ]
+}

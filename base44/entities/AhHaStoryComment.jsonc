@@ -1,0 +1,42 @@
+{
+  "name": "AhHaStoryComment",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "parent_comment_id": {
+      "type": "string",
+      "description": "Self-relation for replies (optional)"
+    },
+    "comment_text": {
+      "type": "string"
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "visible",
+        "hidden",
+        "flagged",
+        "removed"
+      ],
+      "default": "visible"
+    },
+    "moderator_note": {
+      "type": "string"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "story_id",
+    "user_email",
+    "comment_text"
+  ]
+}

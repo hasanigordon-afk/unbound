@@ -1,0 +1,48 @@
+{
+  "name": "AhHaStoryVersion",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "version_number": {
+      "type": "number"
+    },
+    "title": {
+      "type": "string"
+    },
+    "before_moment": {
+      "type": "string"
+    },
+    "turning_point": {
+      "type": "string"
+    },
+    "emotional_shift": {
+      "type": "string"
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "advice_to_others": {
+      "type": "string"
+    },
+    "full_story_content": {
+      "type": "string"
+    },
+    "change_reason": {
+      "type": "string",
+      "description": "Why the user edited this version"
+    }
+  },
+  "required": [
+    "story_id",
+    "user_email",
+    "version_number",
+    "title",
+    "turning_point"
+  ]
+}

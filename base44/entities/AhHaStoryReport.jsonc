@@ -1,0 +1,52 @@
+{
+  "name": "AhHaStoryReport",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id"
+    },
+    "reported_by_email": {
+      "type": "string"
+    },
+    "report_reason": {
+      "type": "string",
+      "enum": [
+        "harmful_content",
+        "spam",
+        "inappropriate_details",
+        "triggering_unsafe",
+        "other"
+      ]
+    },
+    "report_details": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "under_review",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "open"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "description": "Moderator email"
+    },
+    "resolution_note": {
+      "type": "string"
+    },
+    "resolved_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "story_id",
+    "reported_by_email",
+    "report_reason"
+  ]
+}

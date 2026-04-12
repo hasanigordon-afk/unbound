@@ -1,0 +1,54 @@
+{
+  "name": "AhHaModerationQueue",
+  "type": "object",
+  "properties": {
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "story",
+        "comment",
+        "story_report",
+        "comment_report"
+      ]
+    },
+    "content_id": {
+      "type": "string",
+      "description": "ID of the story, comment, or report being reviewed"
+    },
+    "priority_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high"
+      ],
+      "default": "normal"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_review",
+        "completed"
+      ],
+      "default": "pending"
+    },
+    "assigned_moderator_email": {
+      "type": "string",
+      "description": "Moderator assigned to this queue item"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Internal moderator notes"
+    }
+  },
+  "required": [
+    "content_type",
+    "content_id",
+    "moderation_status"
+  ]
+}

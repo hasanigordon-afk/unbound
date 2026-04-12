@@ -1,0 +1,29 @@
+{
+  "name": "AhHaReactionV2",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Relation to AhHaStory.id"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "reaction_type": {
+      "type": "string",
+      "enum": [
+        "needed_this",
+        "respect",
+        "powerful",
+        "inspiring",
+        "proud_of_you"
+      ],
+      "default": "needed_this"
+    }
+  },
+  "required": [
+    "story_id",
+    "user_email",
+    "reaction_type"
+  ]
+}
