@@ -6,43 +6,39 @@ import { Search, Filter, Star, ArrowRight, Loader2, BookOpen, Heart } from "luci
 
 // ── Constants ──────────────────────────────────────────────────────────────
 const C = {
-  teal:    "#2DD4BF",
-  gold:    "#C9A96E",
-  indigo:  "#6366F1",
-  emerald: "#10B981",
-  rose:    "#F472B6",
-  amber:   "#F59E0B",
-  muted:   "rgba(241,245,249,0.38)",
-  glass:   { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(16px)" },
+  amber:  "#B8823A",
+  muted:  "#9B8E83",
+  text:   "#1C1410",
+  body:   "#4A3F35",
+  card:   { background: "#FDFAF6", border: "1px solid #E8E2D9", borderRadius: 16, boxShadow: "0 1px 6px rgba(28,20,16,0.07)" },
 };
 
 export const CATEGORIES = [
-  { key: "wake_up_call",       label: "Wake-Up Call",          emoji: "⚡", color: "#F59E0B" },
-  { key: "rock_bottom",        label: "Rock Bottom",           emoji: "🪨", color: "#94A3B8" },
-  { key: "my_child_saved_me",  label: "My Child Saved Me",     emoji: "👶", color: "#F472B6" },
-  { key: "health_scare",       label: "Health Scare",          emoji: "🏥", color: "#EF4444" },
-  { key: "jail_court",         label: "Jail / Court",          emoji: "⚖️", color: "#8B5CF6" },
-  { key: "tired_of_running",   label: "Tired of Running",      emoji: "🏃", color: "#6366F1" },
-  { key: "wanted_my_life_back",label: "I Wanted My Life Back", emoji: "🌅", color: "#10B981" },
-  { key: "no_more_excuses",    label: "No More Excuses",       emoji: "🔥", color: "#2DD4BF" },
+  { key: "wake_up_call",       label: "Wake-Up Call",          emoji: "⚡" },
+  { key: "rock_bottom",        label: "Rock Bottom",           emoji: "🪨" },
+  { key: "my_child_saved_me",  label: "My Child Saved Me",     emoji: "👶" },
+  { key: "health_scare",       label: "Health Scare",          emoji: "🏥" },
+  { key: "jail_court",         label: "Jail / Court",          emoji: "⚖️" },
+  { key: "tired_of_running",   label: "Tired of Running",      emoji: "🏃" },
+  { key: "wanted_my_life_back",label: "I Wanted My Life Back", emoji: "🌅" },
+  { key: "no_more_excuses",    label: "No More Excuses",       emoji: "🔥" },
 ];
 const catMap = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
 
 function StoryCard({ story, compact }) {
-  const cat = catMap[story.category] || { emoji: "💬", label: story.category, color: C.teal };
+  const cat = catMap[story.category] || { emoji: "💬", label: story.category };
   const name = story.is_anonymous ? "Anonymous" : (story.display_name || story.user_email?.split("@")[0] || "Member");
   const preview = story.what_happened?.slice(0, compact ? 120 : 200) + (story.what_happened?.length > (compact ? 120 : 200) ? "…" : "");
 
   return (
     <Link to={`/AhHaDetail?id=${story.id}`} style={{ textDecoration: "none", display: "block" }}>
       <div style={{
-        ...C.glass, borderRadius: 22, padding: "20px 20px",
-        marginBottom: 14, cursor: "pointer",
-        borderColor: `${cat.color}25`,
-        transition: "transform 0.15s ease, box-shadow 0.15s ease",
+        ...C.card, padding: "18px 18px",
+        marginBottom: 12, cursor: "pointer",
+        transition: "box-shadow 0.15s ease",
       }}
-        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = `0 8px 32px rgba(0,0,0,0.3)`; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+        onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(28,20,16,0.1)"; }}
+        onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 1px 6px rgba(28,20,16,0.07)"; }}
       >
         {/* Content warning */}
         {story.has_content_warning && (
@@ -55,20 +51,20 @@ function StoryCard({ story, compact }) {
         {/* Category + featured badge */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
           <span style={{ fontSize: 16 }}>{cat.emoji}</span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: cat.color, textTransform: "uppercase", letterSpacing: ".08em" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: C.amber, textTransform: "uppercase", letterSpacing: ".08em" }}>
             {cat.label}
           </span>
           {story.is_featured && (
             <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700,
-              background: "rgba(201,169,110,0.15)", color: C.gold, padding: "3px 8px",
-              borderRadius: 10, border: "1px solid rgba(201,169,110,0.3)", display: "flex", alignItems: "center", gap: 4 }}>
+              background: "rgba(184,130,58,0.1)", color: C.amber, padding: "3px 8px",
+              borderRadius: 10, border: "1px solid rgba(184,130,58,0.25)", display: "flex", alignItems: "center", gap: 4 }}>
               <Star style={{ width: 9, height: 9 }} /> Featured
             </span>
           )}
         </div>
 
         {/* Story preview */}
-        <p style={{ fontSize: 15, color: "rgba(255,255,255,0.82)", lineHeight: 1.7, marginBottom: 14, fontStyle: "italic" }}>
+        <p style={{ fontSize: 14, color: C.body, lineHeight: 1.7, marginBottom: 14, fontStyle: "italic" }}>
           "{preview}"
         </p>
 
@@ -84,7 +80,7 @@ function StoryCard({ story, compact }) {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 12, color: C.muted }}>❤️ {story.reaction_count || 0}</span>
             <span style={{ fontSize: 12, color: C.muted }}>💬 {story.comment_count || 0}</span>
-            <ArrowRight style={{ color: cat.color, width: 14, height: 14 }} />
+            <ArrowRight style={{ color: C.amber, width: 14, height: 14 }} />
           </div>
         </div>
       </div>
@@ -124,7 +120,7 @@ export default function AhHaMoment() {
   }, [stories, activeCategory, showFeaturedOnly, search]);
 
   return (
-    <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0B1020 100%)", minHeight: "100vh", paddingBottom: 110 }}>
+    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 110 }}>
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
         .ah-fadeUp { animation: fadeUp 0.6s cubic-bezier(.22,1,.36,1) both; }
@@ -133,36 +129,28 @@ export default function AhHaMoment() {
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
         {/* ── Hero ── */}
-        <div style={{ padding: "64px 24px 32px", position: "relative", overflow: "hidden",
-          background: "linear-gradient(155deg,#0A1628 0%,#080E1C 100%)" }}>
-          <div style={{ position: "absolute", top: -80, right: -80, width: 320, height: 320, borderRadius: "50%",
-            background: "radial-gradient(circle,rgba(201,169,110,0.09) 0%,transparent 70%)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: -40, left: -40, width: 240, height: 200, borderRadius: "50%",
-            background: "radial-gradient(circle,rgba(45,212,191,0.07) 0%,transparent 70%)", pointerEvents: "none" }} />
-
-          <div style={{ position: "relative", zIndex: 1 }} className="ah-fadeUp">
-            <p style={{ fontSize: 10, fontWeight: 800, color: "rgba(201,169,110,0.7)", textTransform: "uppercase",
+        <div style={{ padding: "64px 24px 32px", background: "#FDFAF6", borderBottom: "1px solid #E8E2D9" }}>
+          <div className="ah-fadeUp">
+            <p style={{ fontSize: 10, fontWeight: 700, color: C.amber, textTransform: "uppercase",
               letterSpacing: ".14em", marginBottom: 10 }}>Ah Ha by Unbound</p>
-            <h1 style={{ fontSize: 30, fontWeight: 900, color: "#fff", lineHeight: 1.15, marginBottom: 8, letterSpacing: "-.4px" }}>
+            <h1 style={{ fontSize: 28, fontWeight: 600, color: "#1C1410", lineHeight: 1.15, marginBottom: 8, fontFamily: "'Lora', Georgia, serif" }}>
               The Ah Ha Moment
             </h1>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, marginBottom: 28, maxWidth: 340 }}>
+            <p style={{ fontSize: 14, color: C.body, lineHeight: 1.65, marginBottom: 24, maxWidth: 340 }}>
               The moment you realized life had to change. Real stories. Real people. No filters.
             </p>
 
             <div style={{ display: "flex", gap: 10 }}>
               <button onClick={() => navigate("/SubmitAhHa")} style={{
-                flex: 1, padding: "14px 18px", borderRadius: 14, border: "none", cursor: "pointer",
-                background: "linear-gradient(135deg,#C9A96E,#B8935A)",
-                color: "#07090F", fontWeight: 800, fontSize: 14,
-                boxShadow: "0 6px 24px rgba(201,169,110,0.28)",
+                flex: 1, padding: "13px 18px", borderRadius: 14, border: "none", cursor: "pointer",
+                background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 14, minHeight: 44,
               }}>
                 Share Your Ah Ha Moment ✨
               </button>
               <button onClick={() => document.getElementById("stories-feed")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ padding: "14px 16px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.1)",
-                  background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)",
-                  fontWeight: 700, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>
+                style={{ padding: "13px 16px", borderRadius: 14, border: "1px solid #E8E2D9",
+                  background: "#FDFAF6", color: "#4A3F35",
+                  fontWeight: 600, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap", minHeight: 44 }}>
                 Read Stories
               </button>
             </div>
@@ -175,11 +163,11 @@ export default function AhHaMoment() {
           {featured.length > 0 && (
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "20px 0 12px" }}>
-                <Star style={{ color: C.gold, width: 14, height: 14 }} />
-                <p style={{ fontSize: 11, fontWeight: 700, color: C.gold, textTransform: "uppercase", letterSpacing: "1.1px" }}>
+                <Star style={{ color: C.amber, width: 14, height: 14 }} />
+                <p style={{ fontSize: 11, fontWeight: 700, color: C.amber, textTransform: "uppercase", letterSpacing: "1.1px" }}>
                   Featured Stories
                 </p>
-                <div style={{ flex: 1, height: 1, background: "rgba(201,169,110,0.15)" }} />
+                <div style={{ flex: 1, height: 1, background: "#E8E2D9" }} />
               </div>
               {featured.map(s => <StoryCard key={s.id} story={s} compact />)}
             </div>
@@ -188,15 +176,15 @@ export default function AhHaMoment() {
           {/* ── Search ── */}
           <div style={{ position: "relative", marginBottom: 14 }}>
             <Search style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)",
-              color: C.muted, width: 16, height: 16 }} />
+              color: "#9B8E83", width: 16, height: 16 }} />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search stories…"
               style={{
                 width: "100%", padding: "13px 14px 13px 40px", borderRadius: 14, boxSizing: "border-box",
-                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)",
-                color: "#fff", fontSize: 14, outline: "none",
+                background: "#FDFAF6", border: "1px solid #E8E2D9",
+                color: "#1C1410", fontSize: 14, outline: "none",
               }}
             />
           </div>
@@ -204,15 +192,15 @@ export default function AhHaMoment() {
           {/* ── Category filters ── */}
           <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4, marginBottom: 16,
             scrollbarWidth: "none", WebkitScrollbarWidth: "none" }}>
-            {[{ key: "all", label: "All Stories", emoji: "✨", color: C.teal }, ...CATEGORIES].map(cat => {
+            {[{ key: "all", label: "All Stories", emoji: "✨" }, ...CATEGORIES].map(cat => {
               const active = activeCategory === cat.key;
               return (
                 <button key={cat.key} onClick={() => setActiveCategory(cat.key)} style={{
                   flexShrink: 0, padding: "7px 14px", borderRadius: 20, border: "none", cursor: "pointer",
-                  background: active ? `${cat.color}20` : "rgba(255,255,255,0.04)",
-                  border: `1.5px solid ${active ? `${cat.color}50` : "rgba(255,255,255,0.07)"}`,
-                  color: active ? cat.color : C.muted, fontWeight: active ? 700 : 500, fontSize: 12,
-                  display: "flex", alignItems: "center", gap: 5,
+                  background: active ? "#B8823A" : "#FDFAF6",
+                  border: `1px solid ${active ? "#B8823A" : "#E8E2D9"}`,
+                  color: active ? "#fff" : "#9B8E83", fontWeight: active ? 700 : 500, fontSize: 12,
+                  display: "flex", alignItems: "center", gap: 5, minHeight: 36,
                   transition: "all 0.15s ease",
                 }}>
                   <span>{cat.emoji}</span> {cat.label}
@@ -225,13 +213,13 @@ export default function AhHaMoment() {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
             <button onClick={() => setShowFeaturedOnly(f => !f)} style={{
               padding: "7px 14px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-              background: showFeaturedOnly ? "rgba(201,169,110,0.15)" : "rgba(255,255,255,0.04)",
-              border: `1.5px solid ${showFeaturedOnly ? "rgba(201,169,110,0.4)" : "rgba(255,255,255,0.07)"}`,
-              color: showFeaturedOnly ? C.gold : C.muted,
+              background: showFeaturedOnly ? "#B8823A" : "#FDFAF6",
+              border: `1px solid ${showFeaturedOnly ? "#B8823A" : "#E8E2D9"}`,
+              color: showFeaturedOnly ? "#fff" : "#9B8E83", minHeight: 36,
             }}>
               ⭐ Featured only
             </button>
-            <p style={{ fontSize: 12, color: C.muted }}>
+            <p style={{ fontSize: 12, color: "#9B8E83" }}>
               {filtered.length} {filtered.length === 1 ? "story" : "stories"}
             </p>
           </div>
@@ -240,24 +228,24 @@ export default function AhHaMoment() {
           <div id="stories-feed">
             {isLoading ? (
               <div style={{ textAlign: "center", padding: "48px 0" }}>
-                <Loader2 className="animate-spin" style={{ color: C.teal, width: 28, height: 28, margin: "0 auto" }} />
+                <Loader2 className="animate-spin" style={{ color: "#B8823A", width: 28, height: 28, margin: "0 auto" }} />
               </div>
             ) : filtered.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "48px 20px", ...C.glass, borderRadius: 22 }}>
+              <div style={{ textAlign: "center", padding: "40px 20px", background: "#FDFAF6",
+                border: "1px solid #E8E2D9", borderRadius: 16 }}>
                 <p style={{ fontSize: 32, marginBottom: 12 }}>🌱</p>
-                <p style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 8 }}>
+                <p style={{ fontSize: 16, fontWeight: 600, color: "#1C1410", marginBottom: 8, fontFamily: "'Lora', serif" }}>
                   {stories.length === 0 ? "Be the first to share." : "No stories match your search."}
                 </p>
-                <p style={{ fontSize: 13, color: C.muted, marginBottom: 20 }}>
+                <p style={{ fontSize: 13, color: "#9B8E83", marginBottom: 20, lineHeight: 1.6 }}>
                   {stories.length === 0
                     ? "Your moment could be the one that helps someone take their first step."
                     : "Try a different category or search term."}
                 </p>
                 {stories.length === 0 && (
                   <button onClick={() => navigate("/SubmitAhHa")} style={{
-                    padding: "13px 28px", borderRadius: 13, border: "none", cursor: "pointer",
-                    background: "linear-gradient(135deg,#C9A96E,#B8935A)",
-                    color: "#07090F", fontWeight: 800, fontSize: 14,
+                    padding: "13px 28px", borderRadius: 12, border: "none", cursor: "pointer",
+                    background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 14, minHeight: 44,
                   }}>
                     Share Your Moment →
                   </button>
@@ -270,20 +258,18 @@ export default function AhHaMoment() {
 
           {/* ── Your story CTA ── */}
           {!isLoading && filtered.length > 0 && (
-            <div style={{ marginTop: 8, marginBottom: 16, borderRadius: 22, padding: "24px 22px",
-              background: "linear-gradient(135deg,rgba(201,169,110,0.08),rgba(45,212,191,0.04))",
-              border: "1.5px solid rgba(201,169,110,0.2)", textAlign: "center" }}>
-              <p style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 6 }}>
+            <div style={{ marginTop: 8, marginBottom: 16, borderRadius: 16, padding: "24px 20px",
+              background: "#FDFAF6", border: "1px solid #E8E2D9", textAlign: "center",
+              boxShadow: "0 1px 6px rgba(28,20,16,0.07)" }}>
+              <p style={{ fontSize: 16, fontWeight: 600, color: "#1C1410", marginBottom: 6, fontFamily: "'Lora', serif" }}>
                 Your story matters too.
               </p>
-              <p style={{ fontSize: 13, color: C.muted, marginBottom: 16, lineHeight: 1.6 }}>
+              <p style={{ fontSize: 13, color: "#9B8E83", marginBottom: 16, lineHeight: 1.6 }}>
                 Someone out there is standing at the same fork in the road. Your Ah Ha moment could be their turning point.
               </p>
               <button onClick={() => navigate("/SubmitAhHa")} style={{
-                padding: "13px 28px", borderRadius: 13, border: "none", cursor: "pointer",
-                background: "linear-gradient(135deg,#C9A96E,#B8935A)",
-                color: "#07090F", fontWeight: 800, fontSize: 14,
-                boxShadow: "0 4px 20px rgba(201,169,110,0.25)",
+                padding: "13px 28px", borderRadius: 12, border: "none", cursor: "pointer",
+                background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 14, minHeight: 44,
               }}>
                 Share Your Ah Ha Moment →
               </button>
