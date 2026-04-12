@@ -124,7 +124,7 @@ export default function Home() {
   const spotlight = articles[0];
 
   return (
-    <div style={{ background:"var(--bg)", minHeight:"100vh", paddingBottom:120 }}>
+    <div style={{ background:"#F7F3EE", minHeight:"100vh", paddingBottom:120 }}>
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
         .fu { animation: fadeUp 0.5s cubic-bezier(.22,1,.36,1) both; }
@@ -135,7 +135,7 @@ export default function Home() {
       <div style={{ maxWidth:480, margin:"0 auto" }}>
 
         {/* ── HERO ── */}
-        <div style={{ padding:"64px 24px 32px", background:"var(--surface)", borderBottom:"1px solid var(--border)" }}>
+        <div style={{ padding:"64px 24px 32px", background:"#FDFAF6", borderBottom:"1px solid #E8E2D9" }}>
           <div className="fu" style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:20 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6 }}>
               <span style={{ fontSize:16, fontWeight:800, color:"var(--sand)", letterSpacing:"-.02em" }}>Ah Ha</span>
@@ -144,22 +144,22 @@ export default function Home() {
             <span style={{ fontSize:11, fontWeight:600, color:"var(--teal)", letterSpacing:".05em", textTransform:"uppercase" }}>{greeting}</span>
           </div>
 
-          <h1 className="fu" style={{ fontSize:28, fontWeight:800, lineHeight:1.15, color:"var(--text)", marginBottom:8, animationDelay:".05s" }}>
-            Good to see you,<br/><span style={{ color:"var(--sand)" }}>{firstName}.</span>
+          <h1 className="fu" style={{ fontSize:28, fontWeight:600, lineHeight:1.15, color:"#1C1410", marginBottom:8, animationDelay:".05s", fontFamily:"'Lora', Georgia, serif" }}>
+            Good to see you,<br/><span style={{ color:"#B8823A" }}>{firstName}.</span>
           </h1>
 
-          <p className="fu" style={{ fontSize:14, color:"var(--text-muted)", lineHeight:1.7, marginBottom:24, animationDelay:".1s", maxWidth:320 }}>
+          <p className="fu" style={{ fontSize:14, color:"#4A3F35", lineHeight:1.7, marginBottom:24, animationDelay:".1s", maxWidth:320 }}>
             You showed up again. That's not small — that's everything.
           </p>
 
           <div className="fu" style={{ display:"flex", gap:10, animationDelay:".15s" }}>
             <Link to={createPageUrl("DailyCheckIn")} style={{ flex:1, textDecoration:"none" }}>
-              <button className="lift btn-primary" style={{ width:"100%", padding:"13px 18px", fontSize:14 }}>
-                {checked ? "Keep Going →" : "Check In Today →"}
+              <button className="lift" style={{ width:"100%", padding:"13px 18px", fontSize:14, background:"#B8823A", color:"#fff", border:"none", borderRadius:50, fontWeight:700, cursor:"pointer", fontFamily:"'DM Sans', sans-serif" }}>
+                {checked ? "Keep Going →" : "How Am I Doing Today? →"}
               </button>
             </Link>
             <Link to={createPageUrl("RecoveryHub")} style={{ textDecoration:"none" }}>
-              <button className="lift btn-ghost" style={{ padding:"13px 18px", fontSize:14 }}>Explore</button>
+              <button className="lift" style={{ padding:"13px 18px", fontSize:14, background:"#FDFAF6", color:"#4A3F35", border:"1px solid #E8E2D9", borderRadius:50, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans', sans-serif" }}>Explore</button>
             </Link>
           </div>
 
@@ -183,13 +183,13 @@ export default function Home() {
           {/* ── STREAK STATS ── */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:24 }}>
             {[
-              { label:"Day Streak", value:streak, color:stage.color },
-              { label:"This Week",  value:weeklyMeetings+" mtg", color:"var(--teal)" },
-              { label:"Checked In", value:checked ? "Today ✓" : "Not yet", color:checked?"var(--green)":"var(--text-dim)" },
+              { label:"Day Streak", value:streak },
+              { label:"This Week",  value:weeklyMeetings+" mtg" },
+              { label:"Checked In", value:checked ? "Today ✓" : "Not yet" },
             ].map(s => (
-              <div key={s.label} className="card" style={{ padding:"14px 12px" }}>
-                <p style={{ fontSize:20, fontWeight:800, color:s.color, lineHeight:1, marginBottom:4 }}>{s.value}</p>
-                <p style={{ fontSize:10, color:"var(--text-dim)", fontWeight:600, textTransform:"uppercase", letterSpacing:".06em" }}>{s.label}</p>
+              <div key={s.label} style={{ padding:"14px 12px", background:"#FDFAF6", border:"1px solid #E8E2D9", borderRadius:"var(--r-xl)" }}>
+                <p style={{ fontSize:20, fontWeight:700, color:"#B8823A", lineHeight:1, marginBottom:4 }}>{s.value}</p>
+                <p style={{ fontSize:10, color:"#9B8E83", fontWeight:600, textTransform:"uppercase", letterSpacing:".06em" }}>{s.label}</p>
               </div>
             ))}
           </div>
