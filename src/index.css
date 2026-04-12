@@ -2,58 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap');
 
 :root {
-  /* ── Core surface ── */
-  --bg:           #0D1018;
-  --surface:      #141923;
-  --card:         #1A2130;
-  --card-hover:   #1F2840;
-  --border:       rgba(255,255,255,0.07);
-  --border-soft:  rgba(255,255,255,0.04);
+  /* ── Warm Stone Core Surfaces ── */
+  --bg:           #1A1612;
+  --surface:      #211C17;
+  --card:         #2A231B;
+  --card-hover:   #322B22;
+  --border:       rgba(215,190,155,0.09);
+  --border-soft:  rgba(215,190,155,0.05);
 
   /* ── Brand ── */
-  --teal:         #2A9D8F;
-  --teal-dim:     rgba(42,157,143,0.15);
-  --teal-border:  rgba(42,157,143,0.3);
-  --sand:         #C4A882;
-  --sand-dim:     rgba(196,168,130,0.12);
-  --sand-border:  rgba(196,168,130,0.25);
+  --teal:         #7A9E8A;
+  --teal-dim:     rgba(122,158,138,0.14);
+  --teal-border:  rgba(122,158,138,0.28);
+  --sand:         #C8A87A;
+  --sand-dim:     rgba(200,168,122,0.13);
+  --sand-border:  rgba(200,168,122,0.28);
 
   /* ── Status ── */
-  --green:        #34A882;
-  --amber:        #D4915A;
-  --red:          #C9534F;
-  --indigo:       #5C6BC0;
-  --purple:       #7C5CBF;
+  --green:        #7A9E6E;
+  --amber:        #C4855A;
+  --red:          #B85C5C;
+  --indigo:       #7B8FA8;
+  --purple:       #9B8AB8;
 
   /* ── Typography ── */
-  --text:         #DDE1EA;
-  --text-muted:   rgba(221,225,234,0.5);
-  --text-dim:     rgba(221,225,234,0.28);
+  --text:         #EDE8E0;
+  --text-muted:   rgba(237,232,224,0.58);
+  --text-dim:     rgba(237,232,224,0.3);
 
   /* ── Spacing scale ── */
-  --r-sm:         10px;
-  --r-md:         14px;
-  --r-lg:         18px;
-  --r-xl:         24px;
+  --r-sm:         8px;
+  --r-md:         12px;
+  --r-lg:         16px;
+  --r-xl:         20px;
 
   /* ── Shadow ── */
-  --shadow:       0 2px 16px rgba(0,0,0,0.35);
-  --shadow-sm:    0 1px 6px  rgba(0,0,0,0.25);
+  --shadow:       0 2px 20px rgba(0,0,0,0.45);
+  --shadow-sm:    0 1px 8px  rgba(0,0,0,0.3);
 
-  /* Legacy aliases (keep for components that reference old vars) */
-  --rebos-bg:       #0D1018;
-  --rebos-surface:  #141923;
-  --rebos-card:     #1A2130;
-  --rebos-border:   rgba(255,255,255,0.07);
-  --rebos-teal:     #2A9D8F;
-  --rebos-blue:     #5C6BC0;
-  --rebos-purple:   #7C5CBF;
-  --rebos-text:     #DDE1EA;
-  --rebos-muted:    rgba(221,225,234,0.5);
-  --rebos-dim:      rgba(221,225,234,0.28);
+  /* Legacy aliases */
+  --rebos-bg:       #1A1612;
+  --rebos-surface:  #211C17;
+  --rebos-card:     #2A231B;
+  --rebos-border:   rgba(215,190,155,0.09);
+  --rebos-teal:     #7A9E8A;
+  --rebos-blue:     #7B8FA8;
+  --rebos-purple:   #9B8AB8;
+  --rebos-text:     #EDE8E0;
+  --rebos-muted:    rgba(237,232,224,0.58);
+  --rebos-dim:      rgba(237,232,224,0.3);
 }
 
 @layer base {
@@ -65,7 +65,7 @@
     background: var(--bg);
     color: var(--text);
   }
-  h1,h2,h3,h4,h5,h6 { letter-spacing: -0.025em; font-weight: 700; }
+  h1,h2,h3,h4,h5,h6 { letter-spacing: -0.02em; font-weight: 700; }
 }
 
 /* ── Unified component primitives ── */

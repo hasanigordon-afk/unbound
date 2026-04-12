@@ -35,10 +35,10 @@ export default function Layout({ children, currentPageName }) {
       {showNav && (
         <nav style={{
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
-          background: "rgba(13,16,24,0.97)",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
+          background: "rgba(26,22,18,0.97)",
+          borderTop: "1px solid rgba(215,190,155,0.08)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}>
           <div style={{ maxWidth: 480, margin: "0 auto", display: "flex" }}>
