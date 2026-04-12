@@ -61,7 +61,7 @@ export default function Layout({ children, currentPageName }) {
                   }}>
                     <Icon style={{ width: 20, height: 20 }} strokeWidth={isActive ? 2 : 1.5} />
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: ".03em" }}>{name}</span>
+                  <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: ".03em", fontFamily: "'DM Sans', sans-serif" }}>{name}</span>
                 </Link>
               );
             })}
