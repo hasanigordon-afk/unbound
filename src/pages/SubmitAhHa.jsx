@@ -1,350 +1,570 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Save, CheckCircle2, Loader2, Eye, EyeOff } from "lucide-react";
-import { CATEGORIES } from "./AhHaMoment";
-import { toast } from "sonner";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Loader2, BookOpen, Sparkles } from "lucide-react";
 
-const C = {
-  gold:   "#C9A96E",
-  teal:   "#2DD4BF",
-  muted:  "rgba(241,245,249,0.38)",
-};
+/* ── Constants ────────────────────────────────────────────────────────────── */
+const TAGS = [
+  "Recovery","Addiction","Fatherhood","Motherhood","Mental Health",
+  "Starting Over","Prison / Reentry","Faith","Loss","Hope",
+  "Relapse Recovery","Sobriety","Motivation","Healing",
+];
 
-const STEPS = [
-  { key: "category",          label: "What kind of moment was it?",                  subtitle: "Choose the category that feels closest to your truth." },
-  { key: "what_happened",     label: "What happened?",                                subtitle: "What made you realize things had to change? Be as honest as you can." },
-  { key: "feeling_in_moment", label: "What were you feeling in that moment?",         subtitle: "Fear? Relief? Shame? Exhaustion? Whatever it was, it's valid." },
-  { key: "tired_of_repeating",label: "What were you tired of repeating?",             subtitle: "The cycle, the lies, the promises, the consequences — what had to stop?" },
-  { key: "decision_made",     label: "What decision did you make next?",              subtitle: "It doesn't have to have been perfect. What did you choose?" },
-  { key: "message_to_others", label: "What would you say to someone at that same fork?", subtitle: "Speak directly to them. They're reading this right now." },
-  { key: "privacy",           label: "Privacy & publishing",                          subtitle: "Control how your story appears." },
+const SUBSTANCE_OPTIONS = [
+  "Alcohol","Opioids","Stimulants","Benzodiazepines",
+  "Cannabis","Prescription Misuse","Polysubstance","Prefer not to say",
+];
+
+const AGE_RANGES = ["18–24","25–34","35–44","45+","Prefer not to say"];
+
+const VISIBILITY_OPTIONS = [
+  {
+    id: "private",
+    label: "Private Draft",
+    desc: "Only you can see this. Not submitted for review.",
+    emoji: "🔒",
+  },
+  {
+    id: "anonymous_review",
+    label: "Anonymous",
+    desc: "Submitted for community review. No name shown.",
+    emoji: "🌿",
+  },
+  {
+    id: "first_name_review",
+    label: "First Name Only",
+    desc: "Submitted for review. Your first name is shown.",
+    emoji: "✨",
+  },
+];
+
+const PROMPTS = [
+  {
+    key: "tired_of_repeating",
+    label: "Before the moment",
+    question: "What was life feeling like before your Ah Ha moment?",
+    placeholder: "Describe where you were — emotionally, physically, mentally…",
+    maxLen: 600,
+  },
+  {
+    key: "what_happened",
+    label: "The turning point",
+    question: "What happened that made you realize things had to change?",
+    placeholder: "What was the moment, the event, the conversation, the look in someone's eyes…",
+    maxLen: 800,
+  },
+  {
+    key: "feeling_in_moment",
+    label: "The emotional shift",
+    question: "What did that moment feel like emotionally?",
+    placeholder: "Fear, relief, shame, clarity, grief, love — all of it is valid…",
+    maxLen: 500,
+  },
+  {
+    key: "decision_made",
+    label: "What happened next",
+    question: "What action did you take after that realization?",
+    placeholder: "Even if the first step was just deciding to try…",
+    maxLen: 500,
+  },
+  {
+    key: "message_to_others",
+    label: "To someone like you",
+    question: "What would you say to someone going through what you went through?",
+    placeholder: "Speak directly to them. They're listening.",
+    maxLen: 600,
+  },
 ];
 
 const EMPTY = {
-  category: "",
+  title: "",
+  tired_of_repeating: "",
   what_happened: "",
   feeling_in_moment: "",
-  tired_of_repeating: "",
   decision_made: "",
   message_to_others: "",
-  is_anonymous: false,
-  has_content_warning: false,
-  content_warning: "",
+  visibility: "",
+  tags: [],
+  clean_time: "",
+  substance_category: "",
+  age_range: "",
+  location: "",
+  safety1: false,
+  safety2: false,
+  safety3: false,
 };
 
-function Textarea({ label, subtitle, value, onChange, placeholder, minRows = 4 }) {
-  const len = value?.length || 0;
+/* ── Helpers ──────────────────────────────────────────────────────────────── */
+function readTime(form) {
+  const total = [
+    form.tired_of_repeating, form.what_happened,
+    form.feeling_in_moment, form.decision_made, form.message_to_others,
+  ].join(" ").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(total / 200));
+}
+
+function isComplete(form) {
   return (
-    <div>
-      <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.7)", display: "block", marginBottom: 6 }}>
-        {label}
-      </label>
-      {subtitle && <p style={{ fontSize: 12, color: C.muted, marginBottom: 10, lineHeight: 1.55 }}>{subtitle}</p>}
+    form.title.trim().length > 0 &&
+    form.what_happened.trim().length > 0 &&
+    form.visibility !== "" &&
+    form.safety1 && form.safety2 && form.safety3
+  );
+}
+
+/* ── Sub-components ───────────────────────────────────────────────────────── */
+function PromptCard({ prompt, value, onChange }) {
+  const remaining = prompt.maxLen - value.length;
+  return (
+    <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
+      <p style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 }}>
+        {prompt.label}
+      </p>
+      <p style={{ fontSize: 16, fontWeight: 600, color: "#1C1410", fontFamily: "'Lora', Georgia, serif", lineHeight: 1.4, marginBottom: 14 }}>
+        {prompt.question}
+      </p>
       <textarea
         value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={placeholder}
-        rows={minRows}
+        onChange={e => onChange(e.target.value.slice(0, prompt.maxLen))}
+        placeholder={prompt.placeholder}
+        rows={5}
         style={{
-          width: "100%", padding: "14px", borderRadius: 14, boxSizing: "border-box",
-          background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.12)",
-          color: "#fff", fontSize: 14, resize: "none", outline: "none",
-          fontFamily: "inherit", lineHeight: 1.7, caretColor: C.gold,
+          width: "100%", resize: "none", padding: "13px 14px", borderRadius: 12,
+          border: ".5px solid #E8E2D9", background: "#F7F3EE", color: "#1C1410",
+          fontSize: 14, fontFamily: "'DM Sans', sans-serif", lineHeight: 1.65,
+          outline: "none", boxSizing: "border-box",
         }}
+        onFocus={e => { e.target.style.borderColor = "#B8823A"; e.target.style.boxShadow = "0 0 0 3px rgba(184,130,58,.08)"; }}
+        onBlur={e => { e.target.style.borderColor = "#E8E2D9"; e.target.style.boxShadow = "none"; }}
       />
-      <p style={{ fontSize: 11, color: C.muted, textAlign: "right", marginTop: 4 }}>{len} chars</p>
+      <p style={{ fontSize: 11, color: remaining < 50 ? "#C9534F" : "#9B8E83", textAlign: "right", marginTop: 4 }}>
+        {remaining} characters left
+      </p>
     </div>
   );
 }
 
+function TagPill({ label, selected, onToggle }) {
+  return (
+    <button onClick={onToggle} style={{
+      padding: "7px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: "pointer",
+      background: selected ? "#B8823A" : "#FDFAF6",
+      color: selected ? "#fff" : "#4A3F35",
+      border: selected ? "1px solid #B8823A" : "1px solid #E8E2D9",
+      transition: "all .15s ease",
+    }}>
+      {label}
+    </button>
+  );
+}
+
+function PreviewCard({ form, user }) {
+  const vis = VISIBILITY_OPTIONS.find(v => v.id === form.visibility);
+  const displayName = form.visibility === "first_name_review"
+    ? (user?.full_name?.split(" ")[0] || "Friend")
+    : "Anonymous";
+  const mins = readTime(form);
+
+  return (
+    <div style={{ background: "#FDFAF6", border: "1px solid rgba(184,130,58,.25)", borderRadius: 20, overflow: "hidden" }}>
+      {/* Header */}
+      <div style={{ background: "linear-gradient(135deg, rgba(184,130,58,.08), rgba(184,130,58,.03))", padding: "22px 22px 18px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+          <span style={{ fontSize: 18 }}>{vis?.emoji}</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em" }}>{vis?.label}</span>
+          <span style={{ fontSize: 11, color: "#9B8E83", marginLeft: "auto" }}>{mins} min read</span>
+        </div>
+        <h2 style={{ fontFamily: "'Lora', serif", fontSize: 20, fontWeight: 600, color: "#1C1410", lineHeight: 1.3, marginBottom: 8 }}>
+          {form.title || "Untitled Story"}
+        </h2>
+        <p style={{ fontSize: 12, color: "#9B8E83" }}>By {displayName}</p>
+        {form.tags.length > 0 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+            {form.tags.map(t => (
+              <span key={t} style={{ padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+                background: "rgba(184,130,58,.10)", color: "#B8823A", border: "1px solid rgba(184,130,58,.2)" }}>
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Sections */}
+      <div style={{ padding: "20px 22px" }}>
+        {PROMPTS.filter(p => form[p.key]?.trim()).map(p => (
+          <div key={p.key} style={{ marginBottom: 18 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 }}>
+              {p.label}
+            </p>
+            <p style={{ fontSize: 14, color: "#4A3F35", lineHeight: 1.75, fontStyle: "italic" }}>
+              "{form[p.key]}"
+            </p>
+          </div>
+        ))}
+        {form.clean_time && (
+          <p style={{ fontSize: 12, color: "#9B8E83", marginTop: 8 }}>⏱ {form.clean_time} in recovery</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Main page ────────────────────────────────────────────────────────────── */
 export default function SubmitAhHa() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
-  const [form, setForm] = useState({ ...EMPTY });
+  const [form, setForm] = useState(() => {
+    try { return { ...EMPTY, ...JSON.parse(localStorage.getItem("ahha_draft") || "{}") }; } catch { return EMPTY; }
+  });
+  const [preview, setPreview] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
-  const set = (key, val) => setForm(f => ({ ...f, [key]: val }));
+  const set = useCallback((key, val) => setForm(f => ({ ...f, [key]: val })), []);
 
-  const submitMutation = useMutation({
-    mutationFn: async (isDraft) => {
-      if (isDraft) {
-        await base44.entities.AhHaMoment.create({
-          ...form,
-          user_email: user.email,
-          display_name: user.full_name || "",
-          status: "draft",
-          reaction_count: 0, comment_count: 0, save_count: 0,
-        });
-        return { isDraft: true };
-      }
+  // Auto-save draft to localStorage
+  useEffect(() => {
+    const t = setTimeout(() => {
+      localStorage.setItem("ahha_draft", JSON.stringify(form));
+    }, 800);
+    return () => clearTimeout(t);
+  }, [form]);
 
-      // AI moderation
-      const mod = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a moderation assistant for a recovery community. Review this story submission.
-
-Category: ${form.category}
-Story: ${form.what_happened}
-Feelings: ${form.feeling_in_moment}
-Message to others: ${form.message_to_others}
-
-Approve unless the content: glorifies drug use, promotes illegal activity, contains hate speech, harassment, explicit adult content, or is clearly spam.
-Recovery stories can mention difficult experiences honestly — that's expected and encouraged.
-
-Respond as JSON: { "approved": true/false, "reason": "short reason if rejected, else null" }`,
-        response_json_schema: {
-          type: "object",
-          properties: { approved: { type: "boolean" }, reason: { type: ["string", "null"] } }
-        }
-      });
-
-      await base44.entities.AhHaMoment.create({
-        ...form,
+  const saveMutation = useMutation({
+    mutationFn: async (status) => {
+      if (!user) throw new Error("Not logged in");
+      const payload = {
         user_email: user.email,
-        display_name: user.full_name || "",
-        status: mod.approved ? "approved" : "flagged",
-        moderation_note: mod.reason || null,
-        reaction_count: 0, comment_count: 0, save_count: 0,
-      });
-      return { isDraft: false, approved: mod.approved, reason: mod.reason };
+        display_name: form.visibility === "first_name_review" ? (user.full_name?.split(" ")[0] || "") : "",
+        is_anonymous: form.visibility !== "first_name_review",
+        what_happened: form.what_happened,
+        feeling_in_moment: form.feeling_in_moment,
+        tired_of_repeating: form.tired_of_repeating,
+        decision_made: form.decision_made,
+        message_to_others: form.message_to_others,
+        status: status,
+        category: form.tags[0]?.toLowerCase().replace(/\s+/g, "_").replace(/\//g, "") || "wanted_my_life_back",
+        has_content_warning: false,
+      };
+      return base44.entities.AhHaMoment.create(payload);
     },
-    onSuccess: (result) => {
-      if (result.isDraft) {
-        toast.success("Draft saved.");
-        navigate("/AhHaMoment");
-      } else {
-        setSubmitted(true);
+    onSuccess: (_, status) => {
+      if (status === "pending_review" || status === "draft") {
+        if (status === "pending_review") {
+          localStorage.removeItem("ahha_draft");
+          setSubmitted(true);
+        } else {
+          setSaving(false);
+        }
       }
     },
   });
 
-  const currentStep = STEPS[step];
-  const progress = ((step) / (STEPS.length - 1)) * 100;
-
-  const canAdvance = () => {
-    if (step === 0) return !!form.category;
-    if (step === 1) return form.what_happened?.trim().length > 20;
-    return true;
+  const handleSaveDraft = async () => {
+    setSaving(true);
+    await saveMutation.mutateAsync("draft");
+    setSaving(false);
   };
 
+  const handleSubmit = () => {
+    saveMutation.mutate(form.visibility === "private" ? "draft" : "pending_review");
+  };
+
+  /* ── Success state ── */
   if (submitted) return (
-    <div style={{ background: "#07090F", minHeight: "100vh", display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center", padding: "32px 24px", textAlign: "center" }}>
-      <div style={{ fontSize: 64, marginBottom: 20 }}>✨</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#fff", marginBottom: 10, lineHeight: 1.2 }}>
-        Your moment is submitted.
-      </h1>
-      <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, marginBottom: 28, maxWidth: 320 }}>
-        It'll be reviewed and published shortly. Someone out there needs to read exactly what you just wrote.
-      </p>
-      <button onClick={() => navigate("/AhHaMoment")} style={{
-        padding: "15px 32px", borderRadius: 14, border: "none", cursor: "pointer",
-        background: `linear-gradient(135deg,${C.gold},#B8935A)`,
-        color: "#07090F", fontWeight: 800, fontSize: 15,
-      }}>
-        Read Other Moments →
-      </button>
+    <div style={{ background: "#F7F3EE", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+      <div style={{ maxWidth: 400, width: "100%", textAlign: "center" }}>
+        <div style={{ fontSize: 52, marginBottom: 20 }}>✨</div>
+        <h2 style={{ fontFamily: "'Lora', serif", fontSize: 24, fontWeight: 600, color: "#1C1410", lineHeight: 1.3, marginBottom: 14 }}>
+          Your Ah Ha Moment has been received.
+        </h2>
+        <p style={{ fontSize: 15, color: "#4A3F35", lineHeight: 1.7, marginBottom: 32 }}>
+          Your story could be the reason someone else keeps going.
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <button onClick={() => navigate("/AhHaMoment")} style={{
+            padding: "14px 24px", borderRadius: 50, border: "none", cursor: "pointer",
+            background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 15,
+          }}>
+            View All Stories
+          </button>
+          <button onClick={() => { setForm(EMPTY); setSubmitted(false); }} style={{
+            padding: "14px 24px", borderRadius: 50, border: "1px solid #E8E2D9",
+            background: "transparent", color: "#4A3F35", fontWeight: 600, fontSize: 15, cursor: "pointer",
+          }}>
+            Write Another
+          </button>
+        </div>
+      </div>
     </div>
   );
 
+  /* ── Preview state ── */
+  if (preview) return (
+    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 120 }}>
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 16px" }}>
+        <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "56px 20px 20px", margin: "0 -16px 20px" }}>
+          <button onClick={() => setPreview(false)} style={{
+            display: "flex", alignItems: "center", gap: 6, background: "none", border: "none",
+            color: "#9B8E83", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 12, padding: 0,
+          }}>
+            <ArrowLeft style={{ width: 15, height: 15 }} /> Back to editing
+          </button>
+          <p style={{ fontSize: 11, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em" }}>Preview</p>
+          <h1 style={{ fontFamily: "'Lora', serif", fontSize: 22, fontWeight: 600, color: "#1C1410", marginTop: 4 }}>
+            How your story will look
+          </h1>
+        </div>
+
+        <PreviewCard form={form} user={user} />
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
+          <button
+            onClick={handleSubmit}
+            disabled={!isComplete(form) || saveMutation.isPending}
+            style={{
+              padding: "15px", borderRadius: 50, border: "none", cursor: isComplete(form) ? "pointer" : "default",
+              background: isComplete(form) ? "#B8823A" : "#E8E2D9",
+              color: "#fff", fontWeight: 700, fontSize: 15,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}
+          >
+            {saveMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            {form.visibility === "private" ? "Save as Private Draft" : "Submit Story →"}
+          </button>
+          <button onClick={() => setPreview(false)} style={{
+            padding: "15px", borderRadius: 50, border: "1px solid #E8E2D9", background: "transparent",
+            color: "#4A3F35", fontWeight: 600, fontSize: 15, cursor: "pointer",
+          }}>
+            Keep Editing
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  /* ── Main form ── */
   return (
-    <div style={{ background: "linear-gradient(170deg,#07090F 0%,#0B1020 100%)", minHeight: "100vh", paddingBottom: 120 }}>
+    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 120 }}>
+      <style>{`
+        textarea::placeholder { color: #B0A89F; }
+        input::placeholder { color: #B0A89F; }
+      `}</style>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
         {/* Header */}
-        <div style={{ padding: "56px 20px 24px", background: "linear-gradient(155deg,#0A1628,#080E1C)" }}>
-          <button onClick={() => step > 0 ? setStep(s => s - 1) : navigate("/AhHaMoment")}
-            style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none",
-              color: C.muted, cursor: "pointer", fontSize: 13, marginBottom: 20, padding: 0, fontWeight: 600 }}>
-            <ArrowLeft style={{ width: 15, height: 15 }} /> {step > 0 ? "Back" : "Stories"}
+        <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "56px 20px 24px" }}>
+          <button onClick={() => navigate(-1)} style={{
+            display: "flex", alignItems: "center", gap: 6, background: "none", border: "none",
+            color: "#9B8E83", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 16, padding: 0,
+          }}>
+            <ArrowLeft style={{ width: 15, height: 15 }} /> Back
           </button>
-
-          <p style={{ fontSize: 10, fontWeight: 800, color: "rgba(201,169,110,0.7)", textTransform: "uppercase",
-            letterSpacing: ".14em", marginBottom: 6 }}>Share Your Ah Ha Moment</p>
-          <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.25, marginBottom: 16 }}>
-            {currentStep.label}
-          </h1>
-
-          {/* Progress bar */}
-          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 4, height: 5, overflow: "hidden" }}>
-            <div style={{
-              height: "100%", borderRadius: 4, width: `${progress}%`,
-              background: `linear-gradient(90deg,${C.gold},${C.teal})`,
-              transition: "width 0.5s ease",
-            }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+            <Sparkles style={{ width: 16, height: 16, color: "#B8823A" }} />
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em" }}>
+              Ah Ha Moment
+            </p>
           </div>
-          <p style={{ fontSize: 11, color: C.muted, marginTop: 6 }}>Step {step + 1} of {STEPS.length}</p>
+          <h1 style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 26, fontWeight: 600, color: "#1C1410", lineHeight: 1.2, marginBottom: 6 }}>
+            Share the moment that changed everything.
+          </h1>
+          <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.65 }}>
+            Your story matters. Someone else may find strength in the moment you decided to fight for something better.
+          </p>
         </div>
 
-        <div style={{ padding: "20px 20px" }}>
+        <div style={{ padding: "20px 16px" }}>
 
-          {/* Step 0 — Category */}
-          {step === 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {CATEGORIES.map(cat => {
-                const sel = form.category === cat.key;
-                return (
-                  <button key={cat.key} onClick={() => set("category", cat.key)} style={{
-                    padding: "16px 18px", borderRadius: 16, border: "none", cursor: "pointer", textAlign: "left",
-                    background: sel ? `${cat.color}12` : "rgba(255,255,255,0.04)",
-                    border: `1.5px solid ${sel ? `${cat.color}50` : "rgba(255,255,255,0.08)"}`,
-                    display: "flex", alignItems: "center", gap: 14,
-                    transition: "all 0.15s ease",
-                  }}>
-                    <span style={{ fontSize: 22 }}>{cat.emoji}</span>
-                    <p style={{ fontSize: 15, fontWeight: 700, color: sel ? cat.color : "rgba(255,255,255,0.7)" }}>
-                      {cat.label}
-                    </p>
-                    {sel && <CheckCircle2 style={{ color: cat.color, width: 18, height: 18, marginLeft: "auto" }} />}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          {/* Intro note */}
+          <div style={{
+            background: "rgba(184,130,58,.07)", border: "1px solid rgba(184,130,58,.2)",
+            borderRadius: 14, padding: "14px 16px", marginBottom: 24,
+          }}>
+            <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.65 }}>
+              You can <strong>save privately</strong>, submit <strong>anonymously</strong>, or share with your <strong>first name only</strong> — your choice, your comfort.
+            </p>
+          </div>
 
-          {/* Steps 1–5 — Prompts */}
-          {step >= 1 && step <= 5 && (
-            <Textarea
-              value={form[currentStep.key]}
-              onChange={v => set(currentStep.key, v)}
-              subtitle={currentStep.subtitle}
-              placeholder={[
-                "",
-                "I remember the night when…",
-                "I felt a mix of…",
-                "I was so tired of…",
-                "I decided that…",
-                "If you're standing there right now, I want you to know…",
-              ][step]}
-              minRows={6}
-            />
-          )}
-
-          {/* Step 6 — Privacy */}
-          {step === 6 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {/* Anonymous toggle */}
-              <div style={{ borderRadius: 16, padding: "18px 18px",
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    {form.is_anonymous ? <EyeOff style={{ color: C.muted, width: 18, height: 18 }} />
-                      : <Eye style={{ color: C.teal, width: 18, height: 18 }} />}
-                    <p style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>
-                      {form.is_anonymous ? "Post Anonymously" : "Post with My Name"}
-                    </p>
+          {/* ── Visibility ── */}
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+            Who can see your story? <span style={{ color: "#C9534F" }}>*</span>
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 28 }}>
+            {VISIBILITY_OPTIONS.map(opt => (
+              <button key={opt.id} onClick={() => set("visibility", opt.id)} style={{
+                display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", borderRadius: 14,
+                border: form.visibility === opt.id ? "1.5px solid #B8823A" : ".5px solid #E8E2D9",
+                background: form.visibility === opt.id ? "rgba(184,130,58,.06)" : "#FDFAF6",
+                cursor: "pointer", textAlign: "left",
+              }}>
+                <span style={{ fontSize: 22, flexShrink: 0 }}>{opt.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: form.visibility === opt.id ? "#B8823A" : "#1C1410", marginBottom: 2 }}>{opt.label}</p>
+                  <p style={{ fontSize: 12, color: "#9B8E83" }}>{opt.desc}</p>
+                </div>
+                {form.visibility === opt.id && (
+                  <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#B8823A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Check style={{ width: 12, height: 12, color: "#fff" }} />
                   </div>
-                  <button onClick={() => set("is_anonymous", !form.is_anonymous)} style={{
-                    width: 44, height: 26, borderRadius: 13, border: "none", cursor: "pointer",
-                    background: form.is_anonymous ? C.teal : "rgba(255,255,255,0.15)",
-                    position: "relative", transition: "background 0.2s ease",
-                  }}>
-                    <div style={{
-                      position: "absolute", top: 3, left: form.is_anonymous ? 21 : 3,
-                      width: 20, height: 20, borderRadius: "50%", background: "#fff",
-                      transition: "left 0.2s ease", boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
-                    }} />
-                  </button>
-                </div>
-                <p style={{ fontSize: 12, color: C.muted, lineHeight: 1.5 }}>
-                  {form.is_anonymous
-                    ? "Your name won't appear on the story. Only you will know it's yours."
-                    : "Your first name will be shown with your story."}
-                </p>
-              </div>
-
-              {/* Content warning */}
-              <div style={{ borderRadius: 16, padding: "18px 18px",
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>⚠️ Add Content Warning</p>
-                  <button onClick={() => set("has_content_warning", !form.has_content_warning)} style={{
-                    width: 44, height: 26, borderRadius: 13, border: "none", cursor: "pointer",
-                    background: form.has_content_warning ? "#EF4444" : "rgba(255,255,255,0.15)",
-                    position: "relative", transition: "background 0.2s ease",
-                  }}>
-                    <div style={{
-                      position: "absolute", top: 3, left: form.has_content_warning ? 21 : 3,
-                      width: 20, height: 20, borderRadius: "50%", background: "#fff",
-                      transition: "left 0.2s ease",
-                    }} />
-                  </button>
-                </div>
-                {form.has_content_warning && (
-                  <input
-                    value={form.content_warning}
-                    onChange={e => set("content_warning", e.target.value)}
-                    placeholder="Briefly describe the content (e.g. mentions of overdose, domestic violence)"
-                    style={{
-                      width: "100%", padding: "12px 14px", borderRadius: 12, boxSizing: "border-box",
-                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(239,68,68,0.3)",
-                      color: "#fff", fontSize: 13, outline: "none",
-                    }}
-                  />
                 )}
-              </div>
+              </button>
+            ))}
+          </div>
 
-              {/* Summary */}
-              <div style={{ borderRadius: 16, padding: "18px 18px",
-                background: "rgba(201,169,110,0.06)", border: "1.5px solid rgba(201,169,110,0.2)" }}>
-                <p style={{ fontSize: 13, fontWeight: 800, color: C.gold, marginBottom: 10 }}>✨ Your story will include:</p>
-                {[
-                  { label: "Category", value: CATEGORIES.find(c => c.key === form.category)?.label },
-                  { label: "Your moment", value: form.what_happened?.slice(0, 60) + "…" },
-                  { label: "Posted as", value: form.is_anonymous ? "Anonymous" : (user?.full_name || "You") },
-                ].map(r => (
-                  <div key={r.label} style={{ display: "flex", gap: 10, marginBottom: 6 }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, minWidth: 80 }}>{r.label}:</p>
-                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", flex: 1, lineHeight: 1.45 }}>{r.value || "—"}</p>
-                  </div>
-                ))}
+          {/* ── Story prompts ── */}
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 14 }}>
+            Your story
+          </p>
+
+          {PROMPTS.map(p => (
+            <PromptCard
+              key={p.key}
+              prompt={p}
+              value={form[p.key]}
+              onChange={val => set(p.key, val)}
+            />
+          ))}
+
+          {/* Story title */}
+          <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 16, padding: "20px 18px", marginBottom: 24 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 }}>
+              Title your story <span style={{ color: "#C9534F" }}>*</span>
+            </p>
+            <p style={{ fontSize: 16, fontWeight: 600, color: "#1C1410", fontFamily: "'Lora', serif", lineHeight: 1.4, marginBottom: 14 }}>
+              Give your moment a name.
+            </p>
+            <input
+              value={form.title}
+              onChange={e => set("title", e.target.value.slice(0, 80))}
+              placeholder="e.g. The night everything became clear"
+              style={{
+                width: "100%", padding: "13px 14px", borderRadius: 12,
+                border: ".5px solid #E8E2D9", background: "#F7F3EE", color: "#1C1410",
+                fontSize: 14, fontFamily: "'DM Sans', sans-serif", outline: "none", boxSizing: "border-box",
+              }}
+              onFocus={e => { e.target.style.borderColor = "#B8823A"; }}
+              onBlur={e => { e.target.style.borderColor = "#E8E2D9"; }}
+            />
+            <p style={{ fontSize: 11, color: "#9B8E83", textAlign: "right", marginTop: 4 }}>{80 - form.title.length} characters left</p>
+          </div>
+
+          {/* ── Tags ── */}
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+            Themes (optional)
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+            {TAGS.map(t => (
+              <TagPill
+                key={t}
+                label={t}
+                selected={form.tags.includes(t)}
+                onToggle={() => set("tags", form.tags.includes(t) ? form.tags.filter(x => x !== t) : [...form.tags, t])}
+              />
+            ))}
+          </div>
+
+          {/* ── Optional details ── */}
+          <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 16, padding: "20px 18px", marginBottom: 24 }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#9B8E83", marginBottom: 14 }}>
+              Optional details — share only what you're comfortable with
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: "#4A3F35", display: "block", marginBottom: 5 }}>Time in recovery</label>
+                <input value={form.clean_time} onChange={e => set("clean_time", e.target.value)}
+                  placeholder="e.g. 18 months, 3 years…"
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: ".5px solid #E8E2D9", background: "#F7F3EE", color: "#1C1410", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: "#4A3F35", display: "block", marginBottom: 5 }}>Substance (if applicable)</label>
+                <select value={form.substance_category} onChange={e => set("substance_category", e.target.value)}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: ".5px solid #E8E2D9", background: "#F7F3EE", color: form.substance_category ? "#1C1410" : "#9B8E83", fontSize: 13, outline: "none", boxSizing: "border-box" }}>
+                  <option value="">Choose if you'd like…</option>
+                  {SUBSTANCE_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: "#4A3F35", display: "block", marginBottom: 5 }}>Age range</label>
+                <select value={form.age_range} onChange={e => set("age_range", e.target.value)}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: ".5px solid #E8E2D9", background: "#F7F3EE", color: form.age_range ? "#1C1410" : "#9B8E83", fontSize: 13, outline: "none", boxSizing: "border-box" }}>
+                  <option value="">Choose if you'd like…</option>
+                  {AGE_RANGES.map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: "#4A3F35", display: "block", marginBottom: 5 }}>General location (city or state)</label>
+                <input value={form.location} onChange={e => set("location", e.target.value)}
+                  placeholder="e.g. New Jersey, Chicago…"
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: ".5px solid #E8E2D9", background: "#F7F3EE", color: "#1C1410", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
               </div>
             </div>
-          )}
+          </div>
 
-        </div>
-
-        {/* Nav */}
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0,
-          background: "rgba(7,9,15,0.97)", borderTop: "1px solid rgba(255,255,255,0.07)",
-          padding: "12px 20px", display: "flex", gap: 10, zIndex: 200 }}>
-
-          {step === STEPS.length - 1 ? (
-            <>
-              <button onClick={() => submitMutation.mutate(true)}
-                disabled={submitMutation.isPending}
-                style={{ padding: "13px 18px", borderRadius: 13, border: "1px solid rgba(255,255,255,0.12)",
-                  background: "rgba(255,255,255,0.05)", color: C.muted, fontWeight: 700, fontSize: 13, cursor: "pointer",
-                  display: "flex", alignItems: "center", gap: 6 }}>
-                <Save style={{ width: 14, height: 14 }} /> Save Draft
+          {/* ── Safety checks ── */}
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+            Before you submit <span style={{ color: "#C9534F" }}>*</span>
+          </p>
+          <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 16, padding: "18px 18px", marginBottom: 28 }}>
+            {[
+              { key: "safety1", label: "I understand my story may be reviewed before appearing publicly." },
+              { key: "safety2", label: "I will not include full names, addresses, or identifying personal details." },
+              { key: "safety3", label: "I understand this platform is for support and shared experience, not medical advice." },
+            ].map(s => (
+              <button key={s.key} onClick={() => set(s.key, !form[s.key])} style={{
+                display: "flex", alignItems: "flex-start", gap: 12, width: "100%",
+                background: "none", border: "none", cursor: "pointer", padding: "10px 0",
+                borderBottom: s.key !== "safety3" ? ".5px solid #E8E2D9" : "none", textAlign: "left",
+              }}>
+                <div style={{
+                  width: 20, height: 20, borderRadius: 6, flexShrink: 0, marginTop: 1,
+                  border: form[s.key] ? "none" : "1.5px solid #C8C2BC",
+                  background: form[s.key] ? "#B8823A" : "transparent",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  {form[s.key] && <Check style={{ width: 12, height: 12, color: "#fff" }} />}
+                </div>
+                <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.55 }}>{s.label}</p>
               </button>
-              <button onClick={() => submitMutation.mutate(false)}
-                disabled={submitMutation.isPending}
-                style={{ flex: 1, padding: "13px", borderRadius: 13, border: "none", cursor: "pointer",
-                  background: `linear-gradient(135deg,${C.gold},#B8935A)`,
-                  color: "#07090F", fontWeight: 800, fontSize: 14,
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                  boxShadow: "0 4px 20px rgba(201,169,110,0.3)" }}>
-                {submitMutation.isPending
-                  ? <Loader2 style={{ width: 16, height: 16 }} className="animate-spin" />
-                  : <><CheckCircle2 style={{ width: 16, height: 16 }} /> Submit My Moment</>}
-              </button>
-            </>
-          ) : (
-            <button onClick={() => setStep(s => s + 1)} disabled={!canAdvance()} style={{
-              flex: 1, padding: "15px", borderRadius: 13, border: "none",
-              cursor: canAdvance() ? "pointer" : "not-allowed",
-              background: canAdvance() ? `linear-gradient(135deg,${C.gold},#B8935A)` : "rgba(255,255,255,0.07)",
-              color: canAdvance() ? "#07090F" : C.muted, fontWeight: 800, fontSize: 15,
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-              boxShadow: canAdvance() ? "0 4px 20px rgba(201,169,110,0.28)" : "none",
-            }}>
-              Continue <ArrowRight style={{ width: 16, height: 16 }} />
+            ))}
+          </div>
+
+          {/* ── Action buttons ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <button
+              onClick={() => setPreview(true)}
+              disabled={!form.title.trim() || !form.what_happened.trim()}
+              style={{
+                padding: "15px", borderRadius: 50, border: "none", cursor: "pointer",
+                background: form.title.trim() && form.what_happened.trim() ? "#B8823A" : "#E8E2D9",
+                color: "#fff", fontWeight: 700, fontSize: 15,
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              }}
+            >
+              <Eye style={{ width: 16, height: 16 }} /> Preview Story
             </button>
-          )}
+
+            <button
+              onClick={handleSaveDraft}
+              disabled={saving || saveMutation.isPending}
+              style={{
+                padding: "15px", borderRadius: 50, border: "1px solid #E8E2D9", cursor: "pointer",
+                background: "transparent", color: "#4A3F35", fontWeight: 600, fontSize: 15,
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              }}
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Save Draft
+            </button>
+          </div>
+
+          <p style={{ textAlign: "center", fontSize: 11, color: "#9B8E83", lineHeight: 1.65, marginTop: 20 }}>
+            Your draft is also auto-saved locally as you type.
+          </p>
+
         </div>
       </div>
     </div>
