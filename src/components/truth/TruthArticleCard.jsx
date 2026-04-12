@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Bookmark, ExternalLink, Eye } from "lucide-react";
 
+const AMBER = "#B8823A";
 const CATEGORY_META = {
-  relapse_reality:       { label: "Relapse Reality",        color: "#F59E0B", emoji: "📊" },
-  rehab_fraud:           { label: "Rehab Fraud",            color: "#EF4444", emoji: "🚨" },
-  success_story:         { label: "Success Story",          color: "#10B981", emoji: "🌟" },
-  what_helps:            { label: "What Actually Helps",    color: "#4A90E2", emoji: "💡" },
-  facility_accountability: { label: "Facility Accountability", color: "#8B5CF6", emoji: "🔍" },
-  hope_inspiration:      { label: "Hope & Inspiration",     color: "#F97316", emoji: "🙏" },
+  relapse_reality:         { label: "Relapse Reality",        emoji: "📊" },
+  rehab_fraud:             { label: "Rehab Fraud",            emoji: "🚨" },
+  success_story:           { label: "Success Story",          emoji: "🌟" },
+  what_helps:              { label: "What Actually Helps",    emoji: "💡" },
+  facility_accountability: { label: "Facility Accountability",emoji: "🔍" },
+  hope_inspiration:        { label: "Hope & Inspiration",     emoji: "🙏" },
 };
 
 const REACTIONS = [
@@ -21,7 +22,7 @@ const REACTIONS = [
 export default function TruthArticleCard({ article, isSaved, onSave, onReact, onOpen }) {
   const [myReaction, setMyReaction] = useState(null);
   const [localCounts, setLocalCounts] = useState({});
-  const meta = CATEGORY_META[article.category] || { label: article.category, color: "#6B7280", emoji: "📰" };
+  const meta = CATEGORY_META[article.category] || { label: article.category, emoji: "📰" };
 
   const handleReact = (key) => {
     if (myReaction === key) return;
@@ -32,8 +33,9 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
 
   return (
     <div style={{
-      background: "#fff", border: "1px solid #E5E7EB",
+      background: "#FDFAF6", border: "1px solid #E8E2D9",
       borderRadius: 16, overflow: "hidden", marginBottom: 14,
+      boxShadow: "0 1px 6px rgba(28,20,16,0.07)",
     }}>
       {/* Image */}
       {article.image_url && (
@@ -46,7 +48,7 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
           <div style={{ position: "absolute", bottom: 10, left: 12 }}>
             <span style={{
               padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700,
-              background: meta.color + "cc", color: "#fff",
+              background: "rgba(184,130,58,0.85)", color: "#fff",
             }}>
               {meta.emoji} {meta.label}
             </span>
@@ -58,7 +60,7 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
         {!article.image_url && (
           <span style={{
             display: "inline-block", padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700,
-            background: meta.color + "18", color: meta.color, marginBottom: 8,
+            background: "rgba(184,130,58,0.10)", color: AMBER, marginBottom: 8,
           }}>
             {meta.emoji} {meta.label}
           </span>
@@ -67,24 +69,24 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
         {/* Title */}
         <h3
           onClick={() => onOpen && onOpen(article)}
-          style={{ fontSize: 15, fontWeight: 800, color: "#1E1E1E", lineHeight: 1.35, marginBottom: 7, cursor: "pointer" }}
+          style={{ fontSize: 15, fontWeight: 600, color: "#1C1410", lineHeight: 1.35, marginBottom: 7, cursor: "pointer", fontFamily: "'Lora', Georgia, serif" }}
         >
           {article.title}
         </h3>
 
         {/* Summary */}
-        <p style={{ fontSize: 12, color: "#5A5A5A", lineHeight: 1.6, marginBottom: 10 }}>
+        <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.6, marginBottom: 10 }}>
           {article.summary?.slice(0, 160)}{article.summary?.length > 160 ? "…" : ""}
         </p>
 
         {/* Why it matters */}
         {article.why_it_matters && (
           <div style={{
-            background: "#F9F5FF", border: "1px solid #E9D5FF",
+            background: "rgba(184,130,58,0.06)", border: "1px solid rgba(184,130,58,0.18)",
             borderRadius: 8, padding: "8px 12px", marginBottom: 10,
           }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: "#7C3AED", marginBottom: 2 }}>💜 WHY THIS MATTERS</p>
-            <p style={{ fontSize: 11, color: "#5B21B6", lineHeight: 1.5 }}>{article.why_it_matters}</p>
+            <p style={{ fontSize: 10, fontWeight: 700, color: AMBER, marginBottom: 2 }}>WHY THIS MATTERS</p>
+            <p style={{ fontSize: 11, color: "#4A3F35", lineHeight: 1.5 }}>{article.why_it_matters}</p>
           </div>
         )}
 
@@ -100,9 +102,9 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
                 style={{
                   display: "flex", alignItems: "center", gap: 3,
                   padding: "4px 9px", borderRadius: 20, cursor: "pointer",
-                  border: `1px solid ${active ? meta.color : "#E5E7EB"}`,
-                  background: active ? meta.color + "15" : "#F9FAFB",
-                  color: active ? meta.color : "#6B7280",
+                  border: `1px solid ${active ? AMBER : "#E8E2D9"}`,
+                  background: active ? "rgba(184,130,58,0.10)" : "#FDFAF6",
+                  color: active ? AMBER : "#9B8E83",
                   fontSize: 11, fontWeight: active ? 700 : 500,
                 }}
               >
@@ -116,19 +118,19 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
       {/* Footer */}
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "8px 16px 12px", borderTop: "1px solid #F3F4F6",
+        padding: "8px 16px 12px", borderTop: "1px solid #E8E2D9",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {article.source_name && (
-            <span style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600 }}>{article.source_name}</span>
+            <span style={{ fontSize: 10, color: AMBER, fontWeight: 600 }}>{article.source_name}</span>
           )}
           {article.publish_date && (
-            <span style={{ fontSize: 10, color: "#9CA3AF" }}>
+            <span style={{ fontSize: 10, color: "#9B8E83" }}>
               {new Date(article.publish_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
             </span>
           )}
           {article.view_count > 0 && (
-            <span style={{ fontSize: 10, color: "#9CA3AF", display: "flex", alignItems: "center", gap: 2 }}>
+            <span style={{ fontSize: 10, color: "#9B8E83", display: "flex", alignItems: "center", gap: 2 }}>
               <Eye style={{ width: 10, height: 10 }} /> {article.view_count}
             </span>
           )}
@@ -137,12 +139,12 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
           <button
             onClick={() => onSave && onSave(article)}
             style={{
-              width: 30, height: 30, borderRadius: 8, border: `1px solid ${isSaved ? "#4A90E2" : "#E5E7EB"}`,
-              background: isSaved ? "#EBF3FD" : "#F9FAFB",
+              width: 30, height: 30, borderRadius: 8, border: `1px solid ${isSaved ? AMBER : "#E8E2D9"}`,
+              background: isSaved ? "rgba(184,130,58,0.10)" : "#FDFAF6",
               display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
             }}
           >
-            <Bookmark style={{ width: 13, height: 13, color: isSaved ? "#4A90E2" : "#9CA3AF", fill: isSaved ? "#4A90E2" : "none" }} />
+            <Bookmark style={{ width: 13, height: 13, color: isSaved ? AMBER : "#9B8E83", fill: isSaved ? AMBER : "none" }} />
           </button>
           {article.source_url && (
             <a
@@ -151,8 +153,8 @@ export default function TruthArticleCard({ article, isSaved, onSave, onReact, on
               rel="noopener noreferrer"
               style={{
                 display: "flex", alignItems: "center", gap: 4,
-                padding: "6px 11px", borderRadius: 8, border: "1px solid #E5E7EB",
-                background: "#F9FAFB", color: "#374151", fontSize: 11, fontWeight: 600, textDecoration: "none",
+                padding: "6px 11px", borderRadius: 10, border: "none",
+                background: AMBER, color: "#fff", fontSize: 11, fontWeight: 600, textDecoration: "none", minHeight: 30,
               }}
             >
               <ExternalLink style={{ width: 11, height: 11 }} /> Read More

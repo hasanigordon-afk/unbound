@@ -99,45 +99,47 @@ export default function TruthAboutRecovery() {
   }, [articles, activeTab, search, sortBy, savedIds]);
 
   return (
-    <div style={{ background: "#F7F7F8", minHeight: "100vh", paddingBottom: 100 }}>
+    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 100 }}>
 
       {/* Header */}
-      <div style={{ background: "#1E1E2E", padding: "24px 16px 0" }}>
+      <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "24px 16px 0" }}>
         <div style={{ marginBottom: 16 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 5 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 5 }}>
             Unbound Editorial
           </p>
-          <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.2, marginBottom: 6 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 600, color: "#1C1410", lineHeight: 1.2, marginBottom: 6, fontFamily: "'Lora', Georgia, serif" }}>
             The Truth About<br />Addiction Recovery
           </h1>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, fontStyle: "italic" }}>
+          <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.6, fontStyle: "italic" }}>
             Real stories. Real outcomes. Real lessons.
           </p>
         </div>
 
         {/* Editorial note */}
         <div style={{
-          background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)",
+          background: "rgba(184,130,58,0.06)", border: "1px solid rgba(184,130,58,0.18)",
           borderRadius: 12, padding: "12px 14px", marginBottom: 16,
         }}>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", lineHeight: 1.65 }}>
+          <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.65 }}>
             The truth about recovery is bigger than slogans. Some people find healing. Some relapse. Some treatment centers save lives. Others fail the people they promise to help.{" "}
-            <span style={{ color: "#fff", fontWeight: 700 }}>This section exists to give our community honest information, real stories, and practical hope.</span>
+            <span style={{ color: "#1C1410", fontWeight: 700 }}>This section exists to give our community honest information, real stories, and practical hope.</span>
           </p>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: 6, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 0 }}>
+        <div style={{ display: "flex", gap: 6, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 12 }}>
           {TABS.map(tab => (
             <button
               key={tab.value}
               onClick={() => setActiveTab(tab.value)}
               style={{
-                flexShrink: 0, padding: "8px 13px",
-                borderRadius: "10px 10px 0 0", border: "none", cursor: "pointer",
-                background: activeTab === tab.value ? "#F7F7F8" : "transparent",
-                color: activeTab === tab.value ? "#1E1E2E" : "rgba(255,255,255,0.5)",
-                fontSize: 11, fontWeight: 700,
+                flexShrink: 0, padding: "7px 13px",
+                borderRadius: 20, border: activeTab === tab.value ? "1px solid #B8823A" : "1px solid #E8E2D9",
+                cursor: "pointer", minHeight: 36,
+                background: activeTab === tab.value ? "#B8823A" : "#FDFAF6",
+                color: activeTab === tab.value ? "#fff" : "#9B8E83",
+                fontSize: 11, fontWeight: activeTab === tab.value ? 700 : 500,
+                transition: "all 0.15s ease",
               }}
             >
               {tab.emoji} {tab.label}
@@ -152,21 +154,21 @@ export default function TruthAboutRecovery() {
         <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
           <div style={{
             flex: 1, display: "flex", alignItems: "center", gap: 7,
-            background: "#fff", border: "1px solid #E5E7EB", borderRadius: 10, padding: "9px 12px",
+            background: "#FDFAF6", border: "1px solid #E8E2D9", borderRadius: 10, padding: "9px 12px",
           }}>
-            <Search style={{ width: 13, height: 13, color: "#9CA3AF", flexShrink: 0 }} />
+            <Search style={{ width: 13, height: 13, color: "#9B8E83", flexShrink: 0 }} />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search articles…"
-              style={{ flex: 1, border: "none", outline: "none", fontSize: 13, color: "#1E1E1E", background: "none" }}
+              style={{ flex: 1, border: "none", outline: "none", fontSize: 13, color: "#1C1410", background: "none" }}
             />
-            {search && <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}><X style={{ width: 11, height: 11, color: "#9CA3AF" }} /></button>}
+            {search && <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}><X style={{ width: 11, height: 11, color: "#9B8E83" }} /></button>}
           </div>
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value)}
-            style={{ padding: "9px 10px", borderRadius: 10, border: "1px solid #E5E7EB", background: "#fff", color: "#374151", fontSize: 12, fontWeight: 600, outline: "none" }}
+            style={{ padding: "9px 10px", borderRadius: 10, border: "1px solid #E8E2D9", background: "#FDFAF6", color: "#4A3F35", fontSize: 12, fontWeight: 600, outline: "none" }}
           >
             <option value="recent">Most Recent</option>
             <option value="most_read">Most Read</option>
