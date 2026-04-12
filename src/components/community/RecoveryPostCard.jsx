@@ -5,22 +5,22 @@ import { Flag, MessageCircle, ChevronDown, ChevronUp, ShieldCheck } from "lucide
 import { formatDistanceToNow } from "date-fns";
 import CommentSection from "@/components/content/CommentSection";
 
+const AMBER = "#B8823A";
 export const POST_CATEGORIES = {
-  daily_win:            { label: "Daily Win",           emoji: "🏆", color: "#10B981", bg: "rgba(16,185,129,0.12)" },
-  need_support:         { label: "Need Support",        emoji: "🤝", color: "#F87171", bg: "rgba(248,113,113,0.12)" },
-  craving_now:          { label: "Craving Right Now",   emoji: "⚡", color: "#FB923C", bg: "rgba(251,146,60,0.12)" },
-  motivation:           { label: "Motivation",          emoji: "🔥", color: "#FBBF24", bg: "rgba(251,191,36,0.12)" },
-  recovery_question:    { label: "Recovery Question",   emoji: "❓", color: "#60A5FA", bg: "rgba(96,165,250,0.12)" },
-  meeting_experience:   { label: "Meeting Experience",  emoji: "🤲", color: "#A78BFA", bg: "rgba(167,139,250,0.12)" },
-  job_housing_help:     { label: "Job / Housing Help",  emoji: "🏠", color: "#34D399", bg: "rgba(52,211,153,0.12)" },
-  milestone_celebration:{ label: "Milestone",           emoji: "🎉", color: "#C9A96E", bg: "rgba(201,169,110,0.12)" },
-  reentry_advice:       { label: "Reentry Advice",      emoji: "🗺️", color: "#818CF8", bg: "rgba(129,140,248,0.12)" },
-  journal_reflection:   { label: "Journal Reflection",  emoji: "📓", color: "#9CA3AF", bg: "rgba(156,163,175,0.12)" },
-  // legacy
-  support:     { label: "Support",   emoji: "❤️", color: "#F87171", bg: "rgba(248,113,113,0.12)" },
-  question:    { label: "Question",  emoji: "❓", color: "#60A5FA", bg: "rgba(96,165,250,0.12)" },
-  milestone:   { label: "Milestone", emoji: "🏆", color: "#C9A96E", bg: "rgba(201,169,110,0.12)" },
-  advice:      { label: "Advice",    emoji: "💡", color: "#A78BFA", bg: "rgba(167,139,250,0.12)" },
+  daily_win:            { label: "Daily Win",           emoji: "🏆" },
+  need_support:         { label: "Need Support",        emoji: "🤝" },
+  craving_now:          { label: "Craving Right Now",   emoji: "⚡" },
+  motivation:           { label: "Motivation",          emoji: "🔥" },
+  recovery_question:    { label: "Recovery Question",   emoji: "❓" },
+  meeting_experience:   { label: "Meeting Experience",  emoji: "🤲" },
+  job_housing_help:     { label: "Job / Housing Help",  emoji: "🏠" },
+  milestone_celebration:{ label: "Milestone",           emoji: "🎉" },
+  reentry_advice:       { label: "Reentry Advice",      emoji: "🗺️" },
+  journal_reflection:   { label: "Journal Reflection",  emoji: "📓" },
+  support:     { label: "Support",   emoji: "❤️" },
+  question:    { label: "Question",  emoji: "❓" },
+  milestone:   { label: "Milestone", emoji: "🏆" },
+  advice:      { label: "Advice",    emoji: "💡" },
 };
 
 const MOOD_TAGS = {
@@ -71,22 +71,24 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
 
   return (
     <div style={{
-      background: isUrgent ? "rgba(251,146,60,0.05)" : "rgba(255,255,255,0.04)",
-      border: `1px solid ${isUrgent ? "rgba(251,146,60,0.3)" : "rgba(255,255,255,0.09)"}`,
-      borderRadius: 18,
+      background: "#FDFAF6",
+      border: isUrgent ? "1px solid rgba(184,130,58,0.35)" : "1px solid #E8E2D9",
+      borderRadius: 16,
       overflow: "hidden",
       marginBottom: 12,
+      boxShadow: "0 1px 4px rgba(28,20,16,0.06)",
     }}>
       {isUrgent && (
         <div style={{
-          background: "rgba(251,146,60,0.15)", padding: "6px 16px",
+          background: "rgba(184,130,58,0.08)", padding: "6px 16px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
+          borderBottom: "1px solid rgba(184,130,58,0.18)",
         }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#FB923C" }}>⚡ Support Needed</p>
+          <p style={{ fontSize: 11, fontWeight: 700, color: AMBER }}>⚡ Support Needed</p>
           <button
             onClick={() => onCrisisClick?.(post)}
-            style={{ fontSize: 11, fontWeight: 700, color: "#FB923C", background: "rgba(251,146,60,0.2)",
-              border: "1px solid rgba(251,146,60,0.4)", borderRadius: 8, padding: "2px 10px", cursor: "pointer" }}
+            style={{ fontSize: 11, fontWeight: 700, color: AMBER, background: "rgba(184,130,58,0.12)",
+              border: "1px solid rgba(184,130,58,0.3)", borderRadius: 8, padding: "2px 10px", cursor: "pointer" }}
           >
             Offer Help →
           </button>
@@ -105,18 +107,18 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{handle}</p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#1C1410" }}>{handle}</p>
                 {isVerified && (
-                  <ShieldCheck style={{ width: 13, height: 13, color: "#3ECFBF" }} />
+                  <ShieldCheck style={{ width: 13, height: 13, color: AMBER }} />
                 )}
               </div>
-              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 1 }}>{timeAgo}</p>
+              <p style={{ fontSize: 11, color: "#9B8E83", marginTop: 1 }}>{timeAgo}</p>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{
               fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20,
-              background: cat.bg, color: cat.color,
+              background: "rgba(184,130,58,0.10)", color: AMBER,
             }}>
               {cat.emoji} {cat.label}
             </span>
@@ -125,18 +127,18 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
 
         {/* Title */}
         {post.title && (
-          <p style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 6, lineHeight: 1.3 }}>{post.title}</p>
+          <p style={{ fontSize: 15, fontWeight: 600, color: "#1C1410", marginBottom: 6, lineHeight: 1.3, fontFamily: "'Lora', serif" }}>{post.title}</p>
         )}
 
         {/* Content */}
-        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.72)", lineHeight: 1.65 }}>{post.content}</p>
+        <p style={{ fontSize: 14, color: "#4A3F35", lineHeight: 1.65 }}>{post.content}</p>
 
         {/* Mood tag */}
         {mood && (
           <div style={{ marginTop: 10 }}>
             <span style={{
               fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20,
-              background: `${mood.color}18`, color: mood.color, border: `1px solid ${mood.color}30`,
+              background: "rgba(184,130,58,0.08)", color: AMBER, border: "1px solid rgba(184,130,58,0.2)",
             }}>
               {mood.emoji} {mood.label}
             </span>
@@ -146,7 +148,7 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
 
       {/* Actions */}
       <div style={{
-        padding: "10px 16px", borderTop: "1px solid rgba(255,255,255,0.06)",
+        padding: "10px 16px", borderTop: "1px solid #E8E2D9",
         display: "flex", alignItems: "center", gap: 6,
       }}>
         {/* Reaction toggle */}
@@ -154,10 +156,10 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
           onClick={() => setShowReactions(!showReactions)}
           style={{
             display: "flex", alignItems: "center", gap: 6, padding: "6px 12px",
-            background: showReactions ? "rgba(62,207,191,0.15)" : "rgba(255,255,255,0.05)",
-            border: `1px solid ${showReactions ? "rgba(62,207,191,0.3)" : "rgba(255,255,255,0.08)"}`,
-            borderRadius: 10, color: showReactions ? "#3ECFBF" : "rgba(255,255,255,0.45)",
-            fontSize: 12, fontWeight: 600, cursor: "pointer",
+            background: showReactions ? "rgba(184,130,58,0.10)" : "#F7F3EE",
+            border: `1px solid ${showReactions ? "rgba(184,130,58,0.35)" : "#E8E2D9"}`,
+            borderRadius: 10, color: showReactions ? AMBER : "#9B8E83",
+            fontSize: 12, fontWeight: 600, cursor: "pointer", minHeight: 36,
           }}
         >
           💙 {totalReactions > 0 ? totalReactions : "React"}
@@ -168,8 +170,9 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
           onClick={() => setShowComments(!showComments)}
           style={{
             display: "flex", alignItems: "center", gap: 6, padding: "6px 12px",
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: 10, color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: 600, cursor: "pointer",
+            background: showComments ? "rgba(184,130,58,0.10)" : "#F7F3EE",
+            border: `1px solid ${showComments ? "rgba(184,130,58,0.35)" : "#E8E2D9"}`,
+            borderRadius: 10, color: showComments ? AMBER : "#9B8E83", fontSize: 12, fontWeight: 600, cursor: "pointer", minHeight: 36,
           }}
         >
           <MessageCircle style={{ width: 13, height: 13 }} />
@@ -180,7 +183,7 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
           onClick={() => reportMutation.mutate()}
           style={{
             marginLeft: "auto", background: "none", border: "none",
-            color: "rgba(255,255,255,0.2)", cursor: "pointer", padding: "6px",
+            color: "#E8E2D9", cursor: "pointer", padding: "6px",
           }}
         >
           <Flag style={{ width: 13, height: 13 }} />
@@ -190,7 +193,7 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
       {/* Reaction picker */}
       {showReactions && (
         <div style={{
-          padding: "10px 16px 14px",
+          padding: "10px 16px 14px", borderTop: "1px solid #E8E2D9",
           display: "flex", gap: 6, flexWrap: "wrap",
         }}>
           {REACTIONS.map(r => (
@@ -200,8 +203,8 @@ export default function RecoveryPostCard({ post, user, onCrisisClick }) {
               style={{
                 display: "flex", alignItems: "center", gap: 6,
                 padding: "7px 12px", borderRadius: 12,
-                background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
-                color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer",
+                background: "#F7F3EE", border: "1px solid #E8E2D9",
+                color: "#4A3F35", fontSize: 12, fontWeight: 600, cursor: "pointer",
               }}
             >
               {r.emoji} {r.label} {post[r.key] > 0 && <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 11 }}>{post[r.key]}</span>}
