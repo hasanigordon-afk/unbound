@@ -83,11 +83,11 @@ const AuthenticatedApp = () => {
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center" style={{ background: "#070D1C" }}>
+      <div className="fixed inset-0 flex items-center justify-center" style={{ background: "#F7F3EE" }}>
         <div style={{
           width: 36, height: 36,
-          border: "3px solid rgba(62,207,191,0.2)",
-          borderTopColor: "#3ECFBF",
+          border: "3px solid rgba(184,130,58,0.15)",
+          borderTopColor: "#B8823A",
           borderRadius: "50%",
           animation: "spin 0.8s linear infinite",
         }} />
