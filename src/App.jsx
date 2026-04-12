@@ -53,6 +53,7 @@ import AhHaDetail from './pages/AhHaDetail';
 import AftercarePlanView from './pages/AftercarePlanView';
 import HelpHub from './pages/HelpHub';
 import RecoveryRoadmap from './pages/RecoveryRoadmap';
+import MyAhHaStories from './pages/MyAhHaStories';
 import HopeHub from './pages/HopeHub';
 import HealingHub from './pages/HealingHub';
 
@@ -162,6 +163,7 @@ const AuthenticatedApp = () => {
       <Route path="/HopeHub"                    element={<LW name="HopeHub"><HopeHub /></LW>} />
       <Route path="/HealingHub"                 element={<LW name="HealingHub"><HealingHub /></LW>} />
       <Route path="/RecoveryRoadmap"             element={<LW name="RecoveryRoadmap"><RecoveryRoadmap /></LW>} />
+      <Route path="/MyAhHaStories"               element={<LW name="MyAhHaStories"><MyAhHaStories /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
