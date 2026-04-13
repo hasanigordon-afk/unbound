@@ -137,8 +137,10 @@ export default function DailyDashboard({ user }) {
         });
       }
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["rp-completions-today"] })
-      && qc.invalidateQueries({ queryKey: ["rp-points-recent"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["rp-completions-today"] });
+      qc.invalidateQueries({ queryKey: ["rp-points-recent"] });
+    },
   });
 
   const skipMutation = useMutation({
