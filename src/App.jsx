@@ -60,6 +60,7 @@ import HealingHub from './pages/HealingHub';
 import Donate from './pages/Donate';
 import NotificationSettings from './pages/NotificationSettings';
 import CampaignAdmin from './pages/CampaignAdmin';
+import MindBodyRecovery from './pages/MindBodyRecovery';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -175,6 +176,7 @@ const AuthenticatedApp = () => {
       <Route path="/Donate"                      element={<LW name="Donate"><Donate /></LW>} />
       <Route path="/NotificationSettings"        element={<LW name="NotificationSettings"><NotificationSettings /></LW>} />
       <Route path="/CampaignAdmin"               element={<AW name="CampaignAdmin"><CampaignAdmin /></AW>} />
+      <Route path="/MindBodyRecovery"            element={<LW name="MindBodyRecovery"><MindBodyRecovery /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

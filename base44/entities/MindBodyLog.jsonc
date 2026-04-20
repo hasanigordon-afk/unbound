@@ -1,0 +1,128 @@
+{
+  "name": "MindBodyLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "log_date": {
+      "type": "string",
+      "format": "date",
+      "description": "YYYY-MM-DD \u2014 one log per user per day"
+    },
+    "moved_body": {
+      "type": "boolean",
+      "default": false
+    },
+    "ate_clean": {
+      "type": "boolean",
+      "default": false
+    },
+    "hydrated": {
+      "type": "boolean",
+      "default": false
+    },
+    "fasting_goal_met": {
+      "type": "boolean",
+      "default": false
+    },
+    "mental_checkin": {
+      "type": "boolean",
+      "default": false
+    },
+    "workouts_completed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string"
+          },
+          "duration_min": {
+            "type": "number"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "default": []
+    },
+    "meals_logged": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "gut_health",
+              "alkaline",
+              "balanced"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "logged_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "default": []
+    },
+    "fasting_sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "string",
+            "enum": [
+              "12_hour",
+              "16_hour",
+              "custom"
+            ]
+          },
+          "target_hours": {
+            "type": "number"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ended_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_hours": {
+            "type": "number"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "default": []
+    },
+    "post_activity_mood": {
+      "type": "number",
+      "description": "1-5 rating after workout or meal (optional)"
+    }
+  },
+  "required": [
+    "user_email",
+    "log_date"
+  ]
+}

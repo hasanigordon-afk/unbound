@@ -238,6 +238,23 @@ export default function Home() {
             </Link>
           )}
 
+          {/* ── 1.4. MIND-BODY RECOVERY ─────────────────────────────────────── */}
+          <Link to="/MindBodyRecovery" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
+            <div style={{
+              background: "linear-gradient(135deg, rgba(122,158,126,.10), rgba(184,130,58,.04))",
+              border: "1px solid rgba(122,158,126,.28)",
+              borderRadius: 16, padding: "18px 18px",
+              display: "flex", alignItems: "center", gap: 14,
+            }}>
+              <span style={{ fontSize: 30, flexShrink: 0 }}>💪</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#7A9E7E", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Mind-Body Recovery</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Move. Fuel. Reset.</p>
+                <p style={{ fontSize: 12, fontStyle: "italic", color: "#4A3F35" }}>"A strong body supports a clear mind." →</p>
+              </div>
+            </div>
+          </Link>
+
           {/* ── 1.5. AH HA COMMUNITY ─────────────────────────────────────────── */}
           <Link to="/AhHaCommunity" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
             <div style={{

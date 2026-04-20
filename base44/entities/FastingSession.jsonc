@@ -1,0 +1,48 @@
+{
+  "name": "FastingSession",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "12_hour",
+        "16_hour",
+        "custom"
+      ],
+      "default": "12_hour"
+    },
+    "target_hours": {
+      "type": "number",
+      "default": 12
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_hours": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "stopped"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "user_email",
+    "plan",
+    "target_hours",
+    "started_at"
+  ]
+}
