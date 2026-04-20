@@ -57,6 +57,10 @@ import MyAhHaStories from './pages/MyAhHaStories';
 import AhHaCommunity from './pages/AhHaCommunity';
 import HopeHub from './pages/HopeHub';
 import HealingHub from './pages/HealingHub';
+import Donate from './pages/Donate';
+import NotificationSettings from './pages/NotificationSettings';
+import CampaignAdmin from './pages/CampaignAdmin';
+import PushOptInPrompt from '@/components/notifications/PushOptInPrompt';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -105,6 +109,8 @@ const AuthenticatedApp = () => {
   }
 
   return (
+    <>
+    <PushOptInPrompt />
     <Routes>
       {/* ── Splash ── */}
       <Route path="/splash" element={<Splash />} />
@@ -166,9 +172,13 @@ const AuthenticatedApp = () => {
       <Route path="/RecoveryRoadmap"             element={<LW name="RecoveryRoadmap"><RecoveryRoadmap /></LW>} />
       <Route path="/MyAhHaStories"               element={<LW name="MyAhHaStories"><MyAhHaStories /></LW>} />
       <Route path="/AhHaCommunity"               element={<LW name="AhHaCommunity"><AhHaCommunity /></LW>} />
+      <Route path="/Donate"                      element={<LW name="Donate"><Donate /></LW>} />
+      <Route path="/NotificationSettings"        element={<LW name="NotificationSettings"><NotificationSettings /></LW>} />
+      <Route path="/CampaignAdmin"               element={<AW name="CampaignAdmin"><CampaignAdmin /></AW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </>
   );
 };
 

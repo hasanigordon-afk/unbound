@@ -1,0 +1,48 @@
+{
+  "name": "Donation",
+  "type": "object",
+  "properties": {
+    "donor_name": {
+      "type": "string"
+    },
+    "donor_email": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Donation amount in USD"
+    },
+    "message": {
+      "type": "string",
+      "description": "Optional message of support"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pledged",
+        "completed",
+        "failed",
+        "refunded"
+      ],
+      "default": "pledged",
+      "description": "pledged = form submitted, completed = payment processed"
+    },
+    "payment_reference": {
+      "type": "string",
+      "description": "External payment ID (Stripe etc) when wired up"
+    },
+    "campaign_id": {
+      "type": "string",
+      "description": "Links to a specific campaign if applicable"
+    }
+  },
+  "required": [
+    "donor_name",
+    "donor_email",
+    "amount"
+  ]
+}

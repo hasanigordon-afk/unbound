@@ -1,0 +1,75 @@
+{
+  "name": "NotificationPreference",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "all_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Master on/off switch"
+    },
+    "daily_motivation": {
+      "type": "boolean",
+      "default": true
+    },
+    "recovery_motivation": {
+      "type": "boolean",
+      "default": true
+    },
+    "community_updates": {
+      "type": "boolean",
+      "default": true
+    },
+    "milestone_reminders": {
+      "type": "boolean",
+      "default": true
+    },
+    "app_updates": {
+      "type": "boolean",
+      "default": true
+    },
+    "campaign_announcements": {
+      "type": "boolean",
+      "default": true
+    },
+    "donation_progress": {
+      "type": "boolean",
+      "default": false
+    },
+    "events_partners": {
+      "type": "boolean",
+      "default": false
+    },
+    "prompt_status": {
+      "type": "string",
+      "enum": [
+        "not_shown",
+        "allowed",
+        "dismissed",
+        "denied"
+      ],
+      "default": "not_shown",
+      "description": "Current state of the opt-in prompt"
+    },
+    "browser_permission": {
+      "type": "string",
+      "enum": [
+        "default",
+        "granted",
+        "denied",
+        "unsupported"
+      ],
+      "default": "default"
+    },
+    "dismissed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email"
+  ]
+}

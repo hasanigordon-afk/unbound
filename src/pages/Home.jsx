@@ -6,8 +6,12 @@ import { createPageUrl } from "./utils";
 import {
   Loader2, CheckCircle2, CalendarCheck, Users, MessageCircle,
   BookOpen, Briefcase, Target, ArrowRight, FileText, Home as HomeIcon,
+  Heart, Megaphone,
 } from "lucide-react";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
+import DonateButton from "@/components/donate/DonateButton";
+import { trackHomeVisit } from "@/components/notifications/PushOptInPrompt";
+import { getCampaignSettings } from "@/lib/campaignSettings";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
 const STAGES = [
@@ -43,7 +47,15 @@ const TOOLS = [
 export default function Home() {
   const navigate = useNavigate();
 
-  /* ── Queries (unchanged) ────────────────────────────────────────────────── */
+  // Track home visit count (used by PushOptInPrompt)
+  useEffect(() => { trackHomeVisit(); }, []);
+
+  /* ── Queries ────────────────────────────────────────────────────────────── */
+  const { data: campaignSettings } = useQuery({
+    queryKey: ["campaign-settings"],
+    queryFn: getCampaignSettings,
+  });
+
   const { data: user, isLoading: uL } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
   const { data: profiles, isLoading: pL, isFetched: pF } = useQuery({
@@ -140,17 +152,20 @@ export default function Home() {
         {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
         <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "64px 24px 32px" }}>
 
-          {/* Brand + greeting chip */}
-          <div className="fu" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+          {/* Brand + greeting chip + donate */}
+          <div className="fu" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, gap: 8 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
               <span style={{ fontFamily: "'Lora', serif", fontSize: 17, fontWeight: 700, color: "#B8823A", letterSpacing: "-.02em" }}>Ah Ha</span>
               <span style={{ fontSize: 11, color: "#9B8E83", fontWeight: 400 }}>by Unbound</span>
             </div>
-            <span style={{
-              fontSize: 11, fontWeight: 700, color: "#1D9E75", letterSpacing: ".04em",
-              background: "rgba(29,158,117,.10)", border: "1px solid rgba(29,158,117,.22)",
-              padding: "4px 12px", borderRadius: 20,
-            }}>{greeting}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {campaignSettings?.donation_enabled && <DonateButton variant="pill" label="Donate" />}
+              <span style={{
+                fontSize: 11, fontWeight: 700, color: "#1D9E75", letterSpacing: ".04em",
+                background: "rgba(29,158,117,.10)", border: "1px solid rgba(29,158,117,.22)",
+                padding: "4px 12px", borderRadius: 20,
+              }}>{greeting}</span>
+            </div>
           </div>
 
           {/* Heading */}
@@ -203,6 +218,24 @@ export default function Home() {
         </div>
 
         <div style={{ padding: "20px 16px 0" }}>
+
+          {/* ── Campaign announcement banner ──────────────────────────────── */}
+          {campaignSettings?.campaign_announcement_active && campaignSettings?.campaign_announcement && (
+            <Link to="/Donate" style={{ textDecoration: "none", display: "block", marginBottom: 16 }}>
+              <div style={{
+                background: "linear-gradient(135deg, rgba(184,130,58,0.15), rgba(184,130,58,0.06))",
+                border: "1px solid rgba(184,130,58,0.3)",
+                borderRadius: 14, padding: "12px 14px",
+                display: "flex", alignItems: "center", gap: 10,
+              }}>
+                <Megaphone style={{ width: 18, height: 18, color: "#B8823A", flexShrink: 0 }} strokeWidth={1.8} />
+                <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.5, flex: 1 }}>
+                  {campaignSettings.campaign_announcement}
+                </p>
+                <ArrowRight style={{ width: 14, height: 14, color: "#B8823A", flexShrink: 0 }} />
+              </div>
+            </Link>
+          )}
 
           {/* ── 1.5. AH HA COMMUNITY ─────────────────────────────────────────── */}
           <Link to="/AhHaCommunity" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
@@ -383,6 +416,39 @@ export default function Home() {
               </Link>
             ))}
           </div>
+
+          {/* ── Support the Mission ───────────────────────────────────────── */}
+          {campaignSettings?.donation_enabled && (
+            <>
+              <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+                Support the movement
+              </p>
+              <Link to="/Donate" className="lift" style={{ textDecoration: "none", display: "block", marginBottom: 24 }}>
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(184,130,58,0.10), rgba(184,130,58,0.03))",
+                  border: "1px solid rgba(184,130,58,0.3)",
+                  borderRadius: 16, padding: "20px 20px",
+                  display: "flex", alignItems: "center", gap: 14,
+                }}>
+                  <div style={{
+                    width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                    background: "rgba(184,130,58,0.15)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Heart style={{ width: 22, height: 22, color: "#B8823A" }} fill="#B8823A" />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>
+                      Support Recovery. Fuel Hope.
+                    </p>
+                    <p style={{ fontSize: 12, color: "#4A3F35" }}>
+                      Help us reach more people who need this →
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </>
+          )}
 
           {/* ── 8. CRISIS BUTTONS ─────────────────────────────────────────── */}
           <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>

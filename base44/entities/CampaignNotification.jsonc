@@ -1,0 +1,57 @@
+{
+  "name": "CampaignNotification",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "daily_motivation",
+        "recovery_motivation",
+        "community_updates",
+        "milestone_reminders",
+        "app_updates",
+        "campaign_announcements",
+        "donation_progress",
+        "events_partners"
+      ],
+      "default": "campaign_announcements"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "scheduled",
+        "sent",
+        "cancelled"
+      ],
+      "default": "draft"
+    },
+    "scheduled_for": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "action_url": {
+      "type": "string",
+      "description": "Optional link to open when notification is clicked"
+    },
+    "sent_by": {
+      "type": "string",
+      "description": "Admin email"
+    }
+  },
+  "required": [
+    "title",
+    "body",
+    "category"
+  ]
+}

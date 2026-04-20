@@ -356,6 +356,7 @@ export default function Profile() {
               { icon:<Calendar style={{width:16,height:16}}/>, label:"Daily Check-In",     href:"DailyCheckIn",        color:C.green   },
               { icon:<Target   style={{width:16,height:16}}/>, label:"My Forward Plan",    href:"ForwardPlan",         color:C.amber   },
               { icon:<Heart    style={{width:16,height:16}}/>, label:"Find Help Near Me",  href:"FindHelpNow",         color:C.red     },
+              { icon:<ArrowRight style={{width:16,height:16}}/>, label:"Notification Settings", href:"NotificationSettings", color:C.amber   },
               { icon:<ArrowRight style={{width:16,height:16}}/>, label:"Privacy Settings", href:"PrivacySettings",     color:C.indigo  },
               { icon:<ArrowRight style={{width:16,height:16}}/>, label:"My Dashboard",     href:"ParticipantDashboard",color:C.indigo  },
             ].map(item => (

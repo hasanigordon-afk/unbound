@@ -1,0 +1,75 @@
+{
+  "name": "CampaignSettings",
+  "type": "object",
+  "properties": {
+    "setting_key": {
+      "type": "string",
+      "description": "Singleton key - always 'main' for the primary campaign config"
+    },
+    "donation_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "donation_headline": {
+      "type": "string",
+      "default": "Support Recovery. Fuel Hope. Change Lives."
+    },
+    "donation_subheadline": {
+      "type": "string",
+      "default": "Your donation helps us grow a platform dedicated to addiction recovery support, encouragement, accountability, and second chances."
+    },
+    "mission_statement": {
+      "type": "string",
+      "default": "This campaign exists to support people fighting addiction, rebuilding their lives, and seeking tools, guidance, and hope. Donations help strengthen the platform, expand features, and support outreach to people and facilities who need it most."
+    },
+    "donation_amounts": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "default": [
+        5,
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "thank_you_message": {
+      "type": "string",
+      "default": "Thank you for supporting this recovery movement. Your contribution helps us build hope, access, and accountability for people who need it most."
+    },
+    "banner_image_url": {
+      "type": "string",
+      "description": "Optional hero banner image"
+    },
+    "push_prompt_headline": {
+      "type": "string",
+      "default": "Stay Connected to Recovery"
+    },
+    "push_prompt_body": {
+      "type": "string",
+      "default": "Turn on notifications to receive encouragement, recovery reminders, important app updates, and community messages that help keep you connected to healing."
+    },
+    "campaign_announcement": {
+      "type": "string",
+      "description": "Current active campaign announcement banner text"
+    },
+    "campaign_announcement_active": {
+      "type": "boolean",
+      "default": false
+    },
+    "donation_goal": {
+      "type": "number",
+      "description": "Total fundraising goal for progress bar"
+    },
+    "donation_raised": {
+      "type": "number",
+      "default": 0,
+      "description": "Total raised so far (manually updated or synced)"
+    }
+  },
+  "required": [
+    "setting_key"
+  ]
+}

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Flame, CheckCircle2, Loader2, RotateCcw, Users, Phone, CalendarPlus, ArrowRight } from "lucide-react";
+import { markActionComplete } from "@/components/notifications/PushOptInPrompt";
 
 const C = {
   amber:   "#B8823A",
@@ -108,6 +109,7 @@ export default function DailyCheckIn() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["daily-checkins"] });
       qc.invalidateQueries({ queryKey: ["foundation-checkins"] });
+      markActionComplete();
       setStep(1);
     },
   });

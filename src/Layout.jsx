@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Home, LifeBuoy, Star, Heart, User } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
+import DonateButton from "@/components/donate/DonateButton";
 
 const PARTICIPANT_NAV = [
   { name: "Home",    icon: Home,     page: "Home",       href: "/" },
@@ -74,9 +75,12 @@ export default function Layout({ children, currentPageName }) {
           borderTop: "1px solid var(--border)", padding: "16px 24px",
           textAlign: "center", background: "var(--bg)", paddingBottom: 90,
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 4 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 800, color: "var(--sand)", letterSpacing: "-.02em" }}>Ah Ha</span>
             <span style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 400 }}>by Unbound</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+            <DonateButton variant="ghost" label="Support the Mission" />
           </div>
           <p style={{ fontSize: 11, color: "var(--text-dim)" }}>
             Support tool only. In a crisis, call 911 or 988.
