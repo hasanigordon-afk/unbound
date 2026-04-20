@@ -63,6 +63,8 @@ import CampaignAdmin from './pages/CampaignAdmin';
 import MindBodyRecovery from './pages/MindBodyRecovery';
 import NinetyDayReset from './pages/NinetyDayReset';
 import VeteransDashboard from './pages/VeteransDashboard';
+import AhHaOnboarding from './pages/AhHaOnboarding';
+import AhHaHome from './pages/AhHaHome';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -182,6 +184,8 @@ const AuthenticatedApp = () => {
       <Route path="/NinetyDayReset"               element={<LW name="NinetyDayReset"><NinetyDayReset /></LW>} />
       <Route path="/veterans-dashboard"            element={<LW name="VeteransDashboard"><VeteransDashboard /></LW>} />
       <Route path="/VeteransDashboard"             element={<LW name="VeteransDashboard"><VeteransDashboard /></LW>} />
+      <Route path="/AhHaOnboarding"                 element={<AhHaOnboarding />} />
+      <Route path="/AhHaHome"                       element={<AhHaHome />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
