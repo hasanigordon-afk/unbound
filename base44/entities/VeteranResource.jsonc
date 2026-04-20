@@ -14,7 +14,8 @@
         "housing",
         "employment",
         "food_emergency",
-        "legal"
+        "legal",
+        "crisis"
       ]
     },
     "description": {

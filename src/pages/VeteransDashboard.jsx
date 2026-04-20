@@ -43,6 +43,24 @@ export default function VeteransDashboard() {
     enabled: activeModule === "resources",
   });
 
+  const { data: favorites = [] } = useQuery({
+    queryKey: ["veteran-favorites", user?.email],
+    queryFn: () => base44.entities.VeteranResourceFavorite.filter({ user_email: user.email }),
+    enabled: !!user?.email && activeModule === "resources",
+  });
+
+  const toggleFavorite = useMutation({
+    mutationFn: async (resource) => {
+      const existing = favorites.find(f => f.resource_id === resource.id);
+      if (existing) return base44.entities.VeteranResourceFavorite.delete(existing.id);
+      return base44.entities.VeteranResourceFavorite.create({
+        user_email: user.email,
+        resource_id: resource.id,
+      });
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["veteran-favorites"] }),
+  });
+
   const { data: posts = [] } = useQuery({
     queryKey: ["veteran-posts"],
     queryFn: () => base44.entities.VeteranPost.filter({ status: "active" }, "-created_date", 100),
@@ -270,7 +288,13 @@ export default function VeteransDashboard() {
 
         {/* Modules */}
         {profile && activeModule === "resources" && (
-          <VeteransResources resources={resources} profileZip={profile.zip_code} />
+          <VeteransResources
+            resources={resources}
+            profileZip={profile.zip_code}
+            favorites={favorites}
+            favoritePending={toggleFavorite.isPending}
+            onToggleFavorite={(resource) => toggleFavorite.mutate(resource)}
+          />
         )}
         {profile && activeModule === "community" && (
           <VeteransCommunity

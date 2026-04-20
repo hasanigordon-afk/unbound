@@ -1,0 +1,16 @@
+{
+  "name": "VeteranResourceFavorite",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "resource_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "resource_id"
+  ]
+}

@@ -29,13 +29,14 @@ export const BRANCHES = [
 export const getBranch = (key) => BRANCHES.find(b => b.key === key) || { label: "Veteran", emoji: "🇺🇸" };
 
 export const RESOURCE_CATEGORIES = [
-  { key: "va_hospital",      label: "VA Hospitals & Clinics",     emoji: "🏥" },
-  { key: "mental_health",    label: "Mental Health & PTSD",       emoji: "🧠" },
-  { key: "substance_abuse",  label: "Substance Abuse Programs",   emoji: "🌿" },
-  { key: "housing",          label: "Housing (HUD-VASH, Shelters)", emoji: "🏠" },
-  { key: "employment",       label: "Employment & Jobs",          emoji: "💼" },
-  { key: "food_emergency",   label: "Food & Emergency Aid",       emoji: "🥫" },
-  { key: "legal",            label: "Legal Assistance",           emoji: "⚖️" },
+  { key: "crisis",           label: "Crisis",                     emoji: "🆘" },
+  { key: "va_hospital",      label: "VA Hospitals",               emoji: "🏥" },
+  { key: "mental_health",    label: "Mental Health",              emoji: "🧠" },
+  { key: "substance_abuse",  label: "Substance Abuse",            emoji: "🌿" },
+  { key: "housing",          label: "Housing",                    emoji: "🏠" },
+  { key: "employment",       label: "Jobs",                       emoji: "💼" },
+  { key: "food_emergency",   label: "Food",                       emoji: "🥫" },
+  { key: "legal",            label: "Legal",                      emoji: "⚖️" },
 ];
 
 export const getCategory = (key) => RESOURCE_CATEGORIES.find(c => c.key === key) || { label: key, emoji: "📍" };
