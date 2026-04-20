@@ -1,0 +1,29 @@
+{
+  "name": "VeteranMission",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "mission_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "mood_rating": {
+      "type": "number",
+      "description": "1-5 daily mood"
+    },
+    "mission_text": {
+      "type": "string",
+      "description": "Mission of the day"
+    },
+    "mission_completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_email",
+    "mission_date"
+  ]
+}

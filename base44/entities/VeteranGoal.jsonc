@@ -1,0 +1,43 @@
+{
+  "name": "VeteranGoal",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "employment",
+        "fitness",
+        "sobriety",
+        "family"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "progress": {
+      "type": "number",
+      "default": 0,
+      "description": "0-100"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "paused"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "user_email",
+    "category",
+    "title"
+  ]
+}

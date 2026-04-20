@@ -1,0 +1,76 @@
+{
+  "name": "VeteranStory",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string",
+      "enum": [
+        "army",
+        "navy",
+        "marines",
+        "air_force",
+        "coast_guard",
+        "space_force",
+        "national_guard",
+        "reserves"
+      ]
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "prompt_key": {
+      "type": "string",
+      "enum": [
+        "moment_changed",
+        "realized_need_support",
+        "keeps_going"
+      ]
+    },
+    "story_text": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ptsd",
+          "addiction_recovery",
+          "transition",
+          "brotherhood_loss",
+          "purpose_found"
+        ]
+      },
+      "default": []
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "private",
+        "public"
+      ],
+      "default": "private"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "user_email",
+    "story_text",
+    "prompt_key"
+  ]
+}

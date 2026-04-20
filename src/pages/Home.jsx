@@ -238,6 +238,23 @@ export default function Home() {
             </Link>
           )}
 
+          {/* ── 1.3. VETERANS HUB ────────────────────────────────────────────── */}
+          <Link to="/veterans-dashboard" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
+            <div style={{
+              background: "linear-gradient(135deg, rgba(91,110,72,.10), rgba(45,64,89,.05))",
+              border: "1px solid rgba(91,110,72,.3)",
+              borderRadius: 16, padding: "18px 18px",
+              display: "flex", alignItems: "center", gap: 14,
+            }}>
+              <span style={{ fontSize: 30, flexShrink: 0 }}>🇺🇸</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#5B6E48", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Veterans Hub</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Veterans Hub 🇺🇸</p>
+                <p style={{ fontSize: 12, color: "#4A3F35" }}>Built for those who served — support, connection, and purpose. →</p>
+              </div>
+            </div>
+          </Link>
+
           {/* ── 1.4. MIND-BODY RECOVERY ─────────────────────────────────────── */}
           <Link to="/MindBodyRecovery" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
             <div style={{

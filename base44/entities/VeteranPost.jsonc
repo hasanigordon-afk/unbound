@@ -1,0 +1,78 @@
+{
+  "name": "VeteranPost",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string",
+      "enum": [
+        "army",
+        "navy",
+        "marines",
+        "air_force",
+        "coast_guard",
+        "space_force",
+        "national_guard",
+        "reserves"
+      ]
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "display_name": {
+      "type": "string",
+      "description": "First name when not anonymous"
+    },
+    "content": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ptsd",
+          "addiction_recovery",
+          "transition",
+          "brotherhood_loss",
+          "purpose_found",
+          "family",
+          "employment"
+        ]
+      },
+      "default": []
+    },
+    "reaction_respect": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_strength": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_salute": {
+      "type": "number",
+      "default": 0
+    },
+    "comment_count": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "flagged",
+        "removed"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "user_email",
+    "content"
+  ]
+}

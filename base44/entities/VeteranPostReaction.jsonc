@@ -1,0 +1,25 @@
+{
+  "name": "VeteranPostReaction",
+  "type": "object",
+  "properties": {
+    "post_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "reaction_type": {
+      "type": "string",
+      "enum": [
+        "respect",
+        "strength",
+        "salute"
+      ]
+    }
+  },
+  "required": [
+    "post_id",
+    "user_email",
+    "reaction_type"
+  ]
+}

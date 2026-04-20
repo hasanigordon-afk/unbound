@@ -1,0 +1,49 @@
+{
+  "name": "VeteranProfile",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string",
+      "enum": [
+        "army",
+        "navy",
+        "marines",
+        "air_force",
+        "coast_guard",
+        "space_force",
+        "national_guard",
+        "reserves"
+      ]
+    },
+    "service_years": {
+      "type": "string",
+      "description": "Free text, e.g. '2008\u20132014'"
+    },
+    "deployment_history": {
+      "type": "string",
+      "description": "Optional free text"
+    },
+    "display_mode": {
+      "type": "string",
+      "enum": [
+        "anonymous",
+        "first_name"
+      ],
+      "default": "anonymous"
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "zip_code": {
+      "type": "string",
+      "description": "Used for resource location filtering"
+    }
+  },
+  "required": [
+    "user_email",
+    "branch"
+  ]
+}

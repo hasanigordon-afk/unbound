@@ -1,0 +1,57 @@
+{
+  "name": "VeteranResource",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "va_hospital",
+        "mental_health",
+        "substance_abuse",
+        "housing",
+        "employment",
+        "food_emergency",
+        "legal"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Veteran Verified tag"
+    }
+  },
+  "required": [
+    "name",
+    "category"
+  ]
+}
