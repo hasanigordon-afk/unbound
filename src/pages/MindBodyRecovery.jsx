@@ -2,7 +2,8 @@ import React, { useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Home, Dumbbell, Apple, Timer, TrendingUp, Loader2 } from "lucide-react";
+import { ArrowLeft, Home, Dumbbell, Apple, Timer, TrendingUp, Loader2, Target, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import DailyFlowTab from "@/components/mindbody/DailyFlowTab";
 import FitnessTab from "@/components/mindbody/FitnessTab";
@@ -167,6 +168,23 @@ export default function MindBodyRecovery() {
           <h1 style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 26, fontWeight: 600, color: "#1C1410", lineHeight: 1.2 }}>
             Move. Fuel. Reset.
           </h1>
+
+          {/* 90-Day Reset banner */}
+          <Link to="/NinetyDayReset" style={{ textDecoration: "none", display: "block", marginTop: 16 }}>
+            <div style={{
+              background: "linear-gradient(135deg, rgba(184,130,58,.10), rgba(155,138,184,.05))",
+              border: "1px solid rgba(184,130,58,.3)",
+              borderRadius: 12, padding: "12px 14px",
+              display: "flex", alignItems: "center", gap: 10,
+            }}>
+              <Target style={{ width: 18, height: 18, color: "#B8823A", flexShrink: 0 }} strokeWidth={1.8} />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: "#1C1410" }}>90-Day Mind-Body Reset</p>
+                <p style={{ fontSize: 11, color: "#9B8E83" }}>Guided 3-phase program →</p>
+              </div>
+              <ChevronRight style={{ width: 14, height: 14, color: "#B8823A", flexShrink: 0 }} />
+            </div>
+          </Link>
         </div>
 
         {/* Tabs */}
