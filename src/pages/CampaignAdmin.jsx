@@ -61,6 +61,11 @@ export default function CampaignAdmin() {
     queryFn: () => base44.entities.Donation.list("-created_date", 100),
   });
 
+  const { data: allPrefs = [] } = useQuery({
+    queryKey: ["all-notification-prefs"],
+    queryFn: () => base44.entities.NotificationPreference.list("-created_date", 500),
+  });
+
   useEffect(() => {
     if (settings) setForm(settings);
   }, [settings]);
@@ -115,6 +120,7 @@ export default function CampaignAdmin() {
         <div style={{ display: "flex", background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "0 12px" }}>
           {[
             { id: "settings", label: "Settings" },
+            { id: "subscribers", label: "Subscribers" },
             { id: "notifications", label: "Notifications" },
             { id: "donations", label: `Donations (${donations.length})` },
           ].map(t => (
@@ -225,6 +231,8 @@ export default function CampaignAdmin() {
             </>
           )}
 
+          {tab === "subscribers" && <SubscribersTab prefs={allPrefs} />}
+
           {tab === "notifications" && <NotificationsTab notifications={notifications} user={user} qc={qc} />}
 
           {tab === "donations" && (
@@ -323,6 +331,75 @@ function NotificationsTab({ notifications, user, qc }) {
           </div>
         ))}
       </div>
+    </>
+  );
+}
+
+function SubscribersTab({ prefs }) {
+  const total = prefs.length;
+  const subscribed = prefs.filter(p => p.subscribed).length;
+  const helpOn = prefs.filter(p => p.subscribed && p.help_enabled).length;
+  const hopeOn = prefs.filter(p => p.subscribed && p.hope_enabled).length;
+  const healingOn = prefs.filter(p => p.subscribed && p.healing_enabled).length;
+  const rate = total > 0 ? Math.round((subscribed / total) * 100) : 0;
+
+  const freqBreakdown = { light: 0, balanced: 0, strong: 0 };
+  prefs.filter(p => p.subscribed).forEach(p => {
+    const f = p.frequency || "balanced";
+    if (freqBreakdown[f] !== undefined) freqBreakdown[f] += 1;
+  });
+
+  const pct = (n) => subscribed > 0 ? Math.round((n / subscribed) * 100) : 0;
+
+  return (
+    <>
+      {/* Top-line stats */}
+      <div style={{ background: "linear-gradient(135deg, rgba(184,130,58,0.08), rgba(122,158,126,0.05))", border: "1px solid #E8E2D9", borderRadius: 14, padding: "20px 20px", marginBottom: 16, textAlign: "center" }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 }}>Subscription Rate</p>
+        <p style={{ fontSize: 36, fontWeight: 800, color: "#B8823A", lineHeight: 1 }}>{rate}%</p>
+        <p style={{ fontSize: 12, color: "#9B8E83", marginTop: 4 }}>{subscribed} of {total} users connected</p>
+      </div>
+
+      {/* 3 H's breakdown */}
+      <p style={{ fontSize: 11, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>The 3 H's — Stream Opt-in</p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8, marginBottom: 20 }}>
+        {[
+          { label: "Help",    n: helpOn,    color: "#7A9E7E", emoji: "📍" },
+          { label: "Hope",    n: hopeOn,    color: "#B8823A", emoji: "✨" },
+          { label: "Healing", n: healingOn, color: "#7B8FA8", emoji: "🌿" },
+        ].map(h => (
+          <div key={h.label} style={{ background: "#FDFAF6", border: "1px solid #E8E2D9", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
+            <p style={{ fontSize: 22, marginBottom: 4 }}>{h.emoji}</p>
+            <p style={{ fontSize: 22, fontWeight: 800, color: h.color, lineHeight: 1 }}>{pct(h.n)}%</p>
+            <p style={{ fontSize: 10, color: "#9B8E83", marginTop: 4, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>{h.label}</p>
+            <p style={{ fontSize: 10, color: "#9B8E83", marginTop: 2 }}>{h.n} users</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Frequency breakdown */}
+      <p style={{ fontSize: 11, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Frequency Preference</p>
+      <div style={{ background: "#FDFAF6", border: "1px solid #E8E2D9", borderRadius: 14, padding: "16px 18px", marginBottom: 20 }}>
+        {[
+          { key: "light", label: "Light" },
+          { key: "balanced", label: "Balanced" },
+          { key: "strong", label: "Strong support" },
+        ].map((f, i) => (
+          <div key={f.key} style={{ marginBottom: i < 2 ? 12 : 0 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <span style={{ fontSize: 13, color: "#1C1410", fontWeight: 600 }}>{f.label}</span>
+              <span style={{ fontSize: 12, color: "#9B8E83" }}>{freqBreakdown[f.key]} ({pct(freqBreakdown[f.key])}%)</span>
+            </div>
+            <div style={{ height: 6, background: "#F7F3EE", borderRadius: 3, overflow: "hidden" }}>
+              <div style={{ width: `${pct(freqBreakdown[f.key])}%`, height: "100%", background: "#B8823A", borderRadius: 3, transition: "width 0.3s ease" }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p style={{ fontSize: 11, color: "#9B8E83", textAlign: "center", lineHeight: 1.6 }}>
+        Engagement and retention metrics update in real time as users interact with the app.
+      </p>
     </>
   );
 }

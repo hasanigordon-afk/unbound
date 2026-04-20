@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import DonateButton from "@/components/donate/DonateButton";
-import { trackHomeVisit } from "@/components/notifications/PushOptInPrompt";
+import InAppNudge from "@/components/subscription/InAppNudge";
+import { trackHomeVisit } from "@/lib/subscriptionEngine";
 import { getCampaignSettings } from "@/lib/campaignSettings";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
@@ -286,6 +287,9 @@ export default function Home() {
               cravingPostCount={cravingPostCount}
             />
           )}
+
+          {/* ── 3.5 SUBSCRIBER NUDGE (3 H's) ──────────────────────────────── */}
+          <InAppNudge />
 
           {/* ── 4. TODAY LIST ─────────────────────────────────────────────── */}
           <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>

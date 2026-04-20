@@ -11,6 +11,53 @@
       "default": true,
       "description": "Master on/off switch"
     },
+    "subscribed": {
+      "type": "boolean",
+      "default": false,
+      "description": "User tapped 'Stay Connected' \u2014 subscribed to the 3 H's engagement engine"
+    },
+    "subscribed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "help_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "HELP stream \u2014 accountability, check-in nudges, goal tracking"
+    },
+    "hope_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "HOPE stream \u2014 community stories, encouragement, milestones"
+    },
+    "healing_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "HEALING stream \u2014 breathing, meditation, reflection prompts"
+    },
+    "frequency": {
+      "type": "string",
+      "enum": [
+        "light",
+        "balanced",
+        "strong"
+      ],
+      "default": "balanced",
+      "description": "How often the user wants to hear from us"
+    },
+    "focus_preference": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "motivation",
+          "stories",
+          "reminders",
+          "mental_health"
+        ]
+      },
+      "description": "What the user wants more of (from personalization sheet)"
+    },
     "daily_motivation": {
       "type": "boolean",
       "default": true
@@ -51,8 +98,7 @@
         "dismissed",
         "denied"
       ],
-      "default": "not_shown",
-      "description": "Current state of the opt-in prompt"
+      "default": "not_shown"
     },
     "browser_permission": {
       "type": "string",
@@ -67,6 +113,11 @@
     "dismissed_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "last_nudge_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last time we showed an in-app nudge \u2014 used for frequency throttling"
     }
   },
   "required": [

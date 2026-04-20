@@ -60,7 +60,7 @@ import HealingHub from './pages/HealingHub';
 import Donate from './pages/Donate';
 import NotificationSettings from './pages/NotificationSettings';
 import CampaignAdmin from './pages/CampaignAdmin';
-import PushOptInPrompt from '@/components/notifications/PushOptInPrompt';
+import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -110,7 +110,7 @@ const AuthenticatedApp = () => {
 
   return (
     <>
-    <PushOptInPrompt />
+    <SubscriptionPrompt />
     <Routes>
       {/* ── Splash ── */}
       <Route path="/splash" element={<Splash />} />

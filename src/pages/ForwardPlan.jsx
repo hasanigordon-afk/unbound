@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { CheckCircle2, Circle, Calendar, TrendingUp, Edit2, Download } from "lucide-react";
+import { markTrigger, TRIGGERS } from "@/lib/subscriptionEngine";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -150,6 +151,7 @@ export default function ForwardPlan() {
     onSuccess: () => {
       queryClient.invalidateQueries(["forward-plan"]);
       queryClient.invalidateQueries(["forward-milestones"]);
+      markTrigger(TRIGGERS.GOAL_SET);
       setActiveStep("milestones");
     },
   });

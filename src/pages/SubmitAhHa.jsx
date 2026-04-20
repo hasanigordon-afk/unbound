@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Loader2, BookOpen, Sparkles } from "lucide-react";
+import { markTrigger, TRIGGERS } from "@/lib/subscriptionEngine";
 
 /* ── Constants ────────────────────────────────────────────────────────────── */
 const TAGS = [
@@ -255,6 +256,7 @@ export default function SubmitAhHa() {
       if (status === "pending_review" || status === "draft") {
         if (status === "pending_review") {
           localStorage.removeItem("ahha_draft");
+          markTrigger(TRIGGERS.AH_HA_POSTED);
           setSubmitted(true);
         } else {
           setSaving(false);

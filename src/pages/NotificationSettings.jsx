@@ -2,27 +2,58 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Bell, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Bell, Check, Loader2, Heart } from "lucide-react";
 
-const CATEGORIES = [
-  { key: "daily_motivation",      label: "Daily motivation",           desc: "A short encouragement each day" },
-  { key: "recovery_motivation",   label: "Recovery reminders",         desc: "Prompts to check in, reach out, or reflect" },
-  { key: "community_updates",     label: "Community updates",          desc: "New stories, testimonials, and posts" },
-  { key: "milestone_reminders",   label: "Milestone reminders",        desc: "Celebrate your sober days and streaks" },
-  { key: "app_updates",           label: "App updates",                desc: "New features and improvements" },
-  { key: "campaign_announcements",label: "Campaign announcements",     desc: "Mission news from the recovery campaign" },
-  { key: "donation_progress",     label: "Donation campaign progress", desc: "Updates on fundraising and impact" },
-  { key: "events_partners",       label: "Events & partner updates",   desc: "Recovery events and partner news" },
+const H_STREAMS = [
+  {
+    key: "help_enabled",
+    label: "Help",
+    tag: "Accountability",
+    color: "#7A9E7E",
+    emoji: "📍",
+    desc: "Check-in reminders, goal nudges, missed-day prompts — gentle, never guilt-based.",
+  },
+  {
+    key: "hope_enabled",
+    label: "Hope",
+    tag: "Community",
+    color: "#B8823A",
+    emoji: "✨",
+    desc: "Ah Ha stories from others, milestone celebrations, encouragement during inactivity.",
+  },
+  {
+    key: "healing_enabled",
+    label: "Healing",
+    tag: "Mental Growth",
+    color: "#7B8FA8",
+    emoji: "🌿",
+    desc: "Breathing, calming audio, reflection prompts. 60-second resets when you need them.",
+  },
 ];
 
-function Toggle({ checked, onChange }) {
+const CATEGORIES = [
+  { key: "milestone_reminders",   label: "Milestone reminders",        desc: "Celebrate your streaks & sober days" },
+  { key: "community_updates",     label: "Community updates",          desc: "New stories and testimonials" },
+  { key: "campaign_announcements",label: "Campaign announcements",     desc: "Mission news and updates" },
+  { key: "app_updates",           label: "App updates",                desc: "New features and improvements" },
+  { key: "donation_progress",     label: "Donation progress",          desc: "Fundraising milestones" },
+  { key: "events_partners",       label: "Events & partners",          desc: "Recovery events and partner news" },
+];
+
+const FREQUENCIES = [
+  { key: "light",    label: "Light",         desc: "A quiet presence — rare, gentle" },
+  { key: "balanced", label: "Balanced",      desc: "A steady rhythm — recommended" },
+  { key: "strong",   label: "Strong support",desc: "More frequent — when you need more" },
+];
+
+function Toggle({ checked, onChange, color = "#B8823A" }) {
   return (
     <button
       type="button"
       onClick={() => onChange(!checked)}
       style={{
         width: 44, height: 26, borderRadius: 13, border: "none", cursor: "pointer",
-        background: checked ? "#B8823A" : "#E8E2D9",
+        background: checked ? color : "#E8E2D9",
         position: "relative", transition: "background 0.2s ease",
         flexShrink: 0,
       }}
@@ -54,13 +85,16 @@ export default function NotificationSettings() {
   });
 
   const [form, setForm] = useState({
+    subscribed: false,
     all_enabled: true,
-    daily_motivation: true,
-    recovery_motivation: true,
-    community_updates: true,
+    help_enabled: true,
+    hope_enabled: true,
+    healing_enabled: true,
+    frequency: "balanced",
     milestone_reminders: true,
-    app_updates: true,
+    community_updates: true,
     campaign_announcements: true,
+    app_updates: true,
     donation_progress: false,
     events_partners: false,
   });
@@ -68,13 +102,16 @@ export default function NotificationSettings() {
   useEffect(() => {
     if (pref) {
       setForm({
+        subscribed: pref.subscribed ?? false,
         all_enabled: pref.all_enabled ?? true,
-        daily_motivation: pref.daily_motivation ?? true,
-        recovery_motivation: pref.recovery_motivation ?? true,
-        community_updates: pref.community_updates ?? true,
+        help_enabled: pref.help_enabled ?? true,
+        hope_enabled: pref.hope_enabled ?? true,
+        healing_enabled: pref.healing_enabled ?? true,
+        frequency: pref.frequency ?? "balanced",
         milestone_reminders: pref.milestone_reminders ?? true,
-        app_updates: pref.app_updates ?? true,
+        community_updates: pref.community_updates ?? true,
         campaign_announcements: pref.campaign_announcements ?? true,
+        app_updates: pref.app_updates ?? true,
         donation_progress: pref.donation_progress ?? false,
         events_partners: pref.events_partners ?? false,
       });
@@ -84,7 +121,9 @@ export default function NotificationSettings() {
   const saveMutation = useMutation({
     mutationFn: async (patch) => {
       if (pref) return base44.entities.NotificationPreference.update(pref.id, patch);
-      return base44.entities.NotificationPreference.create({ user_email: user.email, ...patch, prompt_status: "allowed" });
+      return base44.entities.NotificationPreference.create({
+        user_email: user.email, ...patch, prompt_status: "allowed",
+      });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["notification-pref"] });
@@ -97,6 +136,16 @@ export default function NotificationSettings() {
     const next = { ...form, [key]: value };
     setForm(next);
     saveMutation.mutate(next);
+  };
+
+  const handleUnsubscribe = () => {
+    updateField("subscribed", false);
+  };
+
+  const handleResubscribe = () => {
+    const patch = { ...form, subscribed: true, all_enabled: true };
+    setForm(patch);
+    saveMutation.mutate({ ...patch, subscribed_at: new Date().toISOString() });
   };
 
   if (isLoading) {
@@ -124,16 +173,53 @@ export default function NotificationSettings() {
             </h1>
           </div>
           <p style={{ fontSize: 13, color: "#9B8E83", lineHeight: 1.6 }}>
-            Choose what you'd like to hear from us. Updates changes instantly.
+            Tune what you hear from us. Changes save instantly.
           </p>
         </div>
 
-        {/* Master switch */}
-        <div style={{ padding: "20px 16px 12px" }}>
+        <div style={{ padding: "20px 16px" }}>
+
+          {/* ── Subscription status card ── */}
+          <div style={{
+            background: form.subscribed ? "linear-gradient(135deg, rgba(184,130,58,0.08), rgba(122,158,126,0.05))" : "#FDFAF6",
+            border: `1px solid ${form.subscribed ? "rgba(184,130,58,0.3)" : "#E8E2D9"}`,
+            borderRadius: 16, padding: "18px 18px", marginBottom: 20,
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: 10,
+                background: form.subscribed ? "rgba(184,130,58,0.15)" : "#F7F3EE",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <Heart style={{ width: 18, height: 18, color: form.subscribed ? "#B8823A" : "#9B8E83" }} fill={form.subscribed ? "#B8823A" : "none"} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410" }}>
+                  {form.subscribed ? "You're connected" : "Not subscribed"}
+                </p>
+                <p style={{ fontSize: 11, color: "#9B8E83" }}>
+                  {form.subscribed ? "Help · Hope · Healing" : "Subscribe to receive the 3 H's support stream"}
+                </p>
+              </div>
+              <Toggle
+                checked={form.subscribed}
+                onChange={(v) => v ? handleResubscribe() : handleUnsubscribe()}
+              />
+            </div>
+            {!form.subscribed && (
+              <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.6, marginTop: 4, fontStyle: "italic" }}>
+                You can always come back.
+              </p>
+            )}
+          </div>
+
+          {/* ── Master switch ── */}
           <div style={{
             background: "#FDFAF6", border: "1px solid #E8E2D9",
-            borderRadius: 16, padding: "16px 18px",
+            borderRadius: 16, padding: "16px 18px", marginBottom: 20,
             display: "flex", alignItems: "center", justifyContent: "space-between",
+            opacity: form.subscribed ? 1 : 0.5,
+            pointerEvents: form.subscribed ? "auto" : "none",
           }}>
             <div style={{ flex: 1, marginRight: 12 }}>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410", marginBottom: 2 }}>
@@ -145,36 +231,97 @@ export default function NotificationSettings() {
             </div>
             <Toggle checked={form.all_enabled} onChange={(v) => updateField("all_enabled", v)} />
           </div>
-        </div>
 
-        {/* Category toggles */}
-        <div style={{ padding: "0 16px" }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10, marginTop: 8, padding: "0 4px" }}>
-            Categories
-          </p>
+          {/* ── 3 H's streams ── */}
           <div style={{
-            background: "#FDFAF6", border: "1px solid #E8E2D9",
-            borderRadius: 16, overflow: "hidden",
-            opacity: form.all_enabled ? 1 : 0.5,
-            pointerEvents: form.all_enabled ? "auto" : "none",
+            opacity: form.subscribed && form.all_enabled ? 1 : 0.5,
+            pointerEvents: form.subscribed && form.all_enabled ? "auto" : "none",
           }}>
-            {CATEGORIES.map((cat, i) => (
-              <div key={cat.key} style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "14px 18px",
-                borderBottom: i < CATEGORIES.length - 1 ? "1px solid #E8E2D9" : "none",
-              }}>
-                <div style={{ flex: 1, marginRight: 12 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1C1410", marginBottom: 2 }}>
-                    {cat.label}
-                  </p>
-                  <p style={{ fontSize: 11, color: "#9B8E83", lineHeight: 1.5 }}>
-                    {cat.desc}
-                  </p>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10, padding: "0 4px" }}>
+              The 3 H's
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+              {H_STREAMS.map(h => (
+                <div key={h.key} style={{
+                  background: "#FDFAF6", border: "1px solid #E8E2D9",
+                  borderRadius: 14, padding: "14px 16px",
+                  display: "flex", alignItems: "center", gap: 12,
+                }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                    background: `${h.color}15`,
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
+                  }}>
+                    {h.emoji}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410" }}>{h.label}</p>
+                      <span style={{
+                        fontSize: 9, fontWeight: 700, color: h.color,
+                        background: `${h.color}12`, border: `1px solid ${h.color}30`,
+                        padding: "1px 7px", borderRadius: 20, letterSpacing: ".04em",
+                      }}>{h.tag}</span>
+                    </div>
+                    <p style={{ fontSize: 11, color: "#4A3F35", lineHeight: 1.5 }}>{h.desc}</p>
+                  </div>
+                  <Toggle checked={form[h.key]} onChange={(v) => updateField(h.key, v)} color={h.color} />
                 </div>
-                <Toggle checked={form[cat.key]} onChange={(v) => updateField(cat.key, v)} />
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* ── Frequency ── */}
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10, padding: "0 4px" }}>
+              Frequency
+            </p>
+            <div style={{
+              background: "#FDFAF6", border: "1px solid #E8E2D9",
+              borderRadius: 14, padding: 6, marginBottom: 20,
+              display: "flex", gap: 4,
+            }}>
+              {FREQUENCIES.map(f => {
+                const sel = form.frequency === f.key;
+                return (
+                  <button key={f.key} onClick={() => updateField("frequency", f.key)} style={{
+                    flex: 1, padding: "10px 8px", borderRadius: 10, border: "none",
+                    background: sel ? "#B8823A" : "transparent",
+                    color: sel ? "#fff" : "#4A3F35",
+                    fontWeight: 700, fontSize: 12, cursor: "pointer",
+                    transition: "all 0.15s ease",
+                  }}>{f.label}</button>
+                );
+              })}
+            </div>
+            <p style={{ fontSize: 11, color: "#9B8E83", textAlign: "center", marginBottom: 24, padding: "0 12px", lineHeight: 1.5 }}>
+              {FREQUENCIES.find(f => f.key === form.frequency)?.desc}
+            </p>
+
+            {/* ── Categories ── */}
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10, padding: "0 4px" }}>
+              Other updates
+            </p>
+            <div style={{
+              background: "#FDFAF6", border: "1px solid #E8E2D9",
+              borderRadius: 16, overflow: "hidden", marginBottom: 20,
+            }}>
+              {CATEGORIES.map((cat, i) => (
+                <div key={cat.key} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "14px 18px",
+                  borderBottom: i < CATEGORIES.length - 1 ? "1px solid #E8E2D9" : "none",
+                }}>
+                  <div style={{ flex: 1, marginRight: 12 }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "#1C1410", marginBottom: 2 }}>
+                      {cat.label}
+                    </p>
+                    <p style={{ fontSize: 11, color: "#9B8E83", lineHeight: 1.5 }}>
+                      {cat.desc}
+                    </p>
+                  </div>
+                  <Toggle checked={form[cat.key]} onChange={(v) => updateField(cat.key, v)} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -193,8 +340,8 @@ export default function NotificationSettings() {
           </div>
         )}
 
-        <p style={{ textAlign: "center", fontSize: 11, color: "#9B8E83", padding: "24px 32px 8px", lineHeight: 1.6 }}>
-          You can change your preferences any time. We'll never share your information.
+        <p style={{ textAlign: "center", fontSize: 11, color: "#9B8E83", padding: "8px 32px 8px", lineHeight: 1.6 }}>
+          You can change your preferences any time.
         </p>
       </div>
     </div>
