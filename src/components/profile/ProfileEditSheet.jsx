@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, Save, Loader2 } from "lucide-react";
+import { AISuggestionButton, AIQuoteGenerator } from "./AIProfileAssistant";
 
 const HOBBY_TAGS = [
   "Music","Reading","Cooking","Fitness","Art","Sports","Gaming","Fishing","Gardening",
@@ -60,12 +61,34 @@ export default function ProfileEditSheet({ profile, onSave, onClose }) {
 
           <Section title="Identity">
             {field("Personal Quote / Status Line","personal_quote",form.personal_quote,set,"text","e.g. Rebuilding one day at a time…")}
+            <AIQuoteGenerator onApply={(v) => set("personal_quote", v)} />
+            <AISuggestionButton
+              fieldLabel="personal quote"
+              currentValue={form.personal_quote}
+              profile={form}
+              onApply={(v) => set("personal_quote", v)}
+              promptType="quote"
+            />
             {field("About Me","bio",form.bio,set,"textarea","What makes you, you? What do you want people to know about you beyond your struggles?")}
+            <AISuggestionButton
+              fieldLabel="bio"
+              currentValue={form.bio}
+              profile={form}
+              onApply={(v) => set("bio", v)}
+              promptType="bio"
+            />
           </Section>
 
           <Section title="My Roots">
             {field("Hometown","hometown",form.hometown,set,"text","Where are you from?")}
             {field("What shaped you","roots_story",form.roots_story,set,"textarea","Neighborhoods, family, the city that raised you…")}
+            <AISuggestionButton
+              fieldLabel="roots story"
+              currentValue={form.roots_story}
+              profile={form}
+              onApply={(v) => set("roots_story", v)}
+              promptType="roots"
+            />
           </Section>
 
           <Section title="Places I Love">
@@ -84,6 +107,13 @@ export default function ProfileEditSheet({ profile, onSave, onClose }) {
 
           <Section title="What Keeps Me Grounded">
             {field("People, places & things that bring you back to yourself","grounding_things",form.grounding_things,set,"textarea","Music, a person, a park, a tradition, a smell, a song…")}
+            <AISuggestionButton
+              fieldLabel="grounding things"
+              currentValue={form.grounding_things}
+              profile={form}
+              onApply={(v) => set("grounding_things", v)}
+              promptType="grounding"
+            />
           </Section>
 
           <Section title="Hobbies & Interests">
@@ -117,6 +147,13 @@ export default function ProfileEditSheet({ profile, onSave, onClose }) {
             {field("Right now I'm working on…","what_im_building",form.what_im_building,set,"textarea","Short-term goals, what you're actively doing…")}
             {field("My long-term dream","long_term_dream",form.long_term_dream,set,"text","Where do you see yourself in 3–5 years?")}
             {field("What keeps me going","motivation",form.motivation,set,"textarea","Who or what motivates you to keep showing up?")}
+            <AISuggestionButton
+              fieldLabel="what I'm building"
+              currentValue={form.what_im_building}
+              profile={form}
+              onApply={(v) => set("what_im_building", v)}
+              promptType="building"
+            />
           </Section>
 
           <button onClick={handleSave} disabled={saving} style={{
