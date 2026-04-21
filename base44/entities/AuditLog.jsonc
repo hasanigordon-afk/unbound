@@ -1,0 +1,30 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "actor_email": {
+      "type": "string",
+      "description": "Email of user performing the action"
+    },
+    "action": {
+      "type": "string",
+      "description": "Action performed (e.g. lifeline_triggered, consent_changed, post_deleted)"
+    },
+    "entity_type": {
+      "type": "string",
+      "description": "Type of entity affected"
+    },
+    "entity_id": {
+      "type": "string",
+      "description": "ID of entity affected"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata"
+    }
+  },
+  "required": [
+    "action",
+    "entity_type"
+  ]
+}

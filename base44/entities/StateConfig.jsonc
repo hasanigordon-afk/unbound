@@ -1,0 +1,59 @@
+{
+  "name": "StateConfig",
+  "type": "object",
+  "properties": {
+    "state_code": {
+      "type": "string",
+      "description": "Two-letter state code (e.g., NJ, NY, PA)"
+    },
+    "state_name": {
+      "type": "string",
+      "description": "Full state name"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "State is active in system"
+    },
+    "reentry_checklist_url": {
+      "type": "string",
+      "description": "State-specific reentry checklist document"
+    },
+    "recovery_guidelines_url": {
+      "type": "string",
+      "description": "State recovery guidelines document"
+    },
+    "crisis_hotline": {
+      "type": "string",
+      "description": "State-specific crisis number"
+    },
+    "benefits_office_info": {
+      "type": "string",
+      "description": "State benefits office information"
+    },
+    "id_requirements": {
+      "type": "string",
+      "description": "State ID requirements and process"
+    },
+    "medicaid_info": {
+      "type": "string",
+      "description": "State Medicaid information"
+    },
+    "probation_parole_resources": {
+      "type": "string",
+      "description": "State probation/parole resources"
+    },
+    "state_disclaimer": {
+      "type": "string",
+      "description": "State-required disclaimer text"
+    },
+    "compliance_requirements": {
+      "type": "string",
+      "description": "State-specific compliance requirements"
+    }
+  },
+  "required": [
+    "state_code",
+    "state_name"
+  ]
+}

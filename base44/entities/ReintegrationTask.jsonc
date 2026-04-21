@@ -1,0 +1,37 @@
+{
+  "name": "ReintegrationTask",
+  "type": "object",
+  "properties": {
+    "phase": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3
+      ],
+      "description": "Phase number (1=Stabilization, 2=Foundation, 3=Momentum)"
+    },
+    "task_name": {
+      "type": "string",
+      "description": "Task name"
+    },
+    "task_description": {
+      "type": "string",
+      "description": "Task description"
+    },
+    "sort_order": {
+      "type": "number",
+      "description": "Display order within phase"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Task is active"
+    }
+  },
+  "required": [
+    "phase",
+    "task_name",
+    "sort_order"
+  ]
+}

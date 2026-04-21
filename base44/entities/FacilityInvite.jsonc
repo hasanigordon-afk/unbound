@@ -1,0 +1,37 @@
+{
+  "name": "FacilityInvite",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Participant email to invite"
+    },
+    "invited_by": {
+      "type": "string",
+      "description": "Counselor/admin who sent invite"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "declined"
+      ],
+      "default": "pending",
+      "description": "Invite status"
+    },
+    "invite_code": {
+      "type": "string",
+      "description": "Unique invite code"
+    }
+  },
+  "required": [
+    "facility_id",
+    "participant_email",
+    "invite_code"
+  ]
+}

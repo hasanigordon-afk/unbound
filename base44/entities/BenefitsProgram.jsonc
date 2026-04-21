@@ -1,0 +1,66 @@
+{
+  "name": "BenefitsProgram",
+  "type": "object",
+  "properties": {
+    "program_name": {
+      "type": "string"
+    },
+    "program_type": {
+      "type": "string",
+      "enum": [
+        "medicaid",
+        "snap",
+        "state_id",
+        "social_security",
+        "housing_voucher",
+        "utility_assistance",
+        "phone_assistance",
+        "reentry_grant",
+        "local_program"
+      ]
+    },
+    "state": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "eligibility_summary": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Step-by-step application instructions"
+    },
+    "documents_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "apply_url": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "processing_time": {
+      "type": "string"
+    },
+    "monthly_benefit_amount": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "program_name",
+    "program_type",
+    "state"
+  ]
+}

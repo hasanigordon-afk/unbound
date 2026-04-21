@@ -1,0 +1,66 @@
+{
+  "name": "ClientCheckins",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "description": "ID or email of the client"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the check-in"
+    },
+    "mood_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Mood rating from 1 (very low) to 5 (great)"
+    },
+    "craving_level": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Craving intensity from 1 (none) to 5 (severe)"
+    },
+    "meetings_attended": {
+      "type": "number",
+      "description": "Number of meetings attended on this day"
+    },
+    "sponsor_contact": {
+      "type": "boolean",
+      "description": "Whether the client contacted their sponsor (yes/no)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional personal notes from the client"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Exact date and time the check-in was submitted"
+    },
+    "engagement_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Calculated engagement score (0-100). Start=100, -10 no check-in in 24h, -20 no meeting in 7d, -15 no sponsor contact in 7d, -25 craving level above 4."
+    },
+    "engagement_level": {
+      "type": "string",
+      "enum": [
+        "Stable",
+        "Moderate Risk",
+        "High Risk"
+      ],
+      "description": "Risk level derived from engagement_score: 80-100=Stable, 60-79=Moderate Risk, <60=High Risk"
+    }
+  },
+  "required": [
+    "client_id",
+    "date",
+    "mood_rating",
+    "craving_level",
+    "sponsor_contact"
+  ]
+}

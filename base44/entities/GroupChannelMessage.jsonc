@@ -1,0 +1,46 @@
+{
+  "name": "GroupChannelMessage",
+  "type": "object",
+  "properties": {
+    "channel_id": {
+      "type": "string",
+      "description": "ID of the GroupChannel"
+    },
+    "author_email": {
+      "type": "string",
+      "description": "Email of the message author (used internally for moderation only)"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Anonymous display name chosen by user (e.g. 'Brave Sparrow')"
+    },
+    "content": {
+      "type": "string",
+      "description": "Message content"
+    },
+    "is_flagged": {
+      "type": "boolean",
+      "default": false,
+      "description": "Flagged for moderation review"
+    },
+    "is_removed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Removed by moderator"
+    },
+    "flag_reason": {
+      "type": "string",
+      "description": "Reason for flag"
+    },
+    "reactions": {
+      "type": "object",
+      "description": "Emoji reaction counts e.g. { heart: 3, fire: 1 }"
+    }
+  },
+  "required": [
+    "channel_id",
+    "author_email",
+    "display_name",
+    "content"
+  ]
+}

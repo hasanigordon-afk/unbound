@@ -1,0 +1,36 @@
+{
+  "name": "ServiceRequest",
+  "type": "object",
+  "properties": {
+    "service_id": {
+      "type": "string"
+    },
+    "creator_email": {
+      "type": "string"
+    },
+    "requester_email": {
+      "type": "string"
+    },
+    "requester_name": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "declined",
+        "completed"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "service_id",
+    "creator_email",
+    "requester_email"
+  ]
+}

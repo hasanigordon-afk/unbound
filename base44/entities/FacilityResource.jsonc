@@ -1,0 +1,63 @@
+{
+  "name": "FacilityResource",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "Resource name"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "jobs",
+        "housing",
+        "food",
+        "benefits",
+        "meetings",
+        "transportation",
+        "counseling",
+        "other"
+      ],
+      "description": "Resource category"
+    },
+    "description": {
+      "type": "string",
+      "description": "Resource description"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "hours": {
+      "type": "string",
+      "description": "Operating hours"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "facility_id",
+    "name",
+    "category"
+  ]
+}

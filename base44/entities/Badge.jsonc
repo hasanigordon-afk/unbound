@@ -1,0 +1,44 @@
+{
+  "name": "Badge",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Badge name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Badge description"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Icon name from lucide-react"
+    },
+    "color": {
+      "type": "string",
+      "description": "Badge color"
+    },
+    "criteria_type": {
+      "type": "string",
+      "enum": [
+        "checkins",
+        "streak",
+        "points",
+        "resources_saved",
+        "resources_viewed",
+        "journal_entries"
+      ],
+      "description": "Type of criteria"
+    },
+    "criteria_value": {
+      "type": "number",
+      "description": "Value required to earn badge"
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "criteria_type",
+    "criteria_value"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "name": "Article",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "full_content": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Recovery",
+        "Relapse Prevention",
+        "Reentry",
+        "Employment",
+        "Housing",
+        "Mental Health",
+        "Motivation",
+        "Legal",
+        "Community",
+        "Life Skills"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "publish_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "approved": {
+      "type": "boolean",
+      "default": true
+    },
+    "pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "comments_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    },
+    "comment_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "summary",
+    "category"
+  ]
+}

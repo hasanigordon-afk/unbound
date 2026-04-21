@@ -1,0 +1,75 @@
+{
+  "name": "ComplianceReport",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant email"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID"
+    },
+    "report_type": {
+      "type": "string",
+      "enum": [
+        "30_day",
+        "60_day",
+        "90_day",
+        "reentry_compliance"
+      ],
+      "description": "Report type"
+    },
+    "report_period_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Report period start date"
+    },
+    "report_period_end": {
+      "type": "string",
+      "format": "date",
+      "description": "Report period end date"
+    },
+    "engagement_percentage": {
+      "type": "number",
+      "description": "Overall engagement percentage"
+    },
+    "task_completion_percentage": {
+      "type": "number",
+      "description": "Task completion percentage"
+    },
+    "meeting_attendance_count": {
+      "type": "number",
+      "description": "Total meetings attended"
+    },
+    "sponsor_engagement_count": {
+      "type": "number",
+      "description": "Sponsor connections count"
+    },
+    "missed_checkin_intervals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of missed check-in date ranges"
+    },
+    "resource_access_count": {
+      "type": "number",
+      "description": "Resources accessed"
+    },
+    "generated_by": {
+      "type": "string",
+      "description": "User who generated report"
+    },
+    "report_data_json": {
+      "type": "object",
+      "description": "Full report data as JSON"
+    }
+  },
+  "required": [
+    "participant_email",
+    "report_type",
+    "report_period_start",
+    "report_period_end"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "name": "ImportLog",
+  "type": "object",
+  "properties": {
+    "filename": {
+      "type": "string",
+      "description": "Name of the uploaded file"
+    },
+    "imported_by": {
+      "type": "string",
+      "description": "Email of the admin who ran the import"
+    },
+    "total_rows": {
+      "type": "number",
+      "description": "Total rows in the CSV"
+    },
+    "inserted": {
+      "type": "number",
+      "description": "Records successfully inserted"
+    },
+    "duplicates_skipped": {
+      "type": "number",
+      "description": "Records skipped due to duplicate detection"
+    },
+    "validation_errors": {
+      "type": "number",
+      "description": "Records skipped due to missing required fields"
+    },
+    "geocoded": {
+      "type": "number",
+      "description": "Records where lat/lng was resolved from address"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "partial",
+        "failed"
+      ],
+      "description": "Overall import status"
+    },
+    "error_details": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of row-level error messages"
+    }
+  },
+  "required": [
+    "filename",
+    "imported_by",
+    "status"
+  ]
+}

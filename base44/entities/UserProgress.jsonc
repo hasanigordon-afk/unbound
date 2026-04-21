@@ -1,0 +1,52 @@
+{
+  "name": "UserProgress",
+  "type": "object",
+  "properties": {
+    "total_points": {
+      "type": "number",
+      "default": 0,
+      "description": "Total points earned"
+    },
+    "level": {
+      "type": "number",
+      "default": 1,
+      "description": "Current level"
+    },
+    "current_streak": {
+      "type": "number",
+      "default": 0,
+      "description": "Current check-in streak in days"
+    },
+    "longest_streak": {
+      "type": "number",
+      "default": 0,
+      "description": "Longest check-in streak"
+    },
+    "total_checkins": {
+      "type": "number",
+      "default": 0,
+      "description": "Total check-ins completed"
+    },
+    "resources_viewed": {
+      "type": "number",
+      "default": 0,
+      "description": "Resources viewed count"
+    },
+    "resources_saved": {
+      "type": "number",
+      "default": 0,
+      "description": "Resources saved count"
+    },
+    "journal_entries": {
+      "type": "number",
+      "default": 0,
+      "description": "Total journal entries written"
+    },
+    "last_checkin_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Last check-in date"
+    }
+  },
+  "required": []
+}

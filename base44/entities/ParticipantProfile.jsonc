@@ -1,0 +1,73 @@
+{
+  "name": "ParticipantProfile",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant's email"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Associated facility ID (null for independent users)"
+    },
+    "assigned_counselor_email": {
+      "type": "string",
+      "description": "Assigned counselor's email"
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of discharge from treatment/facility"
+    },
+    "sobriety_start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Self-reported sobriety start date"
+    },
+    "program_type": {
+      "type": "string",
+      "enum": [
+        "post_treatment",
+        "post_incarceration",
+        "housing_transition"
+      ],
+      "description": "Type of program participant is in"
+    },
+    "location_city": {
+      "type": "string"
+    },
+    "location_state": {
+      "type": "string"
+    },
+    "location_zip": {
+      "type": "string"
+    },
+    "terms_accepted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Accepted legal terms and disclaimers"
+    },
+    "terms_accepted_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When terms were accepted"
+    },
+    "pilot_participant": {
+      "type": "boolean",
+      "default": false,
+      "description": "Part of pilot program"
+    },
+    "engagement_mode": {
+      "type": "string",
+      "enum": [
+        "reentry_focus",
+        "treatment_continuity"
+      ],
+      "default": "treatment_continuity",
+      "description": "Primary engagement mode"
+    }
+  },
+  "required": [
+    "participant_email"
+  ]
+}

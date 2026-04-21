@@ -1,0 +1,179 @@
+{
+  "name": "NJTreatmentFacility",
+  "type": "object",
+  "properties": {
+    "facility_name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string",
+      "default": "NJ"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "county": {
+      "type": "string",
+      "enum": [
+        "Atlantic",
+        "Bergen",
+        "Burlington",
+        "Camden",
+        "Cape May",
+        "Cumberland",
+        "Essex",
+        "Gloucester",
+        "Hudson",
+        "Hunterdon",
+        "Mercer",
+        "Middlesex",
+        "Monmouth",
+        "Morris",
+        "Ocean",
+        "Passaic",
+        "Salem",
+        "Somerset",
+        "Sussex",
+        "Union",
+        "Warren"
+      ]
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "admissions_contact": {
+      "type": "string"
+    },
+    "facility_type": {
+      "type": "string",
+      "enum": [
+        "detox",
+        "rehab",
+        "outpatient_clinic",
+        "behavioral_health_center",
+        "hospital_program"
+      ]
+    },
+    "level_of_care": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "detox",
+          "inpatient",
+          "residential",
+          "outpatient",
+          "iop",
+          "php",
+          "mat"
+        ]
+      }
+    },
+    "detox_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "inpatient_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "outpatient_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "iop_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "php_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "mat_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "dual_diagnosis_support": {
+      "type": "boolean",
+      "default": false
+    },
+    "medicaid_accepted": {
+      "type": "boolean",
+      "default": false
+    },
+    "private_insurance_accepted": {
+      "type": "boolean",
+      "default": false
+    },
+    "self_pay_accepted": {
+      "type": "boolean",
+      "default": false
+    },
+    "men_only": {
+      "type": "boolean",
+      "default": false
+    },
+    "women_only": {
+      "type": "boolean",
+      "default": false
+    },
+    "adolescents_served": {
+      "type": "boolean",
+      "default": false
+    },
+    "transportation_assistance": {
+      "type": "boolean",
+      "default": false
+    },
+    "telehealth_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "hours_of_operation": {
+      "type": "string"
+    },
+    "referral_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "description": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "active_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "pending_verification"
+      ],
+      "default": "active"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "facility_name",
+    "city",
+    "county"
+  ]
+}

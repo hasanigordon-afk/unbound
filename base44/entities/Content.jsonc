@@ -1,0 +1,67 @@
+{
+  "name": "Content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Content title"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "article",
+        "meditation",
+        "exercise",
+        "video"
+      ],
+      "description": "Content type"
+    },
+    "description": {
+      "type": "string",
+      "description": "Content description"
+    },
+    "content_body": {
+      "type": "string",
+      "description": "Full content text"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "description": "Estimated duration"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "description": "Difficulty level"
+    },
+    "relevant_stages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Relevant recovery stages"
+    },
+    "relevant_tracks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Relevant recovery tracks"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Content tags"
+    }
+  },
+  "required": [
+    "title",
+    "type",
+    "content_body"
+  ]
+}

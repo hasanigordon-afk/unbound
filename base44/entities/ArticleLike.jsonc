@@ -1,0 +1,23 @@
+{
+  "name": "ArticleLike",
+  "type": "object",
+  "properties": {
+    "target_id": {
+      "type": "string",
+      "description": "Article, comment, or community post ID"
+    },
+    "target_type": {
+      "type": "string",
+      "enum": [
+        "article_like",
+        "article_save",
+        "comment_like",
+        "community_like"
+      ]
+    }
+  },
+  "required": [
+    "target_id",
+    "target_type"
+  ]
+}

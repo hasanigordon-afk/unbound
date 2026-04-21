@@ -1,0 +1,44 @@
+{
+  "name": "FeaturedCreator",
+  "type": "object",
+  "properties": {
+    "creator_email": {
+      "type": "string"
+    },
+    "feature_type": {
+      "type": "string",
+      "enum": [
+        "week",
+        "spotlight",
+        "success_story"
+      ],
+      "default": "week"
+    },
+    "headline": {
+      "type": "string"
+    },
+    "story": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "week_of": {
+      "type": "string",
+      "format": "date"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Seed/demo content \u2014 safe to hide or delete"
+    }
+  },
+  "required": [
+    "creator_email",
+    "feature_type"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "SupportGroup",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Group name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Group description"
+    },
+    "is_private": {
+      "type": "boolean",
+      "default": true,
+      "description": "Private group"
+    },
+    "max_members": {
+      "type": "number",
+      "default": 10,
+      "description": "Maximum members"
+    },
+    "focus_area": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "substances",
+        "both",
+        "general"
+      ],
+      "description": "Group focus"
+    }
+  },
+  "required": [
+    "name",
+    "focus_area"
+  ]
+}

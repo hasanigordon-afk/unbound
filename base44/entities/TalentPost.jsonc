@@ -1,0 +1,83 @@
+{
+  "name": "TalentPost",
+  "type": "object",
+  "properties": {
+    "creator_email": {
+      "type": "string"
+    },
+    "creator_name": {
+      "type": "string"
+    },
+    "creator_photo": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "artwork",
+        "clothing",
+        "poetry",
+        "music",
+        "photography",
+        "crafts",
+        "motivation",
+        "skills",
+        "services",
+        "other"
+      ]
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "video_url": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0
+    },
+    "comment_count": {
+      "type": "number",
+      "default": 0
+    },
+    "save_count": {
+      "type": "number",
+      "default": 0
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "pending",
+        "flagged"
+      ],
+      "default": "approved"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Seed/demo content \u2014 safe to hide or delete"
+    }
+  },
+  "required": [
+    "creator_email",
+    "title",
+    "category"
+  ]
+}

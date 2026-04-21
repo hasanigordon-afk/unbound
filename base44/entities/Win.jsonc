@@ -1,0 +1,32 @@
+{
+  "name": "Win",
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "string",
+      "description": "Win or gratitude message"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "win",
+        "gratitude"
+      ],
+      "description": "Type of post"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true,
+      "description": "Post anonymously"
+    },
+    "heart_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of hearts"
+    }
+  },
+  "required": [
+    "content",
+    "type"
+  ]
+}

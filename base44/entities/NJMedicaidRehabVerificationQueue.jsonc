@@ -1,0 +1,95 @@
+{
+  "name": "NJMedicaidRehabVerificationQueue",
+  "type": "object",
+  "properties": {
+    "facility_name": {
+      "type": "string",
+      "description": "Facility name to verify"
+    },
+    "city": {
+      "type": "string"
+    },
+    "county": {
+      "type": "string",
+      "enum": [
+        "Atlantic",
+        "Bergen",
+        "Burlington",
+        "Camden",
+        "Cape May",
+        "Cumberland",
+        "Essex",
+        "Gloucester",
+        "Hudson",
+        "Hunterdon",
+        "Mercer",
+        "Middlesex",
+        "Monmouth",
+        "Morris",
+        "Ocean",
+        "Passaic",
+        "Salem",
+        "Somerset",
+        "Sussex",
+        "Union",
+        "Warren"
+      ]
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "suspected_medicaid_status": {
+      "type": "string",
+      "enum": [
+        "Likely Yes",
+        "Likely No",
+        "Unknown"
+      ],
+      "description": "Best guess before verification"
+    },
+    "verification_needed_reason": {
+      "type": "string",
+      "description": "Why this record needs verification"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "In Progress",
+        "Verified",
+        "Unable to Verify",
+        "No Longer Active"
+      ],
+      "default": "Pending"
+    },
+    "last_attempted": {
+      "type": "string",
+      "format": "date"
+    },
+    "next_follow_up": {
+      "type": "string",
+      "format": "date"
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "Admin user assigned to this verification"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Verification call/research notes"
+    },
+    "linked_facility_id": {
+      "type": "string",
+      "description": "ID of the main NJMedicaidRehabFacility record if one exists"
+    }
+  },
+  "required": [
+    "facility_name",
+    "city",
+    "county",
+    "verification_needed_reason"
+  ]
+}

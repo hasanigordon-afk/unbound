@@ -1,0 +1,109 @@
+{
+  "name": "CommunityPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Post title or prompt response"
+    },
+    "content": {
+      "type": "string",
+      "description": "Post content"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "daily_win",
+        "need_support",
+        "craving_now",
+        "motivation",
+        "recovery_question",
+        "meeting_experience",
+        "job_housing_help",
+        "milestone_celebration",
+        "reentry_advice",
+        "journal_reflection",
+        "support",
+        "question",
+        "milestone",
+        "advice"
+      ],
+      "description": "Post category"
+    },
+    "post_type": {
+      "type": "string",
+      "enum": [
+        "feed",
+        "support_request",
+        "group_post",
+        "milestone"
+      ],
+      "default": "feed",
+      "description": "Type of post"
+    },
+    "group_id": {
+      "type": "string",
+      "description": "Accountability group ID if group post"
+    },
+    "mood_tag": {
+      "type": "string",
+      "enum": [
+        "hopeful",
+        "struggling",
+        "anxious",
+        "grateful",
+        "proud",
+        "triggered"
+      ],
+      "description": "Optional mood tag"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true,
+      "description": "Post anonymously"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "flagged"
+      ],
+      "default": "approved",
+      "description": "Moderation status"
+    },
+    "moderation_reason": {
+      "type": "string",
+      "description": "AI moderation reason if flagged"
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Total reaction count"
+    },
+    "reaction_proud": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_strong": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_relate": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_support": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_going": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "content",
+    "category"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "name": "WeeklyReflection",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string"
+    },
+    "week_start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Monday of the week"
+    },
+    "overall_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "How the week went 1-5"
+    },
+    "wins": {
+      "type": "string",
+      "description": "What went well this week"
+    },
+    "challenges": {
+      "type": "string",
+      "description": "What was hard this week"
+    },
+    "intentions": {
+      "type": "string",
+      "description": "Focus for next week"
+    },
+    "goal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Goals referenced in this reflection"
+    },
+    "counselor_email": {
+      "type": "string"
+    },
+    "counselor_feedback": {
+      "type": "string"
+    },
+    "counselor_feedback_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "counselor_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Counselor progress rating"
+    }
+  },
+  "required": [
+    "participant_email",
+    "week_start_date"
+  ]
+}

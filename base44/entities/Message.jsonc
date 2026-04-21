@@ -1,0 +1,95 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "sender_email": {
+      "type": "string",
+      "description": "Sender email"
+    },
+    "sender_role": {
+      "type": "string",
+      "enum": [
+        "patient",
+        "counselor",
+        "probation_officer"
+      ],
+      "description": "Role of sender"
+    },
+    "receiver_email": {
+      "type": "string",
+      "description": "Receiver email"
+    },
+    "receiver_role": {
+      "type": "string",
+      "enum": [
+        "patient",
+        "counselor",
+        "probation_officer"
+      ],
+      "description": "Role of receiver"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "counselor_patient",
+        "probation_client"
+      ],
+      "description": "Communication channel"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "check_in",
+        "compliance_update",
+        "appointment_reminder",
+        "document_request",
+        "progress_note",
+        "general_message",
+        "motivational",
+        "resource_share"
+      ],
+      "description": "Structured message type"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Message subject"
+    },
+    "body": {
+      "type": "string",
+      "description": "Message body"
+    },
+    "status_tag": {
+      "type": "string",
+      "enum": [
+        "required",
+        "informational",
+        "follow_up"
+      ],
+      "description": "Optional status tag"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Read status"
+    },
+    "required_response": {
+      "type": "boolean",
+      "default": false,
+      "description": "Requires a response from recipient"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility scoping"
+    }
+  },
+  "required": [
+    "sender_email",
+    "sender_role",
+    "receiver_email",
+    "receiver_role",
+    "channel",
+    "message_type",
+    "subject",
+    "body"
+  ]
+}

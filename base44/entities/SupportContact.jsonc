@@ -1,0 +1,48 @@
+{
+  "name": "SupportContact",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Contact name"
+    },
+    "relationship": {
+      "type": "string",
+      "enum": [
+        "sponsor",
+        "family",
+        "friend",
+        "counselor",
+        "peer",
+        "other"
+      ],
+      "description": "Relationship to user"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address"
+    },
+    "preferred_channel": {
+      "type": "string",
+      "enum": [
+        "call",
+        "text",
+        "email"
+      ],
+      "default": "call",
+      "description": "Preferred contact channel"
+    },
+    "is_primary": {
+      "type": "boolean",
+      "default": false,
+      "description": "Primary emergency contact"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

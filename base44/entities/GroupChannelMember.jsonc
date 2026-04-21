@@ -1,0 +1,28 @@
+{
+  "name": "GroupChannelMember",
+  "type": "object",
+  "properties": {
+    "channel_id": {
+      "type": "string",
+      "description": "ID of the GroupChannel"
+    },
+    "member_email": {
+      "type": "string",
+      "description": "Member's email"
+    },
+    "anonymous_name": {
+      "type": "string",
+      "description": "The anonymous display name chosen for this channel"
+    },
+    "joined_at": {
+      "type": "string",
+      "format": "date",
+      "description": "Date joined"
+    }
+  },
+  "required": [
+    "channel_id",
+    "member_email",
+    "anonymous_name"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "name": "Meeting",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Meeting name"
+    },
+    "program_type": {
+      "type": "string",
+      "enum": [
+        "AA",
+        "NA",
+        "SMART",
+        "Other"
+      ],
+      "description": "Program type"
+    },
+    "in_person": {
+      "type": "boolean",
+      "default": true,
+      "description": "Is this an in-person meeting?"
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "state": {
+      "type": "string",
+      "description": "State"
+    },
+    "zip": {
+      "type": "string",
+      "description": "ZIP code"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude"
+    },
+    "day_of_week": {
+      "type": "number",
+      "description": "0=Sunday, 6=Saturday"
+    },
+    "start_time": {
+      "type": "string",
+      "description": "Start time (HH:MM)"
+    },
+    "end_time": {
+      "type": "string",
+      "description": "End time (HH:MM)"
+    },
+    "url": {
+      "type": "string",
+      "description": "Online meeting URL"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Meeting is active"
+    }
+  },
+  "required": [
+    "title",
+    "program_type",
+    "city",
+    "state"
+  ]
+}

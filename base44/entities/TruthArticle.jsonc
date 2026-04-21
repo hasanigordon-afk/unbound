@@ -1,0 +1,93 @@
+{
+  "name": "TruthArticle",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "full_content": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "relapse_reality",
+        "rehab_fraud",
+        "success_story",
+        "what_helps",
+        "facility_accountability",
+        "hope_inspiration"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "why_it_matters": {
+      "type": "string"
+    },
+    "publish_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_editors_pick": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_article_of_day": {
+      "type": "boolean",
+      "default": false
+    },
+    "approved": {
+      "type": "boolean",
+      "default": true
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_eyeopening": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_helpful": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_inspiring": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_hardtruth": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_mustread": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "summary",
+    "category"
+  ]
+}

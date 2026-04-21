@@ -1,0 +1,60 @@
+{
+  "name": "PayItForwardFulfillment",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "request_title": {
+      "type": "string"
+    },
+    "request_category": {
+      "type": "string"
+    },
+    "donor_email": {
+      "type": "string"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "amount_covered": {
+      "type": "number"
+    },
+    "fulfillment_method": {
+      "type": "string",
+      "enum": [
+        "full_cart",
+        "partial_cart",
+        "item_list"
+      ],
+      "default": "full_cart"
+    },
+    "confirmation_message": {
+      "type": "string"
+    },
+    "retailer_used": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "delivered",
+        "cancelled"
+      ],
+      "default": "pending"
+    },
+    "admin_verified": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "request_id",
+    "donor_email",
+    "amount_covered",
+    "fulfillment_method"
+  ]
+}

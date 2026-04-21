@@ -1,0 +1,41 @@
+{
+  "name": "PayItForwardModerationAction",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "moderator_email": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "denied",
+        "flagged",
+        "edited",
+        "expired",
+        "note_added",
+        "cap_override"
+      ]
+    },
+    "note": {
+      "type": "string"
+    },
+    "previous_status": {
+      "type": "string"
+    },
+    "new_status": {
+      "type": "string"
+    },
+    "amount_adjusted": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "request_id",
+    "moderator_email",
+    "action"
+  ]
+}

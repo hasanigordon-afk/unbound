@@ -1,0 +1,15 @@
+{
+  "name": "SavedTruthArticle",
+  "type": "object",
+  "properties": {
+    "article_id": {
+      "type": "string"
+    },
+    "article_title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "article_id"
+  ]
+}

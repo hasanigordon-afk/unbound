@@ -1,0 +1,65 @@
+{
+  "name": "ForwardPlanMilestone",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant email"
+    },
+    "forward_plan_id": {
+      "type": "string",
+      "description": "Reference to ForwardPlan"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "housing",
+        "employment",
+        "education",
+        "financial",
+        "health",
+        "relationships",
+        "legal"
+      ],
+      "description": "Goal category"
+    },
+    "timeline": {
+      "type": "string",
+      "enum": [
+        "3_year",
+        "1_year",
+        "90_day"
+      ],
+      "description": "Milestone timeline"
+    },
+    "milestone_text": {
+      "type": "string",
+      "description": "Milestone description"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Completion status"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when completed"
+    },
+    "notes": {
+      "type": "string",
+      "description": "User notes"
+    },
+    "sort_order": {
+      "type": "number",
+      "description": "Display order"
+    }
+  },
+  "required": [
+    "participant_email",
+    "forward_plan_id",
+    "category",
+    "timeline",
+    "milestone_text"
+  ]
+}

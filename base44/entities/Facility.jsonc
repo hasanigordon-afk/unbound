@@ -1,0 +1,94 @@
+{
+  "name": "Facility",
+  "type": "object",
+  "properties": {
+    "facility_name": {
+      "type": "string",
+      "description": "Facility name"
+    },
+    "admin_email": {
+      "type": "string",
+      "description": "Facility admin email"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "Facility logo URL"
+    },
+    "primary_color": {
+      "type": "string",
+      "default": "#fbbf24",
+      "description": "Primary accent color (hex)"
+    },
+    "contact_phone": {
+      "type": "string",
+      "description": "Facility contact phone"
+    },
+    "contact_email": {
+      "type": "string",
+      "description": "Facility contact email"
+    },
+    "website": {
+      "type": "string",
+      "description": "Facility website"
+    },
+    "crisis_phone": {
+      "type": "string",
+      "description": "Facility-specific crisis line"
+    },
+    "address": {
+      "type": "string",
+      "description": "Facility address"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Facility is active"
+    },
+    "pilot_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "In pilot mode (free trial)"
+    },
+    "subscription_tier": {
+      "type": "string",
+      "enum": [
+        "free_trial",
+        "basic",
+        "professional",
+        "enterprise"
+      ],
+      "default": "free_trial",
+      "description": "Billing tier"
+    },
+    "participant_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Active participant count"
+    },
+    "terms_url": {
+      "type": "string",
+      "description": "Facility terms of service URL"
+    },
+    "privacy_url": {
+      "type": "string",
+      "description": "Facility privacy policy URL"
+    },
+    "custom_disclaimer": {
+      "type": "string",
+      "description": "Facility-specific disclaimer text"
+    }
+  },
+  "required": [
+    "facility_name",
+    "admin_email"
+  ]
+}

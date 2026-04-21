@@ -1,0 +1,69 @@
+{
+  "name": "ProbationAppointment",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Appointment title"
+    },
+    "appointment_type": {
+      "type": "string",
+      "enum": [
+        "probation_check_in",
+        "parole_check_in",
+        "drug_test",
+        "community_service",
+        "counseling",
+        "court_date",
+        "other"
+      ],
+      "default": "probation_check_in",
+      "description": "Type of appointment"
+    },
+    "appointment_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Appointment date"
+    },
+    "appointment_time": {
+      "type": "string",
+      "description": "Appointment time HH:MM"
+    },
+    "officer_name": {
+      "type": "string",
+      "description": "Officer or supervisor name"
+    },
+    "location": {
+      "type": "string",
+      "description": "Office or location"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "attended",
+        "missed",
+        "rescheduled"
+      ],
+      "default": "scheduled",
+      "description": "Appointment status"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes or outcome"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Owner"
+    },
+    "is_recurring": {
+      "type": "boolean",
+      "default": false,
+      "description": "Recurring appointment"
+    }
+  },
+  "required": [
+    "title",
+    "appointment_date"
+  ]
+}

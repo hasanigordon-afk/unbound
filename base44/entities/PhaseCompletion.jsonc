@@ -1,0 +1,34 @@
+{
+  "name": "PhaseCompletion",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant's email"
+    },
+    "phase": {
+      "type": "number",
+      "enum": [
+        1,
+        2,
+        3
+      ],
+      "description": "Phase number"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Phase completion timestamp"
+    },
+    "badge_awarded": {
+      "type": "boolean",
+      "default": true,
+      "description": "Badge was awarded"
+    }
+  },
+  "required": [
+    "participant_email",
+    "phase",
+    "completed_date"
+  ]
+}

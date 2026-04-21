@@ -1,0 +1,17 @@
+{
+  "name": "MeetingFavorite",
+  "type": "object",
+  "properties": {
+    "meeting_id": {
+      "type": "string",
+      "description": "ID of favorited meeting"
+    },
+    "meeting_title": {
+      "type": "string",
+      "description": "Cached meeting title"
+    }
+  },
+  "required": [
+    "meeting_id"
+  ]
+}

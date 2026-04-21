@@ -1,0 +1,62 @@
+{
+  "name": "CounselorMessage",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID for scoping"
+    },
+    "counselor_email": {
+      "type": "string",
+      "description": "Counselor sender email"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Participant recipient email"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message content"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "message",
+        "notification",
+        "reminder"
+      ],
+      "default": "message",
+      "description": "Type of message: direct message, notification/alert, or scheduled reminder"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Message read status"
+    },
+    "read_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When participant read the message"
+    },
+    "scheduled_for": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When to deliver a scheduled reminder (null = immediate)"
+    },
+    "is_delivered": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the message has been delivered (false for future-scheduled)"
+    },
+    "notification_title": {
+      "type": "string",
+      "description": "Short title for notifications/alerts"
+    }
+  },
+  "required": [
+    "facility_id",
+    "counselor_email",
+    "participant_email",
+    "message"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user",
+        "participant",
+        "counselor",
+        "sponsor",
+        "probation_officer"
+      ],
+      "default": "user",
+      "description": "User role in the system"
+    }
+  },
+  "required": []
+}

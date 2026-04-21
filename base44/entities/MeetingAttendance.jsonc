@@ -1,0 +1,30 @@
+{
+  "name": "MeetingAttendance",
+  "type": "object",
+  "properties": {
+    "meeting_id": {
+      "type": "string",
+      "description": "Meeting ID (nullable if manual entry)"
+    },
+    "meeting_name_text": {
+      "type": "string",
+      "description": "Meeting name (for manual entries)"
+    },
+    "attended_at": {
+      "type": "string",
+      "format": "date",
+      "description": "Date attended"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes about the meeting"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Participant email"
+    }
+  },
+  "required": [
+    "attended_at"
+  ]
+}

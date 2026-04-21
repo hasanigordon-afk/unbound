@@ -1,0 +1,166 @@
+{
+  "name": "MentorProfile",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "Public display name"
+    },
+    "role_type": {
+      "type": "string",
+      "enum": [
+        "peer_mentor",
+        "counselor",
+        "hybrid",
+        "alumni_volunteer"
+      ],
+      "description": "Type of mentor role"
+    },
+    "is_alumni_volunteer": {
+      "type": "boolean",
+      "default": false,
+      "description": "Experienced person in recovery volunteering to support others"
+    },
+    "years_in_recovery": {
+      "type": "number",
+      "description": "Years in recovery (displayed on profile)"
+    },
+    "tracks_supported": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "alcohol",
+          "substances",
+          "both"
+        ]
+      },
+      "description": "Recovery tracks supported"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Short bio"
+    },
+    "communication_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "chat",
+          "voice",
+          "video"
+        ]
+      },
+      "description": "Preferred communication methods"
+    },
+    "preferred_support_style": {
+      "type": "string",
+      "enum": [
+        "chat",
+        "call",
+        "video"
+      ],
+      "description": "Primary preferred support style"
+    },
+    "availability": {
+      "type": "object",
+      "description": "Weekly availability schedule"
+    },
+    "location_city": {
+      "type": "string",
+      "description": "City"
+    },
+    "location_state": {
+      "type": "string",
+      "description": "State"
+    },
+    "boundaries_acknowledged": {
+      "type": "boolean",
+      "default": false
+    },
+    "rating_avg": {
+      "type": "number",
+      "description": "Average rating"
+    },
+    "lived_experience_substances": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Substances with lived experience (peer/hybrid)"
+    },
+    "primary_lived_experience": {
+      "type": "string",
+      "description": "Primary substance experience"
+    },
+    "time_in_recovery_range": {
+      "type": "string",
+      "enum": [
+        "0-6mo",
+        "6-12mo",
+        "1-3y",
+        "3-5y",
+        "5y+"
+      ],
+      "description": "Time in recovery"
+    },
+    "pathways_experienced": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "MAT",
+          "inpatient",
+          "outpatient",
+          "NA/CA",
+          "SMART",
+          "faith_based",
+          "other"
+        ]
+      },
+      "description": "Recovery pathways experienced"
+    },
+    "credential_type": {
+      "type": "string",
+      "description": "Professional credential"
+    },
+    "license_state": {
+      "type": "string",
+      "description": "License state"
+    },
+    "specialties_substances": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Specialty substances"
+    },
+    "lived_experience_optional": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no"
+      ],
+      "description": "Has lived experience (counselor only)"
+    },
+    "facility_verified": {
+      "type": "boolean",
+      "default": false
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Associated facility ID"
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "display_name",
+    "role_type",
+    "tracks_supported",
+    "bio",
+    "communication_modes"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "PostComment",
+  "type": "object",
+  "properties": {
+    "post_id": {
+      "type": "string",
+      "description": "Parent post ID"
+    },
+    "content": {
+      "type": "string",
+      "description": "Comment content"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true,
+      "description": "Comment anonymously"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "flagged"
+      ],
+      "default": "approved",
+      "description": "Moderation status"
+    },
+    "moderation_reason": {
+      "type": "string",
+      "description": "AI moderation reason if flagged"
+    }
+  },
+  "required": [
+    "post_id",
+    "content"
+  ]
+}

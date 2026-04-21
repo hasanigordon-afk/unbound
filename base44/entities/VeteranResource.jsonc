@@ -21,6 +21,10 @@
         "fitness"
       ]
     },
+    "subcategory": {
+      "type": "string",
+      "description": "Free-text sub-classification (e.g. 'VA Medical Center', 'Peer Support Helpline')"
+    },
     "description": {
       "type": "string"
     },
@@ -47,13 +51,7 @@
     },
     "eligibility": {
       "type": "string",
-      "enum": [
-        "veterans",
-        "general",
-        "both"
-      ],
-      "default": "both",
-      "description": "Who can access this resource"
+      "description": "Who can access this resource (free text or veterans/general/both)"
     },
     "hours": {
       "type": "string",
@@ -64,6 +62,20 @@
     },
     "longitude": {
       "type": "number"
+    },
+    "priority_score": {
+      "type": "number",
+      "default": 0,
+      "description": "Higher = surfaces first in listings"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Mark as featured resource"
+    },
+    "search_keywords": {
+      "type": "string",
+      "description": "Additional searchable terms, comma-separated"
     },
     "verified": {
       "type": "boolean",

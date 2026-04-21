@@ -1,0 +1,29 @@
+{
+  "name": "Consent",
+  "type": "object",
+  "properties": {
+    "consent_type": {
+      "type": "string",
+      "enum": [
+        "facility_sharing",
+        "journal_sharing",
+        "peer_dms",
+        "online_status"
+      ],
+      "description": "Type of consent"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether consent is granted"
+    },
+    "entity_id": {
+      "type": "string",
+      "description": "Optional: specific entity being consented (e.g. journal entry ID)"
+    }
+  },
+  "required": [
+    "consent_type",
+    "enabled"
+  ]
+}

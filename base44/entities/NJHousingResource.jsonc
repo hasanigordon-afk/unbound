@@ -1,0 +1,83 @@
+{
+  "name": "NJHousingResource",
+  "type": "object",
+  "properties": {
+    "organization_name": {
+      "type": "string",
+      "description": "Name of the organization"
+    },
+    "program_name": {
+      "type": "string",
+      "description": "Name of the specific program"
+    },
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "Emergency Shelter",
+        "Transitional Housing",
+        "Rapid Rehousing",
+        "Rental Assistance",
+        "Permanent Supportive Housing",
+        "Youth Shelter",
+        "Domestic Violence Shelter"
+      ],
+      "description": "Type of housing resource"
+    },
+    "county": {
+      "type": "string",
+      "description": "County where the resource is located"
+    },
+    "city": {
+      "type": "string",
+      "description": "City where the resource is located"
+    },
+    "street_address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "email": {
+      "type": "string",
+      "description": "Contact email address"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website URL"
+    },
+    "services_description": {
+      "type": "string",
+      "description": "Description of services offered"
+    },
+    "eligibility_requirements": {
+      "type": "string",
+      "description": "Who is eligible for this resource"
+    },
+    "intake_method": {
+      "type": "string",
+      "enum": [
+        "Walk-in",
+        "Phone",
+        "Online Application",
+        "Referral Required",
+        "County Social Services"
+      ],
+      "description": "How to access this resource"
+    },
+    "available_beds": {
+      "type": "number",
+      "description": "Number of available beds (optional)"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the information was last verified"
+    }
+  },
+  "required": [
+    "organization_name",
+    "resource_type"
+  ]
+}

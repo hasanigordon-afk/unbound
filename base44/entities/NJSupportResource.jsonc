@@ -1,0 +1,71 @@
+{
+  "name": "NJSupportResource",
+  "type": "object",
+  "properties": {
+    "organization_name": {
+      "type": "string",
+      "description": "Name of the organization"
+    },
+    "resource_category": {
+      "type": "string",
+      "enum": [
+        "Food Pantry",
+        "Soup Kitchen",
+        "Government Assistance",
+        "Employment Services",
+        "Legal Aid",
+        "Mental Health Services",
+        "Transportation Assistance",
+        "Reentry Services"
+      ],
+      "description": "Category of support resource"
+    },
+    "county": {
+      "type": "string",
+      "description": "County where the resource is located"
+    },
+    "city": {
+      "type": "string",
+      "description": "City where the resource is located"
+    },
+    "street_address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website URL"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of services offered"
+    },
+    "hours_of_operation": {
+      "type": "string",
+      "description": "Hours the resource is available"
+    },
+    "intake_method": {
+      "type": "string",
+      "enum": [
+        "Walk-in",
+        "Phone",
+        "Online",
+        "Appointment"
+      ],
+      "description": "How to access this resource"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the information was last verified"
+    }
+  },
+  "required": [
+    "organization_name",
+    "resource_category"
+  ]
+}

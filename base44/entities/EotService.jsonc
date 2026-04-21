@@ -1,0 +1,88 @@
+{
+  "name": "EotService",
+  "type": "object",
+  "properties": {
+    "creator_email": {
+      "type": "string"
+    },
+    "creator_name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "beauty",
+        "cleaning",
+        "design",
+        "tutoring",
+        "resume",
+        "photography",
+        "peer_support",
+        "mentoring",
+        "apparel",
+        "moving",
+        "handyman",
+        "meal_prep",
+        "other"
+      ]
+    },
+    "pricing_model": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "flat_rate",
+        "negotiable",
+        "free"
+      ],
+      "default": "negotiable"
+    },
+    "price_amount": {
+      "type": "number"
+    },
+    "is_remote": {
+      "type": "boolean",
+      "default": false
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "is_available": {
+      "type": "boolean",
+      "default": true
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "pending",
+        "flagged"
+      ],
+      "default": "approved"
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Seed/demo content \u2014 safe to hide or delete"
+    }
+  },
+  "required": [
+    "creator_email",
+    "title",
+    "category"
+  ]
+}

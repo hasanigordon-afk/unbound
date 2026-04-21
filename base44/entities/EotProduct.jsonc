@@ -1,0 +1,76 @@
+{
+  "name": "EotProduct",
+  "type": "object",
+  "properties": {
+    "creator_email": {
+      "type": "string"
+    },
+    "creator_name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "painting",
+        "drawing",
+        "apparel",
+        "crafts",
+        "digital",
+        "prints",
+        "music",
+        "ebook",
+        "gifts",
+        "other"
+      ]
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "delivery_type": {
+      "type": "string",
+      "enum": [
+        "shipping",
+        "pickup",
+        "digital"
+      ],
+      "default": "shipping"
+    },
+    "is_available": {
+      "type": "boolean",
+      "default": true
+    },
+    "save_count": {
+      "type": "number",
+      "default": 0
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "pending",
+        "flagged"
+      ],
+      "default": "approved"
+    },
+    "is_demo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Seed/demo content \u2014 safe to hide or delete"
+    }
+  },
+  "required": [
+    "creator_email",
+    "title",
+    "price",
+    "category"
+  ]
+}

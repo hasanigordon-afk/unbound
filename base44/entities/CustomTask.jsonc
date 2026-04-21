@@ -1,0 +1,66 @@
+{
+  "name": "CustomTask",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID"
+    },
+    "counselor_email": {
+      "type": "string",
+      "description": "Counselor who created task"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Assigned participant email"
+    },
+    "task_title": {
+      "type": "string",
+      "description": "Task title"
+    },
+    "task_description": {
+      "type": "string",
+      "description": "Task description"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Task due date"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium",
+      "description": "Task priority"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_progress",
+        "completed"
+      ],
+      "default": "pending",
+      "description": "Task status"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When task was completed"
+    },
+    "participant_notes": {
+      "type": "string",
+      "description": "Participant's notes on the task"
+    }
+  },
+  "required": [
+    "facility_id",
+    "counselor_email",
+    "participant_email",
+    "task_title"
+  ]
+}

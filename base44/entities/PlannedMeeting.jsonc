@@ -1,0 +1,42 @@
+{
+  "name": "PlannedMeeting",
+  "type": "object",
+  "properties": {
+    "meeting_id": {
+      "type": "string",
+      "description": "ID of the scheduled meeting (null if custom)"
+    },
+    "meeting_title": {
+      "type": "string",
+      "description": "Meeting title (cached or custom)"
+    },
+    "meeting_program_type": {
+      "type": "string",
+      "description": "Program type (cached)"
+    },
+    "day_of_week": {
+      "type": "number",
+      "description": "0=Sunday, 6=Saturday"
+    },
+    "start_time": {
+      "type": "string",
+      "description": "Start time HH:MM"
+    },
+    "location_text": {
+      "type": "string",
+      "description": "Location or online link"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Personal notes"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Owner"
+    }
+  },
+  "required": [
+    "meeting_title",
+    "day_of_week"
+  ]
+}

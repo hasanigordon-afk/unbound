@@ -1,0 +1,41 @@
+{
+  "name": "JournalEntry",
+  "type": "object",
+  "properties": {
+    "prompt": {
+      "type": "string",
+      "description": "Journal prompt"
+    },
+    "content": {
+      "type": "string",
+      "description": "Entry content"
+    },
+    "mood": {
+      "type": "string",
+      "description": "Mood emoji or label (legacy)"
+    },
+    "mood_score": {
+      "type": "number",
+      "description": "Mood score 1-5"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Entry tags (craving, gratitude, trigger, win, relapse, reflection)"
+    },
+    "shared_with_facility": {
+      "type": "boolean",
+      "default": false,
+      "description": "User consented to share this entry with their facility"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility this entry is shared with"
+    }
+  },
+  "required": [
+    "content"
+  ]
+}

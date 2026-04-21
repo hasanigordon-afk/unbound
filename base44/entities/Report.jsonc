@@ -1,0 +1,55 @@
+{
+  "name": "Report",
+  "type": "object",
+  "properties": {
+    "reporter_user_id": {
+      "type": "string",
+      "description": "Email of the reporter"
+    },
+    "target_type": {
+      "type": "string",
+      "enum": [
+        "post",
+        "reply",
+        "dm",
+        "user"
+      ],
+      "description": "Type of content reported"
+    },
+    "target_id": {
+      "type": "string",
+      "description": "ID of reported content or user"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "spam",
+        "harassment",
+        "hate_speech",
+        "inappropriate",
+        "self_harm",
+        "other"
+      ],
+      "description": "Report reason"
+    },
+    "details": {
+      "type": "string",
+      "description": "Additional details"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "pending",
+      "description": "Report status"
+    }
+  },
+  "required": [
+    "target_type",
+    "target_id",
+    "reason"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "ArticleComment",
+  "type": "object",
+  "properties": {
+    "article_id": {
+      "type": "string"
+    },
+    "parent_comment_id": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "hidden",
+        "reported",
+        "removed"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "article_id",
+    "content"
+  ]
+}

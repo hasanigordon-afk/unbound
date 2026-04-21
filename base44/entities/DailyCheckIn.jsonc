@@ -1,0 +1,68 @@
+{
+  "name": "DailyCheckIn",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant's email"
+    },
+    "check_in_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of check-in"
+    },
+    "mood_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Mood rating 1-5 (1=very low, 5=very positive)"
+    },
+    "craving_intensity": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Craving intensity 0-10 (0=none, 10=overwhelming)"
+    },
+    "stress_level": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Stress level 0-10 (0=calm, 10=very stressed)"
+    },
+    "attended_meeting": {
+      "type": "boolean",
+      "description": "Attended a meeting today"
+    },
+    "meeting_type": {
+      "type": "string",
+      "enum": [
+        "AA",
+        "NA",
+        "Other",
+        "Virtual",
+        "In-Person"
+      ],
+      "description": "Type of meeting attended"
+    },
+    "connected_with_sponsor": {
+      "type": "boolean",
+      "description": "Connected with sponsor today"
+    },
+    "relapse_risk_flag": {
+      "type": "boolean",
+      "default": false,
+      "description": "User self-reported feeling like they might relapse today"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes"
+    }
+  },
+  "required": [
+    "participant_email",
+    "check_in_date",
+    "mood_rating",
+    "attended_meeting",
+    "connected_with_sponsor"
+  ]
+}

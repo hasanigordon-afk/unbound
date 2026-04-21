@@ -1,0 +1,55 @@
+{
+  "name": "GroupChannel",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Channel name (e.g. 'Morning Motivation')"
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description of the channel's purpose"
+    },
+    "topic_tag": {
+      "type": "string",
+      "enum": [
+        "motivation",
+        "cravings",
+        "gratitude",
+        "employment",
+        "family",
+        "spirituality",
+        "mental_health",
+        "sobriety_milestones",
+        "general"
+      ],
+      "description": "Topic category"
+    },
+    "emoji": {
+      "type": "string",
+      "description": "Emoji icon for the channel"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether channel is active"
+    },
+    "moderated_by": {
+      "type": "string",
+      "description": "Counselor/admin email who moderates this channel"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Optional: scope to a facility (null = platform-wide)"
+    },
+    "member_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Cached member count"
+    }
+  },
+  "required": [
+    "name",
+    "topic_tag"
+  ]
+}

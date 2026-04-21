@@ -1,0 +1,100 @@
+{
+  "name": "EngagementAlert",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant's email"
+    },
+    "alert_type": {
+      "type": "string",
+      "enum": [
+        "missed_checkin_3_days",
+        "low_engagement",
+        "low_mood_trend",
+        "high_craving_trend",
+        "missed_meetings",
+        "no_sponsor_contact",
+        "composite_high_risk",
+        "composite_medium_risk",
+        "rapid_mood_decline"
+      ],
+      "description": "Type of alert"
+    },
+    "risk_score": {
+      "type": "number",
+      "description": "Composite risk score 0-100"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "description": "Risk level classification"
+    },
+    "alert_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date alert was triggered"
+    },
+    "contributing_factors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of factors that contributed to this alert"
+    },
+    "mood_avg_7d": {
+      "type": "number",
+      "description": "Average mood score over last 7 days"
+    },
+    "craving_avg_7d": {
+      "type": "number",
+      "description": "Average craving level over last 7 days"
+    },
+    "meeting_rate_7d": {
+      "type": "number",
+      "description": "Meeting attendance rate over last 7 days (0-1)"
+    },
+    "sponsor_contact_rate_7d": {
+      "type": "number",
+      "description": "Sponsor contact rate over last 7 days (0-1)"
+    },
+    "checkin_rate_7d": {
+      "type": "number",
+      "description": "Check-in completion rate over last 7 days (0-1)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "acknowledged",
+        "resolved"
+      ],
+      "default": "active",
+      "description": "Alert status"
+    },
+    "acknowledged_by": {
+      "type": "string",
+      "description": "Counselor or mentor who acknowledged"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Counselor/mentor notes on alert"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility scoping"
+    }
+  },
+  "required": [
+    "participant_email",
+    "alert_type",
+    "alert_date",
+    "risk_score",
+    "risk_level"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "name": "LifelineEvent",
+  "type": "object",
+  "properties": {
+    "reason": {
+      "type": "string",
+      "enum": [
+        "about_to_use",
+        "already_used",
+        "anxious_panicking",
+        "need_meeting",
+        "need_food_shelter",
+        "need_to_talk",
+        "other"
+      ],
+      "description": "Reason for triggering Lifeline"
+    },
+    "route": {
+      "type": "string",
+      "enum": [
+        "support_team",
+        "peer_support",
+        "facility",
+        "crisis"
+      ],
+      "description": "Support route chosen"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "text_chat",
+        "call",
+        "video",
+        "silent_mode"
+      ],
+      "description": "Communication channel used"
+    },
+    "silent_mode_used": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether silent mode was used"
+    },
+    "silent_message": {
+      "type": "string",
+      "description": "Silent mode preset message sent"
+    },
+    "outcome": {
+      "type": "string",
+      "description": "Outcome of the interaction (optional)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID if user is enrolled"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Email of the participant"
+    }
+  },
+  "required": [
+    "reason"
+  ]
+}

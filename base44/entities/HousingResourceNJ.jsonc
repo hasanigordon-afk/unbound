@@ -1,0 +1,179 @@
+{
+  "name": "HousingResourceNJ",
+  "type": "object",
+  "properties": {
+    "resource_name": {
+      "type": "string",
+      "description": "Name of the housing resource / program"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string",
+      "default": "NJ"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "county": {
+      "type": "string",
+      "enum": [
+        "Atlantic",
+        "Bergen",
+        "Burlington",
+        "Camden",
+        "Cape May",
+        "Cumberland",
+        "Essex",
+        "Gloucester",
+        "Hudson",
+        "Hunterdon",
+        "Mercer",
+        "Middlesex",
+        "Monmouth",
+        "Morris",
+        "Ocean",
+        "Passaic",
+        "Salem",
+        "Somerset",
+        "Sussex",
+        "Union",
+        "Warren"
+      ]
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "housing_type": {
+      "type": "string",
+      "enum": [
+        "sober_living",
+        "halfway_house",
+        "emergency_shelter",
+        "transitional_housing",
+        "supportive_housing"
+      ]
+    },
+    "gender_served": {
+      "type": "string",
+      "enum": [
+        "men",
+        "women",
+        "coed",
+        "families"
+      ]
+    },
+    "age_restrictions": {
+      "type": "string",
+      "description": "e.g., 18+, 21+, adults only, 18-25"
+    },
+    "family_friendly": {
+      "type": "boolean",
+      "default": false
+    },
+    "veteran_specific": {
+      "type": "boolean",
+      "default": false
+    },
+    "reentry_friendly": {
+      "type": "boolean",
+      "default": false
+    },
+    "recovery_focused": {
+      "type": "boolean",
+      "default": true
+    },
+    "medicaid_support": {
+      "type": "boolean",
+      "default": false
+    },
+    "voucher_support": {
+      "type": "boolean",
+      "default": false
+    },
+    "self_pay_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "estimated_cost": {
+      "type": "string",
+      "description": "e.g., $150/week, free, income-based"
+    },
+    "bed_availability": {
+      "type": "string",
+      "description": "e.g., 3 beds available, call to check"
+    },
+    "waitlist_status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "limited",
+        "full",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "intake_contact": {
+      "type": "string",
+      "description": "Name or title of intake coordinator"
+    },
+    "intake_requirements": {
+      "type": "string",
+      "description": "What is needed to apply / be admitted"
+    },
+    "background_limitations": {
+      "type": "string",
+      "description": "Any background check restrictions"
+    },
+    "drug_testing_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "curfew_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "transportation_help": {
+      "type": "boolean",
+      "default": false
+    },
+    "description": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "active_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "pending_verification"
+      ],
+      "default": "active"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "resource_name",
+    "housing_type",
+    "city",
+    "county"
+  ]
+}

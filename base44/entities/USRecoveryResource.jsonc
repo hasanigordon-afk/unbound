@@ -1,0 +1,119 @@
+{
+  "name": "USRecoveryResource",
+  "type": "object",
+  "properties": {
+    "organization_name": {
+      "type": "string",
+      "description": "Name of the organization"
+    },
+    "program_name": {
+      "type": "string",
+      "description": "Name of the specific program"
+    },
+    "resource_category": {
+      "type": "string",
+      "enum": [
+        "Housing",
+        "Emergency Shelter",
+        "Transitional Housing",
+        "Addiction Treatment",
+        "Detox",
+        "Inpatient Rehab",
+        "Outpatient Rehab",
+        "Medication Assisted Treatment",
+        "Mental Health",
+        "Food Pantry",
+        "Soup Kitchen",
+        "Employment Assistance",
+        "Reentry Services",
+        "Legal Aid",
+        "Transportation",
+        "Clothing Assistance",
+        "Peer Support"
+      ],
+      "description": "Category of the resource"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "Nonprofit",
+        "Government",
+        "Faith-Based",
+        "Private Provider"
+      ],
+      "description": "Type of service provider"
+    },
+    "state": {
+      "type": "string",
+      "description": "State where the resource is located"
+    },
+    "county": {
+      "type": "string",
+      "description": "County where the resource is located"
+    },
+    "city": {
+      "type": "string",
+      "description": "City where the resource is located"
+    },
+    "street_address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "zip_code": {
+      "type": "string",
+      "description": "ZIP code"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "email": {
+      "type": "string",
+      "description": "Contact email address"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website URL"
+    },
+    "description": {
+      "type": "string",
+      "description": "Full description of services offered"
+    },
+    "accepts_medicaid": {
+      "type": "boolean",
+      "description": "Whether the resource accepts Medicaid"
+    },
+    "accepts_uninsured": {
+      "type": "boolean",
+      "description": "Whether the resource accepts uninsured individuals"
+    },
+    "intake_method": {
+      "type": "string",
+      "enum": [
+        "Walk-In",
+        "Phone",
+        "Online Application",
+        "Referral Required",
+        "Appointment Required"
+      ],
+      "description": "How to access this resource"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Latitude coordinate"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude coordinate"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the information was last verified"
+    }
+  },
+  "required": [
+    "organization_name",
+    "resource_category"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "SavedResource",
+  "type": "object",
+  "properties": {
+    "resource_id": {
+      "type": "string",
+      "description": "ID of the saved resource"
+    },
+    "resource_name": {
+      "type": "string",
+      "description": "Cached resource name"
+    },
+    "resource_category": {
+      "type": "string",
+      "description": "Cached resource category"
+    }
+  },
+  "required": [
+    "resource_id"
+  ]
+}

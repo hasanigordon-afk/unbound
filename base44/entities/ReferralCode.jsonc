@@ -1,0 +1,31 @@
+{
+  "name": "ReferralCode",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Parent facility ID"
+    },
+    "code": {
+      "type": "string",
+      "description": "Referral code string"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional expiration"
+    },
+    "default_track": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "substances"
+      ],
+      "description": "Default recovery track"
+    }
+  },
+  "required": [
+    "facility_id",
+    "code"
+  ]
+}

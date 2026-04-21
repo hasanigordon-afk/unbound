@@ -1,0 +1,98 @@
+{
+  "name": "Goal",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "title": {
+      "type": "string",
+      "description": "Goal title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Goal description"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "recovery_milestone",
+        "health",
+        "relationships",
+        "career",
+        "personal_growth",
+        "daily_habits",
+        "housing",
+        "legal",
+        "education",
+        "financial"
+      ],
+      "description": "Goal category"
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "paused"
+      ],
+      "default": "active"
+    },
+    "progress_percentage": {
+      "type": "number",
+      "default": 0
+    },
+    "target_days": {
+      "type": "number",
+      "description": "For time-based goals (e.g., 30-day sobriety)"
+    },
+    "current_days": {
+      "type": "number",
+      "default": 0,
+      "description": "Days completed toward target"
+    },
+    "streak": {
+      "type": "number",
+      "default": 0,
+      "description": "Current daily streak"
+    },
+    "last_checkin_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "checkin_dates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of ISO date strings checked in"
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "counselor_email": {
+      "type": "string",
+      "description": "Assigned counselor"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

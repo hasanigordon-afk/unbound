@@ -1,0 +1,305 @@
+{
+  "name": "NJMedicaidRehabFacility",
+  "type": "object",
+  "properties": {
+    "facility_name": {
+      "type": "string",
+      "description": "Primary facility name"
+    },
+    "program_name": {
+      "type": "string",
+      "description": "Specific program name if different from facility"
+    },
+    "parent_organization": {
+      "type": "string",
+      "description": "Parent health system or organization"
+    },
+    "street_address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "state": {
+      "type": "string",
+      "default": "NJ",
+      "description": "State"
+    },
+    "zip_code": {
+      "type": "string",
+      "description": "ZIP code"
+    },
+    "county": {
+      "type": "string",
+      "enum": [
+        "Atlantic",
+        "Bergen",
+        "Burlington",
+        "Camden",
+        "Cape May",
+        "Cumberland",
+        "Essex",
+        "Gloucester",
+        "Hudson",
+        "Hunterdon",
+        "Mercer",
+        "Middlesex",
+        "Monmouth",
+        "Morris",
+        "Ocean",
+        "Passaic",
+        "Salem",
+        "Somerset",
+        "Sussex",
+        "Union",
+        "Warren"
+      ],
+      "description": "NJ County"
+    },
+    "phone_main": {
+      "type": "string",
+      "description": "Main phone number"
+    },
+    "phone_admissions": {
+      "type": "string",
+      "description": "Admissions line"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website URL"
+    },
+    "email": {
+      "type": "string",
+      "description": "Contact email"
+    },
+    "facility_type": {
+      "type": "string",
+      "enum": [
+        "Detox",
+        "Inpatient Rehab",
+        "Residential Treatment",
+        "Partial Hospitalization",
+        "Intensive Outpatient",
+        "Outpatient",
+        "Opioid Treatment Program",
+        "Hospital-Based Addiction Treatment",
+        "Recovery Support Provider",
+        "Multi-Level / Continuum of Care"
+      ],
+      "description": "Primary facility type"
+    },
+    "levels_of_care": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Withdrawal Management / Detox",
+          "Short-Term Residential",
+          "Long-Term Residential",
+          "Partial Hospitalization Program",
+          "Intensive Outpatient Program",
+          "Standard Outpatient",
+          "Medication-Assisted Treatment",
+          "Methadone Program",
+          "Buprenorphine Services",
+          "Naltrexone Services",
+          "Dual Diagnosis / Co-Occurring Care"
+        ]
+      },
+      "description": "All levels of care offered"
+    },
+    "detox_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "residential_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "php_available": {
+      "type": "boolean",
+      "default": false,
+      "description": "Partial Hospitalization"
+    },
+    "iop_available": {
+      "type": "boolean",
+      "default": false,
+      "description": "Intensive Outpatient"
+    },
+    "outpatient_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "otp_available": {
+      "type": "boolean",
+      "default": false,
+      "description": "Opioid Treatment Program / methadone clinic"
+    },
+    "mat_moud_available": {
+      "type": "boolean",
+      "default": false,
+      "description": "Medication-Assisted Treatment / MOUD"
+    },
+    "co_occurring_treatment": {
+      "type": "boolean",
+      "default": false,
+      "description": "Dual diagnosis / mental health + SUD"
+    },
+    "accepts_medicaid": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No",
+        "Verify"
+      ],
+      "description": "Yes = confirmed. Verify = unclear. No = does not accept."
+    },
+    "accepts_nj_familycare": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No",
+        "Verify"
+      ],
+      "description": "NJ FamilyCare acceptance"
+    },
+    "managed_medicaid_plans_accepted": {
+      "type": "string",
+      "description": "e.g. Horizon NJ Health, Aetna Better Health, etc."
+    },
+    "uninsured_or_state_funded_slots": {
+      "type": "boolean",
+      "default": false,
+      "description": "Sliding scale or state-funded slots for uninsured"
+    },
+    "referral_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "walk_in_assessment": {
+      "type": "boolean",
+      "default": false
+    },
+    "same_day_intake": {
+      "type": "boolean",
+      "default": false
+    },
+    "male_only": {
+      "type": "boolean",
+      "default": false
+    },
+    "female_only": {
+      "type": "boolean",
+      "default": false
+    },
+    "adolescent_services": {
+      "type": "boolean",
+      "default": false
+    },
+    "pregnant_parenting_services": {
+      "type": "boolean",
+      "default": false
+    },
+    "dui_dwi_services": {
+      "type": "boolean",
+      "default": false
+    },
+    "reentry_friendly": {
+      "type": "boolean",
+      "default": false,
+      "description": "Serves people leaving incarceration"
+    },
+    "homeless_friendly": {
+      "type": "boolean",
+      "default": false
+    },
+    "languages_offered": {
+      "type": "string",
+      "description": "e.g. English, Spanish, Portuguese"
+    },
+    "transportation_help": {
+      "type": "boolean",
+      "default": false
+    },
+    "telehealth_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "hours": {
+      "type": "string",
+      "description": "Operating / intake hours"
+    },
+    "admission_notes": {
+      "type": "string",
+      "description": "Key admission or intake notes"
+    },
+    "payment_notes": {
+      "type": "string",
+      "description": "Insurance, sliding scale, self-pay info"
+    },
+    "facility_summary": {
+      "type": "string",
+      "description": "1-3 sentence plain-language description of services"
+    },
+    "best_contact_method": {
+      "type": "string",
+      "enum": [
+        "Call Main Line",
+        "Call Admissions",
+        "Walk-In",
+        "Website Form",
+        "Email"
+      ],
+      "description": "Recommended first contact"
+    },
+    "resource_priority_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Score 0-10: Medicaid confirmed (+3), multiple LOC (+2), MAT (+2), co-occurring (+1), same-day intake (+1), website present (+1)"
+    },
+    "medicaid_verification_source": {
+      "type": "string",
+      "description": "Source URL or description used to confirm Medicaid status"
+    },
+    "medicaid_verification_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date Medicaid status was last confirmed"
+    },
+    "overall_source_url": {
+      "type": "string",
+      "description": "Primary source URL for this record"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date",
+      "description": "Date this record was last reviewed"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Internal notes for manual verification updates"
+    },
+    "missing_data_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Flags for missing critical fields: e.g. ['no_phone', 'no_website', 'medicaid_unverified']"
+    },
+    "active_status": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether facility is currently active"
+    }
+  },
+  "required": [
+    "facility_name",
+    "city",
+    "county",
+    "facility_type",
+    "accepts_medicaid"
+  ]
+}

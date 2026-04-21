@@ -1,0 +1,90 @@
+{
+  "name": "EmploymentListing",
+  "type": "object",
+  "properties": {
+    "employer_name": {
+      "type": "string"
+    },
+    "job_title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "location_city": {
+      "type": "string"
+    },
+    "location_state": {
+      "type": "string"
+    },
+    "location_zip": {
+      "type": "string"
+    },
+    "job_type": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "temporary",
+        "apprenticeship",
+        "contract"
+      ]
+    },
+    "industry": {
+      "type": "string"
+    },
+    "second_chance_employer": {
+      "type": "boolean",
+      "default": false,
+      "description": "Accepts applicants with criminal backgrounds"
+    },
+    "accepts_background_check_explanation": {
+      "type": "boolean",
+      "default": false
+    },
+    "pay_range_min": {
+      "type": "number"
+    },
+    "pay_range_max": {
+      "type": "number"
+    },
+    "apply_url": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "benefits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Health, dental, 401k, etc."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "partner_employer",
+        "workforce_center",
+        "manual",
+        "indeed_api"
+      ]
+    }
+  },
+  "required": [
+    "employer_name",
+    "job_title",
+    "location_city",
+    "location_state"
+  ]
+}

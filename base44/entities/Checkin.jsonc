@@ -1,0 +1,17 @@
+{
+  "name": "Checkin",
+  "type": "object",
+  "properties": {
+    "craving_score": {
+      "type": "number",
+      "description": "Craving score 1-10"
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional note"
+    }
+  },
+  "required": [
+    "craving_score"
+  ]
+}

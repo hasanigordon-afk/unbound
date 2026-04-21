@@ -1,0 +1,64 @@
+{
+  "name": "IdentityResource",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Resource name"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "dmv",
+        "social_security",
+        "snap",
+        "medicaid",
+        "housing",
+        "employment"
+      ],
+      "description": "Resource type"
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "state": {
+      "type": "string",
+      "description": "State"
+    },
+    "zip": {
+      "type": "string",
+      "description": "ZIP code"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website URL"
+    },
+    "hours": {
+      "type": "string",
+      "description": "Operating hours"
+    },
+    "location_lat": {
+      "type": "number",
+      "description": "Latitude"
+    },
+    "location_lng": {
+      "type": "number",
+      "description": "Longitude"
+    }
+  },
+  "required": [
+    "name",
+    "type",
+    "city",
+    "state"
+  ]
+}

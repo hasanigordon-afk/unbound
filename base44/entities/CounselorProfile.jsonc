@@ -1,0 +1,42 @@
+{
+  "name": "CounselorProfile",
+  "type": "object",
+  "properties": {
+    "counselor_email": {
+      "type": "string",
+      "description": "Counselor's email"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Associated facility ID"
+    },
+    "facility_name": {
+      "type": "string",
+      "description": "Facility or organization name"
+    },
+    "role_type": {
+      "type": "string",
+      "enum": [
+        "counselor",
+        "sponsor",
+        "case_manager",
+        "administrator"
+      ],
+      "description": "Role type"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone"
+    },
+    "can_view_reports": {
+      "type": "boolean",
+      "default": true,
+      "description": "Can view and export reports"
+    }
+  },
+  "required": [
+    "counselor_email",
+    "facility_name",
+    "role_type"
+  ]
+}

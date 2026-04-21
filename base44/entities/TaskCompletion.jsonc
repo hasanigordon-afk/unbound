@@ -1,0 +1,40 @@
+{
+  "name": "TaskCompletion",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Participant's email"
+    },
+    "task_id": {
+      "type": "string",
+      "description": "ReintegrationTask ID"
+    },
+    "task_name": {
+      "type": "string",
+      "description": "Cached task name"
+    },
+    "phase": {
+      "type": "number",
+      "description": "Cached phase number"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Completion timestamp"
+    },
+    "notes": {
+      "type": "string",
+      "description": "User notes"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Optional photo attachment"
+    }
+  },
+  "required": [
+    "participant_email",
+    "task_id",
+    "completed_date"
+  ]
+}

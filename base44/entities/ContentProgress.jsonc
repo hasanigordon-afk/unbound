@@ -1,0 +1,26 @@
+{
+  "name": "ContentProgress",
+  "type": "object",
+  "properties": {
+    "content_id": {
+      "type": "string",
+      "description": "Content ID"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Completion status"
+    },
+    "rating": {
+      "type": "number",
+      "description": "User rating 1-5"
+    },
+    "notes": {
+      "type": "string",
+      "description": "User notes"
+    }
+  },
+  "required": [
+    "content_id"
+  ]
+}

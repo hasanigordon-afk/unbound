@@ -1,0 +1,56 @@
+{
+  "name": "ContentReport",
+  "type": "object",
+  "properties": {
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "post",
+        "comment",
+        "article",
+        "community_post"
+      ],
+      "description": "Type of content being reported"
+    },
+    "content_id": {
+      "type": "string",
+      "description": "ID of reported content"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "spam",
+        "harassment",
+        "hate_speech",
+        "inappropriate",
+        "self_harm",
+        "harmful_content",
+        "other"
+      ],
+      "description": "Report reason"
+    },
+    "details": {
+      "type": "string",
+      "description": "Additional details"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "pending",
+      "description": "Review status"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "description": "Admin who reviewed"
+    }
+  },
+  "required": [
+    "content_type",
+    "content_id",
+    "reason"
+  ]
+}

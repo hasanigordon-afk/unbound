@@ -1,0 +1,142 @@
+{
+  "name": "FacilityReview",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Reference to NJTreatmentFacility or USRecoveryResource ID"
+    },
+    "facility_name": {
+      "type": "string",
+      "description": "Facility name (denormalized for display)"
+    },
+    "facility_city": {
+      "type": "string"
+    },
+    "facility_state": {
+      "type": "string"
+    },
+    "reviewer_email": {
+      "type": "string"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "description": "Display name (can be anonymous)"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show as anonymous in community feed"
+    },
+    "program_type": {
+      "type": "string",
+      "enum": [
+        "detox",
+        "inpatient",
+        "residential",
+        "outpatient",
+        "iop",
+        "php",
+        "mat",
+        "other"
+      ],
+      "description": "Which program they attended"
+    },
+    "length_of_stay": {
+      "type": "string",
+      "enum": [
+        "less_than_1_week",
+        "1_2_weeks",
+        "30_days",
+        "60_days",
+        "90_days",
+        "6_months_plus"
+      ],
+      "description": "How long they stayed"
+    },
+    "year_attended": {
+      "type": "string",
+      "description": "Approximate year they attended (e.g. 2024)"
+    },
+    "overall_score": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Overall rating 1-10"
+    },
+    "score_staff": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Staff quality and care score"
+    },
+    "score_program": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Program structure and effectiveness"
+    },
+    "score_environment": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Living environment / facility quality"
+    },
+    "score_aftercare": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Discharge planning and aftercare support"
+    },
+    "headline": {
+      "type": "string",
+      "description": "Short review headline"
+    },
+    "pros": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What the facility did well"
+    },
+    "cons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What the facility could improve"
+    },
+    "full_review": {
+      "type": "string",
+      "description": "Full written review"
+    },
+    "would_recommend": {
+      "type": "boolean",
+      "description": "Would recommend this facility to others in recovery"
+    },
+    "helpful_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of people who found this review helpful"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "flagged"
+      ],
+      "default": "approved"
+    },
+    "verified_attendee": {
+      "type": "boolean",
+      "default": false,
+      "description": "Manually verified by admin"
+    }
+  },
+  "required": [
+    "facility_name",
+    "overall_score",
+    "program_type"
+  ]
+}

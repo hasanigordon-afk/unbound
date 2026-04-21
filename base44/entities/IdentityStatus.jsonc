@@ -1,0 +1,32 @@
+{
+  "name": "IdentityStatus",
+  "type": "object",
+  "properties": {
+    "has_birth_certificate": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has birth certificate"
+    },
+    "has_social_security_card": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has social security card"
+    },
+    "has_state_id": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has state ID"
+    },
+    "has_drivers_license": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has driver's license"
+    },
+    "assessment_completed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Initial assessment completed"
+    }
+  },
+  "required": []
+}

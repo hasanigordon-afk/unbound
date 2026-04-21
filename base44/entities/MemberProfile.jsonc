@@ -1,0 +1,231 @@
+{
+  "name": "MemberProfile",
+  "type": "object",
+  "properties": {
+    "track": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "substances",
+        "both"
+      ],
+      "description": "Recovery track"
+    },
+    "default_track": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "substances"
+      ]
+    },
+    "substances": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primary_substance": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "using_currently",
+        "trying_to_stop",
+        "detox_last_14_days",
+        "early_recovery_15_90",
+        "recovery_3_12_months",
+        "long_term_1_year_plus",
+        "relapsed_recently"
+      ]
+    },
+    "goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_needs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "challenges": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "who_to_talk_to": {
+      "type": "string",
+      "enum": [
+        "peer_only",
+        "counselor_only",
+        "both_best_match"
+      ]
+    },
+    "comm_mode": {
+      "type": "string",
+      "enum": [
+        "chat",
+        "voice",
+        "doesnt_matter"
+      ]
+    },
+    "time_need": {
+      "type": "string",
+      "enum": [
+        "right_now",
+        "today",
+        "this_week",
+        "weekly_checkin"
+      ]
+    },
+    "gender_preference": {
+      "type": "string",
+      "enum": [
+        "none",
+        "same_gender"
+      ],
+      "default": "none"
+    },
+    "style": {
+      "type": "string",
+      "enum": [
+        "tough_love",
+        "gentle",
+        "structured"
+      ],
+      "default": "gentle"
+    },
+    "program_preference": {
+      "type": "string",
+      "enum": [
+        "12_step",
+        "non_12_step",
+        "no_preference"
+      ],
+      "default": "no_preference"
+    },
+    "lgbtq_friendly": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "no_preference"
+      ],
+      "default": "no_preference"
+    },
+    "location_city": {
+      "type": "string"
+    },
+    "location_state": {
+      "type": "string"
+    },
+    "location_zip": {
+      "type": "string"
+    },
+    "location_lat": {
+      "type": "number"
+    },
+    "location_lng": {
+      "type": "number"
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "member",
+        "peer_mentor",
+        "counselor",
+        "hybrid",
+        "facility_admin",
+        "platform_admin"
+      ],
+      "default": "member"
+    },
+    "safety_flagged": {
+      "type": "boolean",
+      "default": false
+    },
+    "facility_id": {
+      "type": "string"
+    },
+    "personal_quote": {
+      "type": "string",
+      "description": "Short personal status line or quote"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Short personal bio / about me"
+    },
+    "hometown": {
+      "type": "string",
+      "description": "Where they are from"
+    },
+    "roots_story": {
+      "type": "string",
+      "description": "Short story about where they grew up / what shaped them"
+    },
+    "places_i_love": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Meaningful places"
+    },
+    "grounding_things": {
+      "type": "string",
+      "description": "People, places & things that keep them grounded"
+    },
+    "hobbies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hobbies and interests tags"
+    },
+    "music_i_love": {
+      "type": "string",
+      "description": "Music genres or artists they love"
+    },
+    "food_i_love": {
+      "type": "string",
+      "description": "Favorite foods or cuisines"
+    },
+    "core_memories": {
+      "type": "string",
+      "description": "Cherished memories or things that bring peace"
+    },
+    "sobriety_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Clean/sober date"
+    },
+    "recovery_stage_label": {
+      "type": "string",
+      "description": "How they describe their journey in their own words"
+    },
+    "what_im_building": {
+      "type": "string",
+      "description": "Short-term goals in their own words"
+    },
+    "long_term_dream": {
+      "type": "string",
+      "description": "Long-term dream or vision"
+    },
+    "motivation": {
+      "type": "string",
+      "description": "What keeps them going"
+    }
+  },
+  "required": [
+    "track",
+    "stage",
+    "who_to_talk_to"
+  ]
+}

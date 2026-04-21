@@ -1,0 +1,61 @@
+{
+  "name": "FamilyContact",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "The participant who authorized this family contact"
+    },
+    "contact_name": {
+      "type": "string",
+      "description": "Family member's full name"
+    },
+    "contact_email": {
+      "type": "string",
+      "description": "Family member's email address"
+    },
+    "relationship": {
+      "type": "string",
+      "enum": [
+        "Parent",
+        "Spouse / Partner",
+        "Sibling",
+        "Child",
+        "Grandparent",
+        "Friend",
+        "Other"
+      ],
+      "description": "Relationship to participant"
+    },
+    "weekly_summary_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Receive automated weekly progress email"
+    },
+    "can_view_dashboard": {
+      "type": "boolean",
+      "default": true,
+      "description": "Can access the family view dashboard link"
+    },
+    "access_token": {
+      "type": "string",
+      "description": "Unique token used in the family view URL (no login required)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Contact is active (participant can revoke)"
+    },
+    "last_summary_sent": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the last weekly summary was emailed"
+    }
+  },
+  "required": [
+    "participant_email",
+    "contact_name",
+    "contact_email",
+    "relationship"
+  ]
+}

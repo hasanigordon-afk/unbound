@@ -1,0 +1,145 @@
+{
+  "name": "PayItForwardRequest",
+  "type": "object",
+  "properties": {
+    "requester_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Anonymous alias shown publicly"
+    },
+    "is_anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "food",
+        "baby_child",
+        "clothing",
+        "hygiene",
+        "household_basics",
+        "school_essentials",
+        "emergency_need"
+      ]
+    },
+    "short_explanation": {
+      "type": "string"
+    },
+    "urgency": {
+      "type": "string",
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "critical"
+      ],
+      "default": "moderate"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "estimated_cost": {
+            "type": "number"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "estimated_total": {
+      "type": "number"
+    },
+    "preferred_retailer": {
+      "type": "string"
+    },
+    "child_related_explanation": {
+      "type": "string"
+    },
+    "proof_url": {
+      "type": "string"
+    },
+    "terms_acknowledged": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "submitted",
+        "pending_review",
+        "approved",
+        "denied",
+        "fulfilled",
+        "expired"
+      ],
+      "default": "submitted"
+    },
+    "admin_notes": {
+      "type": "string"
+    },
+    "denial_reason": {
+      "type": "string"
+    },
+    "approved_amount": {
+      "type": "number"
+    },
+    "approved_by": {
+      "type": "string"
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fulfilled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fulfilled_by_anonymous": {
+      "type": "boolean",
+      "default": true
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "flag_reason": {
+      "type": "string"
+    },
+    "is_flagged": {
+      "type": "boolean",
+      "default": false
+    },
+    "trust_score_at_submission": {
+      "type": "number"
+    },
+    "facility_linked": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "requester_email",
+    "title",
+    "category",
+    "short_explanation",
+    "urgency",
+    "estimated_total",
+    "terms_acknowledged"
+  ]
+}

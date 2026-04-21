@@ -1,0 +1,36 @@
+{
+  "name": "IdentityChecklistItem",
+  "type": "object",
+  "properties": {
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "birth_certificate",
+        "social_security_card",
+        "state_id",
+        "drivers_license",
+        "snap",
+        "medicaid",
+        "housing_assistance"
+      ],
+      "description": "Type of document or benefit"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "completed"
+      ],
+      "default": "not_started",
+      "description": "Current status"
+    },
+    "notes": {
+      "type": "string",
+      "description": "User notes"
+    }
+  },
+  "required": [
+    "document_type"
+  ]
+}

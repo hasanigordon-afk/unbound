@@ -1,0 +1,42 @@
+{
+  "name": "JournalInsight",
+  "type": "object",
+  "properties": {
+    "period_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Analysis period start"
+    },
+    "period_end": {
+      "type": "string",
+      "format": "date",
+      "description": "Analysis period end"
+    },
+    "mood_summary": {
+      "type": "string",
+      "description": "AI-generated mood summary"
+    },
+    "patterns_identified": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Identified patterns"
+    },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "AI suggestions"
+    },
+    "dominant_mood": {
+      "type": "string",
+      "description": "Most frequent mood"
+    }
+  },
+  "required": [
+    "period_start",
+    "period_end"
+  ]
+}

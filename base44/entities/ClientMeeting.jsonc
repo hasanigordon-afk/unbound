@@ -1,0 +1,65 @@
+{
+  "name": "ClientMeeting",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID"
+    },
+    "counselor_email": {
+      "type": "string",
+      "description": "Counselor email"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Participant email"
+    },
+    "meeting_type": {
+      "type": "string",
+      "enum": [
+        "check_in",
+        "goal_setting",
+        "crisis_intervention",
+        "progress_review",
+        "other"
+      ],
+      "description": "Type of meeting"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Scheduled meeting date/time"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When meeting was completed"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "completed",
+        "cancelled",
+        "no_show"
+      ],
+      "default": "scheduled",
+      "description": "Meeting status"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Meeting notes"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "description": "Meeting duration in minutes"
+    }
+  },
+  "required": [
+    "facility_id",
+    "counselor_email",
+    "participant_email",
+    "meeting_type",
+    "scheduled_date"
+  ]
+}

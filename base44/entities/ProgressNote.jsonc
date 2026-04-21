@@ -1,0 +1,48 @@
+{
+  "name": "ProgressNote",
+  "type": "object",
+  "properties": {
+    "client_email": {
+      "type": "string",
+      "description": "The patient/client's email"
+    },
+    "author_email": {
+      "type": "string",
+      "description": "Counselor or PO who wrote the note"
+    },
+    "author_role": {
+      "type": "string",
+      "enum": [
+        "counselor",
+        "probation_officer"
+      ],
+      "description": "Role of the note author"
+    },
+    "note_type": {
+      "type": "string",
+      "enum": [
+        "progress",
+        "concern",
+        "goal",
+        "incident",
+        "general"
+      ],
+      "default": "general",
+      "description": "Type of note"
+    },
+    "content": {
+      "type": "string",
+      "description": "Note content"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility scoping"
+    }
+  },
+  "required": [
+    "client_email",
+    "author_email",
+    "author_role",
+    "content"
+  ]
+}

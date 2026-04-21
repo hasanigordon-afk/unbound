@@ -1,0 +1,49 @@
+{
+  "name": "ModerationAction",
+  "type": "object",
+  "properties": {
+    "admin_email": {
+      "type": "string",
+      "description": "Admin performing the action"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "warn",
+        "mute",
+        "suspend",
+        "ban",
+        "delete_post",
+        "delete_message"
+      ],
+      "description": "Type of moderation action"
+    },
+    "target_type": {
+      "type": "string",
+      "enum": [
+        "post",
+        "reply",
+        "dm",
+        "user"
+      ],
+      "description": "Type of content targeted"
+    },
+    "target_id": {
+      "type": "string",
+      "description": "ID of the targeted content or user"
+    },
+    "target_email": {
+      "type": "string",
+      "description": "Email of targeted user"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for action"
+    }
+  },
+  "required": [
+    "action_type",
+    "target_type",
+    "target_id"
+  ]
+}

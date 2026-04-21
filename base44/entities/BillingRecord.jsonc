@@ -1,0 +1,70 @@
+{
+  "name": "BillingRecord",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string"
+    },
+    "participant_email": {
+      "type": "string"
+    },
+    "provider_email": {
+      "type": "string"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "telehealth_counseling",
+        "peer_recovery_coaching",
+        "aftercare_monitoring",
+        "virtual_therapy",
+        "group_session",
+        "medication_management"
+      ]
+    },
+    "service_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "duration_minutes": {
+      "type": "number"
+    },
+    "billing_code": {
+      "type": "string",
+      "description": "CPT or HCPCS code"
+    },
+    "amount_billed": {
+      "type": "number"
+    },
+    "insurance_provider": {
+      "type": "string"
+    },
+    "member_id": {
+      "type": "string"
+    },
+    "claim_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "submitted",
+        "approved",
+        "denied",
+        "paid"
+      ],
+      "default": "pending"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Linked TelehealthSession ID"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "facility_id",
+    "participant_email",
+    "service_type",
+    "service_date"
+  ]
+}

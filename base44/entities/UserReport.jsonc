@@ -1,0 +1,22 @@
+{
+  "name": "UserReport",
+  "type": "object",
+  "properties": {
+    "reported_user_id": {
+      "type": "string",
+      "description": "ID of reported user"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for report"
+    },
+    "conversation_id": {
+      "type": "string",
+      "description": "Optional conversation ID"
+    }
+  },
+  "required": [
+    "reported_user_id",
+    "reason"
+  ]
+}

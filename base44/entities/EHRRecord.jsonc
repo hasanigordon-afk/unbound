@@ -1,0 +1,61 @@
+{
+  "name": "EHRRecord",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string"
+    },
+    "facility_id": {
+      "type": "string"
+    },
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "discharge_plan",
+        "medication_reminder",
+        "therapy_schedule",
+        "counselor_contact",
+        "progress_report",
+        "aftercare_plan"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "source_system": {
+      "type": "string",
+      "description": "e.g. Epic, Cerner, manual"
+    },
+    "import_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "provider_name": {
+      "type": "string"
+    },
+    "next_review_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "access_level": {
+      "type": "string",
+      "enum": [
+        "participant_only",
+        "counselor_only",
+        "facility_wide"
+      ],
+      "default": "counselor_only"
+    }
+  },
+  "required": [
+    "participant_email",
+    "record_type"
+  ]
+}

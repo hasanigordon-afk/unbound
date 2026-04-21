@@ -1,0 +1,248 @@
+{
+  "name": "DischargePlan",
+  "type": "object",
+  "properties": {
+    "participant_email": {
+      "type": "string",
+      "description": "Patient email"
+    },
+    "counselor_email": {
+      "type": "string",
+      "description": "Counselor who created/manages the plan"
+    },
+    "facility_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "finalized"
+      ],
+      "default": "draft"
+    },
+    "current_step": {
+      "type": "number",
+      "default": 0
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "discharge_type": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "ama",
+        "administrative",
+        "transfer"
+      ]
+    },
+    "primary_diagnosis": {
+      "type": "string"
+    },
+    "medications_at_discharge": {
+      "type": "string"
+    },
+    "discharge_summary": {
+      "type": "string"
+    },
+    "aftercare_program": {
+      "type": "string"
+    },
+    "aftercare_provider": {
+      "type": "string"
+    },
+    "first_aftercare_appointment": {
+      "type": "string",
+      "format": "date"
+    },
+    "meetings_per_week": {
+      "type": "number"
+    },
+    "preferred_meeting_type": {
+      "type": "string"
+    },
+    "sponsor_name": {
+      "type": "string"
+    },
+    "sponsor_phone": {
+      "type": "string"
+    },
+    "housing_status": {
+      "type": "string",
+      "enum": [
+        "own_home",
+        "family",
+        "sober_living",
+        "transitional",
+        "shelter",
+        "unknown"
+      ]
+    },
+    "housing_address": {
+      "type": "string"
+    },
+    "housing_contact_name": {
+      "type": "string"
+    },
+    "housing_contact_phone": {
+      "type": "string"
+    },
+    "housing_notes": {
+      "type": "string"
+    },
+    "employment_status": {
+      "type": "string",
+      "enum": [
+        "employed",
+        "seeking",
+        "student",
+        "disability",
+        "not_seeking"
+      ]
+    },
+    "employer_name": {
+      "type": "string"
+    },
+    "employment_start_date": {
+      "type": "string"
+    },
+    "education_goal": {
+      "type": "string"
+    },
+    "vocational_support": {
+      "type": "string"
+    },
+    "employment_notes": {
+      "type": "string"
+    },
+    "primary_care_provider": {
+      "type": "string"
+    },
+    "pcp_phone": {
+      "type": "string"
+    },
+    "pcp_appointment_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "psychiatrist_name": {
+      "type": "string"
+    },
+    "psychiatrist_phone": {
+      "type": "string"
+    },
+    "psychiatrist_appointment_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "therapist_name": {
+      "type": "string"
+    },
+    "therapist_phone": {
+      "type": "string"
+    },
+    "therapist_appointment_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "medications_list": {
+      "type": "string"
+    },
+    "insurance_info": {
+      "type": "string"
+    },
+    "transportation_method": {
+      "type": "string",
+      "enum": [
+        "own_vehicle",
+        "family",
+        "public_transit",
+        "rideshare",
+        "facility_arranged",
+        "none"
+      ]
+    },
+    "license_status": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "suspended",
+        "revoked",
+        "no_license"
+      ]
+    },
+    "transportation_notes": {
+      "type": "string"
+    },
+    "has_legal_obligations": {
+      "type": "string"
+    },
+    "probation_officer_name": {
+      "type": "string"
+    },
+    "probation_officer_phone": {
+      "type": "string"
+    },
+    "court_dates": {
+      "type": "string"
+    },
+    "drug_testing_requirements": {
+      "type": "string"
+    },
+    "legal_notes": {
+      "type": "string"
+    },
+    "warning_signs": {
+      "type": "string"
+    },
+    "triggers_text": {
+      "type": "string"
+    },
+    "coping_strategies_text": {
+      "type": "string"
+    },
+    "relapse_action_plan": {
+      "type": "string"
+    },
+    "people_to_call_in_crisis": {
+      "type": "string"
+    },
+    "goals_30_day": {
+      "type": "string"
+    },
+    "goals_60_day": {
+      "type": "string"
+    },
+    "goals_90_day": {
+      "type": "string"
+    },
+    "emergency_contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "notify_of_relapse": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "participant_email"
+  ]
+}

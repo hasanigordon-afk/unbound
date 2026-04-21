@@ -1,0 +1,36 @@
+{
+  "name": "CreatorReview",
+  "type": "object",
+  "properties": {
+    "creator_email": {
+      "type": "string"
+    },
+    "reviewer_email": {
+      "type": "string"
+    },
+    "reviewer_name": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "comment": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string",
+      "enum": [
+        "product",
+        "service",
+        "general"
+      ]
+    }
+  },
+  "required": [
+    "creator_email",
+    "reviewer_email",
+    "rating"
+  ]
+}

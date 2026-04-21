@@ -1,0 +1,101 @@
+{
+  "name": "Resource",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Resource name"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "national",
+        "state",
+        "local"
+      ],
+      "description": "Resource geographic scope"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "employment",
+        "federal_assistance",
+        "crisis",
+        "veteran_services",
+        "medicaid",
+        "state_benefits",
+        "dmv",
+        "reentry",
+        "workforce",
+        "shelter",
+        "food_pantry",
+        "rehab",
+        "health_center",
+        "transportation",
+        "legal",
+        "housing"
+      ],
+      "description": "Resource category"
+    },
+    "state": {
+      "type": "string",
+      "description": "State code (for state/local resources)"
+    },
+    "zip_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Applicable zip codes (for local resources)"
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website URL"
+    },
+    "hours": {
+      "type": "string",
+      "description": "Operating hours"
+    },
+    "description": {
+      "type": "string",
+      "description": "Resource description"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Additional tags"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Latitude coordinate"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude coordinate"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Resource is active"
+    }
+  },
+  "required": [
+    "name",
+    "level",
+    "category"
+  ]
+}

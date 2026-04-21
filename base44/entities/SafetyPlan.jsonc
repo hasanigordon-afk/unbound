@@ -1,0 +1,89 @@
+{
+  "name": "SafetyPlan",
+  "type": "object",
+  "properties": {
+    "owner_email": {
+      "type": "string"
+    },
+    "warning_signs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Personal warning signs / triggers"
+    },
+    "coping_strategies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Things that help when triggered"
+    },
+    "safe_environments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Safe places to go"
+    },
+    "reasons_to_live": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Personal reasons to stay in recovery"
+    },
+    "support_contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "notify_on_crisis": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "crisis_message": {
+      "type": "string",
+      "description": "Custom message sent to contacts during crisis alert"
+    },
+    "professional_contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "is_complete": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_reviewed": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "owner_email"
+  ]
+}

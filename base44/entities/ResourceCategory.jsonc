@@ -1,0 +1,21 @@
+{
+  "name": "ResourceCategory",
+  "type": "object",
+  "properties": {
+    "category_name": {
+      "type": "string",
+      "description": "Name of the resource category"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Icon identifier or emoji for the category"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what this category covers"
+    }
+  },
+  "required": [
+    "category_name"
+  ]
+}

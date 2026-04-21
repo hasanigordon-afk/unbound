@@ -1,0 +1,26 @@
+{
+  "name": "UserBadge",
+  "type": "object",
+  "properties": {
+    "badge_id": {
+      "type": "string",
+      "description": "Reference to Badge entity"
+    },
+    "badge_name": {
+      "type": "string",
+      "description": "Cached badge name"
+    },
+    "badge_icon": {
+      "type": "string",
+      "description": "Cached badge icon"
+    },
+    "badge_color": {
+      "type": "string",
+      "description": "Cached badge color"
+    }
+  },
+  "required": [
+    "badge_id",
+    "badge_name"
+  ]
+}

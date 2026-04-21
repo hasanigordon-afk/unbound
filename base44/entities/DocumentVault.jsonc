@@ -1,0 +1,33 @@
+{
+  "name": "DocumentVault",
+  "type": "object",
+  "properties": {
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "state_id",
+        "birth_certificate",
+        "social_security_card",
+        "medical_card",
+        "other"
+      ],
+      "description": "Type of document"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "Uploaded file URL"
+    },
+    "file_name": {
+      "type": "string",
+      "description": "Original file name"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Document notes"
+    }
+  },
+  "required": [
+    "document_type",
+    "file_url"
+  ]
+}

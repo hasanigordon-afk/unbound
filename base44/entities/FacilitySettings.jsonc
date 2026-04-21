@@ -1,0 +1,73 @@
+{
+  "name": "FacilitySettings",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string",
+      "description": "Facility ID"
+    },
+    "welcome_message": {
+      "type": "string",
+      "description": "Custom welcome message for participants"
+    },
+    "checkin_reminder_time": {
+      "type": "string",
+      "default": "09:00",
+      "description": "Daily check-in reminder time (HH:MM)"
+    },
+    "pilot_duration_days": {
+      "type": "number",
+      "default": 90,
+      "enum": [
+        30,
+        60,
+        90
+      ],
+      "description": "Pilot program duration"
+    },
+    "alert_threshold_days": {
+      "type": "number",
+      "default": 3,
+      "description": "Missed check-ins before alert"
+    },
+    "enable_reintegration_map": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable 90-day map feature"
+    },
+    "enable_messaging": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable messaging feature"
+    },
+    "enable_resource_directory": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable resource directory"
+    },
+    "enable_community": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable community features"
+    },
+    "phase_1_emphasis": {
+      "type": "string",
+      "description": "Custom Phase 1 guidance text"
+    },
+    "phase_2_emphasis": {
+      "type": "string",
+      "description": "Custom Phase 2 guidance text"
+    },
+    "phase_3_emphasis": {
+      "type": "string",
+      "description": "Custom Phase 3 guidance text"
+    },
+    "internal_announcement": {
+      "type": "string",
+      "description": "Internal announcement for participants"
+    }
+  },
+  "required": [
+    "facility_id"
+  ]
+}
