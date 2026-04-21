@@ -157,7 +157,7 @@ export default function Home() {
           <div className="fu" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, gap: 8 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
               <span style={{ fontFamily: "'Lora', serif", fontSize: 17, fontWeight: 700, color: "#B8823A", letterSpacing: "-.02em" }}>Ah Ha</span>
-              <span style={{ fontSize: 11, color: "#9B8E83", fontWeight: 400 }}>by Unbound</span>
+              <span style={{ fontSize: 11, color: "#9B8E83", fontWeight: 400 }}>LLC</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {campaignSettings?.donation_enabled && <DonateButton variant="pill" label="Donate" />}
@@ -507,7 +507,7 @@ export default function Home() {
 
           {/* ── 9. DISCLAIMER ─────────────────────────────────────────────── */}
           <p style={{ textAlign: "center", fontSize: 11, color: "#9B8E83", lineHeight: 1.7, paddingBottom: 8 }}>
-            Unbound is a support tool, not a medical provider.<br />In an emergency, call 911 or 988.
+            Ah Ha LLC is a support tool, not a medical provider.<br />In an emergency, call 911 or 988.
           </p>
 
         </div>

@@ -77,7 +77,7 @@ export default function Layout({ children, currentPageName }) {
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 800, color: "var(--sand)", letterSpacing: "-.02em" }}>Ah Ha</span>
-            <span style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 400 }}>by Unbound</span>
+            <span style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 400 }}>LLC</span>
           </div>
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
             <DonateButton variant="ghost" label="Support the Mission" />

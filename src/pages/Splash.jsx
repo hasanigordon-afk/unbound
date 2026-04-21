@@ -77,7 +77,7 @@ export default function Splash() {
           }}>
             Ah Ha
           </p>
-          <p style={{ fontSize:12, fontWeight:500, color:"#9B8E83", letterSpacing:"0.12em", marginTop:4 }}>by Unbound</p>
+          <p style={{ fontSize:12, fontWeight:500, color:"#9B8E83", letterSpacing:"0.12em", marginTop:4 }}>LLC</p>
         </div>
 
         <div style={{
@@ -118,7 +118,7 @@ export default function Splash() {
         opacity: phase === "tagline" ? 1 : 0, transition:"opacity 1s ease 0.3s", pointerEvents:"none",
       }}>
         <p style={{ fontSize:11, color:"#9B8E83", letterSpacing:"0.1em", textTransform:"uppercase", fontWeight:500 }}>
-          Ah Ha by Unbound
+          Ah Ha LLC
         </p>
       </div>
     </div>
