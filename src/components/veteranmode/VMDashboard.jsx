@@ -1,161 +1,109 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Flame, Target, MapPin, TrendingUp, LifeBuoy, Users, Settings, Check } from "lucide-react";
-import { VM, getTodaysObjective, BRANCHES } from "./vmData";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { VM, getTodaysObjective, OBJECTIVES_BY_FOCUS } from "./vmData";
 
-const MOODS = [
-  { value: 1, emoji: "😔" },
-  { value: 2, emoji: "😐" },
-  { value: 3, emoji: "🙂" },
-  { value: 4, emoji: "😊" },
-  { value: 5, emoji: "💪" },
-];
-
-const QUICK_ACTIONS = [
-  { key: "resources", label: "Find Nearby Resources", icon: MapPin,    to: "/VeteransDashboard" },
-  { key: "progress",  label: "Log Progress",           icon: TrendingUp, to: "/DailyCheckIn" },
-  { key: "support",   label: "Reach Support",          icon: LifeBuoy,  to: "/HelpHub" },
-  { key: "community", label: "Veteran Community",       icon: Users,     to: "/VeteransDashboard" },
-];
+import VMDHeader           from "./dashboard/VMDHeader";
+import VMDMissionCard      from "./dashboard/VMDMissionCard";
+import VMDCheckinCard      from "./dashboard/VMDCheckinCard";
+import VMDProgressStrip    from "./dashboard/VMDProgressStrip";
+import VMDQuickActions     from "./dashboard/VMDQuickActions";
+import VMDNearbyResources  from "./dashboard/VMDNearbyResources";
+import VMDSupportCard      from "./dashboard/VMDSupportCard";
+import VMDCommunityPreview from "./dashboard/VMDCommunityPreview";
+import VMDBottomNav        from "./dashboard/VMDBottomNav";
+import VMDEmptyState       from "./dashboard/VMDEmptyState";
 
 export default function VMDashboard({
-  profile, todayMission, streak,
-  todayCheckinMood, onSetMood, onToggleObjective, onEditSettings,
+  profile, todayMission, streak, todayCheckinMood,
+  onSetMood, onToggleObjective, onEditSettings,
+  // Optional: nearby resources data wired from page
+  resources = [], savedIds = new Set(), onSaveResource = () => {},
+  weekCheckins = 0, tasksDone = 0, supportActions = 0,
+  hasAnyData = true, onSaveCheckin = () => {},
 }) {
-  const branch = BRANCHES.find(b => b.key === profile.branch);
-  const objective = todayMission?.mission_text || getTodaysObjective(profile.current_focus);
+  const navigate = useNavigate();
+  const [tab, setTab] = useState("home");
+  const [objective, setObjective] = useState(
+    todayMission?.mission_text || getTodaysObjective(profile.current_focus)
+  );
   const completed = !!todayMission?.mission_completed;
+
+  const changeObjective = () => {
+    // Rotate by appending a time offset — pull next from pool
+    const pool = profile.current_focus?.length
+      ? profile.current_focus.flatMap(f => OBJECTIVES_BY_FOCUS[f] || [])
+      : OBJECTIVES_BY_FOCUS.default;
+    if (pool.length === 0) return;
+    const currentIdx = pool.indexOf(objective);
+    const nextIdx = (currentIdx + 1) % pool.length;
+    setObjective(pool[nextIdx]);
+  };
+
+  const handleNavTab = (key) => {
+    setTab(key);
+    if (key === "resources")  navigate("/VeteransDashboard");
+    if (key === "checkin")    navigate("/DailyCheckIn");
+    if (key === "community")  navigate("/VeteransDashboard");
+    if (key === "profile")    onEditSettings();
+  };
 
   return (
     <div style={{
       minHeight: "100vh", background: VM.bg, color: VM.text,
-      padding: "48px 20px 40px", fontFamily: "'DM Sans', sans-serif",
+      paddingBottom: 100, fontFamily: "'DM Sans', sans-serif",
     }}>
-      <div style={{ maxWidth: 440, margin: "0 auto" }}>
+      <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 28 }}>
-          <div>
-            <p style={{ fontSize: 11, fontWeight: 700, color: VM.gold, letterSpacing: ".22em", textTransform: "uppercase", marginBottom: 6 }}>
-              Mission Dashboard
-            </p>
-            <h1 style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 26, fontWeight: 500, color: VM.text, lineHeight: 1.2 }}>
-              {branch ? `${branch.label} Vet` : "Welcome, Veteran"}
-            </h1>
-          </div>
-          <button onClick={onEditSettings} style={{
-            background: VM.surface, border: `1px solid ${VM.border}`,
-            width: 36, height: 36, borderRadius: 10, cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: VM.muted,
-          }}>
-            <Settings style={{ width: 16, height: 16 }} />
-          </button>
-        </div>
+        <VMDHeader onSettings={onEditSettings} />
 
-        {/* Streak */}
-        <div style={{
-          background: VM.surface, border: `1px solid ${VM.border}`, borderRadius: 14,
-          padding: "14px 16px", marginBottom: 12,
-          display: "flex", alignItems: "center", gap: 12,
-        }}>
-          <div style={{
-            width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-            background: VM.oliveSoft,
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <Flame style={{ width: 18, height: 18, color: VM.gold }} strokeWidth={1.8} />
-          </div>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: VM.dim, textTransform: "uppercase", letterSpacing: ".1em" }}>
-              Streak
-            </p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: VM.text, lineHeight: 1.2 }}>
-              {streak} {streak === 1 ? "day" : "days"} strong
-            </p>
-          </div>
-        </div>
+        <div style={{ padding: "16px 16px 0", display: "flex", flexDirection: "column", gap: 14 }}>
 
-        {/* Daily Check-in — Mood */}
-        <div style={{
-          background: VM.surface, border: `1px solid ${VM.border}`, borderRadius: 14,
-          padding: "14px 16px", marginBottom: 12,
-        }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: VM.dim, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>
-            Daily Check-In
+          {!hasAnyData && (
+            <VMDEmptyState
+              onFirstCheckin={() => navigate("/DailyCheckIn")}
+              onFindHelp={() => navigate("/VeteransDashboard")}
+            />
+          )}
+
+          <VMDMissionCard
+            objective={objective}
+            completed={completed}
+            onComplete={() => onToggleObjective(objective)}
+            onChange={changeObjective}
+          />
+
+          <VMDCheckinCard
+            todaysCheckin={{ mood_rating: todayCheckinMood }}
+            onSave={(data) => onSaveCheckin(data)}
+            onViewHistory={() => navigate("/DailyCheckIn")}
+          />
+
+          <VMDProgressStrip
+            streak={streak}
+            weekCheckins={weekCheckins}
+            tasksDone={tasksDone}
+            supportActions={supportActions}
+          />
+
+          <VMDQuickActions />
+
+          <VMDNearbyResources
+            resources={resources}
+            savedIds={savedIds}
+            onSave={onSaveResource}
+          />
+
+          <VMDSupportCard />
+
+          <VMDCommunityPreview />
+
+          <p style={{ textAlign: "center", fontSize: 10, color: VM.dim, lineHeight: 1.6, fontStyle: "italic", padding: "4px 8px 8px" }}>
+            Your data stays private. Not medical or clinical advice.
           </p>
-          <p style={{ fontSize: 13, color: VM.muted, marginBottom: 12 }}>How are you operating today?</p>
-          <div style={{ display: "flex", gap: 6 }}>
-            {MOODS.map(m => {
-              const sel = todayCheckinMood === m.value;
-              return (
-                <button key={m.value} onClick={() => onSetMood(m.value)} style={{
-                  flex: 1, padding: "10px 4px", borderRadius: 10, cursor: "pointer",
-                  background: sel ? VM.oliveSoft : "transparent",
-                  border: `1px solid ${sel ? VM.olive : VM.border}`,
-                  fontSize: 22, fontFamily: "inherit",
-                }}>
-                  {m.emoji}
-                </button>
-              );
-            })}
-          </div>
         </div>
-
-        {/* Today's Objective */}
-        <div style={{
-          background: completed ? VM.oliveSoft : VM.surface,
-          border: `1px solid ${completed ? VM.olive : VM.border}`, borderRadius: 14,
-          padding: "14px 16px", marginBottom: 24,
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <Target style={{ width: 14, height: 14, color: VM.gold }} />
-            <p style={{ fontSize: 11, fontWeight: 700, color: VM.dim, textTransform: "uppercase", letterSpacing: ".1em" }}>
-              Today's Objective
-            </p>
-          </div>
-          <p style={{ fontSize: 15, color: VM.text, lineHeight: 1.5, marginBottom: 12, fontWeight: 500 }}>
-            {objective}
-          </p>
-          <button onClick={() => onToggleObjective(objective)} style={{
-            width: "100%", padding: "11px", borderRadius: 10, cursor: "pointer",
-            background: completed ? VM.olive : "transparent",
-            border: `1px solid ${completed ? VM.olive : VM.border}`,
-            color: completed ? "#12140F" : VM.muted,
-            fontSize: 13, fontWeight: 700, fontFamily: "inherit",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-          }}>
-            {completed && <Check style={{ width: 14, height: 14 }} strokeWidth={3} />}
-            {completed ? "Objective Complete" : "Mark Complete"}
-          </button>
-        </div>
-
-        {/* Quick Access */}
-        <p style={{ fontSize: 11, fontWeight: 700, color: VM.dim, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>
-          Quick Access
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 24 }}>
-          {QUICK_ACTIONS.map(a => {
-            const Icon = a.icon;
-            return (
-              <Link key={a.key} to={a.to} style={{ textDecoration: "none" }}>
-                <div style={{
-                  background: VM.surface, border: `1px solid ${VM.border}`, borderRadius: 12,
-                  padding: "14px 14px", cursor: "pointer",
-                  display: "flex", flexDirection: "column", gap: 10, minHeight: 82,
-                }}>
-                  <Icon style={{ width: 18, height: 18, color: VM.olive }} strokeWidth={1.8} />
-                  <p style={{ fontSize: 12, fontWeight: 700, color: VM.text, lineHeight: 1.3 }}>{a.label}</p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-        <p style={{ textAlign: "center", fontSize: 11, color: VM.dim, lineHeight: 1.6, fontStyle: "italic" }}>
-          Your data stays private. This app does not provide medical or clinical advice.
-        </p>
       </div>
+
+      <VMDBottomNav active={tab} onChange={handleNavTab} />
     </div>
   );
 }

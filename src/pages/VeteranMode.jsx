@@ -55,6 +55,34 @@ export default function VeteranMode() {
     enabled: !!user?.email && !!profile?.veteran_mode_complete,
   });
 
+  const { data: resources = [] } = useQuery({
+    queryKey: ["vm-resources"],
+    queryFn: () => base44.entities.VeteranResource.list("-created_date", 100),
+    enabled: !!profile?.veteran_mode_complete,
+  });
+
+  const { data: favorites = [] } = useQuery({
+    queryKey: ["vm-favorites", user?.email],
+    queryFn: () => base44.entities.VeteranResourceFavorite.filter({ user_email: user.email }),
+    enabled: !!user?.email && !!profile?.veteran_mode_complete,
+  });
+
+  const savedIds = useMemo(() => new Set(favorites.map(f => f.resource_id)), [favorites]);
+
+  const weekCheckins = useMemo(() => {
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7); cutoff.setHours(0, 0, 0, 0);
+    return checkIns.filter(c => new Date(c.check_in_date) >= cutoff).length;
+  }, [checkIns]);
+
+  const { data: completedMissions = [] } = useQuery({
+    queryKey: ["vm-missions-done", user?.email],
+    queryFn: () => base44.entities.VeteranMission.filter({ user_email: user.email, mission_completed: true }, "-mission_date", 50),
+    enabled: !!user?.email && !!profile?.veteran_mode_complete,
+  });
+
+  const tasksDone = completedMissions.length;
+  const supportActions = checkIns.filter(c => c.connected_with_sponsor || c.attended_meeting).length;
+
   const streak = useMemo(() => {
     const sorted = [...checkIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
     let n = 0, cur = new Date(); cur.setHours(0, 0, 0, 0);
@@ -107,6 +135,32 @@ export default function VeteranMode() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["vm-checkins"] }),
   });
 
+  const toggleFavorite = useMutation({
+    mutationFn: async (resource) => {
+      const existing = favorites.find(f => f.resource_id === resource.id);
+      if (existing) return base44.entities.VeteranResourceFavorite.delete(existing.id);
+      return base44.entities.VeteranResourceFavorite.create({ user_email: user.email, resource_id: resource.id });
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["vm-favorites"] }),
+  });
+
+  const saveCheckin = useMutation({
+    mutationFn: async ({ mood, energy, focus, note }) => {
+      const payload = {
+        participant_email: user.email,
+        check_in_date: TODAY(),
+        mood_rating: mood,
+        notes: [energy && `Energy: ${energy}`, focus && `Focus: ${focus}`, note].filter(Boolean).join(" · ") || null,
+        attended_meeting: null,
+        connected_with_sponsor: null,
+        relapse_risk_flag: false,
+      };
+      if (todaysCheckin) return base44.entities.DailyCheckIn.update(todaysCheckin.id, payload);
+      return base44.entities.DailyCheckIn.create(payload);
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["vm-checkins"] }),
+  });
+
   const toggleObjective = useMutation({
     mutationFn: async (objectiveText) => {
       if (todayMission) {
@@ -144,6 +198,14 @@ export default function VeteranMode() {
         onSetMood={(v) => setMood.mutate(v)}
         onToggleObjective={(text) => toggleObjective.mutate(text)}
         onEditSettings={() => navigate("/VeteranModeSettings")}
+        resources={resources}
+        savedIds={savedIds}
+        onSaveResource={(r) => toggleFavorite.mutate(r)}
+        weekCheckins={weekCheckins}
+        tasksDone={tasksDone}
+        supportActions={supportActions}
+        hasAnyData={checkIns.length > 0 || completedMissions.length > 0}
+        onSaveCheckin={(data) => saveCheckin.mutate(data)}
       />
     );
   }
