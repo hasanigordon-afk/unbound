@@ -13,9 +13,12 @@
         "substance_abuse",
         "housing",
         "employment",
+        "jobs",
         "food_emergency",
+        "food",
         "legal",
-        "crisis"
+        "crisis",
+        "fitness"
       ]
     },
     "description": {
@@ -25,6 +28,9 @@
       "type": "string"
     },
     "city": {
+      "type": "string"
+    },
+    "county": {
       "type": "string"
     },
     "state": {
@@ -38,6 +44,20 @@
     },
     "website": {
       "type": "string"
+    },
+    "eligibility": {
+      "type": "string",
+      "enum": [
+        "veterans",
+        "general",
+        "both"
+      ],
+      "default": "both",
+      "description": "Who can access this resource"
+    },
+    "hours": {
+      "type": "string",
+      "description": "Operating hours, e.g. 'Mon\u2013Fri 8am\u20135pm'"
     },
     "latitude": {
       "type": "number"
