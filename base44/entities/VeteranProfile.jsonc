@@ -26,6 +26,76 @@
       "type": "string",
       "description": "Optional free text"
     },
+    "combat_experience": {
+      "type": "string",
+      "enum": [
+        "combat",
+        "non_combat",
+        "prefer_not_to_say"
+      ],
+      "description": "Combat / Non-combat"
+    },
+    "support_style": {
+      "type": "string",
+      "enum": [
+        "independent",
+        "guided",
+        "connected"
+      ],
+      "default": "guided",
+      "description": "How the veteran wants to engage with the app"
+    },
+    "current_focus": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "sober",
+          "mental",
+          "work",
+          "routine",
+          "physical",
+          "housing",
+          "family"
+        ]
+      },
+      "default": [],
+      "description": "What the vet is focused on right now"
+    },
+    "checkin_time": {
+      "type": "string",
+      "description": "Preferred daily check-in time (HH:MM)"
+    },
+    "notification_tone": {
+      "type": "string",
+      "enum": [
+        "silent",
+        "motivational",
+        "direct"
+      ],
+      "default": "direct"
+    },
+    "resource_priority": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "va",
+          "jobs",
+          "housing",
+          "food",
+          "support",
+          "fitness"
+        ]
+      },
+      "default": [],
+      "description": "Ordered list of resource priorities"
+    },
+    "veteran_mode_complete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has completed the Veteran Mode onboarding"
+    },
     "display_mode": {
       "type": "string",
       "enum": [
@@ -43,7 +113,6 @@
     }
   },
   "required": [
-    "user_email",
-    "branch"
+    "user_email"
   ]
 }

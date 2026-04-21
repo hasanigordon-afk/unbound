@@ -65,6 +65,7 @@ import NinetyDayReset from './pages/NinetyDayReset';
 import VeteransDashboard from './pages/VeteransDashboard';
 import AhHaOnboarding from './pages/AhHaOnboarding';
 import AhHaHome from './pages/AhHaHome';
+import VeteranMode from './pages/VeteranMode';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -186,6 +187,7 @@ const AuthenticatedApp = () => {
       <Route path="/VeteransDashboard"             element={<LW name="VeteransDashboard"><VeteransDashboard /></LW>} />
       <Route path="/AhHaOnboarding"                 element={<AhHaOnboarding />} />
       <Route path="/AhHaHome"                       element={<AhHaHome />} />
+      <Route path="/VeteranMode"                    element={<VeteranMode />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
