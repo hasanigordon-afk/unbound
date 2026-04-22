@@ -67,6 +67,7 @@ import AhHaOnboarding from './pages/AhHaOnboarding';
 import AhHaHome from './pages/AhHaHome';
 import VeteranMode from './pages/VeteranMode';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
+import AIStein from '@/components/aistein/AIStein';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -117,6 +118,7 @@ const AuthenticatedApp = () => {
   return (
     <>
     <SubscriptionPrompt />
+    <AIStein />
     <Routes>
       {/* ── Splash ── */}
       <Route path="/splash" element={<Splash />} />
