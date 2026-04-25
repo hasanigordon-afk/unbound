@@ -308,6 +308,23 @@ export default function Onboarding() {
           <p style={{ color: TEXT_DIM, fontSize: 12, textAlign: "center", marginTop: 28 }}>
             Takes under a minute. No paperwork. No judgment.
           </p>
+
+          {/* Returning user log-in */}
+          <div style={{ textAlign: "center", marginTop: 22, paddingTop: 18, borderTop: `1px solid ${CARD_B === "1px solid #E8E2D9" ? "#E8E2D9" : "#E8E2D9"}` }}>
+            <p style={{ color: TEXT_DIM, fontSize: 13, marginBottom: 10 }}>
+              Already have an account?
+            </p>
+            <button
+              onClick={() => base44.auth.redirectToLogin()}
+              style={{
+                background: "transparent", border: "none", cursor: "pointer",
+                color: ACCENT, fontSize: 14, fontWeight: 700, padding: "6px 12px",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+            >
+              Log in →
+            </button>
+          </div>
         </div>
       </div>
     );
