@@ -4,13 +4,26 @@ import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "./utils";
 import { Loader2 } from "lucide-react";
 
+// Ah Ha brand palette
+const C = {
+  amber:  "#B8823A",
+  green:  "#7A9E7E",
+  indigo: "#7B8FA8",
+  bg:     "#F7F3EE",
+  card:   "#FDFAF6",
+  border: "#E8E2D9",
+  text:   "#1C1410",
+  muted:  "#4A3F35",
+  dim:    "#9B8E83",
+};
+
 const CLIENT_OPTION = {
   id: "client",
   label: "I'm here for myself",
   sub: "Check in daily, find help near you, message your support team, and track your progress.",
   emoji: "🙋",
-  color: "#4A90E2",
-  bg: "#EFF6FF",
+  color: C.amber,
+  bg: "rgba(184,130,58,0.08)",
   page: "Home",
 };
 
@@ -74,41 +87,39 @@ export default function RoleSelect() {
 
   if (checking) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F7F7F8" }}>
-        <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#4A90E2" }} />
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: C.bg }}>
+        <Loader2 className="w-6 h-6 animate-spin" style={{ color: C.amber }} />
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F7F8", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
+    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
       <div style={{ width: "100%", maxWidth: 440 }}>
 
         {/* Brand */}
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ position: "relative", width: 60, height: 60, margin: "0 auto 16px" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, width: 44, height: 44, borderRadius: "50%", border: "2.5px solid rgba(74,144,226,0.7)" }} />
-            <div style={{ position: "absolute", bottom: 0, right: 0, width: 44, height: 44, borderRadius: "50%", border: "2.5px solid rgba(212,165,116,0.7)" }} />
-            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 12, height: 12, borderRadius: "50%", background: "#4A90E2" }} />
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
+            <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 26, fontWeight: 700, color: C.amber, letterSpacing: "-0.02em", lineHeight: 1 }}>Ah Ha</span>
+            <span style={{ fontSize: 12, color: C.dim, fontWeight: 500 }}>LLC</span>
           </div>
-          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8E8E93", marginBottom: 8 }}>UNBOUND</p>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1E1E1E", marginBottom: 6 }}>Who's logging in?</h1>
-          <p style={{ fontSize: 14, color: "#5A5A5A" }}>Pick the option that fits you.</p>
+          <h1 style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 24, fontWeight: 600, color: C.text, marginBottom: 8, lineHeight: 1.2 }}>Who's logging in?</h1>
+          <p style={{ fontSize: 14, color: C.muted }}>Pick the option that fits you.</p>
         </div>
 
         {/* Client option */}
         <button onClick={handleClient}
           style={{
             width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
-            background: CLIENT_OPTION.bg, border: `2px solid ${CLIENT_OPTION.color}`,
+            background: CLIENT_OPTION.bg, border: `1.5px solid ${CLIENT_OPTION.color}`,
             cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
           }}>
           <div style={{ width: 48, height: 48, borderRadius: 14, background: CLIENT_OPTION.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <span style={{ fontSize: 22 }}>{CLIENT_OPTION.emoji}</span>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 4 }}>{CLIENT_OPTION.label}</p>
-            <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.5 }}>{CLIENT_OPTION.sub}</p>
+            <p style={{ fontWeight: 700, fontSize: 16, color: C.text, marginBottom: 4 }}>{CLIENT_OPTION.label}</p>
+            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>{CLIENT_OPTION.sub}</p>
           </div>
           <span style={{ fontSize: 20, color: CLIENT_OPTION.color, alignSelf: "center" }}>›</span>
         </button>
@@ -117,63 +128,63 @@ export default function RoleSelect() {
         <button onClick={handleSupportUser}
           style={{
             width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
-            background: "#F5F3FF", border: "2px solid #8B5CF6",
+            background: "rgba(122,158,126,0.08)", border: `1.5px solid ${C.green}`,
             cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
           }}>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: "#8B5CF6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 14, background: C.green, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <span style={{ fontSize: 22 }}>🤝</span>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 4 }}>I'm a Support Person</p>
-            <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.5 }}>Sponsor, coach, counselor, or family member. View client progress with their consent.</p>
+            <p style={{ fontWeight: 700, fontSize: 16, color: C.text, marginBottom: 4 }}>I'm a Support Person</p>
+            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>Sponsor, coach, counselor, or family member. View client progress with their consent.</p>
           </div>
-          <span style={{ fontSize: 20, color: "#8B5CF6", alignSelf: "center" }}>›</span>
+          <span style={{ fontSize: 20, color: C.green, alignSelf: "center" }}>›</span>
         </button>
 
         {/* Professional / Facility section */}
-        <div style={{ background: "#FFF", border: "1px solid #E2E8F0", borderRadius: 16, overflow: "hidden" }}>
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden" }}>
           <button
             onClick={() => setShowProfessionalExpanded(!showProfessionalExpanded)}
             style={{
               width: "100%", textAlign: "left", padding: "20px", background: "none", border: "none",
               cursor: "pointer", display: "flex", alignItems: "center", gap: 16,
             }}>
-            <div style={{ width: 48, height: 48, borderRadius: 14, background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: "rgba(123,143,168,0.10)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <span style={{ fontSize: 22 }}>💼</span>
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontWeight: 700, fontSize: 16, color: "#1E1E1E", marginBottom: 2 }}>Facility / Clinical Staff</p>
-              <p style={{ fontSize: 13, color: "#64748B" }}>Counselor portal, compliance, EHR, billing</p>
+              <p style={{ fontWeight: 700, fontSize: 16, color: C.text, marginBottom: 2 }}>Facility / Clinical Staff</p>
+              <p style={{ fontSize: 13, color: C.muted }}>Counselor portal, compliance, EHR, billing</p>
             </div>
-            <span style={{ fontSize: 18, color: "#94A3B8", transform: showProfessionalExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>›</span>
+            <span style={{ fontSize: 18, color: C.dim, transform: showProfessionalExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>›</span>
           </button>
 
           {showProfessionalExpanded && (
-            <div style={{ borderTop: "1px solid #F1F5F9" }}>
+            <div style={{ borderTop: `1px solid ${C.border}` }}>
               {PROFESSIONAL_OPTIONS.map((opt, i) => (
                 <button key={opt.id} onClick={() => handleProfessional(opt.id)}
                   style={{
                     width: "100%", textAlign: "left", padding: "14px 20px",
                     background: "none", border: "none", cursor: "pointer",
-                    borderTop: i > 0 ? "1px solid #F8FAFC" : "none",
+                    borderTop: i > 0 ? `1px solid ${C.border}` : "none",
                     display: "flex", alignItems: "center", gap: 12,
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = "#F8FAFC"}
+                  onMouseEnter={e => e.currentTarget.style.background = C.bg}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}
                 >
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontWeight: 600, fontSize: 14, color: "#1E293B", marginBottom: 2 }}>{opt.label}</p>
-                    <p style={{ fontSize: 12, color: "#64748B" }}>{opt.sub}</p>
+                    <p style={{ fontWeight: 600, fontSize: 14, color: C.text, marginBottom: 2 }}>{opt.label}</p>
+                    <p style={{ fontSize: 12, color: C.muted }}>{opt.sub}</p>
                   </div>
-                  <span style={{ color: "#CBD5E1", fontSize: 16 }}>›</span>
+                  <span style={{ color: C.dim, fontSize: 16 }}>›</span>
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "#94A3B8", marginTop: 24 }}>
-          Unbound — built for people rebuilding their lives
+        <p style={{ textAlign: "center", fontSize: 12, color: C.dim, marginTop: 24 }}>
+          Ah Ha — built for people rebuilding their lives
         </p>
       </div>
     </div>

@@ -1,0 +1,52 @@
+{
+  "name": "RecoveryFocus",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "alcohol",
+        "narcotics_drugs",
+        "opioids",
+        "marijuana_cannabis",
+        "nicotine_tobacco",
+        "gambling",
+        "food_eating",
+        "prescription_misuse",
+        "pornography_compulsive_sexual",
+        "self_harm",
+        "suicide_prevention",
+        "general_addiction",
+        "multiple_co_occurring",
+        "supporting_loved_one"
+      ],
+      "description": "Recovery focus category"
+    },
+    "is_primary": {
+      "type": "boolean",
+      "default": false,
+      "description": "Marked as the user's primary focus area"
+    },
+    "is_crisis_category": {
+      "type": "boolean",
+      "default": false,
+      "description": "True for self_harm and suicide_prevention \u2014 triggers elevated safety routing"
+    },
+    "selected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional personal notes about this focus area"
+    }
+  },
+  "required": [
+    "user_email",
+    "category"
+  ]
+}

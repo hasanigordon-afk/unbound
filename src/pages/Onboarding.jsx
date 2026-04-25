@@ -76,13 +76,18 @@ const NEXT_STEP = {
 };
 
 // ─── Styles ────────────────────────────────────────────────────────────────
+// Ah Ha brand palette — warm cream + amber
 
-const BG   = "linear-gradient(160deg, #0D1B2A 0%, #0F2A3F 100%)";
-const CARD = "rgba(255,255,255,0.06)";
-const SEL  = "rgba(74,144,226,0.25)";
-const SEL_B = "2px solid #4A90E2";
-const DEF_B = "2px solid transparent";
-const ACCENT = "#4A90E2";
+const BG     = "#F7F3EE";
+const CARD   = "#FDFAF6";
+const CARD_B = "1px solid #E8E2D9";
+const SEL    = "rgba(184,130,58,0.10)";
+const SEL_B  = "2px solid #B8823A";
+const DEF_B  = "2px solid #E8E2D9";
+const ACCENT = "#B8823A";
+const TEXT       = "#1C1410";
+const TEXT_MUTED = "#4A3F35";
+const TEXT_DIM   = "#9B8E83";
 
 // ─── Shared sub-components ────────────────────────────────────────────────
 
@@ -97,7 +102,7 @@ function ProgressDots({ current, total }) {
             borderRadius: 2,
             transition: "all 0.25s",
             width: i + 1 === current ? 28 : 8,
-            background: i + 1 <= current ? ACCENT : "rgba(255,255,255,0.2)",
+            background: i + 1 <= current ? ACCENT : "#E8E2D9",
           }}
         />
       ))}
@@ -108,8 +113,8 @@ function ProgressDots({ current, total }) {
 function Heading({ title, sub }) {
   return (
     <div style={{ marginBottom: 24 }}>
-      <h2 style={{ color: "#FFFFFF", fontSize: 22, fontWeight: 700, lineHeight: 1.3, marginBottom: 8 }}>{title}</h2>
-      {sub && <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 1.6 }}>{sub}</p>}
+      <h2 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 24, fontWeight: 600, lineHeight: 1.25, marginBottom: 8 }}>{title}</h2>
+      {sub && <p style={{ color: TEXT_MUTED, fontSize: 14, lineHeight: 1.6 }}>{sub}</p>}
     </div>
   );
 }
@@ -128,8 +133,8 @@ function OptionCard({ selected, onClick, emoji, label, sub }) {
     >
       {emoji && <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1 }}>{emoji}</span>}
       <div style={{ flex: 1 }}>
-        <p style={{ color: "#FFFFFF", fontWeight: 600, fontSize: 15, lineHeight: 1.3 }}>{label}</p>
-        {sub && <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 }}>{sub}</p>}
+        <p style={{ color: TEXT, fontWeight: 600, fontSize: 15, lineHeight: 1.3 }}>{label}</p>
+        {sub && <p style={{ color: TEXT_DIM, fontSize: 12, marginTop: 2 }}>{sub}</p>}
       </div>
       {selected && <Check className="w-4 h-4 flex-shrink-0" style={{ color: ACCENT }} />}
     </button>
@@ -147,12 +152,12 @@ function ChipCard({ selected, onClick, emoji, label, max, count }) {
         display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
         background: selected ? SEL : CARD,
         border: selected ? SEL_B : DEF_B,
-        opacity: disabled ? 0.35 : 1,
+        opacity: disabled ? 0.4 : 1,
         transition: "all 0.15s",
       }}
     >
       <span style={{ fontSize: 24, lineHeight: 1 }}>{emoji}</span>
-      <p style={{ color: "#FFFFFF", fontWeight: 500, fontSize: 12, textAlign: "center", lineHeight: 1.3 }}>{label}</p>
+      <p style={{ color: TEXT, fontWeight: 500, fontSize: 12, textAlign: "center", lineHeight: 1.3 }}>{label}</p>
     </button>
   );
 }
@@ -164,8 +169,8 @@ function NavButtons({ step, totalSteps, canNext, onBack, onNext, loading, nextLa
         <button
           onClick={onBack}
           style={{
-            flex: 1, padding: "14px", borderRadius: 14, fontWeight: 600, fontSize: 15,
-            background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)",
+            flex: 1, padding: "14px", borderRadius: 50, fontWeight: 600, fontSize: 15,
+            background: "transparent", border: `1.5px solid ${CARD_B === "1px solid #E8E2D9" ? "#E8E2D9" : "#E8E2D9"}`, color: TEXT_MUTED,
             cursor: "pointer",
           }}
         >
@@ -176,9 +181,9 @@ function NavButtons({ step, totalSteps, canNext, onBack, onNext, loading, nextLa
         onClick={onNext}
         disabled={!canNext || loading}
         style={{
-          flex: 2, padding: "14px", borderRadius: 14, fontWeight: 700, fontSize: 15,
-          background: canNext ? ACCENT : "rgba(74,144,226,0.3)",
-          color: "#FFFFFF", border: "none", cursor: canNext ? "pointer" : "default",
+          flex: 2, padding: "14px", borderRadius: 50, fontWeight: 700, fontSize: 15,
+          background: canNext ? ACCENT : "#E8E2D9",
+          color: canNext ? "#fff" : TEXT_DIM, border: "none", cursor: canNext ? "pointer" : "default",
           transition: "background 0.15s",
           display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
         }}
@@ -247,18 +252,16 @@ export default function Onboarding() {
     return (
       <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px" }}>
         <div style={{ maxWidth: 420, width: "100%" }}>
-          {/* Mark */}
+          {/* Brand mark */}
           <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div style={{ position: "relative", width: 64, height: 64, margin: "0 auto 20px" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, width: 46, height: 46, borderRadius: "50%", border: "2px solid rgba(74,144,226,0.7)" }} />
-              <div style={{ position: "absolute", bottom: 0, right: 0, width: 46, height: 46, borderRadius: "50%", border: "2px solid rgba(212,165,116,0.6)" }} />
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 12, height: 12, borderRadius: "50%", background: ACCENT }} />
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 18 }}>
+              <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 28, fontWeight: 700, color: ACCENT, letterSpacing: "-0.02em", lineHeight: 1 }}>Ah Ha</span>
+              <span style={{ fontSize: 12, color: TEXT_DIM, fontWeight: 500 }}>LLC</span>
             </div>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>UNBOUND</p>
-            <h1 style={{ color: "#FFFFFF", fontSize: 28, fontWeight: 800, lineHeight: 1.2, marginBottom: 14 }}>Welcome to Unbound</h1>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 6 }}>Help for your next step forward.</p>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, lineHeight: 1.7, maxWidth: 340, margin: "0 auto" }}>
-              Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this app is built for you.
+            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 30, fontWeight: 600, lineHeight: 1.2, marginBottom: 12 }}>Welcome to Ah Ha</h1>
+            <p style={{ color: TEXT_MUTED, fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 8 }}>Help. Hope. Healing.</p>
+            <p style={{ color: TEXT_DIM, fontSize: 14, lineHeight: 1.7, maxWidth: 340, margin: "0 auto" }}>
+              Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this is built for you.
             </p>
           </div>
 
@@ -267,8 +270,8 @@ export default function Onboarding() {
             <button
               onClick={() => setStep(2)}
               style={{
-                width: "100%", padding: "16px", borderRadius: 16, fontWeight: 700, fontSize: 16,
-                background: ACCENT, color: "#FFFFFF", border: "none", cursor: "pointer",
+                width: "100%", padding: "16px", borderRadius: 50, fontWeight: 700, fontSize: 16,
+                background: ACCENT, color: "#fff", border: "none", cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               }}
             >
@@ -277,9 +280,9 @@ export default function Onboarding() {
             <Link to={createPageUrl("FindHelpNow")} style={{ textDecoration: "none" }}>
               <button
                 style={{
-                  width: "100%", padding: "16px", borderRadius: 16, fontWeight: 700, fontSize: 16,
-                  background: "rgba(239,68,68,0.18)", color: "#FCA5A5",
-                  border: "2px solid rgba(239,68,68,0.4)", cursor: "pointer",
+                  width: "100%", padding: "16px", borderRadius: 50, fontWeight: 700, fontSize: 16,
+                  background: "rgba(201,83,79,0.07)", color: "#A32D2D",
+                  border: "1.5px solid rgba(201,83,79,0.25)", cursor: "pointer",
                 }}
               >
                 🆘 I Need Help Right Now
@@ -287,7 +290,7 @@ export default function Onboarding() {
             </Link>
           </div>
 
-          <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 12, textAlign: "center", marginTop: 28 }}>
+          <p style={{ color: TEXT_DIM, fontSize: 12, textAlign: "center", marginTop: 28 }}>
             Takes under a minute. No paperwork. No judgment.
           </p>
         </div>
@@ -298,16 +301,18 @@ export default function Onboarding() {
   // ── Screen 6: Personalized Start ──────────────────────────────────────
   if (step === 6) {
     return (
-      <div style={{ minHeight: "100vh", background: "#F5F5F7", paddingBottom: 40 }}>
+      <div style={{ minHeight: "100vh", background: BG, paddingBottom: 40 }}>
         {/* Top banner */}
         <div style={{
-          background: isUrgent ? "linear-gradient(135deg, #1D3461 0%, #1F5C99 100%)" : "linear-gradient(135deg, #0D1B2A 0%, #1A3A5C 100%)",
-          padding: "40px 24px 32px", textAlign: "center",
+          background: CARD, borderBottom: "1px solid #E8E2D9",
+          padding: "56px 24px 32px", textAlign: "center",
         }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>✨</div>
-          <h1 style={{ color: "#FFFFFF", fontSize: 22, fontWeight: 800, marginBottom: 10 }}>Here's a good place to start.</h1>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.7, maxWidth: 320, margin: "0 auto" }}>
-            You don't have to figure everything out today.{"\n"}Start with one step.
+          <div style={{ fontSize: 44, marginBottom: 14 }}>✨</div>
+          <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 24, fontWeight: 600, marginBottom: 10, lineHeight: 1.25 }}>
+            Here's a good place to start.
+          </h1>
+          <p style={{ color: TEXT_MUTED, fontSize: 14, lineHeight: 1.7, maxWidth: 320, margin: "0 auto" }}>
+            You don't have to figure everything out today. Start with one step.
           </p>
         </div>
 
@@ -315,15 +320,15 @@ export default function Onboarding() {
 
           {/* Urgent banner */}
           {isUrgent && (
-            <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: 14, padding: "16px 18px", marginBottom: 20 }}>
-              <p style={{ color: "#DC2626", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Help is available right now</p>
+            <div style={{ background: "rgba(201,83,79,0.06)", border: "1px solid rgba(201,83,79,0.22)", borderRadius: 14, padding: "16px 18px", marginBottom: 20 }}>
+              <p style={{ color: "#A32D2D", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Help is available right now</p>
               <div style={{ display: "flex", gap: 10 }}>
-                <a href="tel:988" style={{ flex: 1, background: "#DC2626", borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
-                  <p style={{ color: "#FFF", fontWeight: 800, fontSize: 16, lineHeight: 1 }}>988</p>
+                <a href="tel:988" style={{ flex: 1, background: "#A32D2D", borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
+                  <p style={{ color: "#fff", fontWeight: 800, fontSize: 16, lineHeight: 1 }}>988</p>
                   <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, marginTop: 3 }}>Crisis Line</p>
                 </a>
-                <a href="sms:741741" style={{ flex: 1, background: "#1D4ED8", borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
-                  <p style={{ color: "#FFF", fontWeight: 800, fontSize: 13, lineHeight: 1.3 }}>Text HOME</p>
+                <a href="sms:741741" style={{ flex: 1, background: ACCENT, borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
+                  <p style={{ color: "#fff", fontWeight: 800, fontSize: 13, lineHeight: 1.3 }}>Text HOME</p>
                   <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, marginTop: 3 }}>to 741741</p>
                 </a>
               </div>
@@ -331,36 +336,36 @@ export default function Onboarding() {
           )}
 
           {/* Next best step */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 10 }}>Your next step</p>
+          <p style={{ fontSize: 10, fontWeight: 700, color: TEXT_DIM, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 10 }}>Your next step</p>
           <Link to={createPageUrl(nextStep.href)} style={{ textDecoration: "none" }}>
             <div style={{
               background: ACCENT, borderRadius: 16, padding: "18px 20px", marginBottom: 20,
               display: "flex", alignItems: "center", gap: 14,
-              boxShadow: "0 4px 16px rgba(74,144,226,0.3)",
+              boxShadow: "0 4px 16px rgba(184,130,58,0.25)",
             }}>
               <span style={{ fontSize: 26 }}>{nextStep.emoji}</span>
               <div style={{ flex: 1 }}>
-                <p style={{ color: "#FFFFFF", fontWeight: 700, fontSize: 16, lineHeight: 1.3 }}>{nextStep.label}</p>
-                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, marginTop: 3 }}>Start here</p>
+                <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, lineHeight: 1.3 }}>{nextStep.label}</p>
+                <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 12, marginTop: 3 }}>Start here</p>
               </div>
-              <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.7)" }} />
+              <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.85)" }} />
             </div>
           </Link>
 
           {/* Top needs */}
           {topNeeds.length > 0 && (
             <>
-              <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 10 }}>What you're focused on</p>
+              <p style={{ fontSize: 10, fontWeight: 700, color: TEXT_DIM, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 10 }}>What you're focused on</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
                 {topNeeds.map(need => (
                   <Link key={need} to={createPageUrl(NEED_HREFS[need] || "FindHelpNow")} style={{ textDecoration: "none" }}>
                     <div style={{
-                      background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 14,
+                      background: CARD, border: "1px solid #E8E2D9", borderRadius: 14,
                       padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
                     }}>
                       <span style={{ fontSize: 20 }}>{NEEDS.find(n => n.value === need)?.emoji || "📍"}</span>
-                      <p style={{ flex: 1, color: "#1E1E1E", fontWeight: 600, fontSize: 15 }}>{need}</p>
-                      <ChevronRight className="w-4 h-4" style={{ color: "#C7C7CC" }} />
+                      <p style={{ flex: 1, color: TEXT, fontWeight: 600, fontSize: 15 }}>{need}</p>
+                      <ChevronRight className="w-4 h-4" style={{ color: TEXT_DIM }} />
                     </div>
                   </Link>
                 ))}
@@ -369,32 +374,32 @@ export default function Onboarding() {
           )}
 
           {/* Quick-action shortcuts */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#8E8E93", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 10 }}>Also easy to reach</p>
+          <p style={{ fontSize: 10, fontWeight: 700, color: TEXT_DIM, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 10 }}>Also easy to reach</p>
           <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
             <Link to={createPageUrl("DailyCheckIn")} style={{ flex: 1, textDecoration: "none" }}>
-              <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
+              <div style={{ background: CARD, border: "1px solid #E8E2D9", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
                 <span style={{ fontSize: 22 }}>✅</span>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "#1E1E1E", marginTop: 6 }}>Check In</p>
+                <p style={{ fontSize: 12, fontWeight: 600, color: TEXT, marginTop: 6 }}>Check In</p>
               </div>
             </Link>
             <Link to={createPageUrl("ParticipantMessages")} style={{ flex: 1, textDecoration: "none" }}>
-              <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
+              <div style={{ background: CARD, border: "1px solid #E8E2D9", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
                 <span style={{ fontSize: 22 }}>💬</span>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "#1E1E1E", marginTop: 6 }}>Messages</p>
+                <p style={{ fontSize: 12, fontWeight: 600, color: TEXT, marginTop: 6 }}>Messages</p>
               </div>
             </Link>
             <Link to={createPageUrl("ForwardPlan")} style={{ flex: 1, textDecoration: "none" }}>
-              <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
+              <div style={{ background: CARD, border: "1px solid #E8E2D9", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
                 <span style={{ fontSize: 22 }}>📋</span>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "#1E1E1E", marginTop: 6 }}>My Plan</p>
+                <p style={{ fontSize: 12, fontWeight: 600, color: TEXT, marginTop: 6 }}>My Plan</p>
               </div>
             </Link>
           </div>
 
           <Link to={createPageUrl("Home")} style={{ textDecoration: "none" }}>
             <button style={{
-              width: "100%", padding: "16px", borderRadius: 16, fontWeight: 700, fontSize: 16,
-              background: "#1E1E1E", color: "#FFFFFF", border: "none", cursor: "pointer",
+              width: "100%", padding: "16px", borderRadius: 50, fontWeight: 700, fontSize: 16,
+              background: ACCENT, color: "#fff", border: "none", cursor: "pointer",
             }}>
               Go to Home →
             </button>
@@ -404,18 +409,21 @@ export default function Onboarding() {
     );
   }
 
-  // ── Screens 2–5: Shared dark shell ────────────────────────────────────
+  // ── Screens 2–5: Shared shell ─────────────────────────────────────────
   return (
     <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{ padding: "32px 24px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" }}>UNBOUND</p>
+        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+          <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 17, fontWeight: 700, color: ACCENT, letterSpacing: "-0.02em" }}>Ah Ha</span>
+          <span style={{ fontSize: 11, color: TEXT_DIM, fontWeight: 400 }}>LLC</span>
+        </div>
         {step > 2 && (
           <button
             onClick={() => {
               saveProfile.mutate();
             }}
-            style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, background: "none", border: "none", cursor: "pointer" }}
+            style={{ color: TEXT_DIM, fontSize: 13, background: "none", border: "none", cursor: "pointer", fontWeight: 500 }}
           >
             Skip for now
           </button>
@@ -496,16 +504,16 @@ export default function Onboarding() {
                 ))}
               </div>
               {FEELINGS.find(f => f.value === data.feeling)?.urgent && (
-                <div style={{ marginTop: 16, background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.35)", borderRadius: 12, padding: "14px 16px" }}>
-                  <p style={{ color: "#FCA5A5", fontSize: 13, fontWeight: 600, marginBottom: 8 }}>You can get help right now.</p>
+                <div style={{ marginTop: 16, background: "rgba(201,83,79,0.06)", border: "1px solid rgba(201,83,79,0.22)", borderRadius: 12, padding: "14px 16px" }}>
+                  <p style={{ color: "#A32D2D", fontSize: 13, fontWeight: 700, marginBottom: 10 }}>You can get help right now.</p>
                   <div style={{ display: "flex", gap: 10 }}>
-                    <a href="tel:988" style={{ flex: 1, background: "rgba(239,68,68,0.3)", borderRadius: 8, padding: "8px", textAlign: "center", textDecoration: "none" }}>
-                      <p style={{ color: "#FCA5A5", fontWeight: 800, fontSize: 15 }}>988</p>
-                      <p style={{ color: "rgba(252,165,165,0.7)", fontSize: 10 }}>Call now</p>
+                    <a href="tel:988" style={{ flex: 1, background: "#A32D2D", borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
+                      <p style={{ color: "#fff", fontWeight: 800, fontSize: 16, lineHeight: 1 }}>988</p>
+                      <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, marginTop: 3 }}>Crisis Line</p>
                     </a>
-                    <a href="sms:741741" style={{ flex: 1, background: "rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px", textAlign: "center", textDecoration: "none" }}>
-                      <p style={{ color: "#93C5FD", fontWeight: 700, fontSize: 13, lineHeight: 1.3 }}>Text HOME</p>
-                      <p style={{ color: "rgba(147,197,253,0.7)", fontSize: 10 }}>to 741741</p>
+                    <a href="sms:741741" style={{ flex: 1, background: ACCENT, borderRadius: 10, padding: "10px 8px", textAlign: "center", textDecoration: "none" }}>
+                      <p style={{ color: "#fff", fontWeight: 800, fontSize: 13, lineHeight: 1.3 }}>Text HOME</p>
+                      <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, marginTop: 3 }}>to 741741</p>
                     </a>
                   </div>
                 </div>
