@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "./utils";
 import { Loader2 } from "lucide-react";
+import AhHaLogo from "@/components/shared/AhHaLogo";
 
 // Ah Ha brand palette
 const C = {
@@ -99,9 +100,8 @@ export default function RoleSelect() {
 
         {/* Brand */}
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
-            <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 26, fontWeight: 700, color: C.amber, letterSpacing: "-0.02em", lineHeight: 1 }}>Ah Ha</span>
-            <span style={{ fontSize: 12, color: C.dim, fontWeight: 500 }}>LLC</span>
+          <div style={{ marginBottom: 14 }}>
+            <AhHaLogo size={72} layout="column" showWordmark={false} />
           </div>
           <h1 style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 24, fontWeight: 600, color: C.text, marginBottom: 8, lineHeight: 1.2 }}>Who's logging in?</h1>
           <p style={{ fontSize: 14, color: C.muted }}>Pick the option that fits you.</p>

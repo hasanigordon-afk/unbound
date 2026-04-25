@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Home, LifeBuoy, Star, Heart, User } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import DonateButton from "@/components/donate/DonateButton";
+import AhHaLogo from "@/components/shared/AhHaLogo";
 
 const PARTICIPANT_NAV = [
   { name: "Home",    icon: Home,     page: "Home",       href: "/" },
@@ -75,9 +76,8 @@ export default function Layout({ children, currentPageName }) {
           borderTop: "1px solid var(--border)", padding: "16px 24px",
           textAlign: "center", background: "var(--bg)", paddingBottom: 90,
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 800, color: "var(--sand)", letterSpacing: "-.02em" }}>Ah Ha</span>
-            <span style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 400 }}>LLC</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
+            <AhHaLogo size={28} />
           </div>
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
             <DonateButton variant="ghost" label="Support the Mission" />

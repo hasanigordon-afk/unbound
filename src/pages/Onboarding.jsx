@@ -6,6 +6,7 @@ import { createPageUrl } from "./utils";
 import { ChevronRight, Loader2, Check, Phone, MessageSquare } from "lucide-react";
 import RecoveryFocusPicker from "@/components/onboarding/RecoveryFocusPicker";
 import { CATEGORY_BY_VALUE, isCrisisCategory } from "@/lib/recoveryCategories";
+import AhHaLogo from "@/components/shared/AhHaLogo";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -269,9 +270,8 @@ export default function Onboarding() {
         <div style={{ maxWidth: 420, width: "100%" }}>
           {/* Brand mark */}
           <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 18 }}>
-              <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 28, fontWeight: 700, color: ACCENT, letterSpacing: "-0.02em", lineHeight: 1 }}>Ah Ha</span>
-              <span style={{ fontSize: 12, color: TEXT_DIM, fontWeight: 500 }}>LLC</span>
+            <div style={{ marginBottom: 18 }}>
+              <AhHaLogo size={88} layout="column" showWordmark={false} />
             </div>
             <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 30, fontWeight: 600, lineHeight: 1.2, marginBottom: 12 }}>Welcome to Ah Ha</h1>
             <p style={{ color: TEXT_MUTED, fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 8 }}>Help. Hope. Healing.</p>
@@ -446,10 +446,7 @@ export default function Onboarding() {
     <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{ padding: "32px 24px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 17, fontWeight: 700, color: ACCENT, letterSpacing: "-0.02em" }}>Ah Ha</span>
-          <span style={{ fontSize: 11, color: TEXT_DIM, fontWeight: 400 }}>LLC</span>
-        </div>
+        <AhHaLogo size={32} />
         {step > 2 && (
           <button
             onClick={() => {

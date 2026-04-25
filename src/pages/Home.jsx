@@ -15,6 +15,7 @@ import { trackHomeVisit } from "@/lib/subscriptionEngine";
 import { getCampaignSettings } from "@/lib/campaignSettings";
 import RecoveryScoreRing from "@/components/home/RecoveryScoreRing";
 import MyFocusPill from "@/components/home/MyFocusPill";
+import AhHaLogo from "@/components/shared/AhHaLogo";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
 const STAGES = [
@@ -158,22 +159,8 @@ export default function Home() {
           {/* Brand logo + admin/donate/greeting chip */}
           <div className="fu" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, gap: 8 }}>
             {/* Logo lockup */}
-            <Link to={createPageUrl("Home")} style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{
-                width: 38, height: 38, borderRadius: "50%",
-                background: "linear-gradient(135deg, #B8823A 0%, #D4915A 100%)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 2px 8px rgba(184,130,58,0.25)", flexShrink: 0,
-              }}>
-                <span style={{
-                  fontFamily: "'Lora', Georgia, serif", color: "#fff",
-                  fontSize: 17, fontWeight: 700, letterSpacing: "-.04em", lineHeight: 1,
-                }}>Ah</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
-                <span style={{ fontFamily: "'Lora', serif", fontSize: 18, fontWeight: 700, color: "#1C1410", letterSpacing: "-.02em" }}>Ah Ha</span>
-                <span style={{ fontSize: 9, color: "#9B8E83", fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", marginTop: 2 }}>Help · Hope · Healing</span>
-              </div>
+            <Link to={createPageUrl("Home")} style={{ textDecoration: "none" }}>
+              <AhHaLogo size={44} showTagline={true} />
             </Link>
 
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
