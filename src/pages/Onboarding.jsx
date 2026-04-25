@@ -4,6 +4,8 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { ChevronRight, Loader2, Check, Phone, MessageSquare } from "lucide-react";
+import RecoveryFocusPicker from "@/components/onboarding/RecoveryFocusPicker";
+import { CATEGORY_BY_VALUE, isCrisisCategory } from "@/lib/recoveryCategories";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -198,12 +200,13 @@ function NavButtons({ step, totalSteps, canNext, onBack, onNext, loading, nextLa
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 1-6
+  const [step, setStep] = useState(1); // 1-7 (welcome, reason, needs, feeling, support, focus, done)
   const [data, setData] = useState({
     reason: "",
     needs: [],
     feeling: "",
     support: "",
+    focus: "",
     location_city: "",
     location_state: "",
     location_zip: "",
@@ -226,8 +229,19 @@ export default function Onboarding() {
         location_zip: data.location_zip,
         onboarding_complete: true,
       });
+
+      // Persist primary recovery focus (Batch B)
+      if (data.focus && user?.email) {
+        await base44.entities.RecoveryFocus.create({
+          user_email: user.email,
+          category: data.focus,
+          is_primary: true,
+          is_crisis_category: isCrisisCategory(data.focus),
+          selected_at: new Date().toISOString(),
+        });
+      }
     },
-    onSuccess: () => setStep(6),
+    onSuccess: () => setStep(7),
   });
 
   const isUrgent = FEELINGS.find(f => f.value === data.feeling)?.urgent;
@@ -239,12 +253,13 @@ export default function Onboarding() {
     if (step === 3) return data.needs.length > 0;
     if (step === 4) return !!data.feeling;
     if (step === 5) return !!data.support;
+    if (step === 6) return !!data.focus;
     return true;
   };
 
   const handleNext = () => {
-    if (step === 5) { saveProfile.mutate(); return; }
-    if (step < 5) setStep(s => s + 1);
+    if (step === 6) { saveProfile.mutate(); return; }
+    if (step < 6) setStep(s => s + 1);
   };
 
   // ── Screen 1: Welcome ──────────────────────────────────────────────────
@@ -298,8 +313,8 @@ export default function Onboarding() {
     );
   }
 
-  // ── Screen 6: Personalized Start ──────────────────────────────────────
-  if (step === 6) {
+  // ── Screen 7: Personalized Start ──────────────────────────────────────
+  if (step === 7) {
     return (
       <div style={{ minHeight: "100vh", background: BG, paddingBottom: 40 }}>
         {/* Top banner */}
@@ -432,7 +447,7 @@ export default function Onboarding() {
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 24px 40px" }}>
         <div style={{ maxWidth: 440, width: "100%", margin: "0 auto" }}>
-          <ProgressDots current={step - 1} total={4} />
+          <ProgressDots current={step - 1} total={5} />
 
           {/* ── Step 2: What brings you here ── */}
           {step === 2 && (
@@ -542,14 +557,28 @@ export default function Onboarding() {
             </>
           )}
 
+          {/* ── Step 6: Recovery focus area ── */}
+          {step === 6 && (
+            <>
+              <Heading
+                title="What's your primary focus?"
+                sub="Pick the area you want to work on most. This helps us tailor your support — you can change it any time."
+              />
+              <RecoveryFocusPicker
+                value={data.focus}
+                onChange={(v) => setData(d => ({ ...d, focus: v }))}
+              />
+            </>
+          )}
+
           <NavButtons
             step={step}
-            totalSteps={5}
+            totalSteps={6}
             canNext={canNext()}
             onBack={() => setStep(s => s - 1)}
             onNext={handleNext}
             loading={saveProfile.isPending}
-            nextLabel={step === 5 ? "Show me where to start →" : "Keep going"}
+            nextLabel={step === 6 ? "Show me where to start →" : "Keep going"}
           />
         </div>
       </div>
