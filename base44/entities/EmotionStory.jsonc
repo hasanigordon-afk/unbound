@@ -1,0 +1,49 @@
+{
+  "name": "EmotionStory",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Author's email"
+    },
+    "title": {
+      "type": "string",
+      "description": "Story title"
+    },
+    "story_text": {
+      "type": "string",
+      "description": "Body of the story"
+    },
+    "emotion_tag": {
+      "type": "string",
+      "enum": [
+        "hope",
+        "regret",
+        "breakthrough",
+        "relapse"
+      ],
+      "description": "Emotional theme of the story"
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Moderation approval status"
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Cached count of likes"
+    },
+    "comment_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Cached count of comments"
+    }
+  },
+  "required": [
+    "user_email",
+    "title",
+    "story_text",
+    "emotion_tag"
+  ]
+}
