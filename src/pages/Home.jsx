@@ -13,6 +13,7 @@ import DonateButton from "@/components/donate/DonateButton";
 import InAppNudge from "@/components/subscription/InAppNudge";
 import { trackHomeVisit } from "@/lib/subscriptionEngine";
 import { getCampaignSettings } from "@/lib/campaignSettings";
+import RecoveryScoreRing from "@/components/home/RecoveryScoreRing";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
 const STAGES = [
@@ -369,31 +370,32 @@ export default function Home() {
             })}
           </div>
 
-          {/* ── 5. WEEKLY SCORE CARD ──────────────────────────────────────── */}
+          {/* ── 5. RECOVERY SCORE — CONTROL CENTER ────────────────────────── */}
           <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
             This week
           </p>
-          <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 16, padding: "20px 20px", marginBottom: 24 }}>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 14 }}>
-              <p style={{ fontSize: 44, fontWeight: 600, lineHeight: 1, color: stabColor, fontFamily: "'Lora', serif" }}>
-                {stability !== null ? stability : "—"}
-                {stability !== null && <span style={{ fontSize: 20, fontWeight: 400, color: "#9B8E83" }}>%</span>}
-              </p>
-              <span style={{
-                fontSize: 11, fontWeight: 700, color: stabColor,
-                background: stability >= 75 ? "rgba(29,158,117,.10)" : stability >= 50 ? "rgba(184,130,58,.10)" : "rgba(201,83,79,.08)",
-                border: `1px solid ${stabColor}30`,
-                padding: "4px 12px", borderRadius: 20,
-              }}>{stabLabel}</span>
-            </div>
+          <div style={{
+            background: "linear-gradient(180deg, #FDFAF6 0%, #F7F3EE 100%)",
+            border: ".5px solid #E8E2D9", borderRadius: 20,
+            padding: "28px 20px 22px", marginBottom: 24,
+          }}>
+            {/* Dominant ring */}
+            <RecoveryScoreRing score={stability} size={210} stroke={14} />
 
-            {/* Progress bar */}
-            <div style={{ height: 4, background: "#E8E2D9", borderRadius: 2, overflow: "hidden", marginBottom: 18 }}>
-              <div style={{
-                height: "100%", borderRadius: 2, width: `${stability ?? 0}%`,
-                background: stabColor, transition: "width 1s ease",
-              }} />
-            </div>
+            {/* Motivational line */}
+            <p style={{
+              textAlign: "center", marginTop: 18, marginBottom: 18,
+              fontSize: 13, color: "#4A3F35", lineHeight: 1.6, fontStyle: "italic",
+              maxWidth: 320, marginLeft: "auto", marginRight: "auto",
+            }}>
+              {stability === null
+                ? "Check in to start building your score."
+                : stability >= 70
+                  ? "You're focused. Your future is being built today."
+                  : stability >= 40
+                    ? "Stay steady. Small actions compound."
+                    : "One check-in. One call. One step. That's enough."}
+            </p>
 
             {/* Indicator pills */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -406,7 +408,7 @@ export default function Home() {
                 <div key={ind.label} style={{
                   display: "flex", alignItems: "center", gap: 8, padding: "10px 12px",
                   borderRadius: 10,
-                  background: ind.done ? "rgba(29,158,117,.07)" : "#F7F3EE",
+                  background: ind.done ? "rgba(29,158,117,.07)" : "#FDFAF6",
                   border: `.5px solid ${ind.done ? "rgba(29,158,117,.25)" : "#E8E2D9"}`,
                 }}>
                   <div style={{ width: 7, height: 7, borderRadius: "50%", flexShrink: 0, background: ind.done ? "#1D9E75" : "#C8C2BC" }} />
