@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save, Loader2, Send, Plus, Trash2, Check, Calendar } from "lucide-react";
 import { getCampaignSettings, saveCampaignSettings, DEFAULT_SETTINGS } from "@/lib/campaignSettings";
+import RecoveryFocusTab from "@/components/admin/RecoveryFocusTab";
 
 const CATEGORIES = [
   "daily_motivation", "recovery_motivation", "community_updates",
@@ -121,6 +122,7 @@ export default function CampaignAdmin() {
           {[
             { id: "settings", label: "Settings" },
             { id: "subscribers", label: "Subscribers" },
+            { id: "focus", label: "Recovery Focus" },
             { id: "notifications", label: "Notifications" },
             { id: "donations", label: `Donations (${donations.length})` },
           ].map(t => (
@@ -232,6 +234,8 @@ export default function CampaignAdmin() {
           )}
 
           {tab === "subscribers" && <SubscribersTab prefs={allPrefs} />}
+
+          {tab === "focus" && <RecoveryFocusTab />}
 
           {tab === "notifications" && <NotificationsTab notifications={notifications} user={user} qc={qc} />}
 
