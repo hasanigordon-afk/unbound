@@ -14,6 +14,7 @@ import InAppNudge from "@/components/subscription/InAppNudge";
 import { trackHomeVisit } from "@/lib/subscriptionEngine";
 import { getCampaignSettings } from "@/lib/campaignSettings";
 import RecoveryScoreRing from "@/components/home/RecoveryScoreRing";
+import MyFocusPill from "@/components/home/MyFocusPill";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
 const STAGES = [
@@ -208,9 +209,12 @@ export default function Home() {
             Good to see you,<br /><span style={{ color: "#B8823A" }}>{firstName}.</span>
           </h1>
 
-          <p className="fu" style={{ fontSize: 14, color: "#4A3F35", lineHeight: 1.7, marginBottom: 24, animationDelay: ".1s", maxWidth: 320 }}>
+          <p className="fu" style={{ fontSize: 14, color: "#4A3F35", lineHeight: 1.7, marginBottom: 14, animationDelay: ".1s", maxWidth: 320 }}>
             You showed up again. That's not small — that's everything.
           </p>
+
+          {/* Primary recovery focus pill */}
+          {user?.email && <MyFocusPill userEmail={user.email} />}
 
           {/* CTA buttons */}
           <div className="fu" style={{ display: "flex", gap: 10, animationDelay: ".15s" }}>
