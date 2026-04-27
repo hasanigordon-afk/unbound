@@ -6,7 +6,7 @@ import { createPageUrl } from "./utils";
 import {
   Loader2, CheckCircle2, CalendarCheck, Users, MessageCircle,
   BookOpen, Briefcase, Target, ArrowRight, FileText, Home as HomeIcon,
-  Heart, Megaphone, LayoutDashboard,
+  Heart, Megaphone,
 } from "lucide-react";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import DonateButton from "@/components/donate/DonateButton";
@@ -173,21 +173,6 @@ export default function Home() {
             </Link>
 
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {/* Admin CRM shortcut — returning admins only */}
-              {user?.role === "admin" && (
-                <Link to="/CampaignAdmin" title="Admin CRM" style={{ textDecoration: "none" }}>
-                  <button className="lift" style={{
-                    display: "inline-flex", alignItems: "center", gap: 5,
-                    padding: "6px 11px", borderRadius: 20,
-                    background: "rgba(184,130,58,0.10)", border: "1px solid rgba(184,130,58,0.28)",
-                    color: "#B8823A", fontSize: 11, fontWeight: 700, cursor: "pointer",
-                    fontFamily: "'DM Sans', sans-serif",
-                  }}>
-                    <LayoutDashboard style={{ width: 12, height: 12 }} strokeWidth={2.2} />
-                    CRM
-                  </button>
-                </Link>
-              )}
               {campaignSettings?.donation_enabled && <DonateButton variant="pill" label="Donate" />}
               <span style={{
                 fontSize: 11, fontWeight: 700, color: "#1D9E75", letterSpacing: ".04em",

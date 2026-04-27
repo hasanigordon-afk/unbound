@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Loader2, Edit3, LogOut, MapPin, Target, Bookmark, Calendar, Heart, ArrowRight } from "lucide-react";
+import { Loader2, Edit3, LogOut, MapPin, Target, Bookmark, Calendar, Heart, ArrowRight, LayoutDashboard } from "lucide-react";
 import ProfileEditSheet from "@/components/profile/ProfileEditSheet";
 
 const C = {
@@ -156,13 +156,28 @@ export default function Profile() {
                 )}
               </div>
             </div>
-            <button onClick={() => setEditing(true)} style={{
-              background:C.bg, border:`1px solid ${C.border}`,
-              borderRadius:10, padding:"8px 14px", color:C.textMuted,
-              fontSize:13, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:6,
-            }}>
-              <Edit3 style={{ width:13, height:13 }}/> Edit
-            </button>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              {user?.role === "admin" && (
+                <Link to="/CampaignAdmin" title="Admin CRM" style={{ textDecoration:"none" }}>
+                  <button style={{
+                    display:"inline-flex", alignItems:"center", gap:5,
+                    padding:"8px 12px", borderRadius:10,
+                    background:"rgba(184,130,58,0.10)", border:"1px solid rgba(184,130,58,0.28)",
+                    color:C.amber, fontSize:13, fontWeight:700, cursor:"pointer",
+                  }}>
+                    <LayoutDashboard style={{ width:13, height:13 }} strokeWidth={2.2}/>
+                    CRM
+                  </button>
+                </Link>
+              )}
+              <button onClick={() => setEditing(true)} style={{
+                background:C.bg, border:`1px solid ${C.border}`,
+                borderRadius:10, padding:"8px 14px", color:C.textMuted,
+                fontSize:13, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:6,
+              }}>
+                <Edit3 style={{ width:13, height:13 }}/> Edit
+              </button>
+            </div>
           </div>
 
           {profile.personal_quote ? (
