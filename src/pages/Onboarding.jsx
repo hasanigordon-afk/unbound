@@ -278,16 +278,14 @@ export default function Onboarding() {
           {/* Brand mark */}
           <div style={{ textAlign: "center", marginBottom: 10 }}>
             <img
-              src="https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/b5173ee05_ahha_homepage_logo_750x750.png"
+              src="https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/9002882b9_ChatGPTImageApr26202609_00_06PM.png"
               alt="Ah Ha"
               style={{
-                width: "min(160px, 22vh)",
-                height: "min(160px, 22vh)",
+                width: "min(180px, 26vh)",
+                height: "min(180px, 26vh)",
                 objectFit: "contain",
                 display: "block",
                 margin: "0 auto 6px",
-                mixBlendMode: "multiply",
-                background: "transparent",
               }}
             />
             <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 22, fontWeight: 600, lineHeight: 1.2, marginBottom: 6 }}>You showed up. That's not small — that's everything.</h1>
