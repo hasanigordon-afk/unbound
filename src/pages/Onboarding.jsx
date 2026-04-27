@@ -280,7 +280,7 @@ export default function Onboarding() {
             <div style={{ marginBottom: 0, marginTop: -40 }}>
               <AhHaLogo size={480} layout="column" showWordmark={false} style={{ marginTop: -60, marginBottom: -60 }} />
             </div>
-            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 28, fontWeight: 600, lineHeight: 1.2, marginBottom: 8 }}>Welcome to Ah Ha</h1>
+            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 28, fontWeight: 600, lineHeight: 1.2, marginBottom: 8 }}>You showed up. That's not small — that's everything.</h1>
             <p style={{ color: TEXT_MUTED, fontSize: 15, fontWeight: 500, lineHeight: 1.4, marginBottom: 6 }}>Help. Hope. Healing.</p>
             <p style={{ color: TEXT_DIM, fontSize: 13, lineHeight: 1.6, maxWidth: 340, margin: "0 auto" }}>
               Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this is built for you.
