@@ -330,7 +330,7 @@ export default function Onboarding() {
               Already have an account?
             </p>
             <button
-              onClick={() => base44.auth.redirectToLogin()}
+              onClick={() => base44.auth.redirectToLogin(window.location.origin + "/")}
               style={{
                 width: "100%", padding: "13px", borderRadius: 50, fontWeight: 700, fontSize: 15,
                 background: ACCENT, color: "#fff", border: "none", cursor: "pointer",
