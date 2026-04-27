@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Loader2, Edit3, LogOut, MapPin, Target, Bookmark, Calendar, Heart, ArrowRight } from "lucide-react";
 import ProfileEditSheet from "@/components/profile/ProfileEditSheet";
@@ -60,6 +60,8 @@ function EmptyPrompt({ prompt, onEdit }) {
 
 export default function Profile() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [editing, setEditing] = useState(false);
 
   const { data: user, isLoading: uL } = useQuery({ queryKey:["me"], queryFn:() => base44.auth.me() });
@@ -69,6 +71,18 @@ export default function Profile() {
     queryFn: () => base44.entities.MemberProfile.filter({ created_by: user.email }),
     enabled: !!user,
   });
+
+  // Returning users (with completed onboarding) who land here from login → send to Home.
+  // New users with incomplete profiles stay on Profile to finish setup.
+  useEffect(() => {
+    if (uL || pL) return;
+    if (!user) return;
+    const params = new URLSearchParams(location.search);
+    if (params.get("from") !== "login") return;
+    if (profiles?.[0]?.onboarding_complete) {
+      navigate("/", { replace: true });
+    }
+  }, [uL, pL, user, profiles, location.search, navigate]);
 
   const { data: checkIns = [] } = useQuery({
     queryKey:["daily-checkins-profile", user?.email],
