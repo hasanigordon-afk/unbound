@@ -278,7 +278,7 @@ export default function Onboarding() {
           {/* Brand mark */}
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div style={{ marginBottom: 24 }}>
-              <AhHaLogo size={160} layout="column" showWordmark={false} />
+              <AhHaLogo size={240} layout="column" showWordmark={false} />
             </div>
             <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 30, fontWeight: 600, lineHeight: 1.2, marginBottom: 12 }}>Welcome to Ah Ha</h1>
             <p style={{ color: TEXT_MUTED, fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 8 }}>Help. Hope. Healing.</p>
