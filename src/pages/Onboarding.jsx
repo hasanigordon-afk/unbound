@@ -273,16 +273,16 @@ export default function Onboarding() {
   // ── Screen 1: Welcome ──────────────────────────────────────────────────
   if (step === 1) {
     return (
-      <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px" }}>
+      <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "16px 24px" }}>
         <div style={{ maxWidth: 420, width: "100%" }}>
           {/* Brand mark */}
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div style={{ marginBottom: 24 }}>
-              <AhHaLogo size={480} layout="column" showWordmark={false} />
+          <div style={{ textAlign: "center", marginBottom: 16 }}>
+            <div style={{ marginBottom: 0, marginTop: -40 }}>
+              <AhHaLogo size={480} layout="column" showWordmark={false} style={{ marginTop: -60, marginBottom: -60 }} />
             </div>
-            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 30, fontWeight: 600, lineHeight: 1.2, marginBottom: 12 }}>Welcome to Ah Ha</h1>
-            <p style={{ color: TEXT_MUTED, fontSize: 16, fontWeight: 500, lineHeight: 1.5, marginBottom: 8 }}>Help. Hope. Healing.</p>
-            <p style={{ color: TEXT_DIM, fontSize: 14, lineHeight: 1.7, maxWidth: 340, margin: "0 auto" }}>
+            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 28, fontWeight: 600, lineHeight: 1.2, marginBottom: 8 }}>Welcome to Ah Ha</h1>
+            <p style={{ color: TEXT_MUTED, fontSize: 15, fontWeight: 500, lineHeight: 1.4, marginBottom: 6 }}>Help. Hope. Healing.</p>
+            <p style={{ color: TEXT_DIM, fontSize: 13, lineHeight: 1.6, maxWidth: 340, margin: "0 auto" }}>
               Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this is built for you.
             </p>
           </div>
@@ -312,13 +312,13 @@ export default function Onboarding() {
             </Link>
           </div>
 
-          <p style={{ color: TEXT_DIM, fontSize: 12, textAlign: "center", marginTop: 28 }}>
+          <p style={{ color: TEXT_DIM, fontSize: 12, textAlign: "center", marginTop: 14 }}>
             Takes under a minute. No paperwork. No judgment.
           </p>
 
           {/* Returning user log-in */}
-          <div style={{ textAlign: "center", marginTop: 22, paddingTop: 18, borderTop: `1px solid ${CARD_B === "1px solid #E8E2D9" ? "#E8E2D9" : "#E8E2D9"}` }}>
-            <p style={{ color: TEXT_DIM, fontSize: 13, marginBottom: 10 }}>
+          <div style={{ textAlign: "center", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${CARD_B === "1px solid #E8E2D9" ? "#E8E2D9" : "#E8E2D9"}` }}>
+            <p style={{ color: TEXT_DIM, fontSize: 13, marginBottom: 6 }}>
               Already have an account?
             </p>
             <button
