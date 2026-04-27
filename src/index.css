@@ -5,55 +5,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
 
 :root {
-  /* ── Core surfaces ── */
-  --bg:           #F7F3EE;
-  --surface:      #FDFAF6;
-  --card:         #FDFAF6;
-  --card-hover:   #F3EDE4;
-  --border:       #E8E2D9;
-  --border-soft:  #EFE9E1;
+  /* ── Glume-inspired healthcare palette ── */
+  /* Soft white surfaces, teal/mint accents, calm trust */
 
-  /* ── Brand ── */
-  --teal:         #B8823A;
-  --teal-dim:     rgba(184,130,58,0.10);
-  --teal-border:  rgba(184,130,58,0.28);
-  --sand:         #B8823A;
-  --sand-dim:     rgba(184,130,58,0.10);
-  --sand-border:  rgba(184,130,58,0.28);
+  /* ── Core surfaces ── */
+  --bg:           #F4F8FA;   /* soft off-white with cool blue undertone */
+  --surface:      #FFFFFF;   /* pure white cards */
+  --card:         #FFFFFF;
+  --card-hover:   #F0F6F8;
+  --border:       #E3ECEF;
+  --border-soft:  #EEF3F5;
+
+  /* ── Brand: calm teal + mint ── */
+  --teal:         #2A9D8F;          /* primary teal */
+  --teal-dim:     rgba(42,157,143,0.08);
+  --teal-border:  rgba(42,157,143,0.22);
+  --sand:         #2A9D8F;          /* legacy alias → teal */
+  --sand-dim:     rgba(42,157,143,0.08);
+  --sand-border:  rgba(42,157,143,0.22);
+  --mint:         #5DBFB0;
+  --sky:          #5BA3C7;
 
   /* ── Status ── */
-  --green:        #7A9E7E;
-  --amber:        #B8823A;
-  --red:          #B85C5C;
-  --indigo:       #7B8FA8;
+  --green:        #4FAE92;          /* mint-green success */
+  --amber:        #2A9D8F;          /* legacy alias remapped to teal */
+  --red:          #E07A6C;          /* soft coral, not aggressive */
+  --indigo:       #5BA3C7;          /* sky-blue */
   --purple:       #9B8AB8;
 
   /* ── Typography ── */
-  --text:         #1C1410;
-  --text-muted:   #4A3F35;
-  --text-dim:     #9B8E83;
+  --text:         #1B2A33;          /* deep slate, not black */
+  --text-muted:   #4A5A65;
+  --text-dim:     #8A9AA3;
 
   /* ── Spacing scale ── */
-  --r-sm:         8px;
-  --r-md:         12px;
-  --r-lg:         16px;
-  --r-xl:         20px;
+  --r-sm:         10px;
+  --r-md:         14px;
+  --r-lg:         18px;
+  --r-xl:         24px;
 
   /* ── Shadow ── */
-  --shadow:       0 2px 16px rgba(60,40,20,0.08);
-  --shadow-sm:    0 1px 6px  rgba(60,40,20,0.06);
+  --shadow:       0 4px 20px rgba(27,42,51,0.06);
+  --shadow-sm:    0 1px 4px  rgba(27,42,51,0.04);
 
   /* Legacy aliases */
-  --rebos-bg:       #F7F3EE;
-  --rebos-surface:  #FDFAF6;
-  --rebos-card:     #FDFAF6;
-  --rebos-border:   #E8E2D9;
-  --rebos-teal:     #B8823A;
-  --rebos-blue:     #7B8FA8;
+  --rebos-bg:       #F4F8FA;
+  --rebos-surface:  #FFFFFF;
+  --rebos-card:     #FFFFFF;
+  --rebos-border:   #E3ECEF;
+  --rebos-teal:     #2A9D8F;
+  --rebos-blue:     #5BA3C7;
   --rebos-purple:   #9B8AB8;
-  --rebos-text:     #1C1410;
-  --rebos-muted:    #4A3F35;
-  --rebos-dim:      #9B8E83;
+  --rebos-text:     #1B2A33;
+  --rebos-muted:    #4A5A65;
+  --rebos-dim:      #8A9AA3;
 }
 
 @layer base {
@@ -73,64 +78,65 @@
   }
 }
 
-/* ── Unified component primitives ── */
+/* ── Glume-inspired primitives ── */
 .card {
-  background: #FDFAF6;
-  border: 1px solid #E8E2D9;
-  border-radius: 16px;
-  box-shadow: 0 1px 6px rgba(28,20,16,0.07);
+  background: #FFFFFF;
+  border: 1px solid #E3ECEF;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(27,42,51,0.04);
 }
 
 .card-soft {
-  background: #FDFAF6;
-  border: 1px solid #E8E2D9;
-  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1px solid #EEF3F5;
+  border-radius: 18px;
 }
 
 .btn-primary {
-  background: #B8823A;
+  background: #2A9D8F;
   color: #ffffff;
   font-weight: 600;
   border: none;
-  border-radius: 12px;
+  border-radius: 999px;
   cursor: pointer;
-  min-height: 44px;
-  padding: 0 20px;
+  min-height: 48px;
+  padding: 0 24px;
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
-  transition: opacity 0.15s;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(42,157,143,0.18);
 }
-.btn-primary:hover { opacity: 0.88; }
-.btn-primary:active { opacity: 0.75; }
+.btn-primary:hover { background: #258A7E; box-shadow: 0 4px 12px rgba(42,157,143,0.24); }
+.btn-primary:active { transform: scale(0.98); }
 
 .btn-ghost {
-  background: #FDFAF6;
-  color: #4A3F35;
+  background: #FFFFFF;
+  color: #4A5A65;
   font-weight: 600;
-  border: 1px solid #E8E2D9;
-  border-radius: 12px;
+  border: 1px solid #E3ECEF;
+  border-radius: 999px;
   cursor: pointer;
-  min-height: 44px;
-  padding: 0 20px;
+  min-height: 48px;
+  padding: 0 24px;
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   transition: background 0.15s;
 }
-.btn-ghost:hover { background: #F3EDE4; }
+.btn-ghost:hover { background: #F0F6F8; }
 
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 4px 12px;
-  border-radius: 20px;
+  padding: 5px 14px;
+  border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
 }
 
-.pill-teal { background: var(--teal-dim); color: var(--amber); border: 1px solid var(--teal-border); }
-.pill-sand { background: var(--sand-dim); color: var(--amber); border: 1px solid var(--sand-border); }
-.pill-ghost { background: rgba(184,130,58,0.06); color: var(--text-muted); border: 1px solid var(--border); }
+.pill-teal  { background: rgba(42,157,143,0.08); color: #2A9D8F; border: 1px solid rgba(42,157,143,0.22); }
+.pill-sand  { background: rgba(91,163,199,0.08); color: #5BA3C7; border: 1px solid rgba(91,163,199,0.22); }
+.pill-ghost { background: #F4F8FA; color: var(--text-muted); border: 1px solid var(--border); }
 
 .section-label {
   font-size: 10px;
@@ -162,8 +168,8 @@ input, textarea, select {
   padding: 10px 12px;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--amber);
-  box-shadow: 0 0 0 3px rgba(184,130,58,0.1);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(42,157,143,0.12);
 }
 
 @layer base {

@@ -55,14 +55,14 @@ export default function AhHaLogo({
             fontFamily: "'Lora', Georgia, serif",
             fontSize: Math.max(16, Math.round(size * 0.46)),
             fontWeight: 700,
-            color: "#1C1410",
+            color: "#1B2A33",
             letterSpacing: "-.02em",
           }}>
             Ah Ha
           </span>
           {showTagline && (
             <span style={{
-              fontSize: 9, color: "#9B8E83", fontWeight: 600,
+              fontSize: 9, color: "#2A9D8F", fontWeight: 600,
               letterSpacing: ".08em", textTransform: "uppercase", marginTop: 3,
             }}>
               Help · Hope · Healing

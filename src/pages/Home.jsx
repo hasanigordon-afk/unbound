@@ -132,7 +132,7 @@ export default function Home() {
   const scoreCraving = Math.max(0, (10 - avgCraving) / 10) * 25;
   const hasData      = last7.length > 0;
   const stability    = hasData ? Math.round(scoreCheckin + scoreMeeting + scoreSponsor + scoreCraving) : null;
-  const stabColor    = !hasData ? "#B8823A" : stability >= 75 ? "#1D9E75" : stability >= 50 ? "#B8823A" : "#C9534F";
+  const stabColor    = !hasData ? "#2A9D8F" : stability >= 75 ? "#4FAE92" : stability >= 50 ? "#2A9D8F" : "#E07A6C";
   const stabLabel    = !hasData ? "No data" : stability >= 75 ? "Stable" : stability >= 50 ? "At Risk" : "High Risk";
 
   const weeklyMeetings  = last7.filter(c => c.attended_meeting).length;
@@ -145,14 +145,14 @@ export default function Home() {
 
   /* ── Loading ────────────────────────────────────────────────────────────── */
   if (uL || (!!user && pL)) return (
-    <div style={{ background: "#F7F3EE", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#B8823A" }} />
+    <div style={{ background: "#F4F8FA", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#2A9D8F" }} />
     </div>
   );
 
   /* ── Render ─────────────────────────────────────────────────────────────── */
   return (
-    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 120 }}>
+    <div style={{ background: "#F4F8FA", minHeight: "100vh", paddingBottom: 120 }}>
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
         .fu { animation: fadeUp 0.5s cubic-bezier(.22,1,.36,1) both; }
@@ -163,7 +163,7 @@ export default function Home() {
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
         {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
-        <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "64px 24px 32px" }}>
+        <div style={{ background: "#FFFFFF", borderBottom: "1px solid #E3ECEF", padding: "64px 24px 32px" }}>
 
           {/* Brand logo + admin/donate/greeting chip */}
           <div className="fu" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, gap: 8 }}>
@@ -175,8 +175,8 @@ export default function Home() {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {campaignSettings?.donation_enabled && <DonateButton variant="pill" label="Donate" />}
               <span style={{
-                fontSize: 11, fontWeight: 700, color: "#1D9E75", letterSpacing: ".04em",
-                background: "rgba(29,158,117,.10)", border: "1px solid rgba(29,158,117,.22)",
+                fontSize: 11, fontWeight: 700, color: "#4FAE92", letterSpacing: ".04em",
+                background: "rgba(79,174,146,.10)", border: "1px solid rgba(79,174,146,.22)",
                 padding: "4px 12px", borderRadius: 20,
               }}>{greeting}</span>
             </div>
@@ -185,12 +185,12 @@ export default function Home() {
           {/* Heading */}
           <h1 className="fu" style={{
             fontFamily: "'Lora', Georgia, serif", fontSize: 28, fontWeight: 600,
-            lineHeight: 1.15, color: "#1C1410", marginBottom: 8, animationDelay: ".05s",
+            lineHeight: 1.15, color: "#1B2A33", marginBottom: 8, animationDelay: ".05s",
           }}>
-            Good to see you,<br /><span style={{ color: "#B8823A" }}>{firstName}.</span>
+            Good to see you,<br /><span style={{ color: "#2A9D8F" }}>{firstName}.</span>
           </h1>
 
-          <p className="fu" style={{ fontSize: 14, color: "#4A3F35", lineHeight: 1.7, marginBottom: 14, animationDelay: ".1s", maxWidth: 320 }}>
+          <p className="fu" style={{ fontSize: 14, color: "#4A5A65", lineHeight: 1.7, marginBottom: 14, animationDelay: ".1s", maxWidth: 320 }}>
             You showed up again. That's not small — that's everything.
           </p>
 
@@ -202,7 +202,7 @@ export default function Home() {
             <Link to={createPageUrl("DailyCheckIn")} style={{ flex: 1, textDecoration: "none" }}>
               <button className="lift" style={{
                 width: "100%", padding: "13px 18px", fontSize: 14,
-                background: "#B8823A", color: "#fff", border: "none",
+                background: "#2A9D8F", color: "#fff", border: "none",
                 borderRadius: 50, fontWeight: 700, fontFamily: "'DM Sans', sans-serif",
               }}>
                 {checked ? "Keep Going →" : "How am I doing today? →"}
@@ -211,7 +211,7 @@ export default function Home() {
             <Link to={createPageUrl("RecoveryHub")} style={{ textDecoration: "none" }}>
               <button className="lift" style={{
                 padding: "13px 20px", fontSize: 14, background: "transparent",
-                color: "#4A3F35", border: "1px solid #E8E2D9",
+                color: "#4A5A65", border: "1px solid #E3ECEF",
                 borderRadius: 50, fontWeight: 600, fontFamily: "'DM Sans', sans-serif",
               }}>
                 Explore
@@ -224,11 +224,11 @@ export default function Home() {
             {STAGES.map((s, i) => (
               <div key={s.name} style={{
                 height: 4, flex: i === stageIdx ? 2 : 1, borderRadius: 2,
-                background: i <= stageIdx ? s.color : "#E8E2D9",
+                background: i <= stageIdx ? s.color : "#E3ECEF",
                 transition: "flex .3s ease",
               }} />
             ))}
-            <span style={{ fontSize: 10, color: "#9B8E83", marginLeft: 6, whiteSpace: "nowrap", fontWeight: 600 }}>
+            <span style={{ fontSize: 10, color: "#8A9AA3", marginLeft: 6, whiteSpace: "nowrap", fontWeight: 600 }}>
               {stage.name}
             </span>
           </div>
@@ -240,16 +240,16 @@ export default function Home() {
           {campaignSettings?.campaign_announcement_active && campaignSettings?.campaign_announcement && (
             <Link to="/Donate" style={{ textDecoration: "none", display: "block", marginBottom: 16 }}>
               <div style={{
-                background: "linear-gradient(135deg, rgba(184,130,58,0.15), rgba(184,130,58,0.06))",
-                border: "1px solid rgba(184,130,58,0.3)",
+                background: "linear-gradient(135deg, rgba(42,157,143,0.15), rgba(42,157,143,0.06))",
+                border: "1px solid rgba(42,157,143,0.3)",
                 borderRadius: 14, padding: "12px 14px",
                 display: "flex", alignItems: "center", gap: 10,
               }}>
-                <Megaphone style={{ width: 18, height: 18, color: "#B8823A", flexShrink: 0 }} strokeWidth={1.8} />
-                <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.5, flex: 1 }}>
+                <Megaphone style={{ width: 18, height: 18, color: "#2A9D8F", flexShrink: 0 }} strokeWidth={1.8} />
+                <p style={{ fontSize: 12, color: "#4A5A65", lineHeight: 1.5, flex: 1 }}>
                   {campaignSettings.campaign_announcement}
                 </p>
-                <ArrowRight style={{ width: 14, height: 14, color: "#B8823A", flexShrink: 0 }} />
+                <ArrowRight style={{ width: 14, height: 14, color: "#2A9D8F", flexShrink: 0 }} />
               </div>
             </Link>
           )}
@@ -265,8 +265,8 @@ export default function Home() {
               <span style={{ fontSize: 30, flexShrink: 0 }}>🇺🇸</span>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 10, fontWeight: 700, color: "#5B6E48", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Veterans Hub</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Veterans Hub 🇺🇸</p>
-                <p style={{ fontSize: 12, color: "#4A3F35" }}>Built for those who served — support, connection, and purpose. →</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1B2A33", marginBottom: 3 }}>Veterans Hub 🇺🇸</p>
+                <p style={{ fontSize: 12, color: "#4A5A65" }}>Built for those who served — support, connection, and purpose. →</p>
               </div>
             </div>
           </Link>
@@ -274,7 +274,7 @@ export default function Home() {
           {/* ── 1.4. MIND-BODY RECOVERY ─────────────────────────────────────── */}
           <Link to="/MindBodyRecovery" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
             <div style={{
-              background: "linear-gradient(135deg, rgba(122,158,126,.10), rgba(184,130,58,.04))",
+              background: "linear-gradient(135deg, rgba(122,158,126,.10), rgba(42,157,143,.04))",
               border: "1px solid rgba(122,158,126,.28)",
               borderRadius: 16, padding: "18px 18px",
               display: "flex", alignItems: "center", gap: 14,
@@ -282,8 +282,8 @@ export default function Home() {
               <span style={{ fontSize: 30, flexShrink: 0 }}>💪</span>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 10, fontWeight: 700, color: "#7A9E7E", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Mind-Body Recovery</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Move. Fuel. Reset.</p>
-                <p style={{ fontSize: 12, fontStyle: "italic", color: "#4A3F35" }}>"A strong body supports a clear mind." →</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1B2A33", marginBottom: 3 }}>Move. Fuel. Reset.</p>
+                <p style={{ fontSize: 12, fontStyle: "italic", color: "#4A5A65" }}>"A strong body supports a clear mind." →</p>
               </div>
             </div>
           </Link>
@@ -291,16 +291,16 @@ export default function Home() {
           {/* ── 1.5. AH HA COMMUNITY ─────────────────────────────────────────── */}
           <Link to="/AhHaCommunity" style={{ textDecoration: "none", display: "block", marginBottom: 20 }}>
             <div style={{
-              background: "linear-gradient(135deg, rgba(184,130,58,.10), rgba(184,130,58,.04))",
-              border: "1px solid rgba(184,130,58,.28)",
+              background: "linear-gradient(135deg, rgba(42,157,143,.10), rgba(42,157,143,.04))",
+              border: "1px solid rgba(42,157,143,.28)",
               borderRadius: 16, padding: "18px 18px",
               display: "flex", alignItems: "center", gap: 14,
             }}>
               <span style={{ fontSize: 30, flexShrink: 0 }}>✨</span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Ah Ha Community</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Real stories of breakthrough moments</p>
-                <p style={{ fontSize: 12, color: "#4A3F35" }}>Read how others found their turning point →</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#2A9D8F", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Ah Ha Community</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1B2A33", marginBottom: 3 }}>Real stories of breakthrough moments</p>
+                <p style={{ fontSize: 12, color: "#4A5A65" }}>Read how others found their turning point →</p>
               </div>
             </div>
           </Link>
@@ -308,23 +308,23 @@ export default function Home() {
           {/* ── 2. STATS ROW ──────────────────────────────────────────────── */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 20 }}>
             {/* Streak */}
-            <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: "#B8823A", lineHeight: 1, marginBottom: 4 }}>{streak}</p>
-              <p style={{ fontSize: 9, color: "#9B8E83", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>Day streak</p>
+            <div style={{ background: "#FFFFFF", border: ".5px solid #E3ECEF", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
+              <p style={{ fontSize: 28, fontWeight: 800, color: "#2A9D8F", lineHeight: 1, marginBottom: 4 }}>{streak}</p>
+              <p style={{ fontSize: 9, color: "#8A9AA3", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>Day streak</p>
             </div>
             {/* Weekly score */}
-            <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
+            <div style={{ background: "#FFFFFF", border: ".5px solid #E3ECEF", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
               <p style={{ fontSize: 28, fontWeight: 800, color: stabColor, lineHeight: 1, marginBottom: 4 }}>
                 {stability !== null ? `${stability}%` : "—"}
               </p>
-              <p style={{ fontSize: 9, color: "#9B8E83", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>Weekly score</p>
+              <p style={{ fontSize: 9, color: "#8A9AA3", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>Weekly score</p>
             </div>
             {/* Checked in */}
-            <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
-              <p style={{ fontSize: 17, fontWeight: 800, lineHeight: 1.2, marginBottom: 4, color: checked ? "#1D9E75" : "#9B8E83" }}>
+            <div style={{ background: "#FFFFFF", border: ".5px solid #E3ECEF", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
+              <p style={{ fontSize: 17, fontWeight: 800, lineHeight: 1.2, marginBottom: 4, color: checked ? "#4FAE92" : "#8A9AA3" }}>
                 {checked ? "Done ✓" : "Not yet"}
               </p>
-              <p style={{ fontSize: 9, color: "#9B8E83", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>Checked in</p>
+              <p style={{ fontSize: 9, color: "#8A9AA3", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>Checked in</p>
             </div>
           </div>
 
@@ -342,42 +342,42 @@ export default function Home() {
           <InAppNudge />
 
           {/* ── 4. TODAY LIST ─────────────────────────────────────────────── */}
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#8A9AA3", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
             Start here today
           </p>
-          <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 16, overflow: "hidden", marginBottom: 24 }}>
+          <div style={{ background: "#FFFFFF", border: ".5px solid #E3ECEF", borderRadius: 16, overflow: "hidden", marginBottom: 24 }}>
             {TODAY_ITEMS.map((item, i) => {
               const done = item.href === "DailyCheckIn" && checked;
               return (
                 <Link key={item.label} to={createPageUrl(item.href)} className="lift" style={{ textDecoration: "none", display: "block" }}>
                   <div style={{
                     display: "flex", alignItems: "center", gap: 14, padding: "14px 18px",
-                    borderBottom: i < TODAY_ITEMS.length - 1 ? ".5px solid #E8E2D9" : "none",
-                    background: "#FDFAF6",
+                    borderBottom: i < TODAY_ITEMS.length - 1 ? ".5px solid #E3ECEF" : "none",
+                    background: "#FFFFFF",
                   }}>
                     {/* Icon box */}
                     <div style={{
                       width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                      background: done ? "rgba(29,158,117,.10)" : "rgba(29,158,117,.10)",
+                      background: done ? "rgba(79,174,146,.10)" : "rgba(79,174,146,.10)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      color: "#1D9E75",
+                      color: "#4FAE92",
                     }}>
                       {item.icon}
                     </div>
                     {/* Text */}
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 13, fontWeight: 600, color: "#1C1410", marginBottom: 1 }}>{item.label}</p>
-                      <p style={{ fontSize: 11, color: "#9B8E83" }}>{done ? "Done today" : item.sub}</p>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: "#1B2A33", marginBottom: 1 }}>{item.label}</p>
+                      <p style={{ fontSize: 11, color: "#8A9AA3" }}>{done ? "Done today" : item.sub}</p>
                     </div>
                     {/* Right indicator */}
                     {done ? (
                       <span style={{
-                        fontSize: 11, fontWeight: 700, color: "#1D9E75",
-                        background: "rgba(29,158,117,.10)", border: "1px solid rgba(29,158,117,.2)",
+                        fontSize: 11, fontWeight: 700, color: "#4FAE92",
+                        background: "rgba(79,174,146,.10)", border: "1px solid rgba(79,174,146,.2)",
                         padding: "3px 10px", borderRadius: 20,
                       }}>Done ✓</span>
                     ) : (
-                      <span style={{ color: "#9B8E83", fontSize: 16 }}>›</span>
+                      <span style={{ color: "#8A9AA3", fontSize: 16 }}>›</span>
                     )}
                   </div>
                 </Link>
@@ -386,12 +386,12 @@ export default function Home() {
           </div>
 
           {/* ── 5. RECOVERY SCORE — CONTROL CENTER ────────────────────────── */}
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#8A9AA3", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
             This week
           </p>
           <div style={{
             background: "linear-gradient(180deg, #FDFAF6 0%, #F7F3EE 100%)",
-            border: ".5px solid #E8E2D9", borderRadius: 20,
+            border: ".5px solid #E3ECEF", borderRadius: 20,
             padding: "28px 20px 22px", marginBottom: 24,
           }}>
             {/* Dominant ring */}
@@ -400,7 +400,7 @@ export default function Home() {
             {/* Motivational line */}
             <p style={{
               textAlign: "center", marginTop: 18, marginBottom: 18,
-              fontSize: 13, color: "#4A3F35", lineHeight: 1.6, fontStyle: "italic",
+              fontSize: 13, color: "#4A5A65", lineHeight: 1.6, fontStyle: "italic",
               maxWidth: 320, marginLeft: "auto", marginRight: "auto",
             }}>
               {stability === null
@@ -423,50 +423,50 @@ export default function Home() {
                 <div key={ind.label} style={{
                   display: "flex", alignItems: "center", gap: 8, padding: "10px 12px",
                   borderRadius: 10,
-                  background: ind.done ? "rgba(29,158,117,.07)" : "#FDFAF6",
-                  border: `.5px solid ${ind.done ? "rgba(29,158,117,.25)" : "#E8E2D9"}`,
+                  background: ind.done ? "rgba(79,174,146,.07)" : "#FDFAF6",
+                  border: `.5px solid ${ind.done ? "rgba(79,174,146,.25)" : "#E3ECEF"}`,
                 }}>
-                  <div style={{ width: 7, height: 7, borderRadius: "50%", flexShrink: 0, background: ind.done ? "#1D9E75" : "#C8C2BC" }} />
-                  <p style={{ fontSize: 12, fontWeight: 600, color: ind.done ? "#1C1410" : "#9B8E83" }}>{ind.label}</p>
+                  <div style={{ width: 7, height: 7, borderRadius: "50%", flexShrink: 0, background: ind.done ? "#4FAE92" : "#C8C2BC" }} />
+                  <p style={{ fontSize: 12, fontWeight: 600, color: ind.done ? "#1B2A33" : "#8A9AA3" }}>{ind.label}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* ── 6. AFTERCARE PLAN ─────────────────────────────────────────── */}
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#8A9AA3", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
             My plan
           </p>
           <Link to="/AftercarePlanBuilder" className="lift" style={{ textDecoration: "none", display: "block", marginBottom: 24 }}>
             <div style={{
               background: "linear-gradient(135deg, #E1F5EE, #F7F3EE)",
-              border: "1px solid rgba(29,158,117,.18)",
+              border: "1px solid rgba(79,174,146,.18)",
               borderRadius: 16, padding: "18px 18px",
               display: "flex", alignItems: "center", gap: 14,
             }}>
               <span style={{ fontSize: 28, flexShrink: 0 }}>🗺️</span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>Aftercare Plan Builder</p>
-                <p style={{ fontSize: 12, color: "#4A3F35" }}>Build a personalised roadmap with AI</p>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "#1B2A33", marginBottom: 3 }}>Aftercare Plan Builder</p>
+                <p style={{ fontSize: 12, color: "#4A5A65" }}>Build a personalised roadmap with AI</p>
               </div>
-              <span style={{ color: "#1D9E75", fontSize: 18 }}>›</span>
+              <span style={{ color: "#4FAE92", fontSize: 18 }}>›</span>
             </div>
           </Link>
 
           {/* ── 7. TOOLS GRID ─────────────────────────────────────────────── */}
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#8A9AA3", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
             Tools
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 28 }}>
             {TOOLS.map(tool => (
               <Link key={tool.label} to={createPageUrl(tool.href)} className="lift" style={{ textDecoration: "none" }}>
                 <div style={{
-                  background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 12,
+                  background: "#FFFFFF", border: ".5px solid #E3ECEF", borderRadius: 12,
                   padding: "14px 8px", display: "flex", flexDirection: "column",
                   alignItems: "center", gap: 7,
                 }}>
-                  <div style={{ color: "#1D9E75" }}>{tool.icon}</div>
-                  <p style={{ fontSize: 10, fontWeight: 600, color: "#4A3F35", textAlign: "center", lineHeight: 1.2 }}>{tool.label}</p>
+                  <div style={{ color: "#4FAE92" }}>{tool.icon}</div>
+                  <p style={{ fontSize: 10, fontWeight: 600, color: "#4A5A65", textAlign: "center", lineHeight: 1.2 }}>{tool.label}</p>
                 </div>
               </Link>
             ))}
@@ -475,28 +475,28 @@ export default function Home() {
           {/* ── Support the Mission ───────────────────────────────────────── */}
           {campaignSettings?.donation_enabled && (
             <>
-              <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: "#8A9AA3", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
                 Support the movement
               </p>
               <Link to="/Donate" className="lift" style={{ textDecoration: "none", display: "block", marginBottom: 24 }}>
                 <div style={{
-                  background: "linear-gradient(135deg, rgba(184,130,58,0.10), rgba(184,130,58,0.03))",
-                  border: "1px solid rgba(184,130,58,0.3)",
+                  background: "linear-gradient(135deg, rgba(42,157,143,0.10), rgba(42,157,143,0.03))",
+                  border: "1px solid rgba(42,157,143,0.3)",
                   borderRadius: 16, padding: "20px 20px",
                   display: "flex", alignItems: "center", gap: 14,
                 }}>
                   <div style={{
                     width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-                    background: "rgba(184,130,58,0.15)",
+                    background: "rgba(42,157,143,0.15)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <Heart style={{ width: 22, height: 22, color: "#B8823A" }} fill="#B8823A" />
+                    <Heart style={{ width: 22, height: 22, color: "#2A9D8F" }} fill="#2A9D8F" />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410", marginBottom: 3 }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: "#1B2A33", marginBottom: 3 }}>
                       Support Recovery. Fuel Hope.
                     </p>
-                    <p style={{ fontSize: 12, color: "#4A3F35" }}>
+                    <p style={{ fontSize: 12, color: "#4A5A65" }}>
                       Help us reach more people who need this →
                     </p>
                   </div>
@@ -517,13 +517,13 @@ export default function Home() {
                 borderRadius: 10, textAlign: "center",
                 background: "rgba(201,83,79,.06)", border: "1px solid rgba(201,83,79,.2)",
               }}>
-                <p style={{ fontSize: 11, fontWeight: 700, color: "#A32D2D" }}>{x.label}</p>
+                <p style={{ fontSize: 11, fontWeight: 700, color: "#C24A3C" }}>{x.label}</p>
               </a>
             ))}
           </div>
 
           {/* ── 9. DISCLAIMER ─────────────────────────────────────────────── */}
-          <p style={{ textAlign: "center", fontSize: 11, color: "#9B8E83", lineHeight: 1.7, paddingBottom: 8 }}>
+          <p style={{ textAlign: "center", fontSize: 11, color: "#8A9AA3", lineHeight: 1.7, paddingBottom: 8 }}>
             Ah Ha LLC is a support tool, not a medical provider.<br />In an emergency, call 911 or 988.
           </p>
 
