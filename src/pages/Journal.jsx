@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, BookOpen, Calendar, Tag, Heart, Search, Share2, Lock } from "lucide-react";
+import { Loader2, BookOpen, Calendar, Tag, Heart, Search, Share2, Lock, Mic } from "lucide-react";
+import VoiceRecorder from "@/components/journal/VoiceRecorder";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -172,9 +173,19 @@ export default function Journal() {
               </div>
             </div>
 
+            {/* Voice recorder */}
+            <VoiceRecorder
+              onTranscript={(text) =>
+                setNewEntry(prev => ({
+                  ...prev,
+                  content: prev.content ? prev.content + " " + text : text,
+                }))
+              }
+            />
+
             {/* Content */}
             <textarea
-              placeholder="Write your thoughts..."
+              placeholder="Write or speak your thoughts..."
               value={newEntry.content}
               onChange={e => setNewEntry(prev => ({ ...prev, content: e.target.value }))}
               rows={5}
