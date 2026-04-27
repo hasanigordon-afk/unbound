@@ -286,6 +286,8 @@ export default function Onboarding() {
                 objectFit: "contain",
                 display: "block",
                 margin: "0 auto 6px",
+                mixBlendMode: "multiply",
+                background: "transparent",
               }}
             />
             <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 22, fontWeight: 600, lineHeight: 1.2, marginBottom: 6 }}>You showed up. That's not small — that's everything.</h1>
@@ -325,19 +327,20 @@ export default function Onboarding() {
           </p>
 
           {/* Returning user log-in */}
-          <div style={{ textAlign: "center", marginTop: 8, paddingTop: 8, borderTop: "1px solid #E8E2D9" }}>
-            <p style={{ color: TEXT_DIM, fontSize: 12, marginBottom: 2 }}>
+          <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #E8E2D9" }}>
+            <p style={{ color: TEXT_DIM, fontSize: 12, marginBottom: 6, textAlign: "center" }}>
               Already have an account?
             </p>
             <button
               onClick={() => base44.auth.redirectToLogin()}
               style={{
-                background: "transparent", border: "none", cursor: "pointer",
-                color: ACCENT, fontSize: 14, fontWeight: 700, padding: "4px 12px",
+                width: "100%", padding: "13px", borderRadius: 50, fontWeight: 700, fontSize: 15,
+                background: ACCENT, color: "#fff", border: "none", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
-              Log in →
+              Log in <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
