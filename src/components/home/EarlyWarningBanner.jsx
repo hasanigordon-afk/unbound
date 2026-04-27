@@ -73,9 +73,9 @@ export default function EarlyWarningBanner({ checkIns = [], journalCount = 0, co
           <AlertTriangle style={{ width: 18, height: 18, color }} />
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 14, fontWeight: 800, color: "#1C1410", lineHeight: 1.25 }}>{msg.headline}</p>
+          <p style={{ fontSize: 14, fontWeight: 800, color: "#1F2933", lineHeight: 1.25 }}>{msg.headline}</p>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3 }}>
-            <div style={{ height: 4, width: 60, borderRadius: 2, background: "rgba(28,20,16,0.08)", overflow: "hidden" }}>
+            <div style={{ height: 4, width: 60, borderRadius: 2, background: "rgba(31,41,51,0.08)", overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${score}%`, background: color, borderRadius: 2 }} />
             </div>
             <p style={{ fontSize: 11, color, fontWeight: 700 }}>{level} · {score}/100</p>
@@ -84,13 +84,13 @@ export default function EarlyWarningBanner({ checkIns = [], journalCount = 0, co
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <button
             onClick={e => { e.stopPropagation(); setDismissed(true); }}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#9B8E83", padding: 2 }}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#6B7280", padding: 2 }}
           >
             <X style={{ width: 14, height: 14 }} />
           </button>
           {expanded
-            ? <ChevronUp style={{ width: 14, height: 14, color: "#9B8E83" }} />
-            : <ChevronDown style={{ width: 14, height: 14, color: "#9B8E83" }} />
+            ? <ChevronUp style={{ width: 14, height: 14, color: "#6B7280" }} />
+            : <ChevronDown style={{ width: 14, height: 14, color: "#6B7280" }} />
           }
         </div>
       </div>
@@ -98,21 +98,21 @@ export default function EarlyWarningBanner({ checkIns = [], journalCount = 0, co
       {/* Expanded body */}
       {expanded && (
         <div style={{ padding: "0 16px 16px" }}>
-          <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.6, marginBottom: 14 }}>
+          <p style={{ fontSize: 13, color: "#4A5763", lineHeight: 1.6, marginBottom: 14 }}>
             {msg.body}
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {actions.map(a => (
               <Link key={a.label} to={createPageUrl(a.href)} style={{ textDecoration: "none" }}>
                 <div style={{
-                  display: "flex", alignItems: "center", gap: 12, padding: "11px 14px",
-                  background: "#FDFAF6", border: "1px solid #E8E2D9",
-                  borderRadius: 14,
+                  display: "flex", alignItems: "center", gap: 12, padding: "12px 14px",
+                  background: "#FFFFFF", border: "1px solid #E5EEF1",
+                  borderRadius: 16,
                 }}>
                   <span style={{ fontSize: 18, flexShrink: 0 }}>{a.icon}</span>
                   <div>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: "#1C1410" }}>{a.label}</p>
-                    <p style={{ fontSize: 11, color: "#9B8E83", marginTop: 1 }}>{a.sub}</p>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: "#1F2933" }}>{a.label}</p>
+                    <p style={{ fontSize: 11, color: "#6B7280", marginTop: 1 }}>{a.sub}</p>
                   </div>
                 </div>
               </Link>

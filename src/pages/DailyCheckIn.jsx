@@ -7,19 +7,19 @@ import { Flame, CheckCircle2, Loader2, RotateCcw, Users, Phone, CalendarPlus, Ar
 import { markTrigger, TRIGGERS } from "@/lib/subscriptionEngine";
 
 const C = {
-  amber:   "#2A9D8F",
-  green:   "#4FAE92",
+  amber:   "#2E7D7A",
+  green:   "#34A853",
   red:     "#E07A6C",
-  muted:   "#8A9AA3",
-  text:    "#1B2A33",
-  bg:      "#F4F8FA",
+  muted:   "#6B7280",
+  text:    "#1F2933",
+  bg:      "#F7FAFC",
   surface: "#FFFFFF",
-  border:  "#E3ECEF",
+  border:  "#E5EEF1",
 };
 
 const MOODS = [
   { value: 1, emoji: "😢", label: "Really rough",  color: C.red    },
-  { value: 2, emoji: "😕", label: "Struggling",    color: "#5BA3C7" },
+  { value: 2, emoji: "😕", label: "Struggling",    color: "#1E88E5" },
   { value: 3, emoji: "😐", label: "Getting by",    color: C.amber   },
   { value: 4, emoji: "🙂", label: "Doing okay",    color: "#5F9EA0" },
   { value: 5, emoji: "😊", label: "Feeling good",  color: C.green   },
@@ -170,7 +170,7 @@ export default function DailyCheckIn() {
             {newStreak > 1 ? `${newStreak} days in a row.` : "You showed up today."}
           </h2>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 14px",
-            borderRadius: 20, background: "rgba(42,157,143,0.12)", border: "1px solid rgba(42,157,143,0.25)", marginBottom: 16 }}>
+            borderRadius: 20, background: "rgba(46,125,122,0.12)", border: "1px solid rgba(46,125,122,0.25)", marginBottom: 16 }}>
             <Flame style={{ color: C.amber, width: 14, height: 14 }} />
             <p style={{ fontSize: 13, fontWeight: 700, color: C.amber }}>{newStreak} day streak</p>
           </div>
@@ -179,7 +179,7 @@ export default function DailyCheckIn() {
         <div style={{ borderRadius: 16, padding: "18px 20px", marginBottom: 20,
           background: C.surface, border: `1px solid ${C.border}` }}>
           <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.75, fontStyle: "italic",
-            borderLeft: "3px solid rgba(42,157,143,0.4)", paddingLeft: 14 }}>
+            borderLeft: "3px solid rgba(46,125,122,0.4)", paddingLeft: 14 }}>
             "{supportMsg}"
           </p>
         </div>
@@ -219,7 +219,7 @@ export default function DailyCheckIn() {
           {streak > 0 && (
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 8,
               padding: "5px 12px", borderRadius: 20,
-              background: "rgba(42,157,143,0.10)", border: "1px solid rgba(42,157,143,0.25)" }}>
+              background: "rgba(46,125,122,0.10)", border: "1px solid rgba(46,125,122,0.25)" }}>
               <Flame style={{ color: C.amber, width: 13, height: 13 }} />
               <p style={{ fontSize: 12, fontWeight: 700, color: C.amber }}>{streak} day streak — keep it going</p>
             </div>
@@ -302,8 +302,8 @@ export default function DailyCheckIn() {
                 return (
                   <button key={String(o.val)} onClick={() => setForm(f => ({ ...f, attended_meeting: o.val }))}
                     style={{ flex: 1, padding: "13px", borderRadius: 12, border: "none", cursor: "pointer",
-                      background: sel ? (o.val ? "rgba(79,174,146,.12)" : "rgba(42,157,143,.10)") : C.bg,
-                      border: `1.5px solid ${sel ? (o.val ? "rgba(79,174,146,.4)" : "rgba(42,157,143,.3)") : C.border}`,
+                      background: sel ? (o.val ? "rgba(52,168,83,.12)" : "rgba(46,125,122,.10)") : C.bg,
+                      border: `1.5px solid ${sel ? (o.val ? "rgba(52,168,83,.4)" : "rgba(46,125,122,.3)") : C.border}`,
                       color: sel ? (o.val ? C.green : C.amber) : C.muted,
                       fontWeight: 700, fontSize: 14, transition: "all 0.15s ease" }}>
                     {o.label}
@@ -323,8 +323,8 @@ export default function DailyCheckIn() {
                 return (
                   <button key={String(o.val)} onClick={() => setForm(f => ({ ...f, connected_with_sponsor: o.val }))}
                     style={{ flex: 1, padding: "13px", borderRadius: 12, border: "none", cursor: "pointer",
-                      background: sel ? (o.val ? "rgba(79,174,146,.12)" : "rgba(42,157,143,.10)") : C.bg,
-                      border: `1.5px solid ${sel ? (o.val ? "rgba(79,174,146,.4)" : "rgba(42,157,143,.3)") : C.border}`,
+                      background: sel ? (o.val ? "rgba(52,168,83,.12)" : "rgba(46,125,122,.10)") : C.bg,
+                      border: `1.5px solid ${sel ? (o.val ? "rgba(52,168,83,.4)" : "rgba(46,125,122,.3)") : C.border}`,
                       color: sel ? (o.val ? C.green : C.amber) : C.muted,
                       fontWeight: 700, fontSize: 14, transition: "all 0.15s ease" }}>
                     {o.label}

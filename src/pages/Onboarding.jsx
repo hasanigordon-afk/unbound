@@ -82,16 +82,16 @@ const NEXT_STEP = {
 // ─── Styles ────────────────────────────────────────────────────────────────
 // Ah Ha brand palette — warm cream + amber
 
-const BG     = "#F4F8FA";
+const BG     = "#F7FAFC";
 const CARD   = "#FFFFFF";
-const CARD_B = "1px solid #E3ECEF";
-const SEL    = "rgba(42,157,143,0.08)";
-const SEL_B  = "2px solid #2A9D8F";
-const DEF_B  = "2px solid #E3ECEF";
-const ACCENT = "#2A9D8F";
-const TEXT       = "#1B2A33";
-const TEXT_MUTED = "#4A5A65";
-const TEXT_DIM   = "#8A9AA3";
+const CARD_B = "1px solid #E5EEF1";
+const SEL    = "rgba(46,125,122,0.10)";
+const SEL_B  = "2px solid #2E7D7A";
+const DEF_B  = "2px solid #E5EEF1";
+const ACCENT = "#2E7D7A";
+const TEXT       = "#1F2933";
+const TEXT_MUTED = "#4A5763";
+const TEXT_DIM   = "#6B7280";
 
 // ─── Shared sub-components ────────────────────────────────────────────────
 
@@ -106,7 +106,7 @@ function ProgressDots({ current, total }) {
             borderRadius: 2,
             transition: "all 0.25s",
             width: i + 1 === current ? 28 : 8,
-            background: i + 1 <= current ? ACCENT : "#E3ECEF",
+            background: i + 1 <= current ? ACCENT : "#E5EEF1",
           }}
         />
       ))}
@@ -174,7 +174,7 @@ function NavButtons({ step, totalSteps, canNext, onBack, onNext, loading, nextLa
           onClick={onBack}
           style={{
             flex: 1, padding: "14px", borderRadius: 50, fontWeight: 600, fontSize: 15,
-            background: "transparent", border: `1.5px solid ${CARD_B === "1px solid #E3ECEF" ? "#E3ECEF" : "#E3ECEF"}`, color: TEXT_MUTED,
+            background: "transparent", border: `1.5px solid ${CARD_B === "1px solid #E5EEF1" ? "#E5EEF1" : "#E5EEF1"}`, color: TEXT_MUTED,
             cursor: "pointer",
           }}
         >
@@ -186,7 +186,7 @@ function NavButtons({ step, totalSteps, canNext, onBack, onNext, loading, nextLa
         disabled={!canNext || loading}
         style={{
           flex: 2, padding: "14px", borderRadius: 50, fontWeight: 700, fontSize: 15,
-          background: canNext ? ACCENT : "#E3ECEF",
+          background: canNext ? ACCENT : "#E5EEF1",
           color: canNext ? "#fff" : TEXT_DIM, border: "none", cursor: canNext ? "pointer" : "default",
           transition: "background 0.15s",
           display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
@@ -325,7 +325,7 @@ export default function Onboarding() {
           </p>
 
           {/* Returning user log-in */}
-          <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #E3ECEF" }}>
+          <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #E5EEF1" }}>
             <p style={{ color: TEXT_DIM, fontSize: 12, marginBottom: 6, textAlign: "center" }}>
               Already have an account?
             </p>
@@ -352,7 +352,7 @@ export default function Onboarding() {
       <div style={{ minHeight: "100vh", background: BG, paddingBottom: 40 }}>
         {/* Top banner */}
         <div style={{
-          background: CARD, borderBottom: "1px solid #E3ECEF",
+          background: CARD, borderBottom: "1px solid #E5EEF1",
           padding: "56px 24px 32px", textAlign: "center",
         }}>
           <div style={{ fontSize: 44, marginBottom: 14 }}>✨</div>
@@ -389,7 +389,7 @@ export default function Onboarding() {
             <div style={{
               background: ACCENT, borderRadius: 16, padding: "18px 20px", marginBottom: 20,
               display: "flex", alignItems: "center", gap: 14,
-              boxShadow: "0 4px 16px rgba(42,157,143,0.25)",
+              boxShadow: "0 4px 16px rgba(46,125,122,0.25)",
             }}>
               <span style={{ fontSize: 26 }}>{nextStep.emoji}</span>
               <div style={{ flex: 1 }}>
@@ -408,7 +408,7 @@ export default function Onboarding() {
                 {topNeeds.map(need => (
                   <Link key={need} to={createPageUrl(NEED_HREFS[need] || "FindHelpNow")} style={{ textDecoration: "none" }}>
                     <div style={{
-                      background: CARD, border: "1px solid #E3ECEF", borderRadius: 14,
+                      background: CARD, border: "1px solid #E5EEF1", borderRadius: 14,
                       padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
                     }}>
                       <span style={{ fontSize: 20 }}>{NEEDS.find(n => n.value === need)?.emoji || "📍"}</span>
@@ -425,19 +425,19 @@ export default function Onboarding() {
           <p style={{ fontSize: 10, fontWeight: 700, color: TEXT_DIM, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 10 }}>Also easy to reach</p>
           <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
             <Link to={createPageUrl("DailyCheckIn")} style={{ flex: 1, textDecoration: "none" }}>
-              <div style={{ background: CARD, border: "1px solid #E3ECEF", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
+              <div style={{ background: CARD, border: "1px solid #E5EEF1", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
                 <span style={{ fontSize: 22 }}>✅</span>
                 <p style={{ fontSize: 12, fontWeight: 600, color: TEXT, marginTop: 6 }}>Check In</p>
               </div>
             </Link>
             <Link to={createPageUrl("ParticipantMessages")} style={{ flex: 1, textDecoration: "none" }}>
-              <div style={{ background: CARD, border: "1px solid #E3ECEF", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
+              <div style={{ background: CARD, border: "1px solid #E5EEF1", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
                 <span style={{ fontSize: 22 }}>💬</span>
                 <p style={{ fontSize: 12, fontWeight: 600, color: TEXT, marginTop: 6 }}>Messages</p>
               </div>
             </Link>
             <Link to={createPageUrl("ForwardPlan")} style={{ flex: 1, textDecoration: "none" }}>
-              <div style={{ background: CARD, border: "1px solid #E3ECEF", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
+              <div style={{ background: CARD, border: "1px solid #E5EEF1", borderRadius: 14, padding: "14px 12px", textAlign: "center" }}>
                 <span style={{ fontSize: 22 }}>📋</span>
                 <p style={{ fontSize: 12, fontWeight: 600, color: TEXT, marginTop: 6 }}>My Plan</p>
               </div>

@@ -38,7 +38,7 @@ export default function Layout({ children, currentPageName }) {
         <nav style={{
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
           background: "rgba(255,255,255,0.97)",
-          borderTop: "1px solid #E3ECEF",
+          borderTop: "1px solid #E5EEF1",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           paddingBottom: "env(safe-area-inset-bottom, 0px)",

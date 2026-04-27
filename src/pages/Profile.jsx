@@ -7,16 +7,16 @@ import { Loader2, Edit3, LogOut, MapPin, Target, Bookmark, Calendar, Heart, Arro
 import ProfileEditSheet from "@/components/profile/ProfileEditSheet";
 
 const C = {
-  amber:    "#2A9D8F",
-  green:    "#4FAE92",
-  indigo:   "#5BA3C7",
+  amber:    "#2E7D7A",
+  green:    "#34A853",
+  indigo:   "#1E88E5",
   red:      "#E07A6C",
-  muted:    "#8A9AA3",
-  text:     "#1B2A33",
-  textMuted:"#4A5A65",
-  bg:       "#F4F8FA",
+  muted:    "#6B7280",
+  text:     "#1F2933",
+  textMuted:"#4A5763",
+  bg:       "#F7FAFC",
   surface:  "#FFFFFF",
-  border:   "#E3ECEF",
+  border:   "#E5EEF1",
 };
 
 const STAGE_LABELS = {
@@ -51,7 +51,7 @@ function InfoCard({ children, style={} }) {
 
 function EmptyPrompt({ prompt, onEdit }) {
   return (
-    <button onClick={onEdit} style={{ width:"100%", background:C.bg, border:`1.5px dashed rgba(42,157,143,.3)`,
+    <button onClick={onEdit} style={{ width:"100%", background:C.bg, border:`1.5px dashed rgba(46,125,122,.3)`,
       borderRadius:12, padding:"13px 16px", textAlign:"left", cursor:"pointer", marginBottom:14 }}>
       <p style={{ fontSize:13, color:C.muted, fontStyle:"italic" }}>{prompt}</p>
     </button>
@@ -141,7 +141,7 @@ export default function Profile() {
                 background:`linear-gradient(135deg,${C.amber},#C9A96E)`,
                 display:"flex", alignItems:"center", justifyContent:"center",
                 fontSize:22, fontWeight:700, color:"#fff",
-                boxShadow:`0 0 0 3px rgba(42,157,143,0.2)` }}>
+                boxShadow:`0 0 0 3px rgba(46,125,122,0.2)` }}>
                 {initials}
               </div>
               <div>
@@ -162,7 +162,7 @@ export default function Profile() {
                   <button style={{
                     display:"inline-flex", alignItems:"center", gap:5,
                     padding:"8px 12px", borderRadius:10,
-                    background:"rgba(42,157,143,0.10)", border:"1px solid rgba(42,157,143,0.28)",
+                    background:"rgba(46,125,122,0.10)", border:"1px solid rgba(46,125,122,0.28)",
                     color:C.amber, fontSize:13, fontWeight:700, cursor:"pointer",
                   }}>
                     <LayoutDashboard style={{ width:13, height:13 }} strokeWidth={2.2}/>
@@ -182,7 +182,7 @@ export default function Profile() {
 
           {profile.personal_quote ? (
             <p style={{ fontSize:14, color:C.amber, fontStyle:"italic", fontWeight:600, lineHeight:1.5,
-              borderLeft:`3px solid rgba(42,157,143,0.4)`, paddingLeft:12 }}>
+              borderLeft:`3px solid rgba(46,125,122,0.4)`, paddingLeft:12 }}>
               "{profile.personal_quote}"
             </p>
           ) : (
@@ -212,7 +212,7 @@ export default function Profile() {
             {completion < 100 && (
               <button onClick={()=>setEditing(true)} style={{
                 marginTop:10, padding:"9px 18px", borderRadius:50,
-                background:"rgba(42,157,143,.10)", border:"1px solid rgba(42,157,143,.25)",
+                background:"rgba(46,125,122,.10)", border:"1px solid rgba(46,125,122,.25)",
                 color:C.amber, fontWeight:700, fontSize:13, cursor:"pointer" }}>
                 Complete My Profile →
               </button>
@@ -250,7 +250,7 @@ export default function Profile() {
               <InfoCard>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
                   {profile.places_i_love.map((p,i) => (
-                    <span key={i} style={{ background:"rgba(42,157,143,.10)", border:"1px solid rgba(42,157,143,.25)",
+                    <span key={i} style={{ background:"rgba(46,125,122,.10)", border:"1px solid rgba(46,125,122,.25)",
                       borderRadius:20, padding:"6px 14px", fontSize:12, fontWeight:600, color:C.amber }}>
                       📍 {p}
                     </span>
@@ -275,7 +275,7 @@ export default function Profile() {
               {profile.hobbies?.length > 0 && (
                 <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:(profile.music_i_love||profile.food_i_love)?12:0 }}>
                   {profile.hobbies.map(h => (
-                    <span key={h} style={{ background:"rgba(79,174,146,.12)", border:"1px solid rgba(79,174,146,.3)",
+                    <span key={h} style={{ background:"rgba(52,168,83,.12)", border:"1px solid rgba(52,168,83,.3)",
                       borderRadius:20, padding:"6px 14px", fontSize:12, fontWeight:600, color:C.green }}>
                       {h}
                     </span>
@@ -292,7 +292,7 @@ export default function Profile() {
           {/* ── Core Memories ── */}
           <SLabel icon="💛">Good Energy</SLabel>
           {profile.core_memories ? (
-            <InfoCard style={{ background:"rgba(42,157,143,.05)", border:"1px solid rgba(42,157,143,.2)" }}>
+            <InfoCard style={{ background:"rgba(46,125,122,.05)", border:"1px solid rgba(46,125,122,.2)" }}>
               <p style={{ fontSize:14, color:C.textMuted, lineHeight:1.72, fontStyle:"italic" }}>"{profile.core_memories}"</p>
             </InfoCard>
           ) : (
@@ -349,7 +349,7 @@ export default function Profile() {
           )}
 
           {/* ── Guided Setup ── */}
-          <div style={{ background:"rgba(42,157,143,.07)", border:"1px solid rgba(42,157,143,.25)",
+          <div style={{ background:"rgba(46,125,122,.07)", border:"1px solid rgba(46,125,122,.25)",
             borderRadius:16, padding:"20px", marginBottom:18 }}>
             <p style={{ fontSize:11, fontWeight:700, color:C.amber, textTransform:"uppercase", letterSpacing:".08em", marginBottom:8 }}>Guided Experience</p>
             <p style={{ fontFamily:"'Lora', serif", fontSize:16, fontWeight:600, color:C.text, marginBottom:6 }}>Complete Your Profile Step by Step</p>
