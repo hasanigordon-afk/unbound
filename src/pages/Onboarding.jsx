@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { ChevronRight, Loader2, Check, Phone, MessageSquare } from "lucide-react";
 import RecoveryFocusPicker from "@/components/onboarding/RecoveryFocusPicker";
+import LocationStep from "@/components/onboarding/LocationStep";
 import { CATEGORY_BY_VALUE, isCrisisCategory } from "@/lib/recoveryCategories";
 import AhHaLogo from "@/components/shared/AhHaLogo";
 
@@ -201,7 +202,7 @@ function NavButtons({ step, totalSteps, canNext, onBack, onNext, loading, nextLa
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 1-7 (welcome, reason, needs, feeling, support, focus, done)
+  const [step, setStep] = useState(1); // 1-8 (welcome, reason, needs, feeling, support, focus, location, done)
   const [data, setData] = useState({
     reason: "",
     needs: [],
@@ -211,6 +212,9 @@ export default function Onboarding() {
     location_city: "",
     location_state: "",
     location_zip: "",
+    location_lat: null,
+    location_lng: null,
+    location_granted: false,
   });
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
@@ -228,6 +232,8 @@ export default function Onboarding() {
         location_city: data.location_city,
         location_state: data.location_state,
         location_zip: data.location_zip,
+        location_lat: data.location_lat,
+        location_lng: data.location_lng,
         onboarding_complete: true,
       });
 
@@ -242,7 +248,7 @@ export default function Onboarding() {
         });
       }
     },
-    onSuccess: () => setStep(7),
+    onSuccess: () => setStep(8),
   });
 
   const isUrgent = FEELINGS.find(f => f.value === data.feeling)?.urgent;
@@ -255,12 +261,13 @@ export default function Onboarding() {
     if (step === 4) return !!data.feeling;
     if (step === 5) return !!data.support;
     if (step === 6) return !!data.focus;
+    if (step === 7) return data.location_granted || (data.location_zip && data.location_zip.length === 5);
     return true;
   };
 
   const handleNext = () => {
-    if (step === 6) { saveProfile.mutate(); return; }
-    if (step < 6) setStep(s => s + 1);
+    if (step === 7) { saveProfile.mutate(); return; }
+    if (step < 7) setStep(s => s + 1);
   };
 
   // ── Screen 1: Welcome ──────────────────────────────────────────────────
@@ -330,8 +337,8 @@ export default function Onboarding() {
     );
   }
 
-  // ── Screen 7: Personalized Start ──────────────────────────────────────
-  if (step === 7) {
+  // ── Screen 8: Personalized Start ──────────────────────────────────────
+  if (step === 8) {
     return (
       <div style={{ minHeight: "100vh", background: BG, paddingBottom: 40 }}>
         {/* Top banner */}
@@ -461,7 +468,7 @@ export default function Onboarding() {
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 24px 40px" }}>
         <div style={{ maxWidth: 440, width: "100%", margin: "0 auto" }}>
-          <ProgressDots current={step - 1} total={5} />
+          <ProgressDots current={step - 1} total={6} />
 
           {/* ── Step 2: What brings you here ── */}
           {step === 2 && (
@@ -585,14 +592,38 @@ export default function Onboarding() {
             </>
           )}
 
+          {/* ── Step 7: Location permission ── */}
+          {step === 7 && (
+            <>
+              <Heading
+                title="Where are you located?"
+                sub="So we can show meetings and resources near you — not on the other side of the country."
+              />
+              <LocationStep
+                value={{
+                  zip: data.location_zip,
+                  latitude: data.location_lat,
+                  longitude: data.location_lng,
+                }}
+                onChange={(loc) => setData(d => ({
+                  ...d,
+                  location_lat: loc.latitude ?? d.location_lat,
+                  location_lng: loc.longitude ?? d.location_lng,
+                  location_zip: loc.zip ?? d.location_zip,
+                  location_granted: loc.granted || d.location_granted,
+                }))}
+              />
+            </>
+          )}
+
           <NavButtons
             step={step}
-            totalSteps={6}
+            totalSteps={7}
             canNext={canNext()}
             onBack={() => setStep(s => s - 1)}
             onNext={handleNext}
             loading={saveProfile.isPending}
-            nextLabel={step === 6 ? "Show me where to start →" : "Keep going"}
+            nextLabel={step === 7 ? "Show me where to start →" : "Keep going"}
           />
         </div>
       </div>
