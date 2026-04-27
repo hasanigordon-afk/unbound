@@ -4,6 +4,7 @@ import { Home, LifeBuoy, Star, Heart, User } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import DonateButton from "@/components/donate/DonateButton";
 import AhHaLogo from "@/components/shared/AhHaLogo";
+import EmergencyFAB from "@/components/shared/EmergencyFAB";
 
 const PARTICIPANT_NAV = [
   { name: "Home",    icon: Home,     page: "Home",       href: "/" },
@@ -33,6 +34,8 @@ export default function Layout({ children, currentPageName }) {
       <div className="flex-1 pb-20">
         {children}
       </div>
+
+      {showNav && <EmergencyFAB />}
 
       {showNav && (
         <nav style={{
