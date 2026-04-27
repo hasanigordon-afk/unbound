@@ -273,26 +273,34 @@ export default function Onboarding() {
   // ── Screen 1: Welcome ──────────────────────────────────────────────────
   if (step === 1) {
     return (
-      <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "12px 24px" }}>
+      <div style={{ height: "100vh", background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "8px 24px", overflow: "hidden" }}>
         <div style={{ maxWidth: 420, width: "100%" }}>
           {/* Brand mark */}
-          <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
-              <AhHaLogo size={72} layout="column" showWordmark={true} />
-            </div>
-            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 24, fontWeight: 600, lineHeight: 1.2, marginBottom: 8 }}>You showed up. That's not small — that's everything.</h1>
-            <p style={{ color: TEXT_MUTED, fontSize: 14, fontWeight: 500, lineHeight: 1.4, marginBottom: 6 }}>Help. Hope. Healing.</p>
-            <p style={{ color: TEXT_DIM, fontSize: 13, lineHeight: 1.5, maxWidth: 340, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 10 }}>
+            <img
+              src="https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/b5173ee05_ahha_homepage_logo_750x750.png"
+              alt="Ah Ha"
+              style={{
+                width: "min(160px, 22vh)",
+                height: "min(160px, 22vh)",
+                objectFit: "contain",
+                display: "block",
+                margin: "0 auto 6px",
+              }}
+            />
+            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 22, fontWeight: 600, lineHeight: 1.2, marginBottom: 6 }}>You showed up. That's not small — that's everything.</h1>
+            <p style={{ color: TEXT_MUTED, fontSize: 13, fontWeight: 500, lineHeight: 1.4, marginBottom: 4 }}>Help. Hope. Healing.</p>
+            <p style={{ color: TEXT_DIM, fontSize: 12, lineHeight: 1.5, maxWidth: 340, margin: "0 auto" }}>
               Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this is built for you.
             </p>
           </div>
 
           {/* Buttons */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <button
               onClick={() => setStep(2)}
               style={{
-                width: "100%", padding: "16px", borderRadius: 50, fontWeight: 700, fontSize: 16,
+                width: "100%", padding: "13px", borderRadius: 50, fontWeight: 700, fontSize: 15,
                 background: ACCENT, color: "#fff", border: "none", cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               }}
@@ -302,7 +310,7 @@ export default function Onboarding() {
             <Link to={createPageUrl("FindHelpNow")} style={{ textDecoration: "none" }}>
               <button
                 style={{
-                  width: "100%", padding: "16px", borderRadius: 50, fontWeight: 700, fontSize: 16,
+                  width: "100%", padding: "13px", borderRadius: 50, fontWeight: 700, fontSize: 15,
                   background: "rgba(201,83,79,0.07)", color: "#A32D2D",
                   border: "1.5px solid rgba(201,83,79,0.25)", cursor: "pointer",
                 }}
@@ -312,20 +320,20 @@ export default function Onboarding() {
             </Link>
           </div>
 
-          <p style={{ color: TEXT_DIM, fontSize: 12, textAlign: "center", marginTop: 14 }}>
+          <p style={{ color: TEXT_DIM, fontSize: 11, textAlign: "center", marginTop: 8 }}>
             Takes under a minute. No paperwork. No judgment.
           </p>
 
           {/* Returning user log-in */}
-          <div style={{ textAlign: "center", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${CARD_B === "1px solid #E8E2D9" ? "#E8E2D9" : "#E8E2D9"}` }}>
-            <p style={{ color: TEXT_DIM, fontSize: 13, marginBottom: 6 }}>
+          <div style={{ textAlign: "center", marginTop: 8, paddingTop: 8, borderTop: "1px solid #E8E2D9" }}>
+            <p style={{ color: TEXT_DIM, fontSize: 12, marginBottom: 2 }}>
               Already have an account?
             </p>
             <button
               onClick={() => base44.auth.redirectToLogin()}
               style={{
                 background: "transparent", border: "none", cursor: "pointer",
-                color: ACCENT, fontSize: 14, fontWeight: 700, padding: "6px 12px",
+                color: ACCENT, fontSize: 14, fontWeight: 700, padding: "4px 12px",
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
