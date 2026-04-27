@@ -16,6 +16,7 @@ import { getCampaignSettings } from "@/lib/campaignSettings";
 import RecoveryScoreRing from "@/components/home/RecoveryScoreRing";
 import MyFocusPill from "@/components/home/MyFocusPill";
 import AhHaLogo from "@/components/shared/AhHaLogo";
+import DailyMindset from "@/components/home/DailyMindset";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
 const STAGES = [
@@ -356,6 +357,9 @@ export default function Home() {
 
           {/* ── 3.5 SUBSCRIBER NUDGE (3 H's) ──────────────────────────────── */}
           <InAppNudge />
+
+          {/* ── 3.6 DAILY MINDSET ─────────────────────────────────────────── */}
+          <DailyMindset />
 
           {/* ── 4. TODAY LIST ─────────────────────────────────────────────── */}
           <p style={{ fontSize: 10, fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
