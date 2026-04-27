@@ -60,7 +60,16 @@ export default function Home() {
     queryFn: getCampaignSettings,
   });
 
-  const { data: user, isLoading: uL } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+  const { data: user, isLoading: uL } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => base44.auth.me(),
+    retry: false,
+  });
+
+  // Send logged-out visitors to the public Onboarding landing
+  useEffect(() => {
+    if (!uL && !user) navigate("/Onboarding", { replace: true });
+  }, [uL, user, navigate]);
 
   const { data: profiles, isLoading: pL, isFetched: pF } = useQuery({
     queryKey: ["my-profile", user?.email],
