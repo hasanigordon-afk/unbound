@@ -96,16 +96,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setIsLoadingAuth(false);
 
-      // Honor a pending post-login redirect (set before redirectToLogin)
-      try {
-        const target = sessionStorage.getItem("post_login_redirect");
-        if (target) {
-          sessionStorage.removeItem("post_login_redirect");
-          if (window.location.pathname !== target) {
-            window.location.replace(target);
-          }
-        }
-      } catch (e) { /* ignore */ }
+
     } catch (error) {
       console.error('User auth check failed:', error);
       setIsLoadingAuth(false);

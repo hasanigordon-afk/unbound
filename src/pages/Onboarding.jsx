@@ -330,11 +330,7 @@ export default function Onboarding() {
               Already have an account?
             </p>
             <button
-              onClick={() => {
-                // Set a flag so post-login redirect lands on Profile
-                try { sessionStorage.setItem("post_login_redirect", "/Profile"); } catch(e) {}
-                base44.auth.redirectToLogin(window.location.origin + "/Profile");
-              }}
+              onClick={() => base44.auth.redirectToLogin("/Profile")}
               style={{
                 width: "100%", padding: "13px", borderRadius: 50, fontWeight: 700, fontSize: 15,
                 background: ACCENT, color: "#fff", border: "none", cursor: "pointer",
