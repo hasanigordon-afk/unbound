@@ -37,7 +37,7 @@ export default function Layout({ children, currentPageName }) {
       </div>
 
       {showNav && <EmergencyFAB />}
-      {showNav && <DonateFAB />}
+      <DonateFAB />
 
       {showNav && (
         <nav style={{
