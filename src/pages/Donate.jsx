@@ -52,10 +52,6 @@ export default function Donate() {
     );
   }
 
-  const progressPct = settings.donation_goal > 0
-    ? Math.min(100, Math.round((settings.donation_raised / settings.donation_goal) * 100))
-    : 0;
-
   return (
     <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 120 }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -106,34 +102,22 @@ export default function Donate() {
           </p>
         </div>
 
-        {/* Progress bar */}
-        {settings.donation_goal > 0 && (
-          <div style={{ padding: "0 20px 24px" }}>
-            <div style={{
-              background: "#FDFAF6", border: "1px solid #E8E2D9",
-              borderRadius: 16, padding: "16px 18px",
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#1C1410" }}>
-                  ${settings.donation_raised.toLocaleString()}
-                  <span style={{ fontSize: 11, fontWeight: 400, color: "#9B8E83" }}> raised</span>
-                </p>
-                <p style={{ fontSize: 11, color: "#9B8E83", fontWeight: 600 }}>
-                  Goal: ${settings.donation_goal.toLocaleString()}
-                </p>
-              </div>
-              <div style={{ height: 6, background: "#E8E2D9", borderRadius: 3, overflow: "hidden" }}>
-                <div style={{
-                  height: "100%", width: `${progressPct}%`,
-                  background: "#B8823A", transition: "width 0.6s ease",
-                }} />
-              </div>
-              <p style={{ fontSize: 11, color: "#9B8E83", marginTop: 8, textAlign: "center" }}>
-                {progressPct}% of our goal
-              </p>
-            </div>
+        {/* Thank-you note — every penny counts */}
+        <div style={{ padding: "0 20px 24px" }}>
+          <div style={{
+            background: "#FDFAF6", border: "1px solid #E8E2D9",
+            borderRadius: 16, padding: "18px 20px",
+            textAlign: "center",
+          }}>
+            <Heart style={{ width: 18, height: 18, color: "#B8823A", margin: "0 auto 8px", display: "block" }} fill="#B8823A" />
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410", marginBottom: 6, fontFamily: "'Lora', Georgia, serif" }}>
+              Thank you — every penny counts.
+            </p>
+            <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.65 }}>
+              No gift is too small. Every dollar, every dime is appreciated and goes toward supporting people in recovery.
+            </p>
           </div>
-        )}
+        </div>
 
         {/* Mission */}
         <div style={{ padding: "0 20px 24px" }}>
