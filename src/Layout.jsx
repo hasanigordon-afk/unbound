@@ -5,6 +5,7 @@ import { useCurrentUser } from "@/lib/useCurrentUser";
 import DonateButton from "@/components/donate/DonateButton";
 import AhHaLogo from "@/components/shared/AhHaLogo";
 import EmergencyFAB from "@/components/shared/EmergencyFAB";
+import DonateFAB from "@/components/shared/DonateFAB";
 
 const PARTICIPANT_NAV = [
   { name: "Home",    icon: Home,     page: "Home",       href: "/" },
@@ -36,6 +37,7 @@ export default function Layout({ children, currentPageName }) {
       </div>
 
       {showNav && <EmergencyFAB />}
+      {showNav && <DonateFAB />}
 
       {showNav && (
         <nav style={{
