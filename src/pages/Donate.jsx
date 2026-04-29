@@ -102,13 +102,26 @@ export default function Donate() {
           </p>
         </div>
 
-        {/* Thank-you note — every penny counts */}
+        {/* Total raised counter + thank-you note */}
         <div style={{ padding: "0 20px 24px" }}>
           <div style={{
             background: "#FDFAF6", border: "1px solid #E8E2D9",
-            borderRadius: 16, padding: "18px 20px",
+            borderRadius: 16, padding: "20px 20px",
             textAlign: "center",
           }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>
+              Total Raised
+            </p>
+            <p style={{
+              fontFamily: "'Lora', Georgia, serif",
+              fontSize: 32, fontWeight: 700, color: "#B8823A",
+              lineHeight: 1.1, marginBottom: 14,
+            }}>
+              ${(settings.donation_raised || 0).toLocaleString()}
+            </p>
+
+            <div style={{ height: 1, background: "#E8E2D9", margin: "0 auto 14px", maxWidth: 80 }} />
+
             <Heart style={{ width: 18, height: 18, color: "#B8823A", margin: "0 auto 8px", display: "block" }} fill="#B8823A" />
             <p style={{ fontSize: 14, fontWeight: 700, color: "#1C1410", marginBottom: 6, fontFamily: "'Lora', Georgia, serif" }}>
               Thank you — every penny counts.
