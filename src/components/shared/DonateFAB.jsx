@@ -10,7 +10,7 @@ export default function DonateFAB() {
   return (
     <Link
       to="/Donate"
-      aria-label="Support Ah Ha — Donate"
+      aria-label="Support — Donate"
       style={{
         position: "fixed",
         left: 18,
@@ -33,7 +33,7 @@ export default function DonateFAB() {
       }}
     >
       <Heart style={{ width: 13, height: 13, color: "#2E7D7A" }} fill="#2E7D7A" />
-      Support Ah Ha
+      Support
     </Link>
   );
 }
