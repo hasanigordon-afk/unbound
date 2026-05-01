@@ -183,7 +183,7 @@ export default function FiveWsHistory() {
             style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer",
               display: "inline-flex", alignItems: "center", gap: 6,
               color: MUTED, fontSize: 13, fontWeight: 600, marginBottom: 10 }}>
-            <ArrowLeft style={{ width: 15, height: 15 }} /> Back
+            <ArrowLeft style={{ width: 15, height: 15 }} /> Back to 5 Ws
           </button>
           <h1 style={{
             fontFamily: "'Lora', Georgia, serif",

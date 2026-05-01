@@ -196,13 +196,13 @@ export default function FiveWs() {
           borderBottom: `1px solid ${BORDER}`,
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <button onClick={() => conversation ? resetAll() : navigate(-1)}
+            <button onClick={() => conversation ? resetAll() : navigate("/")}
               style={{
                 background: "transparent", border: "none", cursor: "pointer", padding: 0,
                 display: "inline-flex", alignItems: "center", gap: 6,
                 color: MUTED, fontSize: 13, fontWeight: 600,
               }}>
-              <ArrowLeft style={{ width: 15, height: 15 }} /> {conversation ? "Start over" : "Back"}
+              <ArrowLeft style={{ width: 15, height: 15 }} /> {conversation ? "Start over" : "Home"}
             </button>
             <Link to="/FiveWsHistory" style={{ textDecoration: "none" }}>
               <button style={{

@@ -66,14 +66,14 @@ export default function SavedResources() {
       {/* Header */}
       <div className="px-5 pt-6 pb-4" style={{ background: "#FFFFFF", borderBottom: "1px solid #D1D1D6" }}>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/FindHelpNow")}
           style={{
             background: "transparent", border: "none", padding: 0, cursor: "pointer",
             display: "inline-flex", alignItems: "center", gap: 6,
             color: "#5A5A5A", fontSize: 13, fontWeight: 600, marginBottom: 10,
           }}
         >
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> Back to Support Map
         </button>
         <div className="flex items-center gap-2 mb-1">
           <Star className="w-5 h-5" style={{ color: "#C8932F" }} fill="#C8932F" strokeWidth={2} />
