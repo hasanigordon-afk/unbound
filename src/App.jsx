@@ -73,6 +73,7 @@ import SavedResources from './pages/SavedResources';
 import MeetingDirectory from './pages/MeetingDirectory';
 import VeteranSupportHub from './pages/VeteranSupportHub';
 import ResourceImport from './pages/ResourceImport';
+import VeteranResourceMap from './pages/VeteranResourceMap';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 
@@ -212,6 +213,7 @@ const AuthenticatedApp = () => {
       <Route path="/MeetingDirectory"                 element={<LW name="MeetingDirectory"><MeetingDirectory /></LW>} />
       <Route path="/VeteranSupportHub"                 element={<LW name="VeteranSupportHub"><VeteranSupportHub /></LW>} />
       <Route path="/ResourceImport"                    element={<AW name="ResourceImport"><ResourceImport /></AW>} />
+      <Route path="/VeteranResourceMap"                 element={<LW name="VeteranResourceMap"><VeteranResourceMap /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

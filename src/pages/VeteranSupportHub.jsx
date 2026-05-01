@@ -2,7 +2,8 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import CrisisStrip from "@/components/veteranhub/CrisisStrip";
 import PrimaryActionGrid from "@/components/veteranhub/PrimaryActionGrid";
@@ -183,6 +184,34 @@ export default function VeteranSupportHub() {
               letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 8 }}>Get help fast</p>
             <PrimaryActionGrid onPick={handlePickAction} />
           </div>
+
+          {/* Map CTA */}
+          <Link to="/VeteranResourceMap" style={{ textDecoration: "none" }}>
+            <div style={{
+              background: "#fff", border: `1px solid ${C.border}`,
+              borderRadius: 18, padding: "14px 16px",
+              display: "flex", alignItems: "center", gap: 12,
+              boxShadow: "0 2px 10px rgba(15,30,61,0.05)",
+            }}>
+              <div style={{
+                width: 42, height: 42, borderRadius: 12, flexShrink: 0,
+                background: "rgba(15,30,61,0.08)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <MapPin style={{ width: 20, height: 20, color: C.navy }} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 11, fontWeight: 800, color: C.navy,
+                  letterSpacing: ".12em", textTransform: "uppercase", marginBottom: 2 }}>Map View</p>
+                <p style={{ fontSize: 14, fontWeight: 800, color: C.text, marginBottom: 2 }}>
+                  Resources near you
+                </p>
+                <p style={{ fontSize: 11.5, color: C.dim }}>
+                  VA hospitals, shelters, jobs · filter by distance →
+                </p>
+              </div>
+            </div>
+          </Link>
 
           {/* AI Assistant CTA */}
           <button onClick={openAssistant}
