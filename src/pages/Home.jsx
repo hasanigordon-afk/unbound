@@ -259,7 +259,7 @@ export default function Home() {
           )}
 
           {/* ── 1.3. VETERANS HUB ────────────────────────────────────────────── */}
-          <Link to="/veterans-dashboard" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
+          <Link to="/VeteranSupportHub" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
             <div style={{
               background: "#EEF6FF",
               border: "1px solid rgba(30,136,229,0.16)",
@@ -273,9 +273,9 @@ export default function Home() {
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24,
               }}>🇺🇸</div>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 10, fontWeight: 700, color: "#1E88E5", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Veteran Resilience Hub</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#1F2933", marginBottom: 3 }}>Built for those who served</p>
-                <p style={{ fontSize: 12, color: "#4A5763" }}>Support, connection, and purpose →</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#1E88E5", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Veteran Support Hub</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1F2933", marginBottom: 3 }}>You served. Now let us serve you.</p>
+                <p style={{ fontSize: 12, color: "#4A5763" }}>Crisis · Housing · Jobs · Benefits →</p>
               </div>
             </div>
           </Link>

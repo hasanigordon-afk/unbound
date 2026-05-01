@@ -1,0 +1,40 @@
+{
+  "name": "VeteranMilestone",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "milestone_key": {
+      "type": "string",
+      "enum": [
+        "found_housing",
+        "applied_to_jobs",
+        "attended_support_meeting",
+        "started_va_claim",
+        "connected_with_peer",
+        "completed_resume",
+        "enrolled_in_education",
+        "received_financial_help"
+      ],
+      "description": "Which veteran milestone this represents"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional reflection / detail"
+    }
+  },
+  "required": [
+    "user_email",
+    "milestone_key"
+  ]
+}

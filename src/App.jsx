@@ -71,6 +71,7 @@ import FiveWs from './pages/FiveWs';
 import FiveWsHistory from './pages/FiveWsHistory';
 import SavedResources from './pages/SavedResources';
 import MeetingDirectory from './pages/MeetingDirectory';
+import VeteranSupportHub from './pages/VeteranSupportHub';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 
@@ -208,6 +209,7 @@ const AuthenticatedApp = () => {
       <Route path="/FiveWsHistory"                   element={<LW name="FiveWsHistory"><FiveWsHistory /></LW>} />
       <Route path="/SavedResources"                  element={<LW name="SavedResources"><SavedResources /></LW>} />
       <Route path="/MeetingDirectory"                 element={<LW name="MeetingDirectory"><MeetingDirectory /></LW>} />
+      <Route path="/VeteranSupportHub"                 element={<LW name="VeteranSupportHub"><VeteranSupportHub /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
