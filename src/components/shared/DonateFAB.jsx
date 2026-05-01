@@ -10,7 +10,7 @@ export default function DonateFAB() {
   return (
     <Link
       to="/Donate"
-      aria-label="Support — Donate"
+      aria-label="Support Re-siliant — Donate"
       style={{
         position: "fixed",
         left: 18,
@@ -22,17 +22,17 @@ export default function DonateFAB() {
         padding: "10px 14px",
         borderRadius: 999,
         background: "#FFFFFF",
-        border: "1px solid rgba(46,125,122,0.28)",
-        color: "#2E7D7A",
+        border: "1px solid rgba(200,147,47,0.32)",
+        color: "#C8932F",
         textDecoration: "none",
         fontFamily: "'DM Sans', sans-serif",
         fontSize: 12,
         fontWeight: 700,
         letterSpacing: "0.02em",
-        boxShadow: "0 6px 18px rgba(31,41,51,0.10), 0 2px 6px rgba(31,41,51,0.06)",
+        boxShadow: "0 6px 18px rgba(15,30,61,0.10), 0 2px 6px rgba(15,30,61,0.06)",
       }}
     >
-      <Heart style={{ width: 13, height: 13, color: "#2E7D7A" }} fill="#2E7D7A" />
+      <Heart style={{ width: 13, height: 13, color: "#C8932F" }} fill="#C8932F" />
       Support
     </Link>
   );

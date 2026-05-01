@@ -127,7 +127,7 @@ export default function Donate() {
               Thank you — every penny counts.
             </p>
             <p style={{ fontSize: 12, color: "#4A3F35", lineHeight: 1.65 }}>
-              No gift is too small. Every dollar, every dime is appreciated and goes toward supporting Ah Ha App development and users in recovery.
+              No gift is too small. Every dollar, every dime is appreciated and goes toward supporting Re-siliant's development and the people rebuilding their lives with it.
             </p>
           </div>
         </div>

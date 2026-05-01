@@ -66,6 +66,7 @@ import VeteransDashboard from './pages/VeteransDashboard';
 import AhHaOnboarding from './pages/AhHaOnboarding';
 import AhHaHome from './pages/AhHaHome';
 import VeteranMode from './pages/VeteranMode';
+import Resiliant from './pages/Resiliant';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 
@@ -113,11 +114,11 @@ const AuthenticatedApp = () => {
   if (authError) {
     if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
     if (authError.type === 'auth_required') {
-      // Logged-out visitors land on the public Onboarding page.
-      // The Onboarding page itself has a "Log in" link that calls navigateToLogin.
-      const path = window.location.pathname;
-      if (path !== '/Onboarding' && path !== '/onboarding') {
-        return <Navigate to="/Onboarding" replace />;
+      // Logged-out visitors land on the public Re-siliant marketing page.
+      const path = window.location.pathname.toLowerCase();
+      const publicPaths = ['/resiliant', '/about', '/onboarding'];
+      if (!publicPaths.includes(path)) {
+        return <Navigate to="/Resiliant" replace />;
       }
     }
   }
@@ -197,6 +198,8 @@ const AuthenticatedApp = () => {
       <Route path="/AhHaOnboarding"                 element={<AhHaOnboarding />} />
       <Route path="/AhHaHome"                       element={<AhHaHome />} />
       <Route path="/VeteranMode"                    element={<VeteranMode />} />
+      <Route path="/Resiliant"                       element={<Resiliant />} />
+      <Route path="/about"                           element={<Resiliant />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

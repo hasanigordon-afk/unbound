@@ -87,7 +87,8 @@ export default function Layout({ children, currentPageName }) {
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
             <DonateButton variant="ghost" label="Support the Mission" />
           </div>
-          <p style={{ fontSize: 11, color: "var(--text-dim)" }}>
+          <p style={{ fontSize: 11, color: "var(--text-dim)", lineHeight: 1.6 }}>
+            Re-siliant — Rebuild. Recover. Rise.<br/>
             Support tool only. In a crisis, call 911 or 988.
           </p>
         </footer>

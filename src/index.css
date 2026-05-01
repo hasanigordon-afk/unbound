@@ -5,45 +5,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
 
 :root {
-  /* ── Glume-inspired healthcare palette ── */
-  /* Soft white surfaces, teal/mint accents, calm trust */
+  /* ── Re-siliant brand palette ── */
+  /* Deep navy + warm gold + charcoal + off-white + muted green */
+  /* Strong, hopeful, professional, trustworthy */
 
   /* ── Core surfaces ── */
-  --bg:           #F7FAFC;   /* soft healthcare off-white */
+  --bg:           #F6F4EF;   /* warm off-white */
   --surface:      #FFFFFF;   /* pure white cards */
   --card:         #FFFFFF;
-  --card-hover:   #F1F7F6;
-  --border:       #E5EEF1;
-  --border-soft:  #EEF4F6;
+  --card-hover:   #F1EEE7;
+  --border:       #E4DFD3;
+  --border-soft:  #EEEAE0;
 
   /* ── Soft tinted card backgrounds ── */
-  --tint-mint:    #EAF7F5;   /* primary tint */
-  --tint-blue:    #EEF6FF;   /* secondary tint */
-  --tint-peach:   #FFF7ED;   /* accent tint */
-  --tint-sage:    #F0F7F1;
+  --tint-navy:    #EEF1F8;   /* primary navy tint */
+  --tint-gold:    #FBF3E2;   /* warm gold tint */
+  --tint-green:   #ECF1EC;   /* muted green tint */
+  --tint-mint:    #ECF1EC;   /* legacy alias → muted green */
+  --tint-blue:    #EEF1F8;   /* legacy alias → navy */
+  --tint-peach:   #FBF3E2;   /* legacy alias → gold */
+  --tint-sage:    #ECF1EC;
 
-  /* ── Brand: calm teal + mint ── */
-  --teal:         #2E7D7A;          /* primary deep teal */
-  --teal-dim:     rgba(46,125,122,0.08);
-  --teal-border:  rgba(46,125,122,0.20);
-  --sand:         #2E7D7A;          /* legacy alias → teal */
-  --sand-dim:     rgba(46,125,122,0.08);
-  --sand-border:  rgba(46,125,122,0.20);
-  --mint:         #5AC8A8;          /* secondary mint */
-  --sky:          #1E88E5;          /* alt primary blue */
+  /* ── Brand: deep navy + warm gold ── */
+  --navy:         #0F1E3D;          /* primary deep navy */
+  --navy-dim:     rgba(15,30,61,0.08);
+  --navy-border:  rgba(15,30,61,0.20);
+  --gold:         #C8932F;          /* warm gold */
+  --gold-dim:     rgba(200,147,47,0.10);
+  --gold-border:  rgba(200,147,47,0.28);
+  --charcoal:     #2A2D33;          /* deep charcoal */
+  --muted-green:  #6B8F71;          /* muted green */
+
+  /* Legacy aliases remapped to new palette so existing components flow */
+  --teal:         #0F1E3D;          /* legacy → navy */
+  --teal-dim:     rgba(15,30,61,0.08);
+  --teal-border:  rgba(15,30,61,0.20);
+  --sand:         #C8932F;          /* legacy → gold */
+  --sand-dim:     rgba(200,147,47,0.10);
+  --sand-border:  rgba(200,147,47,0.28);
+  --mint:         #6B8F71;          /* legacy → muted green */
+  --sky:          #0F1E3D;          /* legacy → navy */
 
   /* ── Status ── */
-  --green:        #34A853;          /* success */
-  --amber:        #2E7D7A;          /* legacy alias remapped to teal */
-  --warning:      #F59E0B;          /* warm warning */
-  --red:          #E07A6C;          /* soft coral */
-  --indigo:       #1E88E5;
-  --purple:       #9B8AB8;
-  --accent:       #FFB86B;          /* warm peach accent */
+  --green:        #6B8F71;          /* success → muted green */
+  --amber:        #C8932F;          /* legacy → gold */
+  --warning:      #C8932F;
+  --red:          #B5483D;          /* deep coral */
+  --indigo:       #0F1E3D;
+  --purple:       #6B5B8E;
+  --accent:       #C8932F;          /* warm gold accent */
 
   /* ── Typography ── */
-  --text:         #1F2933;          /* deep slate */
-  --text-muted:   #4A5763;
+  --text:         #1A1F2C;          /* near-black */
+  --text-muted:   #4A5260;
   --text-dim:     #6B7280;
 
   /* ── Spacing scale ── */
@@ -53,20 +67,20 @@
   --r-xl:         24px;
 
   /* ── Shadow ── */
-  --shadow:       0 6px 24px rgba(31,41,51,0.06);
-  --shadow-sm:    0 2px 8px  rgba(31,41,51,0.04);
-  --shadow-card:  0 4px 16px rgba(31,41,51,0.05);
+  --shadow:       0 6px 24px rgba(15,30,61,0.08);
+  --shadow-sm:    0 2px 8px  rgba(15,30,61,0.05);
+  --shadow-card:  0 4px 16px rgba(15,30,61,0.06);
 
   /* Legacy aliases */
-  --rebos-bg:       #F7FAFC;
+  --rebos-bg:       #F6F4EF;
   --rebos-surface:  #FFFFFF;
   --rebos-card:     #FFFFFF;
-  --rebos-border:   #E5EEF1;
-  --rebos-teal:     #2E7D7A;
-  --rebos-blue:     #1E88E5;
-  --rebos-purple:   #9B8AB8;
-  --rebos-text:     #1F2933;
-  --rebos-muted:    #4A5763;
+  --rebos-border:   #E4DFD3;
+  --rebos-teal:     #0F1E3D;
+  --rebos-blue:     #0F1E3D;
+  --rebos-purple:   #6B5B8E;
+  --rebos-text:     #1A1F2C;
+  --rebos-muted:    #4A5260;
   --rebos-dim:      #6B7280;
 }
 
@@ -87,27 +101,27 @@
   }
 }
 
-/* ── Glume-inspired primitives ── */
+/* ── Re-siliant primitives ── */
 .card {
   background: #FFFFFF;
-  border: 1px solid #E5EEF1;
+  border: 1px solid #E4DFD3;
   border-radius: 22px;
-  box-shadow: 0 4px 16px rgba(31,41,51,0.05);
+  box-shadow: 0 4px 16px rgba(15,30,61,0.06);
 }
 
 .card-soft {
   background: #FFFFFF;
-  border: 1px solid #EEF4F6;
+  border: 1px solid #EEEAE0;
   border-radius: 20px;
 }
 
-/* Soft tinted cards (for feature highlight tiles) */
-.card-tint-mint  { background: #EAF7F5; border: 1px solid rgba(46,125,122,0.14); border-radius: 22px; }
-.card-tint-blue  { background: #EEF6FF; border: 1px solid rgba(30,136,229,0.14); border-radius: 22px; }
-.card-tint-peach { background: #FFF7ED; border: 1px solid rgba(255,184,107,0.22); border-radius: 22px; }
+/* Soft tinted cards */
+.card-tint-mint  { background: #ECF1EC; border: 1px solid rgba(107,143,113,0.18); border-radius: 22px; }
+.card-tint-blue  { background: #EEF1F8; border: 1px solid rgba(15,30,61,0.14); border-radius: 22px; }
+.card-tint-peach { background: #FBF3E2; border: 1px solid rgba(200,147,47,0.24); border-radius: 22px; }
 
 .btn-primary {
-  background: #2E7D7A;
+  background: #0F1E3D;
   color: #ffffff;
   font-weight: 600;
   border: none;
@@ -118,16 +132,32 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   transition: all 0.15s;
-  box-shadow: 0 4px 14px rgba(46,125,122,0.22);
+  box-shadow: 0 4px 14px rgba(15,30,61,0.22);
 }
-.btn-primary:hover { background: #266B68; box-shadow: 0 6px 18px rgba(46,125,122,0.28); }
+.btn-primary:hover { background: #0A1530; box-shadow: 0 6px 18px rgba(15,30,61,0.30); }
 .btn-primary:active { transform: scale(0.98); }
+
+.btn-gold {
+  background: #C8932F;
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  min-height: 48px;
+  padding: 0 26px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  transition: all 0.15s;
+  box-shadow: 0 4px 14px rgba(200,147,47,0.28);
+}
+.btn-gold:hover { background: #B0801F; }
 
 .btn-ghost {
   background: #FFFFFF;
-  color: #4A5763;
+  color: #4A5260;
   font-weight: 600;
-  border: 1px solid #E5EEF1;
+  border: 1px solid #E4DFD3;
   border-radius: 999px;
   cursor: pointer;
   min-height: 48px;
@@ -136,7 +166,7 @@
   font-size: 15px;
   transition: background 0.15s;
 }
-.btn-ghost:hover { background: #F1F7F6; }
+.btn-ghost:hover { background: #F1EEE7; }
 
 .pill {
   display: inline-flex;
@@ -148,9 +178,9 @@
   letter-spacing: 0.03em;
 }
 
-.pill-teal  { background: rgba(46,125,122,0.10); color: #2E7D7A; border: 1px solid rgba(46,125,122,0.22); }
-.pill-sand  { background: rgba(30,136,229,0.08);  color: #1E88E5; border: 1px solid rgba(30,136,229,0.20); }
-.pill-ghost { background: #F7FAFC; color: var(--text-muted); border: 1px solid var(--border); }
+.pill-teal  { background: rgba(15,30,61,0.10); color: #0F1E3D; border: 1px solid rgba(15,30,61,0.22); }
+.pill-sand  { background: rgba(200,147,47,0.12);  color: #C8932F; border: 1px solid rgba(200,147,47,0.28); }
+.pill-ghost { background: #F6F4EF; color: var(--text-muted); border: 1px solid var(--border); }
 
 .section-label {
   font-size: 10px;
@@ -182,8 +212,8 @@ input, textarea, select {
   padding: 10px 12px;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(46,125,122,0.14);
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(15,30,61,0.14);
 }
 
 @layer base {

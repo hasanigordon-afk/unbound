@@ -30,23 +30,23 @@ const getStage = (s) => [...STAGES].reverse().find(x => s >= x.minDays) || STAGE
 
 /* ── Today list ───────────────────────────────────────────────────────────── */
 const TODAY_ITEMS = [
-  { icon: <CalendarCheck className="w-4 h-4" />, label: "Daily Check-In",   sub: "30 seconds",         href: "DailyCheckIn"         },
-  { icon: <Users         className="w-4 h-4" />, label: "Log Meeting",       sub: "AA · NA · SMART",    href: "Meetings"             },
-  { icon: <MessageCircle className="w-4 h-4" />, label: "Reach Out",         sub: "Sponsor or mentor",  href: "ParticipantMessages"  },
-  { icon: <BookOpen      className="w-4 h-4" />, label: "Read Something",    sub: "Education builds resilience", href: "RecoveryHub" },
-  { icon: <Target        className="w-4 h-4" />, label: "Review My Plan",    sub: "Goals & progress",   href: "ForwardPlan"          },
+  { icon: <CalendarCheck className="w-4 h-4" />, label: "Daily Strength Check", sub: "30 seconds",         href: "DailyCheckIn"         },
+  { icon: <Users         className="w-4 h-4" />, label: "Log Meeting",          sub: "AA · NA · SMART",    href: "Meetings"             },
+  { icon: <MessageCircle className="w-4 h-4" />, label: "Reach Out",            sub: "Sponsor or mentor",  href: "ParticipantMessages"  },
+  { icon: <BookOpen      className="w-4 h-4" />, label: "Read Something",       sub: "Education builds resilience", href: "RecoveryHub" },
+  { icon: <Target        className="w-4 h-4" />, label: "Review Rebuild Roadmap", sub: "Goals & progress", href: "ForwardPlan"          },
 ];
 
 /* ── Tools grid ───────────────────────────────────────────────────────────── */
 const TOOLS = [
-  { icon: <CalendarCheck className="w-4 h-4" />, label: "Check-In",  href: "DailyCheckIn"        },
-  { icon: <FileText      className="w-4 h-4" />, label: "Goals",     href: "GoalBoard"            },
-  { icon: <BookOpen      className="w-4 h-4" />, label: "Resources", href: "RecoveryHub"          },
-  { icon: <Users         className="w-4 h-4" />, label: "Community", href: "VoicesOfRecovery"     },
-  { icon: <Briefcase     className="w-4 h-4" />, label: "Jobs",      href: "EmploymentOpportunities"},
-  { icon: <HomeIcon      className="w-4 h-4" />, label: "Housing",   href: "HousingAssistance"    },
-  { icon: <FileText      className="w-4 h-4" />, label: "Journal",   href: "Journal"              },
-  { icon: <MessageCircle className="w-4 h-4" />, label: "Messages",  href: "ParticipantMessages"  },
+  { icon: <CalendarCheck className="w-4 h-4" />, label: "Check-In",      href: "DailyCheckIn"           },
+  { icon: <FileText      className="w-4 h-4" />, label: "Comeback Goals", href: "GoalBoard"              },
+  { icon: <BookOpen      className="w-4 h-4" />, label: "Support Map",   href: "RecoveryHub"            },
+  { icon: <Users         className="w-4 h-4" />, label: "Rebuild Circle",href: "VoicesOfRecovery"       },
+  { icon: <Briefcase     className="w-4 h-4" />, label: "Jobs",          href: "EmploymentOpportunities"},
+  { icon: <HomeIcon      className="w-4 h-4" />, label: "Housing",       href: "HousingAssistance"      },
+  { icon: <FileText      className="w-4 h-4" />, label: "Reflection Room", href: "Journal"              },
+  { icon: <MessageCircle className="w-4 h-4" />, label: "Messages",      href: "ParticipantMessages"    },
 ];
 
 export default function Home() {
@@ -67,9 +67,9 @@ export default function Home() {
     retry: false,
   });
 
-  // Send logged-out visitors to the public Onboarding landing
+  // Send logged-out visitors to the public Re-siliant landing page
   useEffect(() => {
-    if (!uL && !user) navigate("/Onboarding", { replace: true });
+    if (!uL && !user) navigate("/Resiliant", { replace: true });
   }, [uL, user, navigate]);
 
   const { data: profiles, isLoading: pL, isFetched: pF } = useQuery({
@@ -188,11 +188,11 @@ export default function Home() {
             fontFamily: "'Lora', Georgia, serif", fontSize: 28, fontWeight: 600,
             lineHeight: 1.15, color: "#1F2933", marginBottom: 8, animationDelay: ".05s",
           }}>
-            Good to see you,<br /><span style={{ color: "#2E7D7A" }}>{firstName}.</span>
+            Good to see you,<br /><span style={{ color: "#0F1E3D" }}>{firstName}.</span>
           </h1>
 
           <p className="fu" style={{ fontSize: 14, color: "#4A5763", lineHeight: 1.7, marginBottom: 14, animationDelay: ".1s", maxWidth: 320 }}>
-            Welcome back. Small steps still count — let's check in.
+            Rebuild. Recover. Rise. — let's check in for today.
           </p>
 
           {/* Primary recovery focus pill */}
@@ -271,7 +271,7 @@ export default function Home() {
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24,
               }}>🇺🇸</div>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 10, fontWeight: 700, color: "#1E88E5", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Veterans Hub</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#1E88E5", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Veteran Resilience Hub</p>
                 <p style={{ fontSize: 15, fontWeight: 700, color: "#1F2933", marginBottom: 3 }}>Built for those who served</p>
                 <p style={{ fontSize: 12, color: "#4A5763" }}>Support, connection, and purpose →</p>
               </div>
@@ -315,8 +315,8 @@ export default function Home() {
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24,
               }}>✨</div>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 10, fontWeight: 700, color: "#C68A3E", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Recovery Stories</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#1F2933", marginBottom: 3 }}>Real Ah Ha moments</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#C68A3E", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Ah Ha Moment</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1F2933", marginBottom: 3 }}>Real comeback stories</p>
                 <p style={{ fontSize: 12, color: "#4A5763" }}>Read how others found their turning point →</p>
               </div>
             </div>

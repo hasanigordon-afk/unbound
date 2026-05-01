@@ -1,19 +1,19 @@
 import React from "react";
 
 /**
- * Shared Ah Ha logo component.
- * Use across landing, onboarding, hero headers, and footer for consistent branding.
+ * Re-siliant brand logo.
+ * (File kept as AhHaLogo for backwards-compat with existing imports —
+ *  exports both AhHaLogo and ResiliantLogo names.)
  *
  * Props:
  *  - size: pixel size for the logo image (default 40)
- *  - showWordmark: render the "Ah Ha" text next to the mark (default true)
- *  - showTagline: render the "Help · Hope · Healing" tagline under wordmark (default false)
+ *  - showWordmark: render the "Re-siliant" text next to the mark (default true)
+ *  - showTagline: render the "Rebuild · Recover · Rise" tagline (default false)
  *  - layout: "row" | "column" (default "row")
- *  - linkTo: optional path; if provided, wraps logo in <a>
  */
-const LOGO_URL = "https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/47ae40bbf_ChatGPTImageApr25202604_54_43PM.png";
+const LOGO_URL = "https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/f9caa64cc_generated_image.png";
 
-export default function AhHaLogo({
+export default function ResiliantLogo({
   size = 40,
   showWordmark = true,
   showTagline = false,
@@ -36,7 +36,7 @@ export default function AhHaLogo({
     >
       <img
         src={LOGO_URL}
-        alt="Ah Ha"
+        alt="Re-siliant"
         style={{
           width: size,
           height: size,
@@ -55,17 +55,17 @@ export default function AhHaLogo({
             fontFamily: "'Lora', Georgia, serif",
             fontSize: Math.max(16, Math.round(size * 0.46)),
             fontWeight: 700,
-            color: "#1F2933",
+            color: "#0F1E3D",
             letterSpacing: "-.02em",
           }}>
-            Ah Ha
+            Re<span style={{ color: "#C8932F" }}>-</span>siliant
           </span>
           {showTagline && (
             <span style={{
-              fontSize: 9, color: "#2E7D7A", fontWeight: 600,
-              letterSpacing: ".08em", textTransform: "uppercase", marginTop: 3,
+              fontSize: 9, color: "#C8932F", fontWeight: 700,
+              letterSpacing: ".10em", textTransform: "uppercase", marginTop: 3,
             }}>
-              Help · Hope · Healing
+              Rebuild · Recover · Rise
             </span>
           )}
         </div>
