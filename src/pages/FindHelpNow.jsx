@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { MapPin, Loader2, RefreshCw, X, Search, Map } from "lucide-react";
 import { Link } from "react-router-dom";
 import FindHelpCard from "@/components/resources/FindHelpCard";
+import MySavedStrip from "@/components/resources/MySavedStrip";
 
 function haversineDistance(lat1, lon1, lat2, lon2) {
   const R = 3958.8;
@@ -173,6 +174,20 @@ export default function FindHelpNow() {
           <p className="text-xs mt-2" style={{ color: "#8E8E93" }}>{locationError}</p>
         )}
       </div>
+
+      {/* My Saved (only shows when user has saved resources) */}
+      <MySavedStrip
+        savedResources={savedResources}
+        onChipClick={(resourceId) => {
+          const el = document.getElementById(`resource-${resourceId}`);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.style.transition = "box-shadow .3s";
+            el.style.boxShadow = "0 0 0 3px rgba(200,147,47,0.45)";
+            setTimeout(() => { el.style.boxShadow = ""; }, 1600);
+          }
+        }}
+      />
 
       {/* Truth About Recovery promo */}
       <div className="px-5 pt-3">
@@ -373,13 +388,14 @@ export default function FindHelpNow() {
           </div>
         ) : (
           processedResources.map((resource) => (
-            <FindHelpCard
-              key={resource.id}
-              resource={resource}
-              distance={resource.distance}
-              isSaved={savedIds.has(resource.id)}
-              onSave={(r) => saveMutation.mutate(r)}
-            />
+            <div key={resource.id} id={`resource-${resource.id}`} style={{ borderRadius: 8 }}>
+              <FindHelpCard
+                resource={resource}
+                distance={resource.distance}
+                isSaved={savedIds.has(resource.id)}
+                onSave={(r) => saveMutation.mutate(r)}
+              />
+            </div>
           ))
         )}
       </div>

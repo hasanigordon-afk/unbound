@@ -1,5 +1,5 @@
 import React from "react";
-import { Phone, Navigation, Bookmark, BookmarkCheck } from "lucide-react";
+import { Phone, Navigation, Star } from "lucide-react";
 
 const CATEGORY_COLORS = {
   "Housing": "#8B5CF6",
@@ -42,11 +42,18 @@ export default function FindHelpCard({ resource, distance, isSaved, onSave }) {
               <p className="text-xs mt-0.5 truncate" style={{ color: "#5A5A5A" }}>{resource.program_name}</p>
             )}
           </div>
-          <button onClick={() => onSave(resource)} className="flex-shrink-0 p-1">
-            {isSaved
-              ? <BookmarkCheck className="w-4 h-4" style={{ color }} />
-              : <Bookmark className="w-4 h-4" style={{ color: "#8E8E93" }} strokeWidth={1.5} />
-            }
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onSave(resource); }}
+            className="flex-shrink-0 p-1.5 rounded-full"
+            aria-label={isSaved ? "Remove from saved" : "Save to My Saved"}
+            style={{ background: isSaved ? color + "18" : "transparent", transition: "background .15s" }}
+          >
+            <Star
+              className="w-[18px] h-[18px]"
+              style={{ color: isSaved ? color : "#8E8E93" }}
+              fill={isSaved ? color : "transparent"}
+              strokeWidth={isSaved ? 2 : 1.6}
+            />
           </button>
         </div>
 

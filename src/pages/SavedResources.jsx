@@ -1,119 +1,189 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Bookmark, Loader2, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AnimatePresence } from "framer-motion";
-import ResourceCard from "../components/resources/ResourceCard";
-import ResourceDetail from "../components/resources/ResourceDetail";
-import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Star, Search, Loader2, MapPin } from "lucide-react";
+import FindHelpCard from "@/components/resources/FindHelpCard";
 
 export default function SavedResources() {
-  const [selectedResource, setSelectedResource] = useState(null);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
 
-  const { data: user } = useQuery({
-    queryKey: ["me"],
-    queryFn: () => base44.auth.me(),
-  });
+  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
-  const { data: savedResources = [], isLoading } = useQuery({
-    queryKey: ["saved-resources"],
-    queryFn: async () => {
-      const u = await base44.auth.me();
-      const saved = await base44.entities.SavedResource.filter({ created_by: u.email });
-      
-      // Fetch actual resource data for each saved resource
-      const resourcePromises = saved.map(s => 
-        base44.entities.Resource.filter({ id: s.resource_id }).then(r => r[0])
-      );
-      return Promise.all(resourcePromises);
-    },
+  const { data: savedResources = [], isLoading: savedLoading } = useQuery({
+    queryKey: ["saved-resources", user?.email],
+    queryFn: () => base44.entities.SavedResource.filter({ created_by: user.email }, "-created_date"),
     enabled: !!user,
   });
 
-  const removeMutation = useMutation({
-    mutationFn: async (resourceId) => {
-      const saved = await base44.entities.SavedResource.filter({ resource_id: resourceId });
-      if (saved[0]) {
-        await base44.entities.SavedResource.delete(saved[0].id);
-      }
-    },
-    onSuccess: () => {
-      toast.success("Resource removed");
-      queryClient.invalidateQueries(["saved-resources"]);
-    },
+  const { data: allResources = [], isLoading: resourcesLoading } = useQuery({
+    queryKey: ["us-recovery-resources"],
+    queryFn: () => base44.entities.USRecoveryResource.list(),
   });
 
-  const reportMutation = useMutation({
-    mutationFn: (resourceId) =>
-      base44.entities.ResourceReport.create({
-        resource_id: resourceId,
-        reason: "Inaccurate information",
-      }),
-    onSuccess: () => {
-      toast.success("Report submitted");
-      setSelectedResource(null);
+  const savedIds = useMemo(() => new Set(savedResources.map((s) => s.resource_id)), [savedResources]);
+
+  // Hydrate saved entries with full resource records, in saved-order
+  const fullSavedResources = useMemo(() => {
+    const byId = new Map(allResources.map((r) => [r.id, r]));
+    return savedResources
+      .map((s) => byId.get(s.resource_id))
+      .filter(Boolean);
+  }, [savedResources, allResources]);
+
+  const categories = useMemo(
+    () => [...new Set(fullSavedResources.map((r) => r.resource_category).filter(Boolean))],
+    [fullSavedResources]
+  );
+
+  const filtered = useMemo(() => {
+    return fullSavedResources.filter((r) => {
+      if (categoryFilter && r.resource_category !== categoryFilter) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        const haystack = `${r.organization_name || ""} ${r.program_name || ""} ${r.city || ""} ${r.resource_category || ""}`.toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [fullSavedResources, search, categoryFilter]);
+
+  const removeMutation = useMutation({
+    mutationFn: async (resource) => {
+      const existing = savedResources.find((s) => s.resource_id === resource.id);
+      if (existing) await base44.entities.SavedResource.delete(existing.id);
     },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["saved-resources"] }),
   });
+
+  const isLoading = savedLoading || resourcesLoading;
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24">
-      <div className="px-5 pt-8 pb-4">
-        <div className="flex items-center gap-3 mb-6">
-          <Bookmark className="w-6 h-6 text-teal-600" />
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Saved Resources</h1>
-            <p className="text-sm text-slate-500">Your bookmarked resources</p>
-          </div>
+    <div className="min-h-screen pb-24" style={{ background: "#F7F7F8" }}>
+      {/* Header */}
+      <div className="px-5 pt-6 pb-4" style={{ background: "#FFFFFF", borderBottom: "1px solid #D1D1D6" }}>
+        <button
+          onClick={() => navigate(-1)}
+          style={{
+            background: "transparent", border: "none", padding: 0, cursor: "pointer",
+            display: "inline-flex", alignItems: "center", gap: 6,
+            color: "#5A5A5A", fontSize: 13, fontWeight: 600, marginBottom: 10,
+          }}
+        >
+          <ArrowLeft className="w-4 h-4" /> Back
+        </button>
+        <div className="flex items-center gap-2 mb-1">
+          <Star className="w-5 h-5" style={{ color: "#C8932F" }} fill="#C8932F" strokeWidth={2} />
+          <h1 className="text-xl font-semibold" style={{ color: "#1E1E1E" }}>My Saved Resources</h1>
         </div>
-
-        {isLoading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
-          </div>
-        ) : savedResources.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
-              <Bookmark className="w-8 h-8 text-slate-400" />
-            </div>
-            <p className="text-slate-500 font-medium">No saved resources yet</p>
-            <p className="text-slate-400 text-sm mt-1">Save resources to access them quickly later</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {savedResources.filter(r => r).map(resource => (
-              <div key={resource.id} className="relative">
-                <ResourceCard
-                  resource={resource}
-                  onSave={() => {}}
-                  onReport={(r) => reportMutation.mutate(r.id)}
-                  onViewDetails={setSelectedResource}
-                />
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => removeMutation.mutate(resource.id)}
-                  className="absolute top-4 right-4 text-rose-500 hover:text-rose-700"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
+        <p className="text-xs" style={{ color: "#8E8E93" }}>
+          {savedResources.length} {savedResources.length === 1 ? "resource" : "resources"} saved for quick access
+        </p>
       </div>
 
-      <AnimatePresence>
-        {selectedResource && (
-          <ResourceDetail
-            resource={selectedResource}
-            onClose={() => setSelectedResource(null)}
-            onSave={() => {}}
-            onReport={(r) => reportMutation.mutate(r.id)}
-          />
+      {/* Search + category filters (only when there's something saved) */}
+      {fullSavedResources.length > 0 && (
+        <>
+          <div className="px-5 pt-3">
+            <div style={{
+              background: "#FFFFFF", border: "1px solid #D1D1D6", borderRadius: 10,
+              padding: "8px 12px", display: "flex", alignItems: "center", gap: 8,
+            }}>
+              <Search className="w-4 h-4" style={{ color: "#8E8E93" }} />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search saved…"
+                style={{
+                  flex: 1, border: "none", outline: "none", background: "transparent",
+                  fontSize: 13, color: "#1E1E1E", padding: 0,
+                }}
+              />
+            </div>
+          </div>
+
+          {categories.length > 1 && (
+            <div className="px-5 pt-2 flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+              <button
+                onClick={() => setCategoryFilter("")}
+                className="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0"
+                style={{
+                  background: !categoryFilter ? "#4A90E2" : "#F0F0F3",
+                  color: !categoryFilter ? "#FFF" : "#5A5A5A",
+                  border: !categoryFilter ? "1px solid #4A90E2" : "1px solid #D1D1D6",
+                }}
+              >
+                All
+              </button>
+              {categories.map((c) => {
+                const active = categoryFilter === c;
+                return (
+                  <button
+                    key={c}
+                    onClick={() => setCategoryFilter(active ? "" : c)}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0"
+                    style={{
+                      background: active ? "#4A90E2" : "#F0F0F3",
+                      color: active ? "#FFF" : "#5A5A5A",
+                      border: active ? "1px solid #4A90E2" : "1px solid #D1D1D6",
+                    }}
+                  >
+                    {c}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* List */}
+      <div className="px-5 pt-3 flex flex-col gap-3">
+        {isLoading ? (
+          <div className="text-center py-16" style={{ color: "#8E8E93" }}>
+            <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin opacity-40" />
+            <p className="text-sm">Loading your saved resources…</p>
+          </div>
+        ) : fullSavedResources.length === 0 ? (
+          <div className="text-center py-16 px-6" style={{ color: "#8E8E93" }}>
+            <Star className="w-10 h-10 mx-auto mb-3 opacity-30" strokeWidth={1.5} />
+            <p className="text-sm font-semibold" style={{ color: "#1E1E1E" }}>No saved resources yet</p>
+            <p className="text-xs mt-1.5 leading-relaxed">
+              Tap the ⭐ on any resource in the Support Map to save it here for quick access.
+            </p>
+            <Link
+              to="/FindHelpNow"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                marginTop: 16, padding: "10px 18px", borderRadius: 999,
+                background: "#4A90E2", color: "#FFF", fontSize: 13, fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              <MapPin className="w-3.5 h-3.5" /> Open Support Map
+            </Link>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-16" style={{ color: "#8E8E93" }}>
+            <Search className="w-10 h-10 mx-auto mb-3 opacity-30" strokeWidth={1} />
+            <p className="text-sm font-medium">No matches in your saved resources.</p>
+            <p className="text-xs mt-1">Try clearing the filters.</p>
+          </div>
+        ) : (
+          filtered.map((resource) => (
+            <FindHelpCard
+              key={resource.id}
+              resource={resource}
+              distance={null}
+              isSaved={savedIds.has(resource.id)}
+              onSave={(r) => removeMutation.mutate(r)}
+            />
+          ))
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 }
