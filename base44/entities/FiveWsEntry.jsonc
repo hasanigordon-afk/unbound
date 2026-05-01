@@ -1,0 +1,80 @@
+{
+  "name": "FiveWsEntry",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "input_type": {
+      "type": "string",
+      "enum": [
+        "voice",
+        "text"
+      ],
+      "default": "text",
+      "description": "How the user submitted their question"
+    },
+    "user_input": {
+      "type": "string",
+      "description": "What the user asked / said"
+    },
+    "ai_response": {
+      "type": "string",
+      "description": "AI's full conversational response"
+    },
+    "ai_summary": {
+      "type": "string",
+      "description": "Short 'here's what I'm hearing' summary"
+    },
+    "ai_takeaway": {
+      "type": "string",
+      "description": "One-line main takeaway"
+    },
+    "ai_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Auto-generated topic tags (stress, work, relationships, etc.)"
+    },
+    "mood_tag": {
+      "type": "string",
+      "description": "Optional mood label"
+    },
+    "is_favorite": {
+      "type": "boolean",
+      "default": false,
+      "description": "User starred this entry"
+    },
+    "user_note": {
+      "type": "string",
+      "description": "Optional reflection note added by user later"
+    },
+    "follow_ups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "user_input": {
+            "type": "string"
+          },
+          "ai_response": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "default": [],
+      "description": "Threaded follow-up exchanges in the same conversation"
+    }
+  },
+  "required": [
+    "user_email",
+    "user_input"
+  ]
+}

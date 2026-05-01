@@ -67,6 +67,8 @@ import AhHaOnboarding from './pages/AhHaOnboarding';
 import AhHaHome from './pages/AhHaHome';
 import VeteranMode from './pages/VeteranMode';
 import Resiliant from './pages/Resiliant';
+import FiveWs from './pages/FiveWs';
+import FiveWsHistory from './pages/FiveWsHistory';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 
@@ -200,6 +202,8 @@ const AuthenticatedApp = () => {
       <Route path="/VeteranMode"                    element={<VeteranMode />} />
       <Route path="/Resiliant"                       element={<Resiliant />} />
       <Route path="/about"                           element={<Resiliant />} />
+      <Route path="/FiveWs"                          element={<LW name="FiveWs"><FiveWs /></LW>} />
+      <Route path="/FiveWsHistory"                   element={<LW name="FiveWsHistory"><FiveWsHistory /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

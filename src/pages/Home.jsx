@@ -6,7 +6,7 @@ import { createPageUrl } from "./utils";
 import {
   Loader2, CheckCircle2, CalendarCheck, Users, MessageCircle,
   BookOpen, Briefcase, Target, ArrowRight, FileText, Home as HomeIcon,
-  Heart, Megaphone,
+  Heart, Megaphone, Sparkles,
 } from "lucide-react";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import DonateButton from "@/components/donate/DonateButton";
@@ -46,6 +46,7 @@ const TOOLS = [
   { icon: <Briefcase     className="w-4 h-4" />, label: "Jobs",          href: "EmploymentOpportunities"},
   { icon: <HomeIcon      className="w-4 h-4" />, label: "Housing",       href: "HousingAssistance"      },
   { icon: <FileText      className="w-4 h-4" />, label: "Reflection Room", href: "Journal"              },
+  { icon: <Sparkles      className="w-4 h-4" />, label: "5 Ws",          href: "FiveWs"                 },
   { icon: <MessageCircle className="w-4 h-4" />, label: "Messages",      href: "ParticipantMessages"    },
 ];
 
@@ -472,6 +473,32 @@ export default function Home() {
                 <p style={{ fontSize: 12, color: "#4A5763" }}>Build a personalised roadmap with AI</p>
               </div>
               <span style={{ color: "#34A853", fontSize: 18 }}>›</span>
+            </div>
+          </Link>
+
+          {/* ── 6.5 5 Ws — AI THINKING COMPANION ─────────────────────────────── */}
+          <Link to="/FiveWs" className="lift" style={{ textDecoration: "none", display: "block", marginBottom: 24 }}>
+            <div style={{
+              background: "linear-gradient(135deg, #0F1E3D 0%, #1A2E5C 100%)",
+              border: "1px solid rgba(200,147,47,0.32)",
+              borderRadius: 22, padding: "20px",
+              display: "flex", alignItems: "center", gap: 14,
+              boxShadow: "0 4px 20px rgba(15,30,61,0.20)",
+            }}>
+              <div style={{
+                width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                background: "rgba(200,147,47,0.20)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <Sparkles style={{ width: 22, height: 22, color: "#C8932F" }} strokeWidth={2} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 800, color: "#C8932F", textTransform: "uppercase", letterSpacing: ".14em", marginBottom: 3 }}>
+                  5 Ws · AI Thinking Companion
+                </p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 3 }}>Talk it out. Write it out.</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.72)" }}>Ask anything. We'll figure it out together →</p>
+              </div>
             </div>
           </Link>
 
