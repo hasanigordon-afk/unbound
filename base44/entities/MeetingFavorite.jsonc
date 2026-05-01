@@ -4,11 +4,21 @@
   "properties": {
     "meeting_id": {
       "type": "string",
-      "description": "ID of favorited meeting"
+      "description": "ID of saved meeting"
     },
     "meeting_title": {
       "type": "string",
       "description": "Cached meeting title"
+    },
+    "rsvp": {
+      "type": "boolean",
+      "default": false,
+      "description": "User has RSVP'd / committed to attend"
+    },
+    "rsvp_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Specific date the user is planning to attend (YYYY-MM-DD)"
     }
   },
   "required": [

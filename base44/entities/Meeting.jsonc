@@ -12,9 +12,22 @@
         "AA",
         "NA",
         "SMART",
+        "CA",
+        "GA",
         "Other"
       ],
       "description": "Program type"
+    },
+    "meeting_format": {
+      "type": "string",
+      "enum": [
+        "open",
+        "closed",
+        "hybrid",
+        "unspecified"
+      ],
+      "default": "unspecified",
+      "description": "Open (anyone can attend), closed (members only), or hybrid"
     },
     "in_person": {
       "type": "boolean",
@@ -51,11 +64,11 @@
     },
     "start_time": {
       "type": "string",
-      "description": "Start time (HH:MM)"
+      "description": "Start time (HH:MM, 24h)"
     },
     "end_time": {
       "type": "string",
-      "description": "End time (HH:MM)"
+      "description": "End time (HH:MM, 24h)"
     },
     "url": {
       "type": "string",

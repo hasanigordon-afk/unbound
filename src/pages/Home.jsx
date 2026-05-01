@@ -42,6 +42,7 @@ const TOOLS = [
   { icon: <CalendarCheck className="w-4 h-4" />, label: "Check-In",      href: "DailyCheckIn"           },
   { icon: <FileText      className="w-4 h-4" />, label: "Comeback Goals", href: "GoalBoard"              },
   { icon: <BookOpen      className="w-4 h-4" />, label: "Support Map",   href: "RecoveryHub"            },
+  { icon: <Users         className="w-4 h-4" />, label: "Meetings",      href: "MeetingDirectory"       },
   { icon: <Users         className="w-4 h-4" />, label: "Rebuild Circle",href: "VoicesOfRecovery"       },
   { icon: <Briefcase     className="w-4 h-4" />, label: "Jobs",          href: "EmploymentOpportunities"},
   { icon: <HomeIcon      className="w-4 h-4" />, label: "Housing",       href: "HousingAssistance"      },
