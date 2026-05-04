@@ -51,7 +51,9 @@
       "type": "string",
       "enum": [
         "draft",
+        "private",
         "pending_review",
+        "pending",
         "approved",
         "flagged",
         "rejected"
@@ -76,11 +78,82 @@
     },
     "moderation_note": {
       "type": "string"
+    },
+    "media_type": {
+      "type": "string",
+      "enum": [
+        "video",
+        "audio",
+        "text"
+      ],
+      "default": "text",
+      "description": "Type of recording or text-only story"
+    },
+    "media_url": {
+      "type": "string",
+      "description": "URL of the uploaded video/audio file"
+    },
+    "thumbnail_url": {
+      "type": "string",
+      "description": "Thumbnail URL for video recordings"
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration of media in seconds"
+    },
+    "is_private": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the moment is kept private"
+    },
+    "is_submitted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether submitted for community review"
+    },
+    "is_approved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether approved by admin"
+    },
+    "allow_comments": {
+      "type": "boolean",
+      "default": true
+    },
+    "anonymous_post": {
+      "type": "boolean",
+      "default": false,
+      "description": "Display anonymously in community feed"
+    },
+    "consent_given": {
+      "type": "boolean",
+      "default": false,
+      "description": "User consented to public sharing"
+    },
+    "admin_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Admin-assigned tags like Featured, High Impact, New"
+    },
+    "question_responses": {
+      "type": "array",
+      "description": "Per-question media recordings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question_index": {
+            "type": "number"
+          },
+          "media_url": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "required": [
-    "user_email",
-    "what_happened",
-    "category"
+    "user_email"
   ]
 }
