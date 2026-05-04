@@ -1,0 +1,289 @@
+{
+  "name": "WellnessPlan",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "plan_title": {
+      "type": "string"
+    },
+    "plan_type": {
+      "type": "string",
+      "enum": [
+        "nutrition",
+        "exercise",
+        "full_90"
+      ],
+      "default": "nutrition"
+    },
+    "duration": {
+      "type": "string",
+      "enum": [
+        "1_day",
+        "3_day",
+        "7_day",
+        "30_day",
+        "90_day"
+      ],
+      "default": "7_day"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "standard",
+        "veteran",
+        "rebuild"
+      ],
+      "default": "standard",
+      "description": "Tone & framing \u2014 Veteran Mode or Men's Rebuild Mode"
+    },
+    "nutrition_goal": {
+      "type": "string"
+    },
+    "fitness_goal": {
+      "type": "string"
+    },
+    "fitness_level": {
+      "type": "string"
+    },
+    "food_access": {
+      "type": "string"
+    },
+    "meals_per_day": {
+      "type": "string"
+    },
+    "foods_to_avoid": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "fasting_preference": {
+      "type": "string"
+    },
+    "cooking_setup": {
+      "type": "string"
+    },
+    "equipment_available": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "preferred_exercises": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "days_per_week": {
+      "type": "string"
+    },
+    "minutes_per_workout": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "headline_message": {
+      "type": "string",
+      "description": "Strong opener / mission line"
+    },
+    "discipline_goal": {
+      "type": "string",
+      "description": "Daily discipline goal"
+    },
+    "hydration_goal": {
+      "type": "string"
+    },
+    "weekly_goal": {
+      "type": "string"
+    },
+    "meal_plan": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "number"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "breakfast": {
+            "type": "string"
+          },
+          "lunch": {
+            "type": "string"
+          },
+          "dinner": {
+            "type": "string"
+          },
+          "snacks": {
+            "type": "string"
+          },
+          "hydration": {
+            "type": "string"
+          },
+          "discipline_check": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "workout_plan": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "number"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "warmup": {
+            "type": "string"
+          },
+          "main_workout": {
+            "type": "string"
+          },
+          "core_finisher": {
+            "type": "string"
+          },
+          "cooldown": {
+            "type": "string"
+          },
+          "beginner_mod": {
+            "type": "string"
+          },
+          "advanced_mod": {
+            "type": "string"
+          },
+          "rest_day": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "grocery_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "low_cost_options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "pantry_friendly_options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "alkaline_foods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "gut_health_tips": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "foods_to_reduce": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "meal_prep_tips": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "phase_1_focus": {
+      "type": "string",
+      "description": "90-day plan: Reset (days 1\u201330)"
+    },
+    "phase_2_focus": {
+      "type": "string",
+      "description": "90-day plan: Build (days 31\u201360)"
+    },
+    "phase_3_focus": {
+      "type": "string",
+      "description": "90-day plan: Discipline (days 61\u201390)"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "current_phase": {
+      "type": "string",
+      "enum": [
+        "phase_1",
+        "phase_2",
+        "phase_3",
+        "active",
+        "completed"
+      ],
+      "default": "active"
+    },
+    "progress_percentage": {
+      "type": "number",
+      "default": 0
+    },
+    "completed_days": {
+      "type": "number",
+      "default": 0
+    },
+    "user_notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "completed",
+        "archived"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "user_email",
+    "plan_type"
+  ]
+}

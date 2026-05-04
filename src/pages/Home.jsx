@@ -304,6 +304,28 @@ export default function Home() {
             </div>
           </Link>
 
+          {/* ── 1.35. ALKALINE FUEL & FITNESS ────────────────────────────────── */}
+          <Link to="/WellnessPlan" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
+            <div style={{
+              background: "#FBF3E2",
+              border: "1px solid rgba(200,147,47,0.32)",
+              borderRadius: 22, padding: "20px",
+              display: "flex", alignItems: "center", gap: 14,
+              boxShadow: "0 2px 8px rgba(31,41,51,0.04)",
+            }}>
+              <div style={{
+                width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                background: "rgba(200,147,47,0.22)",
+                display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24,
+              }}>🥬</div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#C8932F", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 3 }}>Alkaline Fuel & Fitness</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#1F2933", marginBottom: 3 }}>Build your body. Reclaim discipline.</p>
+                <p style={{ fontSize: 12, color: "#4A5763" }}>Personalized food & fitness plan →</p>
+              </div>
+            </div>
+          </Link>
+
           {/* ── 1.4. MIND-BODY RECOVERY ─────────────────────────────────────── */}
           <Link to="/MindBodyRecovery" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
             <div style={{

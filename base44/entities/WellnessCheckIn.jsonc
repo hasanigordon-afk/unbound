@@ -1,0 +1,65 @@
+{
+  "name": "WellnessCheckIn",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "wellness_plan_id": {
+      "type": "string"
+    },
+    "checkin_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "day_number": {
+      "type": "number",
+      "description": "Which day of the plan (1, 2, 3\u2026)"
+    },
+    "meals_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "meal_goal_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "water_goal_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "workout_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "steps_or_minutes_walked": {
+      "type": "number",
+      "default": 0
+    },
+    "mood_rating": {
+      "type": "number",
+      "description": "1\u20135"
+    },
+    "energy_rating": {
+      "type": "number",
+      "description": "1\u20135"
+    },
+    "discipline_rating": {
+      "type": "number",
+      "description": "1\u20135"
+    },
+    "mission_complete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Marked all daily standards met"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "wellness_plan_id",
+    "checkin_date"
+  ]
+}
