@@ -258,6 +258,30 @@ export default function Home() {
             </Link>
           )}
 
+          {/* ── 1.2. SUPERAGENT ──────────────────────────────────────────────── */}
+          <Link to="/SuperAgent" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
+            <div style={{
+              background: "linear-gradient(135deg, #0F1E3D 0%, #1A2E5C 100%)",
+              border: "1px solid rgba(200,147,47,0.32)",
+              borderRadius: 22, padding: "20px",
+              display: "flex", alignItems: "center", gap: 14,
+              boxShadow: "0 4px 20px rgba(15,30,61,0.20)",
+            }}>
+              <div style={{
+                width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                background: "rgba(200,147,47,0.20)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <Sparkles style={{ width: 22, height: 22, color: "#C8932F" }} strokeWidth={2} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 10, fontWeight: 800, color: "#C8932F", textTransform: "uppercase", letterSpacing: ".14em", marginBottom: 3 }}>Re-siliant SuperAgent</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 3 }}>What do you need help figuring out?</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.72)" }}>Talk it out. Write it out. Get a clear plan →</p>
+              </div>
+            </div>
+          </Link>
+
           {/* ── 1.3. VETERANS HUB ────────────────────────────────────────────── */}
           <Link to="/VeteranSupportHub" style={{ textDecoration: "none", display: "block", marginBottom: 12 }}>
             <div style={{

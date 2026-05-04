@@ -74,6 +74,9 @@ import MeetingDirectory from './pages/MeetingDirectory';
 import VeteranSupportHub from './pages/VeteranSupportHub';
 import ResourceImport from './pages/ResourceImport';
 import VeteranResourceMap from './pages/VeteranResourceMap';
+import SuperAgent from './pages/SuperAgent';
+import SuperAgentChat from './pages/SuperAgentChat';
+import SuperAgentHistory from './pages/SuperAgentHistory';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 
@@ -214,6 +217,9 @@ const AuthenticatedApp = () => {
       <Route path="/VeteranSupportHub"                 element={<LW name="VeteranSupportHub"><VeteranSupportHub /></LW>} />
       <Route path="/ResourceImport"                    element={<AW name="ResourceImport"><ResourceImport /></AW>} />
       <Route path="/VeteranResourceMap"                 element={<LW name="VeteranResourceMap"><VeteranResourceMap /></LW>} />
+      <Route path="/SuperAgent"                          element={<LW name="SuperAgent"><SuperAgent /></LW>} />
+      <Route path="/SuperAgentChat"                      element={<LW name="SuperAgentChat"><SuperAgentChat /></LW>} />
+      <Route path="/SuperAgentHistory"                   element={<LW name="SuperAgentHistory"><SuperAgentHistory /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

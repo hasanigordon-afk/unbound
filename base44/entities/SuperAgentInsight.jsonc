@@ -1,0 +1,29 @@
+{
+  "name": "SuperAgentInsight",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "insight_title": {
+      "type": "string"
+    },
+    "insight_text": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "source_conversation_id": {
+      "type": "string"
+    },
+    "is_pinned": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_email",
+    "insight_text"
+  ]
+}

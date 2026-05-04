@@ -1,0 +1,114 @@
+{
+  "name": "SuperAgentConversation",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "conversation_title": {
+      "type": "string",
+      "description": "Short title for the conversation"
+    },
+    "input_type": {
+      "type": "string",
+      "enum": [
+        "voice",
+        "text"
+      ],
+      "default": "text"
+    },
+    "user_message": {
+      "type": "string",
+      "description": "User's question or transcribed voice"
+    },
+    "ai_response": {
+      "type": "string",
+      "description": "SuperAgent's full response"
+    },
+    "ai_summary": {
+      "type": "string",
+      "description": "Short summary line"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "recovery_support",
+        "reentry_support",
+        "veteran_support",
+        "housing_help",
+        "food_help",
+        "job_search",
+        "transportation",
+        "mental_wellness",
+        "fitness_nutrition",
+        "daily_motivation",
+        "emergency_planning",
+        "personal_goals",
+        "ask_anything"
+      ],
+      "default": "ask_anything"
+    },
+    "suggested_next_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Action steps the AI suggested"
+    },
+    "suggested_resources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Resources/internal pages the AI suggested"
+    },
+    "is_crisis": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when crisis keywords detected"
+    },
+    "saved_to_profile": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_favorite": {
+      "type": "boolean",
+      "default": false
+    },
+    "connected_goal_id": {
+      "type": "string"
+    },
+    "connected_resource_id": {
+      "type": "string"
+    },
+    "connected_plan_id": {
+      "type": "string"
+    },
+    "follow_ups": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "user_message": {
+            "type": "string"
+          },
+          "ai_response": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "user_email",
+    "user_message"
+  ]
+}
