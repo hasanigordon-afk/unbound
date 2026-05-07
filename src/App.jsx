@@ -82,6 +82,9 @@ import WellnessPlanBuilder from './pages/WellnessPlanBuilder';
 import WellnessPlanView from './pages/WellnessPlanView';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
+import { ThemeProvider } from '@/lib/ThemeContext';
+import AmbientBackground from '@/components/shared/AmbientBackground';
+import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -111,13 +114,14 @@ const AuthenticatedApp = () => {
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center" style={{ background: "#F7F3EE" }}>
+      <div className="fixed inset-0 flex items-center justify-center" style={{ background: "var(--bg)" }}>
         <div style={{
           width: 36, height: 36,
-          border: "3px solid rgba(184,130,58,0.15)",
-          borderTopColor: "#B8823A",
+          border: "3px solid var(--border)",
+          borderTopColor: "var(--accent)",
           borderRadius: "50%",
           animation: "spin 0.8s linear infinite",
+          boxShadow: "var(--glow)",
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
@@ -236,15 +240,19 @@ const AuthenticatedApp = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <NavigationTracker />
-            <AuthenticatedApp />
-          </Router>
-          <Toaster />
-        </QueryClientProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AmbientBackground />
+        <AuthProvider>
+          <QueryClientProvider client={queryClientInstance}>
+            <Router>
+              <NavigationTracker />
+              <AuthenticatedApp />
+              <ThemeSwitcher />
+            </Router>
+            <Toaster />
+          </QueryClientProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
