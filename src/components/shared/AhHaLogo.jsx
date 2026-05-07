@@ -11,7 +11,7 @@ import React from "react";
  *  - showTagline: render the "Rebuild · Recover · Rise" tagline (default false)
  *  - layout: "row" | "column" (default "row")
  */
-const LOGO_URL = "https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/f9caa64cc_generated_image.png";
+const LOGO_URL = "https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/d23392bf7_0941C65E-DE02-4D65-94CA-56262B999EDD.png";
 
 export default function ResiliantLogo({
   size = 40,
@@ -43,6 +43,9 @@ export default function ResiliantLogo({
           objectFit: "contain",
           flexShrink: 0,
           display: "block",
+          borderRadius: Math.round(size * 0.18),
+          background: "#000",
+          boxShadow: "0 0 22px rgba(240,183,83,0.35), 0 4px 14px rgba(0,0,0,0.45)",
         }}
       />
       {showWordmark && (
@@ -55,14 +58,14 @@ export default function ResiliantLogo({
             fontFamily: "'Lora', Georgia, serif",
             fontSize: Math.max(16, Math.round(size * 0.46)),
             fontWeight: 700,
-            color: "#0F1E3D",
+            color: "var(--text)",
             letterSpacing: "-.02em",
           }}>
-            Re<span style={{ color: "#C8932F" }}>-</span>siliant
+            Re<span style={{ color: "var(--gold)" }}>-</span>siliant
           </span>
           {showTagline && (
             <span style={{
-              fontSize: 9, color: "#C8932F", fontWeight: 700,
+              fontSize: 9, color: "var(--gold)", fontWeight: 700,
               letterSpacing: ".10em", textTransform: "uppercase", marginTop: 3,
             }}>
               Rebuild · Recover · Rise
