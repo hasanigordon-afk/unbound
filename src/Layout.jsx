@@ -1,18 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, LifeBuoy, Star, Heart, User } from "lucide-react";
-import { useCurrentUser } from "@/lib/useCurrentUser";
-import DonateButton from "@/components/donate/DonateButton";
-import AhHaLogo from "@/components/shared/AhHaLogo";
+import { Home, Compass, Sparkles, Users, User } from "lucide-react";
 import EmergencyFAB from "@/components/shared/EmergencyFAB";
 import DonateFAB from "@/components/shared/DonateFAB";
 
-const PARTICIPANT_NAV = [
-  { name: "Home",    icon: Home,     page: "Home",       href: "/" },
-  { name: "Help",    icon: LifeBuoy, page: "HelpHub",    href: "/HelpHub" },
-  { name: "Hope",    icon: Star,     page: "HopeHub",    href: "/HopeHub" },
-  { name: "Healing", icon: Heart,    page: "HealingHub", href: "/HealingHub" },
-  { name: "Profile", icon: User,     page: "Profile",    href: "/Profile" },
+const NAV = [
+  { name: "Home",      icon: Home,     page: "Home",          href: "/" },
+  { name: "Resources", icon: Compass,  page: "RecoveryHub",   href: "/RecoveryHub" },
+  { name: "Mentor",    icon: Sparkles, page: "SuperAgent",    href: "/SuperAgent", center: true },
+  { name: "Community", icon: Users,    page: "AhHaCommunity", href: "/AhHaCommunity" },
+  { name: "Profile",   icon: User,     page: "Profile",       href: "/Profile" },
 ];
 
 const HIDE_NAV_PAGES = [
@@ -26,13 +23,11 @@ const HIDE_NAV_PAGES = [
 
 export default function Layout({ children, currentPageName }) {
   const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
-  const { user } = useCurrentUser();
-  const navItems = PARTICIPANT_NAV;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "var(--bg)" }}>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "transparent" }}>
 
-      <div className="flex-1 pb-20">
+      <div className="flex-1" style={{ paddingBottom: showNav ? 110 : 24 }}>
         {children}
       </div>
 
@@ -40,58 +35,91 @@ export default function Layout({ children, currentPageName }) {
       <DonateFAB />
 
       {showNav && (
-        <nav style={{
-          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
-          background: "rgba(255,255,255,0.97)",
-          borderTop: "1px solid #E5EEF1",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          paddingBottom: "env(safe-area-inset-bottom, 0px)",
+        <nav aria-label="Primary" style={{
+          position: "fixed",
+          left: "50%", bottom: 18, transform: "translateX(-50%)",
+          zIndex: 50,
+          width: "calc(100% - 24px)", maxWidth: 460,
+          padding: "10px 8px",
+          background: "var(--card)",
+          border: "1px solid var(--border-glow)",
+          borderRadius: 999,
+          backdropFilter: "blur(28px) saturate(160%)",
+          WebkitBackdropFilter: "blur(28px) saturate(160%)",
+          boxShadow: "var(--glow), 0 18px 40px rgba(0,0,0,0.45)",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          paddingBottom: "calc(10px + env(safe-area-inset-bottom, 0px))",
         }}>
-          <div style={{ maxWidth: 480, margin: "0 auto", display: "flex" }}>
-            {navItems.map(({ name, icon: Icon, page, href }) => {
-              const isActive = currentPageName === page;
+          {NAV.map(({ name, icon: Icon, page, href, center }) => {
+            const isActive = currentPageName === page;
+            if (center) {
               return (
-                <Link
-                  key={page}
-                  to={href || "/"}
-                  style={{
-                    flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
-                    gap: 4, paddingTop: 10, paddingBottom: 10,
-                    color: isActive ? "var(--amber)" : "var(--text-dim)", textDecoration: "none",
-                  }}
-                >
+                <Link key={page} to={href} aria-label={name} style={{
+                  textDecoration: "none",
+                  flexShrink: 0,
+                  marginTop: -28,
+                }}>
                   <div style={{
-                    padding: "5px 14px", borderRadius: 10,
-                    background: isActive ? "var(--sand-dim)" : "transparent",
-                    transition: "all 0.2s ease",
+                    width: 56, height: 56, borderRadius: "50%",
+                    background: "linear-gradient(135deg, var(--accent), var(--purple))",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "#fff",
+                    border: "1px solid var(--border-glow)",
+                    boxShadow: "var(--glow), 0 8px 22px rgba(0,0,0,0.35)",
+                    animation: "navCenterPulse 3s ease-in-out infinite",
+                    position: "relative",
                   }}>
-                    <Icon style={{ width: 20, height: 20 }} strokeWidth={isActive ? 2 : 1.5} />
+                    <span aria-hidden style={{
+                      position: "absolute", inset: -6, borderRadius: "50%",
+                      background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+                      opacity: 0.55, filter: "blur(6px)",
+                      animation: "navCenterHalo 2.6s ease-in-out infinite",
+                      pointerEvents: "none",
+                    }} />
+                    <Icon style={{ width: 22, height: 22, position: "relative" }} strokeWidth={2.2} />
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, letterSpacing: ".03em", fontFamily: "'DM Sans', sans-serif" }}>{name}</span>
                 </Link>
               );
-            })}
-          </div>
-        </nav>
-      )}
+            }
+            return (
+              <Link
+                key={page}
+                to={href}
+                aria-label={name}
+                style={{
+                  flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+                  gap: 3, padding: "6px 0",
+                  textDecoration: "none",
+                  color: isActive ? "var(--accent)" : "var(--text-muted)",
+                  transition: "color .18s",
+                  position: "relative",
+                }}
+              >
+                <div style={{
+                  padding: "5px 12px", borderRadius: 12,
+                  background: isActive ? "var(--navy-dim)" : "transparent",
+                  border: isActive ? "1px solid var(--border-glow)" : "1px solid transparent",
+                  boxShadow: isActive ? "var(--glow)" : "none",
+                  transition: "all .22s cubic-bezier(.22,1,.36,1)",
+                }}>
+                  <Icon style={{ width: 18, height: 18 }} strokeWidth={isActive ? 2.2 : 1.6} />
+                </div>
+                <span style={{
+                  fontSize: 9.5,
+                  fontWeight: isActive ? 700 : 500,
+                  letterSpacing: ".08em",
+                  textTransform: "uppercase",
+                  fontFamily: "'Space Grotesk', 'DM Sans', sans-serif",
+                }}>{name}</span>
+              </Link>
+            );
+          })}
 
-      {showNav && (
-        <footer style={{
-          borderTop: "1px solid var(--border)", padding: "16px 24px",
-          textAlign: "center", background: "var(--bg)", paddingBottom: 90,
-        }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
-            <AhHaLogo size={28} />
-          </div>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
-            <DonateButton variant="ghost" label="Support the Mission" />
-          </div>
-          <p style={{ fontSize: 11, color: "var(--text-dim)", lineHeight: 1.6 }}>
-            Re-siliant — Rebuild. Recover. Rise.<br/>
-            Support tool only. In a crisis, call 911 or 988.
-          </p>
-        </footer>
+          <style>{`
+            @keyframes navCenterPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+            @keyframes navCenterHalo  { 0%,100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.3); opacity: .85; } }
+          `}</style>
+        </nav>
       )}
     </div>
   );
