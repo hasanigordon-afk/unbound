@@ -168,11 +168,11 @@ export default function Home() {
         {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
         <div style={{ background: "#FFFFFF", borderBottom: "1px solid #E5EEF1", padding: "64px 24px 32px" }}>
 
-          {/* Brand logo + admin/donate/greeting chip */}
+          {/* Brand logo (top-left) + admin/donate/greeting chip */}
           <div className="fu" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, gap: 8 }}>
-            {/* Logo lockup */}
-            <Link to={createPageUrl("Home")} style={{ textDecoration: "none" }}>
-              <AhHaLogo size={44} showTagline={true} />
+            {/* Logo lockup — pinned top-left */}
+            <Link to={createPageUrl("Home")} style={{ textDecoration: "none", display: "inline-flex" }}>
+              <AhHaLogo size={52} showWordmark={true} showTagline={true} />
             </Link>
 
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
