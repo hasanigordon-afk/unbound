@@ -13,6 +13,8 @@ import DashAIMentor         from "@/components/dashboard/DashAIMentor";
 import DashResourceSnapshot from "@/components/dashboard/DashResourceSnapshot";
 import DashCommunityMomentum from "@/components/dashboard/DashCommunityMomentum";
 import SectionHeading       from "@/components/dashboard/SectionHeading";
+import CalmingMusicWidget   from "@/components/home/CalmingMusicWidget";
+import RRDailyRiseWidget    from "@/components/riserecover/RRDailyRiseWidget";
 
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import InAppNudge        from "@/components/subscription/InAppNudge";
@@ -160,6 +162,14 @@ export default function Home() {
         {/* AI MENTOR */}
         <SectionHeading>AI Mentor</SectionHeading>
         <DashAIMentor />
+
+        {/* DAILY RISE VIDEO */}
+        <SectionHeading accent="var(--purple)">Rise &amp; Recover · Daily</SectionHeading>
+        <RRDailyRiseWidget />
+
+        {/* CALMING MUSIC */}
+        <SectionHeading>Calming Music</SectionHeading>
+        <CalmingMusicWidget />
 
         {/* RESOURCES */}
         <SectionHeading>Resources Near You</SectionHeading>

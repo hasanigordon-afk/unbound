@@ -1,0 +1,109 @@
+{
+  "name": "RiseVideo",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "speaker": {
+      "type": "string",
+      "description": "Person featured in the video"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "celebrity_recovery",
+        "redemption",
+        "addiction_education",
+        "motivation_discipline",
+        "veteran_recovery",
+        "ahha_moments",
+        "mental_health",
+        "trauma_recovery",
+        "faith_hope"
+      ],
+      "default": "motivation_discipline"
+    },
+    "video_url": {
+      "type": "string",
+      "description": "YouTube embed URL or direct mp4"
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "default": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "emotional_themes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "hope",
+          "resilience",
+          "redemption",
+          "transformation",
+          "healing",
+          "growth",
+          "discipline",
+          "faith"
+        ]
+      },
+      "default": []
+    },
+    "inspirational_quote": {
+      "type": "string",
+      "description": "Pull-quote shown as overlay"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_daily_pick": {
+      "type": "boolean",
+      "default": false
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    },
+    "save_count": {
+      "type": "number",
+      "default": 0
+    },
+    "stage_targets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "newly_sober",
+          "early_recovery",
+          "long_term",
+          "veteran",
+          "discouraged",
+          "rebuilding",
+          "any"
+        ]
+      },
+      "default": [
+        "any"
+      ]
+    }
+  },
+  "required": [
+    "title",
+    "category",
+    "video_url"
+  ]
+}
