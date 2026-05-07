@@ -17,6 +17,7 @@ import RecoveryScoreRing from "@/components/home/RecoveryScoreRing";
 import MyFocusPill from "@/components/home/MyFocusPill";
 import AhHaLogo from "@/components/shared/AhHaLogo";
 import DailyMindset from "@/components/home/DailyMindset";
+import CalmingMusicWidget from "@/components/home/CalmingMusicWidget";
 
 /* ── Stage config ─────────────────────────────────────────────────────────── */
 const STAGES = [
@@ -408,6 +409,9 @@ export default function Home() {
 
           {/* ── 3.6 DAILY MINDSET ─────────────────────────────────────────── */}
           <DailyMindset />
+
+          {/* ── 3.7 CALMING MUSIC ─────────────────────────────────────────── */}
+          <CalmingMusicWidget />
 
           {/* ── 4. TODAY LIST ─────────────────────────────────────────────── */}
           <p style={{ fontSize: 10, fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12 }}>
