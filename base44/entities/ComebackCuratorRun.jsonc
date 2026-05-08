@@ -1,0 +1,45 @@
+{
+  "name": "ComebackCuratorRun",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string"
+    },
+    "keyword": {
+      "type": "string"
+    },
+    "videos_found": {
+      "type": "number",
+      "default": 0
+    },
+    "videos_saved": {
+      "type": "number",
+      "default": 0
+    },
+    "videos_rejected": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "running",
+        "success",
+        "error"
+      ],
+      "default": "running"
+    },
+    "error_message": {
+      "type": "string"
+    },
+    "run_notes": {
+      "type": "string"
+    },
+    "triggered_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "category"
+  ]
+}

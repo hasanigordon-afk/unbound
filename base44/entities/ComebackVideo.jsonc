@@ -1,0 +1,115 @@
+{
+  "name": "ComebackVideo",
+  "type": "object",
+  "properties": {
+    "youtube_id": {
+      "type": "string",
+      "description": "YouTube video ID (the v= param)"
+    },
+    "youtube_url": {
+      "type": "string",
+      "description": "Full YouTube URL"
+    },
+    "embed_url": {
+      "type": "string",
+      "description": "YouTube embed URL (https://www.youtube.com/embed/<id>)"
+    },
+    "title": {
+      "type": "string"
+    },
+    "channel_name": {
+      "type": "string"
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "duration_seconds": {
+      "type": "number"
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "recovery_stories",
+        "celebrity_comebacks",
+        "veteran_motivation",
+        "reentry_success",
+        "never_give_up",
+        "mental_health_wins",
+        "rock_bottom_to_rebuild",
+        "faith_hope",
+        "fitness_comebacks",
+        "everyday_heroes"
+      ]
+    },
+    "ai_summary": {
+      "type": "string",
+      "description": "Short AI-generated summary (2-3 sentences)"
+    },
+    "ai_takeaway": {
+      "type": "string",
+      "description": "One-line inspirational takeaway"
+    },
+    "ai_safety_score": {
+      "type": "number",
+      "description": "0-100, AI-rated safety / positivity"
+    },
+    "ai_safety_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Detected risk flags (drug_glorification, violence, hopelessness, etc.)"
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    },
+    "review_notes": {
+      "type": "string"
+    },
+    "reviewed_by": {
+      "type": "string"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Featured in the portal"
+    },
+    "is_featured_today": {
+      "type": "boolean",
+      "default": false,
+      "description": "Featured Comeback of the Day"
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    },
+    "save_count": {
+      "type": "number",
+      "default": 0
+    },
+    "source_keyword": {
+      "type": "string",
+      "description": "Search keyword the curator used to find this video"
+    }
+  },
+  "required": [
+    "youtube_id",
+    "title",
+    "category"
+  ]
+}
