@@ -80,7 +80,6 @@ import SuperAgentHistory from './pages/SuperAgentHistory';
 import WellnessPlan from './pages/WellnessPlan';
 import WellnessPlanBuilder from './pages/WellnessPlanBuilder';
 import WellnessPlanView from './pages/WellnessPlanView';
-import RiseRecover from './pages/RiseRecover';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 import { ThemeProvider } from '@/lib/ThemeContext';
@@ -231,7 +230,6 @@ const AuthenticatedApp = () => {
       <Route path="/WellnessPlan"                        element={<LW name="WellnessPlan"><WellnessPlan /></LW>} />
       <Route path="/WellnessPlanBuilder"                 element={<LW name="WellnessPlanBuilder"><WellnessPlanBuilder /></LW>} />
       <Route path="/WellnessPlanView"                    element={<LW name="WellnessPlanView"><WellnessPlanView /></LW>} />
-      <Route path="/RiseRecover"                          element={<LW name="RiseRecover"><RiseRecover /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
