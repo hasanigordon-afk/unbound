@@ -26,6 +26,12 @@ export const COMEBACK_CATEGORIES = [
       "famous people recovery story",
       "celebrity overcame addiction interview",
       "celebrity redemption story",
+      "celebrity addiction recovery interview",
+      "celebrity sobriety story",
+      "famous athlete addiction recovery",
+      "musician sobriety interview",
+      "actor overcame addiction story",
+      "celebrity rehab journey",
     ],
   },
   {

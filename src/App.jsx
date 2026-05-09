@@ -80,6 +80,8 @@ import SuperAgentHistory from './pages/SuperAgentHistory';
 import WellnessPlan from './pages/WellnessPlan';
 import WellnessPlanBuilder from './pages/WellnessPlanBuilder';
 import WellnessPlanView from './pages/WellnessPlanView';
+import ComebackPortal from './pages/ComebackPortal.jsx';
+import ComebackReview from './pages/ComebackReview.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 import { ThemeProvider } from '@/lib/ThemeContext';
@@ -230,6 +232,8 @@ const AuthenticatedApp = () => {
       <Route path="/WellnessPlan"                        element={<LW name="WellnessPlan"><WellnessPlan /></LW>} />
       <Route path="/WellnessPlanBuilder"                 element={<LW name="WellnessPlanBuilder"><WellnessPlanBuilder /></LW>} />
       <Route path="/WellnessPlanView"                    element={<LW name="WellnessPlanView"><WellnessPlanView /></LW>} />
+      <Route path="/ComebackPortal"                      element={<LW name="ComebackPortal"><ComebackPortal /></LW>} />
+      <Route path="/ComebackReview"                      element={<AW name="ComebackReview"><ComebackReview /></AW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

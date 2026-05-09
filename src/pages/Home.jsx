@@ -16,6 +16,8 @@ import SectionHeading       from "@/components/dashboard/SectionHeading";
 
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import InAppNudge        from "@/components/subscription/InAppNudge";
+import FeaturedComebackWidget from "@/components/home/FeaturedComebackWidget";
+import ComebackPortalCard    from "@/components/home/ComebackPortalCard";
 import { trackHomeVisit } from "@/lib/subscriptionEngine";
 import { getCampaignSettings } from "@/lib/campaignSettings";
 
@@ -152,6 +154,15 @@ export default function Home() {
 
         {/* SUBSCRIBER NUDGE (preserved) */}
         <InAppNudge />
+
+        {/* COMEBACK PORTAL ENTRY */}
+        <SectionHeading accent="var(--gold)">Comeback Portal</SectionHeading>
+        <ComebackPortalCard />
+
+        {/* FEATURED COMEBACK OF THE DAY */}
+        <div style={{ marginTop: 14 }}>
+          <FeaturedComebackWidget />
+        </div>
 
         {/* QUICK ACTIONS */}
         <SectionHeading>Quick Actions</SectionHeading>
