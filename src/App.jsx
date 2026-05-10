@@ -91,6 +91,7 @@ import AIStein from '@/components/aistein/AIStein';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
+import Phase4PolishLayer from '@/components/shared/Phase4PolishLayer';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -254,6 +255,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <AmbientBackground />
+        <Phase4PolishLayer />
         <AuthProvider>
           <QueryClientProvider client={queryClientInstance}>
             <Router>
