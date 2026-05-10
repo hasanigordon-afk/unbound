@@ -127,6 +127,13 @@ export default function Home() {
         {/* HERO */}
         <DashHeroGreeting firstName={firstName} stage={stage.name} />
 
+        {/* COMEBACK PORTAL — FEATURED */}
+        <SectionHeading accent="var(--gold)">Comeback Portal</SectionHeading>
+        <ComebackPortalCard />
+        <div style={{ marginTop: 14 }}>
+          <FeaturedComebackWidget />
+        </div>
+
         {/* FOCUS OF THE DAY */}
         <div style={{ marginTop: 18 }}>
           <DashFocusOfDay />
@@ -154,15 +161,6 @@ export default function Home() {
 
         {/* SUBSCRIBER NUDGE (preserved) */}
         <InAppNudge />
-
-        {/* COMEBACK PORTAL ENTRY */}
-        <SectionHeading accent="var(--gold)">Comeback Portal</SectionHeading>
-        <ComebackPortalCard />
-
-        {/* FEATURED COMEBACK OF THE DAY */}
-        <div style={{ marginTop: 14 }}>
-          <FeaturedComebackWidget />
-        </div>
 
         {/* QUICK ACTIONS */}
         <SectionHeading>Quick Actions</SectionHeading>
