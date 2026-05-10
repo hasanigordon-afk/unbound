@@ -1,5 +1,6 @@
 import React from "react";
-import { Sun, Hammer, Film, Sprout, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Sun, Hammer, Film, Sprout, ArrowRight } from "lucide-react";
 
 const PILLARS = [
   {
@@ -8,6 +9,7 @@ const PILLARS = [
     icon: Sun,
     accent: "var(--accent)",
     desc: "Structure, accountability, and focus — one day at a time.",
+    to: "/DailyHub",
   },
   {
     key: "rebuild",
@@ -15,6 +17,7 @@ const PILLARS = [
     icon: Hammer,
     accent: "var(--gold)",
     desc: "Real-world resources to rebuild stability and independence.",
+    to: "/RebuildHub",
   },
   {
     key: "stories",
@@ -22,6 +25,7 @@ const PILLARS = [
     icon: Film,
     accent: "var(--purple)",
     desc: "Real comeback stories that remind you you're not alone.",
+    to: "/StoriesHub",
   },
   {
     key: "growth",
@@ -29,6 +33,7 @@ const PILLARS = [
     icon: Sprout,
     accent: "var(--green)",
     desc: "Wellness, education, and tools for becoming stronger.",
+    to: "/GrowthHub",
   },
 ];
 
@@ -40,8 +45,9 @@ export default function PillarsGrid() {
       {PILLARS.map((p, i) => {
         const Icon = p.icon;
         return (
-          <div
+          <Link
             key={p.key}
+            to={p.to}
             className="fade-up"
             style={{
               position: "relative",
@@ -52,23 +58,28 @@ export default function PillarsGrid() {
               backdropFilter: "blur(18px)",
               WebkitBackdropFilter: "blur(18px)",
               animationDelay: `${i * 0.06}s`,
-              opacity: 0.86,
-              cursor: "default",
+              cursor: "pointer",
               overflow: "hidden",
+              textDecoration: "none",
+              transition: "all .2s",
+              display: "block",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = p.accent;
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = `0 0 22px ${p.accent}33`;
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = "var(--border)";
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            {/* Coming Soon badge */}
-            <div style={{
-              position: "absolute", top: 10, right: 10,
-              display: "inline-flex", alignItems: "center", gap: 3,
-              padding: "2px 7px", borderRadius: 999,
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-              fontSize: 8.5, fontWeight: 700, letterSpacing: ".1em",
-              color: "var(--text-dim)", textTransform: "uppercase",
-            }}>
-              <Lock style={{ width: 8, height: 8 }} /> Soon
-            </div>
+            {/* Arrow indicator */}
+            <ArrowRight style={{
+              position: "absolute", top: 12, right: 12,
+              width: 14, height: 14, color: p.accent, opacity: 0.7,
+            }} />
 
             {/* Glow accent */}
             <div aria-hidden style={{
@@ -104,7 +115,7 @@ export default function PillarsGrid() {
             }}>
               {p.desc}
             </p>
-          </div>
+          </Link>
         );
       })}
     </div>

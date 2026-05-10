@@ -82,6 +82,10 @@ import WellnessPlanBuilder from './pages/WellnessPlanBuilder';
 import WellnessPlanView from './pages/WellnessPlanView';
 import ComebackPortal from './pages/ComebackPortal.jsx';
 import ComebackReview from './pages/ComebackReview.jsx';
+import DailyHub from './pages/DailyHub.jsx';
+import RebuildHub from './pages/RebuildHub.jsx';
+import StoriesHub from './pages/StoriesHub.jsx';
+import GrowthHub from './pages/GrowthHub.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 import { ThemeProvider } from '@/lib/ThemeContext';
@@ -234,6 +238,10 @@ const AuthenticatedApp = () => {
       <Route path="/WellnessPlanView"                    element={<LW name="WellnessPlanView"><WellnessPlanView /></LW>} />
       <Route path="/ComebackPortal"                      element={<LW name="ComebackPortal"><ComebackPortal /></LW>} />
       <Route path="/ComebackReview"                      element={<AW name="ComebackReview"><ComebackReview /></AW>} />
+      <Route path="/DailyHub"                            element={<LW name="DailyHub"><DailyHub /></LW>} />
+      <Route path="/RebuildHub"                          element={<LW name="RebuildHub"><RebuildHub /></LW>} />
+      <Route path="/StoriesHub"                          element={<LW name="StoriesHub"><StoriesHub /></LW>} />
+      <Route path="/GrowthHub"                           element={<LW name="GrowthHub"><GrowthHub /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
