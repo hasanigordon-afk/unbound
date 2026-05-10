@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Loader2 } from "lucide-react";
 
-import DashHeroGreeting     from "@/components/dashboard/DashHeroGreeting";
 import DashFocusOfDay       from "@/components/dashboard/DashFocusOfDay";
 import DashMomentum         from "@/components/dashboard/DashMomentum";
 import DashQuickActions     from "@/components/dashboard/DashQuickActions";
@@ -14,6 +13,8 @@ import DashResourceSnapshot from "@/components/dashboard/DashResourceSnapshot";
 import DashCommunityMomentum from "@/components/dashboard/DashCommunityMomentum";
 import SectionHeading       from "@/components/dashboard/SectionHeading";
 
+import MarketingHero    from "@/components/home/MarketingHero";
+import PillarsGrid      from "@/components/home/PillarsGrid";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import InAppNudge        from "@/components/subscription/InAppNudge";
 import FeaturedComebackWidget from "@/components/home/FeaturedComebackWidget";
@@ -124,8 +125,12 @@ export default function Home() {
     <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 18px" }}>
 
-        {/* HERO */}
-        <DashHeroGreeting firstName={firstName} stage={stage.name} />
+        {/* MARKETING HERO */}
+        <MarketingHero />
+
+        {/* THE 4 PILLARS */}
+        <SectionHeading>The 4 Pillars</SectionHeading>
+        <PillarsGrid />
 
         {/* COMEBACK PORTAL — FEATURED */}
         <SectionHeading accent="var(--gold)">Comeback Portal</SectionHeading>
