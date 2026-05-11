@@ -1,0 +1,134 @@
+{
+  "name": "VideoContent",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Video title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Video description"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "motivation",
+        "recovery",
+        "veterans",
+        "reentry",
+        "mental_health",
+        "fitness_health",
+        "discipline",
+        "celebrity_comebacks",
+        "inspirational_stories",
+        "ah_ha_moments",
+        "faith_hope",
+        "music_for_strength",
+        "educational",
+        "ai_technology",
+        "community_stories"
+      ],
+      "default": "motivation"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "upload",
+        "youtube",
+        "tiktok",
+        "instagram",
+        "external_embed"
+      ],
+      "default": "upload"
+    },
+    "video_url": {
+      "type": "string",
+      "description": "Uploaded video file URL or source URL"
+    },
+    "embed_url": {
+      "type": "string",
+      "description": "Embeddable video URL"
+    },
+    "thumbnail_url": {
+      "type": "string",
+      "description": "Thumbnail image URL"
+    },
+    "inspirational_quote": {
+      "type": "string",
+      "description": "Optional quote overlay for the video card"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "published": {
+      "type": "boolean",
+      "default": true
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "pending_review",
+        "rejected"
+      ],
+      "default": "approved"
+    },
+    "upload_origin": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "default": "admin"
+    },
+    "anonymous_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    },
+    "like_count": {
+      "type": "number",
+      "default": 0
+    },
+    "save_count": {
+      "type": "number",
+      "default": 0
+    },
+    "share_count": {
+      "type": "number",
+      "default": 0
+    },
+    "ai_mood_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Future AI recommendation mood tags"
+    },
+    "ai_recovery_stage": {
+      "type": "string",
+      "description": "Future AI recommendation recovery stage"
+    },
+    "moderation_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "category",
+    "source_type"
+  ]
+}

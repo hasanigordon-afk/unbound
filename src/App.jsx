@@ -82,6 +82,7 @@ import WellnessPlanBuilder from './pages/WellnessPlanBuilder';
 import WellnessPlanView from './pages/WellnessPlanView';
 import ComebackPortal from './pages/ComebackPortal.jsx';
 import ComebackReview from './pages/ComebackReview.jsx';
+import VideoAdmin from './pages/VideoAdmin.jsx';
 import DailyHub from './pages/DailyHub.jsx';
 import RebuildHub from './pages/RebuildHub.jsx';
 import StoriesHub from './pages/StoriesHub.jsx';
@@ -239,6 +240,7 @@ const AuthenticatedApp = () => {
       <Route path="/WellnessPlanView"                    element={<LW name="WellnessPlanView"><WellnessPlanView /></LW>} />
       <Route path="/ComebackPortal"                      element={<LW name="ComebackPortal"><ComebackPortal /></LW>} />
       <Route path="/ComebackReview"                      element={<AW name="ComebackReview"><ComebackReview /></AW>} />
+      <Route path="/VideoAdmin"                          element={<AW name="VideoAdmin"><VideoAdmin /></AW>} />
       <Route path="/DailyHub"                            element={<LW name="DailyHub"><DailyHub /></LW>} />
       <Route path="/RebuildHub"                          element={<LW name="RebuildHub"><RebuildHub /></LW>} />
       <Route path="/StoriesHub"                          element={<LW name="StoriesHub"><StoriesHub /></LW>} />
