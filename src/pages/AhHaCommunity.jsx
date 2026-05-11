@@ -58,11 +58,11 @@ function ReactionBar({ story, userReactions, onReact, compact }) {
         style={{
           display: "flex", alignItems: "center", gap: 5,
           padding: compact ? "6px 12px" : "8px 14px", borderRadius: 20,
-          border: "1px solid #E8E2D9", background: "#FDFAF6",
-          cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#4A3F35",
+          border: "1px solid var(--border)", background: "var(--card)",
+          cursor: "pointer", fontSize: 12, fontWeight: 700, color: "var(--text-muted)",
         }}
       >
-        <Heart style={{ width: 13, height: 13, color: total > 0 ? "#B8823A" : "#9B8E83" }} />
+        <Heart style={{ width: 13, height: 13, color: total > 0 ? "var(--gold)" : "var(--text-muted)" }} />
         {total > 0 ? total : "React"}
       </button>
 
@@ -71,7 +71,7 @@ function ReactionBar({ story, userReactions, onReact, compact }) {
           <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 40 }} />
           <div style={{
             position: "absolute", bottom: "calc(100% + 8px)", left: 0, zIndex: 50,
-            background: "#FDFAF6", border: "1px solid #E8E2D9", borderRadius: 16,
+            background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16,
             padding: "10px 8px", display: "flex", gap: 4, boxShadow: "0 4px 20px rgba(0,0,0,.12)",
           }}>
             {REACTIONS.map(r => {
@@ -84,7 +84,7 @@ function ReactionBar({ story, userReactions, onReact, compact }) {
                   transition: "background .15s",
                 }}>
                   <span style={{ fontSize: 20 }}>{r.emoji}</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: reacted ? "#B8823A" : "#9B8E83", whiteSpace: "nowrap" }}>{r.label}</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: reacted ? "var(--gold)" : "var(--text-muted)", whiteSpace: "nowrap" }}>{r.label}</span>
                 </button>
               );
             })}
@@ -101,27 +101,27 @@ function ReportModal({ onClose, onSubmit }) {
   const [details, setDetails] = useState("");
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 60, background: "rgba(0,0,0,.5)", display: "flex", alignItems: "flex-end" }}>
-      <div style={{ width: "100%", maxWidth: 480, margin: "0 auto", background: "#FDFAF6", borderRadius: "20px 20px 0 0", padding: "24px 20px 40px" }}>
+      <div style={{ width: "100%", maxWidth: 480, margin: "0 auto", background: "var(--card)", borderRadius: "20px 20px 0 0", padding: "24px 20px 40px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <p style={{ fontFamily: "'Lora', serif", fontSize: 16, fontWeight: 600, color: "#1C1410" }}>Report this story</p>
-          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#9B8E83", fontSize: 22 }}>✕</button>
+          <p style={{ fontFamily: "'Lora', serif", fontSize: 16, fontWeight: 600, color: "var(--text)" }}>Report this story</p>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", fontSize: 22 }}>✕</button>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
           {REPORT_REASONS.map(r => (
             <button key={r.value} onClick={() => setReason(r.value)} style={{
               padding: "11px 14px", borderRadius: 10, textAlign: "left", cursor: "pointer",
-              border: reason === r.value ? "1.5px solid #B8823A" : "1px solid #E8E2D9",
-              background: reason === r.value ? "rgba(184,130,58,.07)" : "#FDFAF6",
-              fontSize: 13, fontWeight: reason === r.value ? 700 : 500, color: "#1C1410",
+              border: reason === r.value ? "1.5px solid var(--gold)" : "1px solid var(--border)",
+              background: reason === r.value ? "rgba(184,130,58,.07)" : "var(--card)",
+              fontSize: 13, fontWeight: reason === r.value ? 700 : 500, color: "var(--text)",
             }}>{r.label}</button>
           ))}
         </div>
         <textarea value={details} onChange={e => setDetails(e.target.value)} placeholder="Optional details…" rows={2}
-          style={{ width: "100%", resize: "none", padding: "11px 12px", borderRadius: 10, border: "1px solid #E8E2D9",
-            background: "#F7F3EE", fontSize: 13, color: "#1C1410", outline: "none", boxSizing: "border-box", marginBottom: 14 }} />
+          style={{ width: "100%", resize: "none", padding: "11px 12px", borderRadius: 10, border: "1px solid var(--border)",
+            background: "var(--surface)", fontSize: 13, color: "var(--text)", outline: "none", boxSizing: "border-box", marginBottom: 14 }} />
         <button onClick={() => onSubmit(reason, details)} disabled={!reason} style={{
           width: "100%", padding: "14px", borderRadius: 50, border: "none", cursor: reason ? "pointer" : "default",
-          background: reason ? "#C9534F" : "#E8E2D9", color: "#fff", fontWeight: 700, fontSize: 14,
+          background: reason ? "#C9534F" : "var(--border)", color: "#fff", fontWeight: 700, fontSize: 14,
         }}>Submit Report</button>
       </div>
     </div>
@@ -156,7 +156,7 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
   ];
 
   return (
-    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 120 }}>
+    <div style={{ background: "transparent", minHeight: "100vh", paddingBottom: 120, color: "var(--text)" }}>
       {showReport && (
         <ReportModal
           onClose={() => setShowReport(false)}
@@ -165,38 +165,38 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
       )}
 
       {/* Header */}
-      <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "56px 20px 24px" }}>
+      <div style={{ background: "var(--card)", borderBottom: "1px solid var(--border)", padding: "56px 20px 24px" }}>
         <button onClick={onBack} style={{
           display: "flex", alignItems: "center", gap: 6, background: "none", border: "none",
-          color: "#9B8E83", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 16, padding: 0,
+          color: "var(--text-muted)", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 16, padding: 0,
         }}>
           <ArrowLeft style={{ width: 15, height: 15 }} /> Community
         </button>
 
         {story.featured_status && (
           <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 10 }}>
-            <Star style={{ width: 13, height: 13, color: "#B8823A" }} />
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em" }}>Featured Story</span>
+            <Star style={{ width: 13, height: 13, color: "var(--gold)" }} />
+            <span style={{ fontSize: 10, fontWeight: 700, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em" }}>Featured Story</span>
           </div>
         )}
 
-        <h1 style={{ fontFamily: "'Lora', serif", fontSize: 22, fontWeight: 600, color: "#1C1410", lineHeight: 1.3, marginBottom: 10 }}>
+        <h1 style={{ fontFamily: "'Lora', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", lineHeight: 1.3, marginBottom: 10 }}>
           {story.title}
         </h1>
 
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#4A3F35" }}>{displayName(story)}</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "var(--text-muted)" }}>{displayName(story)}</span>
           {story.clean_time_value && story.clean_time_unit && (
-            <span style={{ fontSize: 12, color: "#9B8E83" }}>• {story.clean_time_value} {story.clean_time_unit} in recovery</span>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>• {story.clean_time_value} {story.clean_time_unit} in recovery</span>
           )}
-          <span style={{ fontSize: 12, color: "#9B8E83" }}>• {readTime(story)} min read</span>
+          <span style={{ fontSize: 12, color: "var(--text-muted)" }}>• {readTime(story)} min read</span>
         </div>
 
         {(story.ai_tags || []).length > 0 && (
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {story.ai_tags.map(t => (
               <span key={t} style={{ fontSize: 11, padding: "3px 10px", borderRadius: 20,
-                background: "rgba(184,130,58,.09)", color: "#B8823A", border: "1px solid rgba(184,130,58,.2)" }}>{t}</span>
+                background: "rgba(184,130,58,.09)", color: "var(--gold)", border: "1px solid rgba(184,130,58,.2)" }}>{t}</span>
             ))}
           </div>
         )}
@@ -207,21 +207,21 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
         {/* Story sections */}
         {SECTION_LABELS.map(s => story[s.key] ? (
           <div key={s.key} style={{ marginBottom: 20 }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>{s.label}</p>
-            <p style={{ fontSize: 15, color: "#4A3F35", lineHeight: 1.8, fontStyle: "italic" }}>"{story[s.key]}"</p>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>{s.label}</p>
+            <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.8, fontStyle: "italic" }}>"{story[s.key]}"</p>
           </div>
         ) : null)}
 
         {/* Action bar */}
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid #E8E2D9", marginBottom: 24 }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid var(--border)", marginBottom: 24 }}>
           <ReactionBar story={story} userReactions={userReactions} onReact={(t) => onReact(story, t)} />
 
           <button onClick={() => onSave(story)} style={{
             display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 20,
-            border: "1px solid #E8E2D9",
-            background: userSaved ? "rgba(184,130,58,.10)" : "#FDFAF6",
+            border: "1px solid var(--border)",
+            background: userSaved ? "rgba(184,130,58,.10)" : "var(--card)",
             cursor: "pointer", fontSize: 12, fontWeight: 700,
-            color: userSaved ? "#B8823A" : "#4A3F35",
+            color: userSaved ? "var(--gold)" : "var(--text-muted)",
           }}>
             <Bookmark style={{ width: 13, height: 13 }} />
             {userSaved ? "Saved" : "Save"}
@@ -229,8 +229,8 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
 
           <button onClick={() => setShowReport(true)} style={{
             display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 20,
-            border: "1px solid #E8E2D9", background: "#FDFAF6",
-            cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#9B8E83",
+            border: "1px solid var(--border)", background: "var(--card)",
+            cursor: "pointer", fontSize: 12, fontWeight: 700, color: "var(--text-muted)",
           }}>
             <Flag style={{ width: 13, height: 13 }} /> Report
           </button>
@@ -239,11 +239,11 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
         {/* Comments */}
         {story.comments_enabled !== false && (
           <div>
-            <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>
               Community Response
             </p>
             <div style={{ background: "rgba(184,130,58,.06)", border: "1px solid rgba(184,130,58,.15)", borderRadius: 12, padding: "10px 14px", marginBottom: 14 }}>
-              <p style={{ fontSize: 12, color: "#4A3F35", fontStyle: "italic" }}>
+              <p style={{ fontSize: 12, color: "var(--text-muted)", fontStyle: "italic" }}>
                 This space is for encouragement, not judgment.
               </p>
             </div>
@@ -253,28 +253,28 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
                 <textarea value={comment} onChange={e => setComment(e.target.value)}
                   placeholder="Leave an encouraging word…" rows={3}
                   style={{ width: "100%", resize: "none", padding: "12px 14px", borderRadius: 12,
-                    border: "1px solid #E8E2D9", background: "#FDFAF6", fontSize: 13, color: "#1C1410",
+                    border: "1px solid var(--border)", background: "var(--card)", fontSize: 13, color: "var(--text)",
                     outline: "none", boxSizing: "border-box", marginBottom: 8 }} />
                 <button onClick={() => comment.trim() && commentMutation.mutate()} disabled={!comment.trim() || commentMutation.isPending}
                   style={{ padding: "10px 22px", borderRadius: 50, border: "none", cursor: comment.trim() ? "pointer" : "default",
-                    background: comment.trim() ? "#B8823A" : "#E8E2D9", color: "#fff", fontWeight: 700, fontSize: 13 }}>
+                    background: comment.trim() ? "var(--gold)" : "var(--border)", color: "#fff", fontWeight: 700, fontSize: 13 }}>
                   {commentMutation.isPending ? "Posting…" : "Post →"}
                 </button>
               </div>
             )}
 
             {storyComments.map(c => (
-              <div key={c.id} style={{ padding: "12px 14px", borderRadius: 12, background: "#FDFAF6",
-                border: ".5px solid #E8E2D9", marginBottom: 8 }}>
-                <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.65 }}>{c.comment_text}</p>
-                <p style={{ fontSize: 11, color: "#9B8E83", marginTop: 6 }}>
+              <div key={c.id} style={{ padding: "12px 14px", borderRadius: 12, background: "var(--card)",
+                border: ".5px solid var(--border)", marginBottom: 8 }}>
+                <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.65 }}>{c.comment_text}</p>
+                <p style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 6 }}>
                   {new Date(c.created_date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                 </p>
               </div>
             ))}
 
             {storyComments.length === 0 && (
-              <p style={{ fontSize: 13, color: "#9B8E83", textAlign: "center", padding: "20px 0" }}>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", textAlign: "center", padding: "20px 0" }}>
                 Be the first to leave an encouraging word.
               </p>
             )}
@@ -300,11 +300,11 @@ function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, o
           onSubmit={(reason, details) => { onReport(story, reason, details); setShowReport(false); }}
         />
       )}
-      <div style={{ background: "#FDFAF6", border: ".5px solid #E8E2D9", borderRadius: 18, overflow: "hidden", marginBottom: 14 }}>
+      <div style={{ background: "var(--card)", border: ".5px solid var(--border)", borderRadius: 18, overflow: "hidden", marginBottom: 14 }}>
         {story.featured_status && (
           <div style={{ background: "linear-gradient(90deg, rgba(184,130,58,.15), rgba(184,130,58,.05))", padding: "8px 16px", display: "flex", alignItems: "center", gap: 6 }}>
-            <Star style={{ width: 12, height: 12, color: "#B8823A" }} />
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em" }}>Featured Story</span>
+            <Star style={{ width: 12, height: 12, color: "var(--gold)" }} />
+            <span style={{ fontSize: 10, fontWeight: 700, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em" }}>Featured Story</span>
           </div>
         )}
 
@@ -315,21 +315,21 @@ function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, o
               display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <span style={{ fontSize: 13 }}>✨</span>
             </div>
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#1C1410" }}>{name}</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "var(--text)" }}>{name}</span>
             {story.clean_time_value && story.clean_time_unit && (
-              <span style={{ fontSize: 11, color: "#9B8E83" }}>• {story.clean_time_value} {story.clean_time_unit} in recovery</span>
+              <span style={{ fontSize: 11, color: "var(--text-muted)" }}>• {story.clean_time_value} {story.clean_time_unit} in recovery</span>
             )}
-            <span style={{ fontSize: 11, color: "#9B8E83", marginLeft: "auto", display: "flex", alignItems: "center", gap: 3 }}>
+            <span style={{ fontSize: 11, color: "var(--text-muted)", marginLeft: "auto", display: "flex", alignItems: "center", gap: 3 }}>
               <Clock style={{ width: 11, height: 11 }} /> {readTime(story)} min
             </span>
           </div>
 
           {/* Title + preview */}
-          <h3 style={{ fontFamily: "'Lora', serif", fontSize: 17, fontWeight: 600, color: "#1C1410", lineHeight: 1.3, marginBottom: 8 }}>
+          <h3 style={{ fontFamily: "'Lora', serif", fontSize: 17, fontWeight: 600, color: "var(--text)", lineHeight: 1.3, marginBottom: 8 }}>
             {story.title || "Untitled Story"}
           </h3>
           {preview && (
-            <p style={{ fontSize: 13, color: "#4A3F35", lineHeight: 1.75, fontStyle: "italic", marginBottom: 12 }}>
+            <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.75, fontStyle: "italic", marginBottom: 12 }}>
               "{preview}{preview.length >= 180 ? "…" : ""}"
             </p>
           )}
@@ -339,16 +339,16 @@ function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, o
             <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 14 }}>
               {tags.slice(0, 4).map(t => (
                 <span key={t} style={{ fontSize: 10, padding: "3px 9px", borderRadius: 20,
-                  background: "rgba(184,130,58,.08)", color: "#B8823A", border: "1px solid rgba(184,130,58,.18)" }}>{t}</span>
+                  background: "rgba(184,130,58,.08)", color: "var(--gold)", border: "1px solid rgba(184,130,58,.18)" }}>{t}</span>
               ))}
             </div>
           )}
 
           {/* Actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", borderTop: ".5px solid #E8E2D9", paddingTop: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", borderTop: ".5px solid var(--border)", paddingTop: 12 }}>
             <button onClick={() => onRead(story)} style={{
               flex: 1, padding: "10px", borderRadius: 50, border: "none", cursor: "pointer",
-              background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 13,
+              background: "var(--gold)", color: "#fff", fontWeight: 700, fontSize: 13,
             }}>
               Read Story →
             </button>
@@ -356,16 +356,16 @@ function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, o
             <ReactionBar story={story} userReactions={userReactions} onReact={(t) => onReact(story, t)} compact />
 
             <button onClick={() => onSave(story)} style={{
-              padding: "8px 10px", borderRadius: 20, border: "1px solid #E8E2D9",
-              background: userSaved ? "rgba(184,130,58,.10)" : "#FDFAF6",
-              cursor: "pointer", color: userSaved ? "#B8823A" : "#9B8E83",
+              padding: "8px 10px", borderRadius: 20, border: "1px solid var(--border)",
+              background: userSaved ? "rgba(184,130,58,.10)" : "var(--card)",
+              cursor: "pointer", color: userSaved ? "var(--gold)" : "var(--text-muted)",
             }}>
               <Bookmark style={{ width: 14, height: 14 }} />
             </button>
 
             <button onClick={() => setShowReport(true)} style={{
-              padding: "8px 10px", borderRadius: 20, border: "1px solid #E8E2D9",
-              background: "#FDFAF6", cursor: "pointer", color: "#9B8E83",
+              padding: "8px 10px", borderRadius: 20, border: "1px solid var(--border)",
+              background: "var(--card)", cursor: "pointer", color: "var(--text-muted)",
             }}>
               <Flag style={{ width: 14, height: 14 }} />
             </button>
@@ -471,7 +471,7 @@ export default function AhHaCommunity() {
   const featured = useMemo(() => stories.find(s => s.featured_status), [stories]);
 
   if (selectedStory) return (
-    <div style={{ background: "#F7F3EE", minHeight: "100vh" }}>
+    <div style={{ background: "transparent", minHeight: "100vh", color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
         <StoryDetail
           story={selectedStory}
@@ -488,30 +488,30 @@ export default function AhHaCommunity() {
   );
 
   return (
-    <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 120 }}>
+    <div style={{ background: "transparent", minHeight: "100vh", paddingBottom: 120, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
 
         {/* Header */}
-        <div style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9", padding: "56px 20px 0" }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#B8823A", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 5 }}>
+        <div className="card-glow" style={{ background: "linear-gradient(135deg, rgba(91,141,239,0.16), rgba(240,183,83,0.10))", borderRadius: 24, padding: "28px 20px 0", margin: "20px 16px 0" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 5 }}>
             Ah Ha Community
           </p>
-          <h1 style={{ fontFamily: "'Lora', serif", fontSize: 24, fontWeight: 600, color: "#1C1410", lineHeight: 1.2, marginBottom: 5 }}>
+          <h1 style={{ fontFamily: "'Lora', serif", fontSize: 24, fontWeight: 600, color: "var(--text)", lineHeight: 1.2, marginBottom: 5 }}>
             Real moments.<br />Real change.
           </h1>
-          <p style={{ fontSize: 13, color: "#4A3F35", marginBottom: 18 }}>
+          <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 18 }}>
             Real people choosing better.
           </p>
 
           {/* Search */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", borderRadius: 12,
-            background: "#F7F3EE", border: "1px solid #E8E2D9", marginBottom: 14 }}>
-            <Search style={{ width: 15, height: 15, color: "#9B8E83", flexShrink: 0 }} />
+            background: "var(--surface)", border: "1px solid var(--border)", marginBottom: 14 }}>
+            <Search style={{ width: 15, height: 15, color: "var(--text-muted)", flexShrink: 0 }} />
             <input value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Search stories, tags, themes…"
-              style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontSize: 13, color: "#1C1410" }} />
+              style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text)" }} />
             {search && <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-              <X style={{ width: 14, height: 14, color: "#9B8E83" }} />
+              <X style={{ width: 14, height: 14, color: "var(--text-muted)" }} />
             </button>}
           </div>
 
@@ -521,8 +521,8 @@ export default function AhHaCommunity() {
               <button key={f.id} onClick={() => setSortBy(f.id)} style={{
                 padding: "9px 14px", borderRadius: "12px 12px 0 0", border: "none", cursor: "pointer",
                 background: "transparent", fontWeight: 700, fontSize: 12, whiteSpace: "nowrap", flexShrink: 0,
-                color: sortBy === f.id ? "#B8823A" : "#9B8E83",
-                borderBottom: sortBy === f.id ? "2px solid #B8823A" : "2px solid transparent",
+                color: sortBy === f.id ? "var(--gold)" : "var(--text-muted)",
+                borderBottom: sortBy === f.id ? "2px solid var(--gold)" : "2px solid transparent",
               }}>{f.label}</button>
             ))}
           </div>
@@ -533,16 +533,16 @@ export default function AhHaCommunity() {
           {/* Tag filter chips */}
           <div style={{ display: "flex", gap: 6, overflowX: "auto", scrollbarWidth: "none", marginBottom: 18, paddingBottom: 4 }}>
             <button onClick={() => setTagFilter("")} style={{
-              padding: "6px 14px", borderRadius: 20, border: tagFilter === "" ? "1px solid #B8823A" : "1px solid #E8E2D9",
-              background: tagFilter === "" ? "#B8823A" : "#FDFAF6",
-              color: tagFilter === "" ? "#fff" : "#9B8E83", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0,
+              padding: "6px 14px", borderRadius: 20, border: tagFilter === "" ? "1px solid var(--gold)" : "1px solid var(--border)",
+              background: tagFilter === "" ? "var(--gold)" : "var(--card)",
+              color: tagFilter === "" ? "#fff" : "var(--text-muted)", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0,
             }}>All</button>
             {TAG_FILTERS.map(t => (
               <button key={t} onClick={() => setTagFilter(tagFilter === t ? "" : t)} style={{
                 padding: "6px 14px", borderRadius: 20,
-                border: tagFilter === t ? "1px solid #B8823A" : "1px solid #E8E2D9",
-                background: tagFilter === t ? "#B8823A" : "#FDFAF6",
-                color: tagFilter === t ? "#fff" : "#9B8E83",
+                border: tagFilter === t ? "1px solid var(--gold)" : "1px solid var(--border)",
+                background: tagFilter === t ? "var(--gold)" : "var(--card)",
+                color: tagFilter === t ? "#fff" : "var(--text-muted)",
                 fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap",
               }}>{t}</button>
             ))}
@@ -551,7 +551,7 @@ export default function AhHaCommunity() {
           {/* Write CTA */}
           <button onClick={() => navigate("/SubmitAhHa")} style={{
             width: "100%", padding: "13px", borderRadius: 50, border: "1px dashed rgba(184,130,58,.4)",
-            background: "rgba(184,130,58,.05)", color: "#B8823A", fontWeight: 700, fontSize: 13,
+            background: "rgba(184,130,58,.05)", color: "var(--gold)", fontWeight: 700, fontSize: 13,
             cursor: "pointer", marginBottom: 20,
           }}>
             ✍️ Share your own Ah Ha Moment →
@@ -559,15 +559,15 @@ export default function AhHaCommunity() {
 
           {isLoading ? (
             <div style={{ display: "flex", justifyContent: "center", paddingTop: 40 }}>
-              <Loader2 style={{ width: 28, height: 28, color: "#B8823A" }} className="animate-spin" />
+              <Loader2 style={{ width: 28, height: 28, color: "var(--gold)" }} className="animate-spin" />
             </div>
           ) : filtered.length === 0 ? (
-            <div style={{ background: "#FDFAF6", border: "1px solid #E8E2D9", borderRadius: 18, padding: "48px 24px", textAlign: "center" }}>
+            <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 18, padding: "48px 24px", textAlign: "center" }}>
               <p style={{ fontSize: 36, marginBottom: 14 }}>🌱</p>
-              <p style={{ fontFamily: "'Lora', serif", fontSize: 16, fontWeight: 600, color: "#1C1410", lineHeight: 1.5, marginBottom: 10 }}>
+              <p style={{ fontFamily: "'Lora', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.5, marginBottom: 10 }}>
                 {search || tagFilter ? "No stories match that search." : "No Ah Ha stories have been approved yet."}
               </p>
-              <p style={{ fontSize: 13, color: "#9B8E83", lineHeight: 1.65 }}>
+              <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.65 }}>
                 {search || tagFilter ? "Try a different tag or keyword." : "Be the first to share a breakthrough that might help someone else."}
               </p>
             </div>

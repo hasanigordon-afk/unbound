@@ -7,16 +7,16 @@ import { Loader2, Edit3, LogOut, MapPin, Target, Bookmark, Calendar, Heart, Arro
 import ProfileEditSheet from "@/components/profile/ProfileEditSheet";
 
 const C = {
-  amber:    "#2E7D7A",
-  green:    "#34A853",
-  indigo:   "#1E88E5",
-  red:      "#E07A6C",
-  muted:    "#6B7280",
-  text:     "#1F2933",
-  textMuted:"#4A5763",
-  bg:       "#F7FAFC",
-  surface:  "#FFFFFF",
-  border:   "#E5EEF1",
+  amber:    "#F0B753",
+  green:    "#34D399",
+  indigo:   "#5B8DEF",
+  red:      "#F87171",
+  muted:    "var(--text-muted)",
+  text:     "var(--text)",
+  textMuted:"var(--text-muted)",
+  bg:       "var(--surface)",
+  surface:  "var(--card)",
+  border:   "var(--border)",
 };
 
 const STAGE_LABELS = {
@@ -99,7 +99,7 @@ export default function Profile() {
   });
 
   if (uL || (!!user && pL)) return (
-    <div style={{ background:C.bg, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center" }}>
+    <div style={{ background:"transparent", minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center" }}>
       <Loader2 className="w-7 h-7 animate-spin" style={{ color:C.amber }}/>
     </div>
   );
@@ -126,21 +126,21 @@ export default function Profile() {
   const initials = user?.full_name?.split(" ").map(w=>w[0]).slice(0,2).join("") || "U";
 
   return (
-    <div style={{ background:C.bg, minHeight:"100vh", paddingBottom:120 }}>
+    <div style={{ background:"transparent", minHeight:"100vh", paddingBottom:120, color:"var(--text)" }}>
       {editing && (
         <ProfileEditSheet profile={profile} onSave={saveMutation.mutateAsync} onClose={() => setEditing(false)} />
       )}
 
-      <div style={{ maxWidth:480, margin:"0 auto" }}>
+      <div style={{ maxWidth:480, margin:"0 auto", padding:"20px 16px 0" }}>
 
         {/* ── Header ── */}
-        <div style={{ background:C.surface, borderBottom:`1px solid ${C.border}`, padding:"56px 24px 28px" }}>
+        <div className="card-glow" style={{ background:"linear-gradient(135deg, rgba(91,141,239,0.16), rgba(240,183,83,0.10))", borderRadius:24, padding:"28px 24px", marginBottom:18 }}>
           <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:16 }}>
             <div style={{ display:"flex", alignItems:"center", gap:14 }}>
               <div style={{ width:64, height:64, borderRadius:"50%", flexShrink:0,
                 background:`linear-gradient(135deg,${C.amber},#C9A96E)`,
                 display:"flex", alignItems:"center", justifyContent:"center",
-                fontSize:22, fontWeight:700, color:"#fff",
+                fontSize:22, fontWeight:700, color:"#ffffff",
                 boxShadow:`0 0 0 3px rgba(46,125,122,0.2)` }}>
                 {initials}
               </div>
@@ -192,7 +192,7 @@ export default function Profile() {
           )}
         </div>
 
-        <div style={{ padding:"20px 16px" }}>
+        <div style={{ padding:"0 0 20px" }}>
 
           {/* ── Profile Completion ── */}
           <InfoCard>
@@ -358,7 +358,7 @@ export default function Profile() {
             </p>
             <Link to={createPageUrl("GuidedProfileSetup")} style={{ textDecoration:"none" }}>
               <button style={{ padding:"12px 20px", borderRadius:50, background:C.amber,
-                border:"none", color:"#fff", fontWeight:700, fontSize:14, cursor:"pointer" }}>
+                border:"none", color:"#ffffff", fontWeight:700, fontSize:14, cursor:"pointer" }}>
                 Start Guided Setup →
               </button>
             </Link>
@@ -416,7 +416,7 @@ export default function Profile() {
           ) : (
             <button onClick={() => base44.auth.redirectToLogin()} style={{
               width:"100%", padding:"14px", borderRadius:50,
-              background:C.amber, border:"none", color:"#fff", fontWeight:700, fontSize:15, cursor:"pointer",
+              background:C.amber, border:"none", color:"#ffffff", fontWeight:700, fontSize:15, cursor:"pointer",
             }}>
               Sign In to Save Your Progress
             </button>
