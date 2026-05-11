@@ -192,22 +192,23 @@ export default function RecoveryHub() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#F7F3EE" }}>
+    <div className="min-h-screen pb-28" style={{ background: "transparent", color: "var(--text)" }}>
       {shareTarget && (
         <ShareMenu title={shareTarget.title || shareTarget.content} url={shareTarget.source_url || window.location.href} onClose={() => setShareTarget(null)} />
       )}
 
       {/* Header */}
-      <div className="px-5 pt-8 pb-0" style={{ background: "#FDFAF6", borderBottom: "1px solid #E8E2D9" }}>
-        <h1 className="text-xl font-bold" style={{ color: "#1E1E1E" }}>Recovery + Reentry Hub</h1>
-        <p className="text-sm mt-0.5 mb-4" style={{ color: "#8E8E93" }}>Real information. Real support. Built for your journey.</p>
+      <div className="mx-5 mt-6 px-5 pt-6 pb-0 card-glow" style={{ background: "linear-gradient(135deg, rgba(91,141,239,0.16), rgba(240,183,83,0.10))", borderRadius: 24 }}>
+        <p className="section-label" style={{ margin: "0 0 8px", color: "var(--gold)" }}>Recovery + Reentry</p>
+        <h1 className="text-2xl font-bold" style={{ color: "var(--text)" }}>Real information. Real support.</h1>
+        <p className="text-sm mt-1 mb-4" style={{ color: "var(--text-muted)" }}>Built for your journey — with resources, stories, and community support.</p>
 
         {/* Search */}
-        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-4" style={{ background: "#FDFAF6", border: "1px solid #E8E2D9" }}>
-          <Search className="w-4 h-4 flex-shrink-0" style={{ color: "#8E8E93" }} />
+        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-4" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
+          <Search className="w-4 h-4 flex-shrink-0" style={{ color: "var(--text-muted)" }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search articles, topics…"
-            className="flex-1 text-sm bg-transparent outline-none" style={{ color: "#1E1E1E" }} />
-          {search && <button onClick={() => setSearch("")}><X className="w-4 h-4" style={{ color: "#8E8E93" }} /></button>}
+            className="flex-1 text-sm bg-transparent outline-none" style={{ color: "var(--text)" }} />
+          {search && <button onClick={() => setSearch("")}><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>}
         </div>
 
         {/* Tabs */}
@@ -215,7 +216,7 @@ export default function RecoveryHub() {
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium flex-shrink-0"
-              style={{ color: tab === t.id ? "#B8823A" : "#9B8E83", background: "none", border: "none", borderBottom: tab === t.id ? "2px solid #B8823A" : "2px solid transparent", cursor: "pointer" }}>
+              style={{ color: tab === t.id ? "var(--gold)" : "var(--text-muted)", background: "none", border: "none", borderBottom: tab === t.id ? "2px solid var(--gold)" : "2px solid transparent", cursor: "pointer" }}>
               <t.icon className="w-4 h-4" strokeWidth={1.5} /> {t.label}
             </button>
           ))}
@@ -230,7 +231,7 @@ export default function RecoveryHub() {
             {CATEGORIES.map(c => (
               <button key={c} onClick={() => setCategory(c)}
                 className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap"
-                style={{ background: category === c ? "#B8823A" : "#FDFAF6", color: category === c ? "#FFF" : "#9B8E83", border: category === c ? "1px solid #B8823A" : "1px solid #E8E2D9", flexShrink: 0 }}>
+                style={{ background: category === c ? "var(--gold)" : "var(--surface)", color: category === c ? "var(--card)" : "var(--text-muted)", border: category === c ? "1px solid var(--gold)" : "1px solid var(--border)", flexShrink: 0 }}>
                 {c}
               </button>
             ))}
@@ -240,9 +241,9 @@ export default function RecoveryHub() {
             {articlesLoading ? (
               <div className="text-center py-16"><Loader2 className="w-7 h-7 mx-auto animate-spin opacity-30" /></div>
             ) : filteredArticles.length === 0 ? (
-              <div className="text-center py-16 rounded-2xl" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
+              <div className="text-center py-16 rounded-2xl" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
                 <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-20" />
-                <p className="text-sm font-medium" style={{ color: "#1E1E1E" }}>No articles found.</p>
+                <p className="text-sm font-medium" style={{ color: "var(--text)" }}>No articles found.</p>
               </div>
             ) : (
               filteredArticles.map(article => (
@@ -270,7 +271,7 @@ export default function RecoveryHub() {
             {RESOURCE_TYPES.map(t => (
               <button key={t} onClick={() => setResourceType(t)}
                 className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap flex-shrink-0"
-                style={{ background: resourceType === t ? "#B8823A" : "#FDFAF6", color: resourceType === t ? "#FFF" : "#9B8E83", border: resourceType === t ? "1px solid #B8823A" : "1px solid #E8E2D9" }}>
+                style={{ background: resourceType === t ? "var(--gold)" : "var(--surface)", color: resourceType === t ? "var(--card)" : "var(--text-muted)", border: resourceType === t ? "1px solid var(--gold)" : "1px solid var(--border)" }}>
                 {t}
               </button>
             ))}
@@ -278,7 +279,7 @@ export default function RecoveryHub() {
 
           {/* Results count */}
           {!resourcesLoading && (
-            <p className="px-5 pb-2 text-xs" style={{ color: "#8E8E93" }}>
+            <p className="px-5 pb-2 text-xs" style={{ color: "var(--text-muted)" }}>
               {filteredResources.length} result{filteredResources.length !== 1 ? "s" : ""}
               {search ? ` for "${search}"` : ""}
             </p>
@@ -288,10 +289,10 @@ export default function RecoveryHub() {
             {resourcesLoading ? (
               <div className="text-center py-16"><Loader2 className="w-7 h-7 mx-auto animate-spin opacity-30" /></div>
             ) : filteredResources.length === 0 ? (
-              <div className="text-center py-16 rounded-2xl" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
+              <div className="text-center py-16 rounded-2xl" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
                 <Search className="w-10 h-10 mx-auto mb-3 opacity-20" />
-                <p className="text-sm font-medium" style={{ color: "#1E1E1E" }}>No resources found.</p>
-                <p className="text-xs mt-1" style={{ color: "#8E8E93" }}>Try a different search or filter.</p>
+                <p className="text-sm font-medium" style={{ color: "var(--text)" }}>No resources found.</p>
+                <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>Try a different search or filter.</p>
               </div>
             ) : (
               filteredResources.map(r => {
@@ -303,7 +304,7 @@ export default function RecoveryHub() {
                 return (
                   <div key={`${r._type}-${r.id}`}
                     className="rounded-2xl p-4"
-                    style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
+                    style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ background: meta.bg }}>
                         <Icon className="w-5 h-5" style={{ color: meta.color }} />
@@ -314,23 +315,23 @@ export default function RecoveryHub() {
                             {meta.label}
                           </span>
                           {r._category && (
-                            <span className="text-xs" style={{ color: "#8E8E93" }}>{r._category}</span>
+                            <span className="text-xs" style={{ color: "var(--text-muted)" }}>{r._category}</span>
                           )}
                         </div>
-                        <p className="text-sm font-bold mb-1" style={{ color: "#1E1E1E" }}>{r._name || "—"}</p>
+                        <p className="text-sm font-bold mb-1" style={{ color: "var(--text)" }}>{r._name || "—"}</p>
                         {r._desc && (
-                          <p className="text-xs mb-2" style={{ color: "#5A5A5A", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                          <p className="text-xs mb-2" style={{ color: "var(--text-muted)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                             {r._desc}
                           </p>
                         )}
                         <div className="flex items-center gap-3 flex-wrap">
                           {location && (
-                            <span className="text-xs flex items-center gap-1" style={{ color: "#8E8E93" }}>
+                            <span className="text-xs flex items-center gap-1" style={{ color: "var(--text-muted)" }}>
                               <MapPin className="w-3 h-3" /> {location}
                             </span>
                           )}
                           {r._tags?.slice(0, 3).map(tag => (
-                            <span key={tag} className="text-xs px-2 py-0.5 rounded-full" style={{ background: "#F7F7F8", color: "#5A5A5A", border: "1px solid #E5E7EB" }}>{tag}</span>
+                            <span key={tag} className="text-xs px-2 py-0.5 rounded-full" style={{ background: "var(--surface)", color: "var(--text-muted)", border: "1px solid var(--border)" }}>{tag}</span>
                           ))}
                         </div>
                       </div>
@@ -350,21 +351,21 @@ export default function RecoveryHub() {
           {user ? (
             <button onClick={() => setShowNewPost(true)}
               className="w-full px-4 py-4 rounded-2xl text-sm font-semibold text-left"
-              style={{ background: "#FDFAF6", border: "1px solid #E8E2D9", color: "#9B8E83", borderRadius: 12 }}>
+              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)", borderRadius: 12 }}>
               💭 Share your thoughts with the community…
             </button>
           ) : (
-            <div className="px-4 py-4 rounded-2xl text-sm text-center" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
-              <button onClick={() => base44.auth.redirectToLogin()} style={{ color: "#B8823A", fontWeight: 700, background: "none", border: "none" }}>Sign in</button> to post to the community.
+            <div className="px-4 py-4 rounded-2xl text-sm text-center" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
+              <button onClick={() => base44.auth.redirectToLogin()} style={{ color: "var(--gold)", fontWeight: 700, background: "none", border: "none" }}>Sign in</button> to post to the community.
             </div>
           )}
 
           {postsLoading ? (
             <div className="text-center py-10"><Loader2 className="w-6 h-6 mx-auto animate-spin opacity-30" /></div>
           ) : communityPosts.length === 0 ? (
-            <div className="text-center py-16 rounded-2xl" style={{ background: "#FFF", border: "1px solid #E5E7EB" }}>
+            <div className="text-center py-16 rounded-2xl" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
               <Users className="w-10 h-10 mx-auto mb-3 opacity-20" />
-              <p className="text-sm font-medium" style={{ color: "#1E1E1E" }}>No posts yet. Be the first!</p>
+              <p className="text-sm font-medium" style={{ color: "var(--text)" }}>No posts yet. Be the first!</p>
             </div>
           ) : (
             communityPosts.map(post => (
@@ -387,7 +388,7 @@ export default function RecoveryHub() {
       {tab === "featured" && (
         <div className="px-5 py-4 space-y-4">
           {featuredArticles.length === 0 ? (
-            <div className="text-center py-16"><p className="text-sm" style={{ color: "#8E8E93" }}>No featured articles yet.</p></div>
+            <div className="text-center py-16"><p className="text-sm" style={{ color: "var(--text-muted)" }}>No featured articles yet.</p></div>
           ) : (
             featuredArticles.map(article => (
               <ArticleCard
@@ -408,14 +409,14 @@ export default function RecoveryHub() {
       {/* New Post Modal */}
       {showNewPost && (
         <div className="fixed inset-0 z-50 flex items-end" style={{ background: "rgba(0,0,0,0.5)" }} onClick={() => setShowNewPost(false)}>
-          <div className="w-full max-w-lg mx-auto rounded-t-3xl p-6 space-y-4" style={{ background: "#FFF" }} onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-lg mx-auto rounded-t-3xl p-6 space-y-4" style={{ background: "var(--card)" }} onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between">
-              <p className="font-bold text-base" style={{ color: "#1E1E1E" }}>Share with the Community</p>
-              <button onClick={() => setShowNewPost(false)} style={{ background: "none", border: "none", color: "#8E8E93", fontSize: 22 }}>✕</button>
+              <p className="font-bold text-base" style={{ color: "var(--text)" }}>Share with the Community</p>
+              <button onClick={() => setShowNewPost(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: 22 }}>✕</button>
             </div>
             <select value={newPostCategory} onChange={e => setNewPostCategory(e.target.value)}
               className="w-full px-3 py-2.5 rounded-xl text-sm"
-              style={{ background: "#F7F7F8", border: "1px solid #D1D1D6", color: "#1E1E1E" }}>
+              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text)" }}>
               <option value="support">🤝 Support / Encouragement</option>
               <option value="milestone">🏆 Progress / Milestone</option>
               <option value="advice">💡 Advice for Others</option>
@@ -427,14 +428,14 @@ export default function RecoveryHub() {
               placeholder="What's on your mind? Share your journey, your wins, or your words of encouragement…"
               rows={5}
               className="w-full px-3 py-3 rounded-xl text-sm"
-              style={{ background: "#F7F7F8", border: "1px solid #D1D1D6", color: "#1E1E1E", resize: "none" }}
+              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text)", resize: "none" }}
             />
-            <p className="text-xs" style={{ color: "#8E8E93" }}>Your post will be shared anonymously and reviewed before being visible.</p>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Your post will be shared anonymously and reviewed before being visible.</p>
             <button
               onClick={() => createPostMutation.mutate()}
               disabled={!newPostContent.trim() || createPostMutation.isPending}
               className="w-full py-4 rounded-2xl text-sm font-bold"
-              style={{ background: newPostContent.trim() ? "#B8823A" : "#E8E2D9", color: "#FFF" }}>
+              style={{ background: newPostContent.trim() ? "var(--gold)" : "var(--border)", color: "var(--card)" }}>
               {createPostMutation.isPending ? "Posting…" : "Post to Community →"}
             </button>
           </div>

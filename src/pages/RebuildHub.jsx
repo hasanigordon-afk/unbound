@@ -26,8 +26,8 @@ export default function RebuildHub() {
     <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 18px 0" }}>
         <HubHero
-          pillar="Pillar 02 · Rebuild"
-          title="Real-world ground."
+          pillar="Pillar 02 · Reentry + Rebuild"
+          title="Real-world support."
           subtitle="Practical tools and resources that help you rebuild stability, independence, and forward momentum."
           icon={Hammer}
           accent={ACCENT}
