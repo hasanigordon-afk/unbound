@@ -87,13 +87,13 @@ export default function MarketingHero() {
         letterSpacing: "-0.015em", color: "var(--text)",
         textAlign: "center", marginBottom: 12,
       }}>
-        Built For Life's<br />
+        A Complete Support System<br />
         <span style={{
           background: "linear-gradient(135deg, var(--accent), var(--gold))",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           backgroundClip: "text",
         }}>
-          Biggest Comeback.
+          For Rebuilding Life.
         </span>
       </h1>
 
@@ -103,8 +103,7 @@ export default function MarketingHero() {
         fontSize: 14, color: "var(--text-muted)", lineHeight: 1.6,
         textAlign: "center", maxWidth: 360, margin: "0 auto 22px",
       }}>
-        Recovery, reentry, veterans support, and life rebuilding —
-        all in one platform designed to help you move forward.
+        Re-silient organizes recovery, reentry, community, mentorship, wellness, and future-building tools into one clear ecosystem for people and the institutions that support them.
       </p>
 
       {/* Rotating quote */}

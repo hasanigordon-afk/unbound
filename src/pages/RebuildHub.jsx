@@ -26,14 +26,14 @@ export default function RebuildHub() {
     <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 18px 0" }}>
         <HubHero
-          pillar="Pillar 02 · Reentry + Rebuild"
-          title="Real-world support."
+          pillar="Pillar 02 · Reentry & Life Stabilization"
+          title="Stabilize life outside the app."
           subtitle="Practical tools and resources that help you rebuild stability, independence, and forward momentum."
           icon={Hammer}
           accent={ACCENT}
         />
 
-        <SectionHeading accent={ACCENT}>Rebuild Resources</SectionHeading>
+        <SectionHeading accent={ACCENT}>Life Stabilization Resources</SectionHeading>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {FEATURES.map(f => <HubFeatureCard key={f.to} {...f} accent={ACCENT} />)}
         </div>

@@ -24,14 +24,14 @@ export default function GrowthHub() {
     <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 18px 0" }}>
         <HubHero
-          pillar="Pillar 04 · Growth"
-          title="Become stronger."
+          pillar="Pillar 04 · Growth & Future Building"
+          title="Build your future self."
           subtitle="Wellness, education, and personal growth tools designed to make you mentally, physically, and emotionally stronger."
           icon={Sprout}
           accent={ACCENT}
         />
 
-        <SectionHeading accent={ACCENT}>Growth Tools</SectionHeading>
+        <SectionHeading accent={ACCENT}>Growth & Future Tools</SectionHeading>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {FEATURES.map(f => <HubFeatureCard key={f.to + f.label} {...f} accent={ACCENT} />)}
         </div>

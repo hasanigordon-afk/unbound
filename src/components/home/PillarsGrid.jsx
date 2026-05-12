@@ -1,38 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Sun, Hammer, Film, Sprout, ArrowRight } from "lucide-react";
+import { HeartPulse, Hammer, Users, Sprout, ArrowRight } from "lucide-react";
 
 const PILLARS = [
   {
-    key: "daily",
-    label: "Daily",
-    icon: Sun,
+    key: "recovery-support",
+    label: "Recovery & Support",
+    icon: HeartPulse,
     accent: "var(--accent)",
-    desc: "Structure, accountability, and focus — one day at a time.",
+    desc: "Daily recovery tools, crisis support, meetings, accountability, and AI guidance.",
     to: "/DailyHub",
   },
   {
-    key: "rebuild",
-    label: "Rebuild",
+    key: "reentry-stabilization",
+    label: "Reentry & Life Stabilization",
     icon: Hammer,
     accent: "var(--gold)",
-    desc: "Real-world resources to rebuild stability and independence.",
+    desc: "Housing, food, work, legal help, veteran support, and real-world resources.",
     to: "/RebuildHub",
   },
   {
-    key: "stories",
-    label: "Stories",
-    icon: Film,
+    key: "community-mentorship",
+    label: "Community & Mentorship",
+    icon: Users,
     accent: "var(--purple)",
-    desc: "Real comeback stories that remind you you're not alone.",
+    desc: "Stories, testimonials, peer connection, mentorship, and comeback media.",
     to: "/StoriesHub",
   },
   {
-    key: "growth",
-    label: "Growth",
+    key: "growth-future",
+    label: "Growth & Future Building",
     icon: Sprout,
     accent: "var(--green)",
-    desc: "Wellness, education, and tools for becoming stronger.",
+    desc: "Wellness, learning, fitness, nutrition, planning, and future-self tools.",
     to: "/GrowthHub",
   },
 ];

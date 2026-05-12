@@ -24,17 +24,17 @@ export default function StoriesHub() {
     <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 18px 0" }}>
         <HubHero
-          pillar="Pillar 03 · Stories"
+          pillar="Pillar 03 · Community & Mentorship"
           title="You are not alone."
-          subtitle="Real comeback stories, testimonials, and voices that remind you others have walked this and made it."
-          icon={Film}
+          subtitle="Community, mentorship, stories, testimonials, and real voices that remind you others have walked this and made it."
+          icon={Users}
           accent={ACCENT}
         />
 
         <SectionHeading accent={ACCENT}>Featured Comeback</SectionHeading>
         <FeaturedComebackWidget />
 
-        <SectionHeading accent={ACCENT}>Stories & Voices</SectionHeading>
+        <SectionHeading accent={ACCENT}>Community, Mentorship & Stories</SectionHeading>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {FEATURES.map(f => <HubFeatureCard key={f.to + f.label} {...f} accent={ACCENT} />)}
         </div>

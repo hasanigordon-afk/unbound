@@ -19,6 +19,9 @@ import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import InAppNudge        from "@/components/subscription/InAppNudge";
 import FeaturedComebackWidget from "@/components/home/FeaturedComebackWidget";
 import ComebackPortalCard    from "@/components/home/ComebackPortalCard";
+import WhoThisHelps from "@/components/home/WhoThisHelps";
+import RecoveryTestimonialSection from "@/components/home/RecoveryTestimonialSection";
+import InstitutionalPartnershipSection from "@/components/home/InstitutionalPartnershipSection";
 import { trackHomeVisit } from "@/lib/subscriptionEngine";
 import { getCampaignSettings } from "@/lib/campaignSettings";
 
@@ -129,8 +132,12 @@ export default function Home() {
         <MarketingHero />
 
         {/* THE 4 PILLARS */}
-        <SectionHeading>The 4 Pillars</SectionHeading>
+        <SectionHeading>The Re-silient Ecosystem</SectionHeading>
         <PillarsGrid />
+
+        <WhoThisHelps />
+        <RecoveryTestimonialSection />
+        <InstitutionalPartnershipSection />
 
         {/* COMEBACK PORTAL — FEATURED */}
         <SectionHeading accent="var(--gold)">Comeback Portal</SectionHeading>
