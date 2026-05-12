@@ -14,7 +14,7 @@ export default function InstitutionalPartnershipSection() {
         <Building2 style={{ width: 20, height: 20 }} />
       </div>
       <p className="section-label" style={{ color: "var(--purple)", marginBottom: 10 }}>Institutional-ready</p>
-      <h2 style={{ fontSize: 22, lineHeight: 1.18, marginBottom: 10 }}>A recovery-tech ecosystem built for partners.</h2>
+      <h2 style={{ fontSize: 22, lineHeight: 1.18, marginBottom: 10 }}>Professional infrastructure for long-term recovery.</h2>
       <p style={{ color: "var(--text-muted)", fontSize: 13.5, lineHeight: 1.65, marginBottom: 16 }}>
         Designed for treatment centers, reentry programs, veteran organizations, community providers, and facilities that need modern digital continuity of care.
       </p>

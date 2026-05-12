@@ -14,6 +14,7 @@ import DashCommunityMomentum from "@/components/dashboard/DashCommunityMomentum"
 import SectionHeading       from "@/components/dashboard/SectionHeading";
 
 import MarketingHero    from "@/components/home/MarketingHero";
+import HomeTopNav from "@/components/home/HomeTopNav";
 import PillarsGrid      from "@/components/home/PillarsGrid";
 import EarlyWarningBanner from "@/components/home/EarlyWarningBanner";
 import InAppNudge        from "@/components/subscription/InAppNudge";
@@ -128,11 +129,13 @@ export default function Home() {
     <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 18px" }}>
 
+        <HomeTopNav />
+
         {/* MARKETING HERO */}
         <MarketingHero />
 
         {/* THE 4 PILLARS */}
-        <SectionHeading>The Re-silient Ecosystem</SectionHeading>
+        <SectionHeading>The 4 Infrastructure Pillars</SectionHeading>
         <PillarsGrid />
 
         <WhoThisHelps />

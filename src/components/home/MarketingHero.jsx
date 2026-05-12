@@ -75,7 +75,7 @@ export default function MarketingHero() {
           backdropFilter: "blur(10px)",
         }}>
           <Sparkles style={{ width: 11, height: 11 }} />
-          Re-siliant
+          Recovery Infrastructure
         </div>
       </div>
 
@@ -87,13 +87,13 @@ export default function MarketingHero() {
         letterSpacing: "-0.015em", color: "var(--text)",
         textAlign: "center", marginBottom: 12,
       }}>
-        A Complete Support System<br />
+        The Comeback<br />
         <span style={{
           background: "linear-gradient(135deg, var(--accent), var(--gold))",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           backgroundClip: "text",
         }}>
-          For Rebuilding Life.
+          Starts Here.
         </span>
       </h1>
 
@@ -103,7 +103,7 @@ export default function MarketingHero() {
         fontSize: 14, color: "var(--text-muted)", lineHeight: 1.6,
         textAlign: "center", maxWidth: 360, margin: "0 auto 22px",
       }}>
-        Re-silient organizes recovery, reentry, community, mentorship, wellness, and future-building tools into one clear ecosystem for people and the institutions that support them.
+        Recovery, reentry, accountability, mentorship, and growth — all in one platform.
       </p>
 
       {/* Rotating quote */}
@@ -137,7 +137,7 @@ export default function MarketingHero() {
           }}
           onMouseEnter={e => e.currentTarget.style.filter = "brightness(1.08)"}
           onMouseLeave={e => e.currentTarget.style.filter = "brightness(1)"}>
-            Start Your Journey <ArrowRight style={{ width: 16, height: 16 }} />
+            Start Building Forward <ArrowRight style={{ width: 16, height: 16 }} />
           </button>
         </Link>
 
@@ -154,7 +154,7 @@ export default function MarketingHero() {
             cursor: "pointer",
             backdropFilter: "blur(12px)",
           }}>
-            <Play style={{ width: 14, height: 14 }} /> Watch Real Stories
+            <Play style={{ width: 14, height: 14 }} /> See Real Comebacks
           </button>
         </Link>
       </div>

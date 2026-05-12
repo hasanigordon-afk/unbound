@@ -13,10 +13,10 @@ const PILLARS = [
   },
   {
     key: "reentry-stabilization",
-    label: "Reentry & Life Stabilization",
+    label: "Reentry & Stability",
     icon: Hammer,
     accent: "var(--gold)",
-    desc: "Housing, food, work, legal help, veteran support, and real-world resources.",
+    desc: "Housing, food, work, legal help, veteran support, and stability resources.",
     to: "/RebuildHub",
   },
   {

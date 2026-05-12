@@ -9,7 +9,7 @@ export default function RecoveryTestimonialSection() {
         <p className="section-label" style={{ color: "var(--gold)", margin: 0, flex: 1 }}>Real recovery</p>
       </div>
       <p style={{ fontFamily: "'Lora', Georgia, serif", fontSize: 19, lineHeight: 1.45, color: "var(--text)", marginBottom: 14 }}>
-        “I didn’t need another app full of noise. I needed a place that helped me get through today and see tomorrow.”
+        “What changed everything was having recovery, support, and real-life rebuilding tools in one place — not scattered everywhere.”
       </p>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
         <div>
