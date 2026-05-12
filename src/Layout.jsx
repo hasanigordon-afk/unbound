@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Home, Compass, Sparkles, Users, User } from "lucide-react";
 import EmergencyFAB from "@/components/shared/EmergencyFAB";
 import DonateFAB from "@/components/shared/DonateFAB";
+import PillarSidebar from "@/components/navigation/PillarSidebar";
 
 const NAV = [
   { name: "Home",      icon: Home,     page: "Home",          href: "/" },
@@ -27,7 +28,9 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "transparent" }}>
 
-      <div className="flex-1" style={{ paddingBottom: showNav ? 110 : 24 }}>
+      {showNav && <PillarSidebar />}
+
+      <div className="flex-1 lg:pl-[310px]" style={{ paddingBottom: showNav ? 110 : 24 }}>
         {children}
       </div>
 
@@ -35,7 +38,7 @@ export default function Layout({ children, currentPageName }) {
       <DonateFAB />
 
       {showNav && (
-        <nav aria-label="Primary" style={{
+        <nav className="lg:hidden" aria-label="Primary" style={{
           position: "fixed",
           left: "50%", bottom: 18, transform: "translateX(-50%)",
           zIndex: 50,
