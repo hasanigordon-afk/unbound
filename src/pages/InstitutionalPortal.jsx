@@ -1,95 +1,64 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Activity,
-  Bell,
-  CalendarCheck,
-  ClipboardCheck,
-  FileCheck2,
-  HeartPulse,
-  LayoutDashboard,
-  LockKeyhole,
-  Network,
-  ShieldCheck,
-  TrendingUp,
-  UserPlus,
-  Users,
-} from "lucide-react";
-import InstitutionMetricCard from "@/components/institutional/InstitutionMetricCard";
-import InstitutionWorkflowCard from "@/components/institutional/InstitutionWorkflowCard";
+import { BarChart3, Bell, Building2, CalendarClock, ClipboardCheck, FileCheck2, HeartHandshake, Shield, UserPlus, Users } from "lucide-react";
+import OutcomeMetricCard from "@/components/outcomes/OutcomeMetricCard";
 
-const workflows = [
-  { to: "/FacilityDashboard", icon: LayoutDashboard, title: "Facility Dashboard", desc: "A command center for caseload visibility, alerts, client status, and staff workflows.", color: "var(--accent)" },
-  { to: "/PatientSummaryDashboard", icon: Activity, title: "Client Engagement Analytics", desc: "Monitor check-ins, app activity, resource usage, and early disengagement signals.", color: "var(--green)" },
-  { to: "/ClientProgress", icon: TrendingUp, title: "Recovery Outcome Tracking", desc: "Track stabilization progress, goals, milestones, treatment engagement, and long-term outcomes.", color: "var(--gold)" },
-  { to: "/FacilityAdmin", icon: UserPlus, title: "Onboarding Management", desc: "Invite clients, assign counselors, organize cohorts, and guide participants into the right tools.", color: "var(--purple)" },
-  { to: "/Meetings", icon: CalendarCheck, title: "Appointment Reminders", desc: "Support upcoming appointments, groups, meetings, and accountability touchpoints.", color: "var(--accent)" },
-  { to: "/ComplianceReports", icon: ClipboardCheck, title: "Compliance Tracking", desc: "Document participation, reports, tasks, signoffs, and program requirements in one place.", color: "var(--gold)" },
-  { to: "/RebuildHub", icon: Network, title: "Community Resource Coordination", desc: "Coordinate housing, food, legal, employment, veteran, and mental health resources.", color: "var(--green)" },
+const modules = [
+  { title: "Facility dashboard", body: "A clear operational view for rehab centers, sober living homes, hospitals, nonprofits, and probation programs.", icon: Building2, to: "/FacilityDashboard" },
+  { title: "Client engagement analytics", body: "Spot participation trends, missed check-ins, and support opportunities before clients disengage.", icon: BarChart3, to: "/OutcomesProgress" },
+  { title: "Recovery outcome tracking", body: "Measure streaks, goals, meetings, housing, employment, mentorship, and wellness activity.", icon: ClipboardCheck, to: "/OutcomesProgress" },
+  { title: "Onboarding management", body: "Guide new clients through setup, consent, goals, reminders, and resource matching.", icon: UserPlus, to: "/GuidedProfileSetup" },
+  { title: "Appointment reminders", body: "Keep clients connected to sessions, meetings, care teams, and required appointments.", icon: CalendarClock, to: "/MeetingDirectory" },
+  { title: "Compliance tracking", body: "Professional reporting for attendance, tasks, participation, and recovery plan follow-through.", icon: FileCheck2, to: "/ComplianceReports" },
+  { title: "Resource coordination", body: "Coordinate housing, food, transportation, legal support, employment, and veteran resources.", icon: HeartHandshake, to: "/RebuildHub" },
+  { title: "Team collaboration", body: "Give counselors and administrators a calm, shared workspace for case visibility.", icon: Users, to: "/StaffDashboard" },
 ];
+
+function ModuleCard({ item }) {
+  const Icon = item.icon;
+  return (
+    <Link to={item.to} style={{ textDecoration: "none" }}>
+      <div className="card" style={{ padding: 18, minHeight: 176 }}>
+        <div style={{ width: 48, height: 48, borderRadius: 16, background: "var(--navy-dim)", color: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
+          <Icon style={{ width: 22 }} />
+        </div>
+        <h3 style={{ fontSize: 20, marginBottom: 8 }}>{item.title}</h3>
+        <p style={{ color: "var(--text-muted)", fontSize: 13.5, lineHeight: 1.55 }}>{item.body}</p>
+      </div>
+    </Link>
+  );
+}
 
 export default function InstitutionalPortal() {
   return (
-    <main style={{ minHeight: "100vh", padding: "30px 18px 150px", color: "var(--text)" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-        <section className="card-glow fade-up" style={{ position: "relative", overflow: "hidden", padding: "34px clamp(22px, 5vw, 52px)", marginBottom: 20 }}>
-          <div aria-hidden style={{ position: "absolute", top: -140, right: -100, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(91,141,239,.26), transparent 68%)", filter: "blur(28px)" }} />
-          <div style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1.25fr) minmax(280px, .75fr)", gap: 28, alignItems: "center" }}>
-            <div>
-              <div className="pill" style={{ color: "var(--accent)", background: "var(--navy-dim)", border: "1px solid var(--navy-border)", marginBottom: 16 }}>
-                <ShieldCheck style={{ width: 13, marginRight: 6 }} /> Institutional Re-silient
-              </div>
-              <h1 style={{ fontSize: "clamp(36px, 6vw, 64px)", lineHeight: 1, marginBottom: 16 }}>Recovery operations for teams who care.</h1>
-              <p style={{ color: "var(--text-muted)", fontSize: 17, lineHeight: 1.65, maxWidth: 720 }}>
-                A professional workspace for rehab centers, sober living homes, probation programs, hospitals, and nonprofits to coordinate care, monitor engagement, and support measurable recovery outcomes.
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 24 }}>
-                <Link to="/FacilityDashboard" className="btn-primary" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 9 }}><LayoutDashboard style={{ width: 18 }} /> Open Facility Dashboard</Link>
-                <Link to="/FacilityAdmin" className="btn-ghost" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 9 }}><UserPlus style={{ width: 18 }} /> Manage Onboarding</Link>
-              </div>
-            </div>
-            <div className="card-soft" style={{ padding: 20 }}>
-              <LockKeyhole style={{ width: 30, height: 30, color: "var(--green)", marginBottom: 12 }} />
-              <h2 style={{ fontSize: 24, marginBottom: 8 }}>Privacy-first care coordination</h2>
-              <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.6 }}>Designed with a HIPAA-conscious, role-aware feel: clear access points, restrained data surfaces, and counselor-friendly workflows.</p>
+    <main style={{ minHeight: "100vh", padding: "28px 18px 150px", color: "var(--text)" }}>
+      <div style={{ maxWidth: 1220, margin: "0 auto" }}>
+        <section className="card-glow fade-up" style={{ padding: "34px clamp(20px, 5vw, 48px)", marginBottom: 20, overflow: "hidden", position: "relative" }}>
+          <div aria-hidden style={{ position: "absolute", right: -120, top: -120, width: 370, height: 370, borderRadius: "50%", background: "radial-gradient(circle, rgba(91,141,239,.22), transparent 70%)", filter: "blur(28px)" }} />
+          <div style={{ position: "relative", maxWidth: 800 }}>
+            <div className="pill pill-teal" style={{ marginBottom: 16 }}><Shield style={{ width: 13, marginRight: 6 }} /> Institutional Re-silient</div>
+            <h1 style={{ fontSize: "clamp(34px, 6vw, 62px)", lineHeight: 1, marginBottom: 14 }}>A trusted recovery operations layer for care teams.</h1>
+            <p style={{ color: "var(--text-muted)", fontSize: 17, lineHeight: 1.65 }}>Professional, HIPAA-conscious workflows for counselors, administrators, probation teams, hospitals, sober living homes, nonprofits, and treatment providers.</p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 22 }}>
+              <Link to="/FacilityDashboard" className="btn-primary" style={{ textDecoration: "none" }}>Open Facility Dashboard</Link>
+              <Link to="/OutcomesProgress" className="btn-ghost" style={{ textDecoration: "none" }}>View Outcomes</Link>
             </div>
           </div>
         </section>
 
-        <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginBottom: 22 }}>
-          <InstitutionMetricCard icon={Users} label="Active clients" value="128" detail="Caseload visibility across programs and assigned staff." />
-          <InstitutionMetricCard icon={HeartPulse} label="Engagement" value="82%" detail="Recent check-ins, activity, and recovery tool usage." color="var(--green)" />
-          <InstitutionMetricCard icon={FileCheck2} label="Compliance" value="94%" detail="Tasks, appointments, and documentation completion." color="var(--gold)" />
-          <InstitutionMetricCard icon={Bell} label="Priority alerts" value="7" detail="Clients needing staff review or support follow-up." color="var(--red)" />
+        <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginBottom: 20 }}>
+          <OutcomeMetricCard icon={Users} label="Active clients" value="128" detail="Engagement monitored weekly" color="#5B8DEF" />
+          <OutcomeMetricCard icon={BarChart3} label="Stability trend" value="+18%" detail="Improved long-term indicators" color="#34D399" />
+          <OutcomeMetricCard icon={Bell} label="Reminder coverage" value="94%" detail="Appointments and meetings tracked" color="#F0B753" />
+          <OutcomeMetricCard icon={FileCheck2} label="Compliance ready" value="Yes" detail="Reports organized for review" color="#A78BFA" />
         </section>
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 330px", gap: 20 }}>
-          <section>
-            <p className="section-label">Institutional Workflows</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-              {workflows.map(item => <InstitutionWorkflowCard key={item.title} {...item} />)}
-            </div>
-          </section>
-
-          <aside style={{ display: "grid", gap: 14, alignContent: "start" }}>
-            <div className="card" style={{ padding: 18 }}>
-              <p className="section-label" style={{ marginTop: 0 }}>Today’s Staff Focus</p>
-              {["Review high-priority engagement alerts", "Confirm appointment reminders", "Coordinate housing and food referrals", "Complete pending compliance notes"].map((item, index) => (
-                <div key={item} style={{ display: "flex", gap: 11, padding: "11px 0", borderTop: index ? "1px solid var(--border)" : "none" }}>
-                  <div style={{ width: 24, height: 24, borderRadius: "50%", display: "grid", placeItems: "center", background: "var(--navy-dim)", color: "var(--accent)", fontSize: 12, fontWeight: 900 }}>{index + 1}</div>
-                  <p style={{ color: "var(--text-muted)", fontSize: 13.5, lineHeight: 1.45 }}>{item}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="card-glow" style={{ padding: 20, background: "linear-gradient(145deg, rgba(52,211,153,.14), rgba(255,255,255,.035))" }}>
-              <Network style={{ width: 30, height: 30, color: "var(--green)", marginBottom: 12 }} />
-              <h3 style={{ fontSize: 22, marginBottom: 8 }}>Resource coordination layer</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: 13.5, lineHeight: 1.55, marginBottom: 16 }}>Connect client needs to trusted community supports for housing, food, work, legal help, veteran services, and mental health.</p>
-              <Link to="/RebuildHub" className="btn-primary" style={{ width: "100%", justifyContent: "center", display: "inline-flex", textDecoration: "none" }}>Open Resource Hub</Link>
-            </div>
-          </aside>
-        </div>
+        <section>
+          <p className="section-label">Institutional Tools</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 14 }}>
+            {modules.map(item => <ModuleCard key={item.title} item={item} />)}
+          </div>
+        </section>
       </div>
     </main>
   );

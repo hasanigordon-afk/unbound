@@ -1,0 +1,78 @@
+{
+  "name": "OutcomeRecord",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "record_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "recovery_streak_days": {
+      "type": "number",
+      "default": 0
+    },
+    "daily_engagement_score": {
+      "type": "number",
+      "default": 0
+    },
+    "meetings_attended": {
+      "type": "number",
+      "default": 0
+    },
+    "goals_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "employment_status": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "searching",
+        "interviewing",
+        "employed",
+        "training"
+      ],
+      "default": "not_started"
+    },
+    "housing_status": {
+      "type": "string",
+      "enum": [
+        "unstable",
+        "temporary",
+        "transitional",
+        "stable"
+      ],
+      "default": "unstable"
+    },
+    "mentor_interactions": {
+      "type": "number",
+      "default": 0
+    },
+    "wellness_activities": {
+      "type": "number",
+      "default": 0
+    },
+    "stability_score": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "user",
+        "mentor",
+        "institution"
+      ],
+      "default": "user"
+    }
+  },
+  "required": [
+    "user_email",
+    "record_date"
+  ]
+}
