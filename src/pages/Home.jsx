@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Loader2 } from "lucide-react";
+import CommandCenterDashboard from "@/components/dashboard/CommandCenterDashboard";
 
 import DashFocusOfDay       from "@/components/dashboard/DashFocusOfDay";
 import DashMomentum         from "@/components/dashboard/DashMomentum";
@@ -126,105 +127,16 @@ export default function Home() {
 
   /* ── Render ─────────────────────────────────────────────────────────── */
   return (
-    <div style={{ minHeight: "100vh", paddingBottom: 140, color: "var(--text)" }}>
-      <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 18px" }}>
-
-        <HomeTopNav />
-
-        {/* MARKETING HERO */}
-        <MarketingHero />
-
-        {/* THE 4 PILLARS */}
-        <SectionHeading>The 4 Infrastructure Pillars</SectionHeading>
-        <PillarsGrid />
-
-        <WhoThisHelps />
-        <RecoveryTestimonialSection />
-        <InstitutionalPartnershipSection />
-
-        {/* COMEBACK PORTAL — FEATURED */}
-        <SectionHeading accent="var(--gold)">Comeback Portal</SectionHeading>
-        <ComebackPortalCard />
-        <div style={{ marginTop: 14 }}>
-          <FeaturedComebackWidget />
-        </div>
-
-        {/* FOCUS OF THE DAY */}
-        <div style={{ marginTop: 18 }}>
-          <DashFocusOfDay />
-        </div>
-
-        {/* MOMENTUM */}
-        <SectionHeading>Recovery Momentum</SectionHeading>
-        <DashMomentum
-          streak={streak}
-          score={stability}
-          wellnessScore={wellnessScore}
-        />
-
-        {/* EARLY WARNING (preserved) */}
-        {user && (
-          <div style={{ marginTop: 16 }}>
-            <EarlyWarningBanner
-              checkIns={checkIns}
-              journalCount={journalEntries.length}
-              communityPostCount={communityPosts.length}
-              cravingPostCount={cravingPostCount}
-            />
-          </div>
-        )}
-
-        {/* SUBSCRIBER NUDGE (preserved) */}
-        <InAppNudge />
-
-        {/* QUICK ACTIONS */}
-        <SectionHeading>Quick Actions</SectionHeading>
-        <DashQuickActions />
-
-        {/* AI MENTOR */}
-        <SectionHeading>AI Mentor</SectionHeading>
-        <DashAIMentor />
-
-        {/* RESOURCES */}
-        <SectionHeading>Resources Near You</SectionHeading>
-        <DashResourceSnapshot />
-
-        {/* COMMUNITY */}
-        <SectionHeading>From the Community</SectionHeading>
-        <DashCommunityMomentum />
-
-        {/* Crisis support — minimal, always-accessible */}
-        <SectionHeading accent="var(--red)">24/7 Support</SectionHeading>
-        <div style={{ display: "flex", gap: 8 }}>
-          {[
-            { href: "tel:988",          label: "988 Crisis" },
-            { href: "tel:18006624357",  label: "SAMHSA" },
-            { href: "sms:741741",       label: "Text HOME" },
-          ].map(x => (
-            <a key={x.href} href={x.href} style={{
-              flex: 1, textDecoration: "none", padding: "13px 6px",
-              borderRadius: 999, textAlign: "center",
-              background: "var(--surface)",
-              border: "1px solid rgba(248,113,113,0.32)",
-              backdropFilter: "blur(12px)",
-              transition: "all .18s",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 18px rgba(248,113,113,0.32)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; }}>
-              <p style={{ fontSize: 11.5, fontWeight: 700, color: "var(--red)", letterSpacing: ".06em" }}>{x.label}</p>
-            </a>
-          ))}
-        </div>
-
-        {/* Disclaimer */}
-        <p style={{
-          textAlign: "center", marginTop: 28, fontSize: 11,
-          color: "var(--text-dim)", lineHeight: 1.7,
-        }}>
-          Re-siliant is a support tool, not a medical provider.<br/>
-          In an emergency, call 911 or 988.
-        </p>
-      </div>
-    </div>
+    <CommandCenterDashboard
+      firstName={firstName}
+      streak={streak}
+      stability={stability}
+      wellnessScore={wellnessScore}
+      stage={stage}
+      checkIns={checkIns}
+      journalCount={journalEntries.length}
+      communityPostCount={communityPosts.length}
+      campaignSettings={campaignSettings}
+    />
   );
 }
