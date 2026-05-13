@@ -73,13 +73,43 @@ export default function TopFiveNonNegotiables() {
         </section>
 
         {canAdd && (
-          <section className="card" style={{ padding: 22, marginBottom: 26 }}>
-            <h2 style={{ fontSize: 22, marginBottom: 14 }}>Add a mission objective</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1.1fr .9fr .9fr auto", gap: 12 }}>
-              <Input placeholder="Example: Stay sober for 1 year" value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
-              <Input placeholder="Why this matters" value={draft.why_it_matters} onChange={(e) => setDraft({ ...draft, why_it_matters: e.target.value })} />
-              <Input placeholder="Personal quote" value={draft.personal_quote} onChange={(e) => setDraft({ ...draft, personal_quote: e.target.value })} />
-              <Button onClick={createGoal} className="btn-primary"><Plus style={{ width: 16, height: 16, marginRight: 8 }} /> Add</Button>
+          <section className="card" style={{ padding: "clamp(22px, 4vw, 34px)", marginBottom: 26 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "flex-start", marginBottom: 18 }}>
+              <div>
+                <h2 style={{ fontSize: 26, margin: 0 }}>Add a mission objective</h2>
+                <p style={{ color: "var(--text-muted)", fontSize: 13.5, marginTop: 7 }}>Write one life mission you refuse to give up on.</p>
+              </div>
+              <span className="pill pill-ghost">{goals.length}/5 saved</span>
+            </div>
+
+            <div style={{ display: "grid", gap: 14 }}>
+              <Textarea
+                placeholder="Example: Stay sober for 1 year"
+                value={draft.title}
+                onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                autoComplete="off"
+                spellCheck="false"
+                style={{ minHeight: 92, fontSize: 18, lineHeight: 1.45, padding: 16 }}
+              />
+              <Textarea
+                placeholder="Why this matters — who or what are you fighting for?"
+                value={draft.why_it_matters}
+                onChange={(e) => setDraft({ ...draft, why_it_matters: e.target.value })}
+                autoComplete="off"
+                spellCheck="false"
+                style={{ minHeight: 86, fontSize: 15, lineHeight: 1.55, padding: 16 }}
+              />
+              <Input
+                placeholder="Personal quote or reminder, optional"
+                value={draft.personal_quote}
+                onChange={(e) => setDraft({ ...draft, personal_quote: e.target.value })}
+                autoComplete="off"
+                spellCheck="false"
+                style={{ minHeight: 52, fontSize: 15, padding: "0 16px" }}
+              />
+              <Button onClick={createGoal} className="btn-primary" style={{ width: "fit-content", minWidth: 190 }}>
+                <Plus style={{ width: 16, height: 16, marginRight: 8 }} /> Add Mission
+              </Button>
             </div>
           </section>
         )}
