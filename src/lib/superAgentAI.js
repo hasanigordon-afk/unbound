@@ -55,16 +55,20 @@ const RESPONSE_SCHEMA = {
   required: ["response", "summary", "category", "suggested_next_steps", "is_crisis"],
 };
 
-const buildPrompt = ({ userInput, history = [] }) => {
+const buildPrompt = ({ userInput, history = [], nonNegotiables = [] }) => {
   const historyText = history.length
     ? "\n\nConversation so far:\n" + history.map((h, i) =>
         `Turn ${i + 1}\nUser: ${h.user_message}\nYou: ${h.ai_response}`
       ).join("\n\n")
     : "";
 
+  const missionText = nonNegotiables.length
+    ? "\n\nUser's Top 5 Non-Negotiables (their life mission anchors):\n" + nonNegotiables.map((g, i) => `${i + 1}. ${g.title}${g.why_it_matters ? ` — Why: ${g.why_it_matters}` : ""}`).join("\n") + "\nIf the user is struggling emotionally, craving, losing hope, or doubting themselves, gently reference these mission anchors to remind them what they are fighting for. Example tone: 'Remember why you started. Your mission still matters.'"
+    : "";
+
   return `${SYSTEM_TONE}
 
-${historyText}
+${historyText}${missionText}
 
 User's latest message:
 """
@@ -76,9 +80,11 @@ Respond as the SuperAgent. Return JSON only.`;
 
 export const generateSuperAgentResponse = async ({ userInput, history = [] }) => {
   const crisisFromKeywords = detectCrisis(userInput);
+  const user = await base44.auth.me();
+  const nonNegotiables = await base44.entities.TopFiveNonNegotiable.filter({ user_email: user.email, is_active: true }, "sort_order", 5);
 
   const result = await base44.integrations.Core.InvokeLLM({
-    prompt: buildPrompt({ userInput, history }),
+    prompt: buildPrompt({ userInput, history, nonNegotiables }),
     response_json_schema: RESPONSE_SCHEMA,
   });
 

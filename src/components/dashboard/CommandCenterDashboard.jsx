@@ -23,6 +23,7 @@ import HomePrimaryCheckIn from "./HomePrimaryCheckIn";
 import HomeRail from "./HomeRail";
 import VeteranSupportModule from "./VeteranSupportModule";
 import MomentumSnapshot from "./MomentumSnapshot";
+import NonNegotiablesPreview from "@/components/nonnegotiables/NonNegotiablesPreview";
 
 const moodBars = [42, 62, 50, 76, 68, 82, 74];
 
@@ -131,6 +132,8 @@ export default function CommandCenterDashboard({
         </section>
 
         <HomePrimaryCheckIn todayComplete={todayComplete} />
+
+        <NonNegotiablesPreview />
 
         <div style={{ display: "grid", gridTemplateColumns: "1.15fr .85fr", gap: 24, alignItems: "stretch" }}>
           <CommandCenterCard glow style={{ minHeight: 252 }}>

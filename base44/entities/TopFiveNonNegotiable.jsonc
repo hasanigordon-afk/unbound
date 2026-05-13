@@ -1,0 +1,49 @@
+{
+  "name": "TopFiveNonNegotiable",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
+    "title": {
+      "type": "string",
+      "description": "The non-negotiable life mission objective"
+    },
+    "why_it_matters": {
+      "type": "string",
+      "description": "Emotional reason this goal matters"
+    },
+    "personal_quote": {
+      "type": "string",
+      "description": "Personal quote or reminder attached to this goal"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Pinned motivational image URL"
+    },
+    "voice_reminder_url": {
+      "type": "string",
+      "description": "Uploaded voice reminder audio URL"
+    },
+    "progress": {
+      "type": "number",
+      "default": 0,
+      "description": "Milestone progress percentage from 0 to 100"
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 1,
+      "description": "Display order from 1 to 5"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "user_email",
+    "title",
+    "sort_order"
+  ]
+}

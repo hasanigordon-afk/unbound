@@ -89,6 +89,7 @@ import StoriesHub from './pages/StoriesHub.jsx';
 import GrowthHub from './pages/GrowthHub.jsx';
 import InstitutionalPortal from './pages/InstitutionalPortal.jsx';
 import OutcomesProgress from './pages/OutcomesProgress.jsx';
+import TopFiveNonNegotiables from './pages/TopFiveNonNegotiables.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import AIStein from '@/components/aistein/AIStein';
 import { ThemeProvider } from '@/lib/ThemeContext';
@@ -249,6 +250,7 @@ const AuthenticatedApp = () => {
       <Route path="/GrowthHub"                           element={<LW name="GrowthHub"><GrowthHub /></LW>} />
       <Route path="/InstitutionalPortal"                 element={<LW name="InstitutionalPortal"><InstitutionalPortal /></LW>} />
       <Route path="/OutcomesProgress"                    element={<LW name="OutcomesProgress"><OutcomesProgress /></LW>} />
+      <Route path="/TopFiveNonNegotiables"                element={<LW name="TopFiveNonNegotiables"><TopFiveNonNegotiables /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
