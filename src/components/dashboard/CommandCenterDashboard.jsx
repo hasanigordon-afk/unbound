@@ -148,7 +148,18 @@ export default function CommandCenterDashboard({
             </div>
           </div>
           <Link to="/VeteranSupportHub" style={{ textDecoration: "none" }}>
-            <button className="btn-primary" style={{ minWidth: 210 }}>Open Veteran Hub</button>
+            <button className="btn-primary" style={{
+              minWidth: 230,
+              background: "linear-gradient(180deg, #B22234 0 14%, #fff 14% 28%, #B22234 28% 42%, #fff 42% 56%, #B22234 56% 70%, #fff 70% 84%, #B22234 84% 100%)",
+              color: "#071B3A",
+              border: "1px solid rgba(255,255,255,0.75)",
+              boxShadow: "0 0 0 1px rgba(60,59,110,0.45), 0 16px 34px rgba(0,0,0,0.35)",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              <span style={{ position: "absolute", left: 0, top: 0, width: 78, height: "56%", background: "#3C3B6E" }} />
+              <span style={{ position: "relative", zIndex: 1 }}>🇺🇸 Veteran Support Hub</span>
+            </button>
           </Link>
         </section>
 
