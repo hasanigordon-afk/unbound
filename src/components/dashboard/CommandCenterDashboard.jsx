@@ -204,6 +204,7 @@ export default function CommandCenterDashboard({
             <SectionTitle icon={MapPin} label="Personalized Resources" sub="Help that matches where you are." />
             <div style={{ display: "grid", gap: 9 }}>
               <SmallAction to="/MeetingDirectory" icon={Users} label="Find a meeting" />
+              <SmallAction to="/VeteranSupportHub" icon={ShieldCheck} label="Veteran support hub" color="var(--green)" />
               <SmallAction to="/FindHelpNow" icon={MapPin} label="Nearby support" color="var(--gold)" />
               <SmallAction to="/WellnessPlan" icon={BookOpen} label="Build a wellness plan" color="var(--green)" />
             </div>
