@@ -126,6 +126,32 @@ export default function CommandCenterDashboard({
           </div>
         </section>
 
+        <section className="card-glow fade-up" style={{
+          marginBottom: 34,
+          padding: "clamp(26px, 4vw, 40px)",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) auto",
+          gap: 24,
+          alignItems: "center",
+          background: "linear-gradient(135deg, rgba(52,211,153,0.15), rgba(91,141,239,0.12), rgba(13,18,32,0.78))",
+        }}>
+          <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
+            <div style={{ width: 58, height: 58, borderRadius: 20, display: "grid", placeItems: "center", background: "rgba(52,211,153,0.14)", border: "1px solid rgba(52,211,153,0.42)", color: "var(--green)", flexShrink: 0 }}>
+              <ShieldCheck style={{ width: 28, height: 28 }} />
+            </div>
+            <div>
+              <div style={{ color: "var(--green)", fontSize: 11, fontWeight: 900, letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 8 }}>Veteran Support Hub</div>
+              <h2 style={{ fontSize: "clamp(26px, 4vw, 40px)", lineHeight: 1.05, marginBottom: 10 }}>Mission-focused support for veterans rebuilding life after service.</h2>
+              <p style={{ color: "var(--text-muted)", fontSize: 15.5, lineHeight: 1.65, maxWidth: 760 }}>
+                Access VA resources, crisis support, housing, employment, benefits guidance, peer connection, and structured reintegration tools in one dedicated hub.
+              </p>
+            </div>
+          </div>
+          <Link to="/VeteranSupportHub" style={{ textDecoration: "none" }}>
+            <button className="btn-primary" style={{ minWidth: 210 }}>Open Veteran Hub</button>
+          </Link>
+        </section>
+
         <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: 24, alignItems: "stretch" }}>
           <CommandCenterCard glow style={{ gridColumn: "span 4", minHeight: 260 }}>
             <SectionTitle icon={CalendarCheck} label="Daily Check-In" sub={todayComplete ? "You showed up today." : "A two-minute reset."} />
@@ -204,7 +230,6 @@ export default function CommandCenterDashboard({
             <SectionTitle icon={MapPin} label="Personalized Resources" sub="Help that matches where you are." />
             <div style={{ display: "grid", gap: 9 }}>
               <SmallAction to="/MeetingDirectory" icon={Users} label="Find a meeting" />
-              <SmallAction to="/VeteranSupportHub" icon={ShieldCheck} label="Veteran support hub" color="var(--green)" />
               <SmallAction to="/FindHelpNow" icon={MapPin} label="Nearby support" color="var(--gold)" />
               <SmallAction to="/WellnessPlan" icon={BookOpen} label="Build a wellness plan" color="var(--green)" />
             </div>
