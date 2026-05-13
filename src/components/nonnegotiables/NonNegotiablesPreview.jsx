@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, ClipboardList, Sparkles, Target } from "lucide-react";
+import { ArrowRight, CalendarDays, ClipboardList, Sparkles, Target } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 const sampleGoals = [
@@ -47,11 +47,11 @@ export default function NonNegotiablesPreview() {
           </div>
           <h2 style={{ fontSize: "clamp(30px, 4.5vw, 52px)", lineHeight: 1, margin: 0 }}>Top 5 Non‑Negotiables</h2>
           <p style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 15.5, lineHeight: 1.7, maxWidth: 560 }}>
-            Your personal comeback blueprint — the five life missions you refuse to give up on, even on the hard days.
+            The 5 promises you made to yourself.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 22, alignItems: "center" }}>
             <Link to="/TopFiveNonNegotiables" style={{ textDecoration: "none" }}>
-              <button className="btn-primary" style={{ minWidth: 214 }}>Build My Mission <ArrowRight style={{ width: 15, height: 15, marginLeft: 8, verticalAlign: "-3px" }} /></button>
+              <button className="btn-primary" style={{ minWidth: 214 }}>Update Mission <ArrowRight style={{ width: 15, height: 15, marginLeft: 8, verticalAlign: "-3px" }} /></button>
             </Link>
             <span style={{ color: "var(--text-dim)", fontSize: 12, fontWeight: 800 }}>{goals.length || 0}/5 defined • {avgProgress}% momentum</span>
           </div>
@@ -74,7 +74,11 @@ export default function NonNegotiablesPreview() {
                   {index === 0 ? <Sparkles style={{ width: 16, height: 16, color: "var(--gold)" }} /> : <Target style={{ width: 15, height: 15, color: "var(--accent)" }} />}
                 </div>
                 <h3 style={{ fontSize: 17, lineHeight: 1.2, margin: 0 }}>{goal.title}</h3>
-                <div style={{ marginTop: 22, height: 8, background: "rgba(255,255,255,0.08)", borderRadius: 999, overflow: "hidden" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginTop: 18 }}>
+                  <span style={{ color: "var(--gold)", fontSize: 22, fontWeight: 900 }}>{goal.progress || 0}%</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "var(--text-dim)", fontSize: 11, fontWeight: 800 }}><CalendarDays size={12} /> Day 90</span>
+                </div>
+                <div style={{ marginTop: 12, height: 8, background: "rgba(255,255,255,0.08)", borderRadius: 999, overflow: "hidden" }}>
                   <div style={{ width: `${goal.progress || 0}%`, height: "100%", borderRadius: 999, background: "linear-gradient(90deg, var(--accent), var(--purple), var(--gold))" }} />
                 </div>
               </div>
