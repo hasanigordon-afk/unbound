@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -48,14 +48,14 @@ function QuickCard({ icon: Icon, label, href, color, external }) {
   return <Link to={createPageUrl(href)} style={{ flex: 1, textDecoration: "none" }}>{inner}</Link>;
 }
 
-function FlowTask({ task, done, onToggle }) {
+function FlowTask({ task, done, pending, onToggle }) {
   return (
-    <button type="button" onClick={() => onToggle(task, done)} style={{
+    <button type="button" disabled={pending} onClick={() => onToggle(task, done)} style={{
       width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "13px 16px",
       borderRadius: 12, cursor: "pointer", textAlign: "left",
       background: done ? "rgba(122,158,126,0.08)" : C.bg,
       border: `.5px solid ${done ? "rgba(122,158,126,0.3)" : C.border}`,
-      marginBottom: 8, fontFamily: "inherit"
+      marginBottom: 8, fontFamily: "inherit", opacity: pending ? 0.55 : 1
     }}>
       {done
         ? <CheckCircle2 style={{ color: C.green, width: 18, height: 18, flexShrink: 0 }} />
@@ -84,6 +84,7 @@ export default function MyFoundation() {
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
   const qc = useQueryClient();
+  const [pendingTaskIds, setPendingTaskIds] = useState([]);
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
   const { data: checkIns = [], isLoading } = useQuery({
@@ -130,23 +131,31 @@ export default function MyFoundation() {
   const flowPct   = todayTasks.length > 0 ? Math.round((doneTasks.length / todayTasks.length) * 100) : 0;
 
   const toggleTask = async (task, done) => {
-    if (!user?.email) return;
+    if (!user?.email || pendingTaskIds.includes(task.id)) return;
+    setPendingTaskIds(prev => [...prev, task.id]);
     const existing = pathCompletions.find(c => c.task_id === task.id);
-    if (done && existing?.id) {
-      await base44.entities.RecoveryPathCompletion.delete(existing.id);
-    } else if (!done) {
-      await base44.entities.RecoveryPathCompletion.create({
-        user_email: user.email,
-        task_id: task.id,
-        task_title: task.title,
-        task_category: task.category,
-        task_priority: task.priority,
-        completion_date: today,
-        status: "done",
-        points_earned: task.is_essential ? 15 : 10,
-      });
+    try {
+      if (done && existing?.id) {
+        await base44.entities.RecoveryPathCompletion.delete(existing.id);
+      } else if (!done && !existing) {
+        await base44.entities.RecoveryPathCompletion.create({
+          user_email: user.email,
+          task_id: task.id,
+          task_title: task.title,
+          task_category: task.category,
+          task_priority: task.priority,
+          completion_date: today,
+          status: "done",
+          points_earned: task.is_essential ? 15 : 10,
+        });
+      }
+      await qc.invalidateQueries({ queryKey: ["foundation-rp-completions", user.email, today] });
+    } catch (error) {
+      if (!String(error?.message || error).includes("not found")) throw error;
+      await qc.invalidateQueries({ queryKey: ["foundation-rp-completions", user.email, today] });
+    } finally {
+      setPendingTaskIds(prev => prev.filter(id => id !== task.id));
     }
-    qc.invalidateQueries({ queryKey: ["foundation-rp-completions", user.email, today] });
   };
 
   const firstName = user?.full_name?.split(" ")[0] || "there";
@@ -251,6 +260,7 @@ export default function MyFoundation() {
                   <FlowTask key={task.id}
                     task={{ ...task, tag: task.is_essential ? "Must-Do" : null }}
                     done={completionMap[task.id] === "done"}
+                    pending={pendingTaskIds.includes(task.id)}
                     onToggle={toggleTask}
                   />
                 ))}
