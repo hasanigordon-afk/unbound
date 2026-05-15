@@ -8,7 +8,7 @@ import PillarSidebar from "@/components/navigation/PillarSidebar";
 const NAV = [
   { name: "Home",      icon: Home,     page: "Home",          href: "/" },
   { name: "Resources", icon: Compass,  page: "RecoveryHub",   href: "/RecoveryHub" },
-  { name: "Mentor",    icon: Sparkles, page: "SuperAgent",    href: "/SuperAgent", center: true },
+  { name: "AI",        icon: Sparkles, page: "SuperAgent",    href: "/SuperAgent", center: true },
   { name: "Community", icon: Users,    page: "AhHaCommunity", href: "/AhHaCommunity" },
   { name: "Profile",   icon: User,     page: "Profile",       href: "/Profile" },
 ];

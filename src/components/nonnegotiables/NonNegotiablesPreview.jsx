@@ -1,99 +1,80 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, CalendarDays, ClipboardList, Sparkles, Target } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { ArrowRight, BookOpen, Briefcase, Dumbbell, HeartHandshake, Sparkles, Target, Users } from "lucide-react";
 
-const sampleGoals = [
-  "Stay sober for 1 year",
-  "Get my own apartment",
-  "Repair family relationships",
-  "Build financial stability",
-  "Protect my peace",
+const previewGoals = [
+  { title: "Family", icon: Users, progress: 72, priority: "High" },
+  { title: "Employment", icon: Briefcase, progress: 58, priority: "High" },
+  { title: "Meetings", icon: HeartHandshake, progress: 84, priority: "Daily" },
+  { title: "Fitness", icon: Dumbbell, progress: 46, priority: "Medium" },
+  { title: "Education", icon: BookOpen, progress: 34, priority: "Build" },
 ];
 
 export default function NonNegotiablesPreview() {
-  const { data: goals = [] } = useQuery({
-    queryKey: ["top-five-non-negotiables-preview"],
-    queryFn: async () => {
-      const user = await base44.auth.me();
-      return base44.entities.TopFiveNonNegotiable.filter({ user_email: user.email, is_active: true }, "sort_order", 5);
-    },
-    initialData: [],
-  });
-
-  const displayGoals = goals.length ? goals : sampleGoals.map((title, index) => ({ title, progress: index === 0 ? 20 : 0, sort_order: index + 1 }));
-  const avgProgress = goals.length ? Math.round(goals.reduce((sum, goal) => sum + (goal.progress || 0), 0) / goals.length) : 0;
-
   return (
     <section className="mission-board-preview" style={{
       position: "relative",
-      margin: "0 0 74px",
-      padding: "clamp(24px, 4vw, 38px)",
-      borderRadius: 34,
+      margin: "0 0 78px",
+      padding: "clamp(26px, 4.5vw, 44px)",
+      borderRadius: 38,
       overflow: "hidden",
-      background: "linear-gradient(135deg, rgba(255,255,255,0.10), rgba(13,18,32,0.82) 46%, rgba(167,139,250,0.14))",
-      border: "1px solid rgba(255,255,255,0.16)",
+      background: "linear-gradient(135deg, rgba(255,255,255,0.11), rgba(13,18,32,0.84) 46%, rgba(167,139,250,0.16))",
+      border: "1px solid rgba(190,215,255,0.18)",
       boxShadow: "var(--glow), var(--shadow)",
-      backdropFilter: "blur(24px) saturate(150%)",
+      backdropFilter: "blur(26px) saturate(160%)",
     }}>
-      <div aria-hidden style={{ position: "absolute", right: -90, top: -110, width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(167,139,250,0.26), transparent 68%)", filter: "blur(18px)" }} />
+      <div aria-hidden style={{ position: "absolute", right: -90, top: -110, width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(167,139,250,0.28), transparent 68%)", filter: "blur(18px)" }} />
       <div aria-hidden style={{ position: "absolute", left: 28, top: 18, color: "rgba(255,255,255,0.10)", fontFamily: "cursive", fontSize: 34, transform: "rotate(-4deg)" }}>remember why.</div>
 
-      <div style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, .95fr) minmax(320px, 1.05fr)", gap: 28, alignItems: "center" }}>
-        <div>
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: 760, marginBottom: 24 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 13px", borderRadius: 999, background: "rgba(255,255,255,0.08)", border: "1px solid var(--border)", color: "var(--gold)", fontSize: 11, fontWeight: 900, letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 14 }}>
-            <ClipboardList style={{ width: 14, height: 14 }} /> Mission Board
+            <Target style={{ width: 14, height: 14 }} /> Your comeback starts with five promises.
           </div>
-          <h2 style={{ fontSize: "clamp(30px, 4.5vw, 52px)", lineHeight: 1, margin: 0 }}>My Non-Negotiables</h2>
-          <p style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 15.5, lineHeight: 1.7, maxWidth: 560 }}>
-            Your comeback starts with five promises you refuse to break.
+          <h2 style={{ fontSize: "clamp(32px, 4.7vw, 56px)", lineHeight: 1, margin: 0 }}>My Non-Negotiables</h2>
+          <p style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 16, lineHeight: 1.7, maxWidth: 560 }}>
+            The five things I refuse to break.
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 22, alignItems: "center" }}>
-            <Link to="/TopFiveNonNegotiables" style={{ textDecoration: "none" }}>
-              <button className="btn-primary" style={{ minWidth: 214 }}>Update Mission <ArrowRight style={{ width: 15, height: 15, marginLeft: 8, verticalAlign: "-3px" }} /></button>
-            </Link>
-            <span style={{ color: "var(--text-dim)", fontSize: 12, fontWeight: 800 }}>{goals.length || 0}/5 defined • {avgProgress}% momentum</span>
-          </div>
         </div>
 
-        <div className="mission-card-row" style={{ display: "flex", gap: 12, overflowX: "auto", scrollSnapType: "x mandatory", paddingBottom: 8 }}>
-          {displayGoals.slice(0, 5).map((goal, index) => (
-            <Link key={`${goal.title}-${index}`} to="/TopFiveNonNegotiables" style={{ textDecoration: "none", minWidth: 206, scrollSnapAlign: "start" }}>
-              <div className="mission-mini-card" style={{
-                minHeight: 186,
-                padding: 16,
-                borderRadius: 24,
-                color: "var(--text)",
-                background: "linear-gradient(180deg, rgba(255,255,255,0.105), rgba(255,255,255,0.045))",
-                border: index === 0 ? "1px solid var(--border-glow)" : "1px solid var(--border)",
-                boxShadow: index === 0 ? "0 0 28px rgba(91,141,239,0.25)" : "none",
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+        <div className="mission-card-row" style={{ display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 13 }}>
+          {previewGoals.map(({ title, icon: Icon, progress, priority }, index) => (
+            <Link key={title} to="/TopFiveNonNegotiables" style={{ textDecoration: "none" }}>
+              <div className="mission-mini-card" style={{ minHeight: 210, padding: 16, borderRadius: 25, color: "var(--text)", background: "linear-gradient(180deg, rgba(255,255,255,0.105), rgba(255,255,255,0.045))", border: index === 0 ? "1px solid var(--border-glow)" : "1px solid var(--border)", boxShadow: index === 0 ? "0 0 28px rgba(91,141,239,0.25)" : "none" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                   <span style={{ color: "var(--text-dim)", fontSize: 11, fontWeight: 900 }}>0{index + 1}</span>
-                  {index === 0 ? <Sparkles style={{ width: 16, height: 16, color: "var(--gold)" }} /> : <Target style={{ width: 15, height: 15, color: "var(--accent)" }} />}
+                  {index === 0 ? <Sparkles style={{ width: 16, height: 16, color: "var(--gold)" }} /> : <Icon style={{ width: 16, height: 16, color: "var(--accent)" }} />}
                 </div>
-                <h3 style={{ fontSize: 17, lineHeight: 1.2, margin: 0 }}>{goal.title}</h3>
+                <h3 style={{ fontSize: 18, lineHeight: 1.2, margin: 0 }}>{title}</h3>
+                <span style={{ display: "inline-flex", marginTop: 13, padding: "5px 9px", borderRadius: 999, background: "rgba(255,255,255,.075)", border: "1px solid var(--border)", color: "var(--gold)", fontSize: 10, fontWeight: 900, textTransform: "uppercase", letterSpacing: ".08em" }}>{priority}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginTop: 18 }}>
-                  <span style={{ color: "var(--gold)", fontSize: 22, fontWeight: 900 }}>{goal.progress || 0}%</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "var(--text-dim)", fontSize: 11, fontWeight: 800 }}><CalendarDays size={12} /> Day 90</span>
+                  <span style={{ color: "var(--text)", fontSize: 24, fontWeight: 900 }}>{progress}%</span>
+                  <Icon style={{ width: 17, height: 17, color: "var(--text-dim)" }} />
                 </div>
                 <div style={{ marginTop: 12, height: 8, background: "rgba(255,255,255,0.08)", borderRadius: 999, overflow: "hidden" }}>
-                  <div style={{ width: `${goal.progress || 0}%`, height: "100%", borderRadius: 999, background: "linear-gradient(90deg, var(--accent), var(--purple), var(--gold))" }} />
+                  <div className="mission-progress" style={{ width: `${progress}%`, height: "100%", borderRadius: 999, background: "linear-gradient(90deg, var(--accent), var(--purple), var(--gold))" }} />
                 </div>
               </div>
             </Link>
           ))}
         </div>
+
+        <Link to="/TopFiveNonNegotiables" style={{ textDecoration: "none", display: "inline-flex", marginTop: 28 }}>
+          <button className="btn-primary mission-board-button">Go To Mission Board <ArrowRight className="mission-board-arrow" style={{ width: 16, height: 16, marginLeft: 8, verticalAlign: "-3px" }} /></button>
+        </Link>
       </div>
 
       <style>{`
         .mission-board-preview { animation: missionBoardGlow 6s ease-in-out infinite; }
-        .mission-mini-card { transition: transform .22s, border-color .22s, box-shadow .22s; }
-        .mission-mini-card:hover { transform: translateY(-4px) rotate(-.5deg); border-color: var(--border-glow); box-shadow: var(--glow); }
-        .mission-card-row::-webkit-scrollbar { height: 6px; }
+        .mission-mini-card { transition: transform .22s, border-color .22s, box-shadow .22s; animation: fadeUp .65s cubic-bezier(.22,1,.36,1) both; }
+        .mission-mini-card:hover { transform: translateY(-6px) rotate(-.5deg); border-color: var(--border-glow); box-shadow: var(--glow); }
+        .mission-progress { animation: progressShine 2.8s ease-in-out infinite; }
+        .mission-board-arrow { transition: transform .22s; }
+        .mission-board-button:hover .mission-board-arrow { transform: translateX(5px); }
         @keyframes missionBoardGlow { 0%,100% { box-shadow: var(--glow), var(--shadow); } 50% { box-shadow: 0 0 46px rgba(167,139,250,0.34), var(--shadow); } }
-        @media (max-width: 860px) { .mission-board-preview > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; } }
+        @keyframes progressShine { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.35); } }
+        @media (max-width: 1100px) { .mission-card-row { grid-template-columns: repeat(2, minmax(0,1fr)) !important; } }
+        @media (max-width: 560px) { .mission-card-row { grid-template-columns: 1fr !important; } }
       `}</style>
     </section>
   );
