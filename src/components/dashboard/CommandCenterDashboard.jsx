@@ -27,7 +27,7 @@ export default function CommandCenterDashboard({
     return d.toDateString() === now.toDateString();
   });
   return (
-    <main style={{ minHeight: "100vh", padding: "38px 0 170px", color: "var(--text)" }}>
+    <main style={{ minHeight: "100vh", padding: "54px 0 190px", color: "var(--text)", background: "radial-gradient(circle at 50% 0%, rgba(91,141,239,0.10), transparent 34%)" }}>
       <div style={{ width: "min(1240px, calc(100vw - 40px))", margin: "0 auto" }}>
         <StartupHero />
         <DailyFocusWidget firstName={firstName} todayComplete={todayComplete} />

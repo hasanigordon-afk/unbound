@@ -14,7 +14,7 @@ export default function DailyFocusWidget({ firstName = "there", todayComplete = 
   const percent = Math.round((completed / missions.length) * 100);
 
   return (
-    <section className="card-glow" style={{ padding: "clamp(24px, 4vw, 36px)", marginBottom: 28 }}>
+    <section className="card-glow float" style={{ padding: "clamp(30px, 5vw, 48px)", marginBottom: 74 }}>
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, .8fr) minmax(280px, 1.2fr)", gap: 26, alignItems: "center" }}>
         <div>
           <p className="section-label" style={{ marginBottom: 12 }}>Daily Focus</p>

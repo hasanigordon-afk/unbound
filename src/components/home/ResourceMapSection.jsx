@@ -13,7 +13,7 @@ const resources = [
 
 export default function ResourceMapSection() {
   return (
-    <section className="card" style={{ padding: "clamp(24px, 4vw, 38px)", marginBottom: 28 }}>
+    <section className="card" style={{ padding: "clamp(32px, 5vw, 54px)", marginBottom: 74 }}>
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, .85fr) minmax(320px, 1.15fr)", gap: 24, alignItems: "center" }}>
         <div>
           <p className="section-label">Interactive Resource Map</p>

@@ -11,7 +11,7 @@ const pillars = [
 
 export default function FourPillarsSection() {
   return (
-    <section style={{ marginBottom: 28 }}>
+    <section style={{ marginBottom: 74 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "end", marginBottom: 16 }}>
         <div>
           <p className="section-label">The Platform</p>

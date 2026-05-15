@@ -28,7 +28,7 @@ export default function NonNegotiablesPreview() {
   return (
     <section className="mission-board-preview" style={{
       position: "relative",
-      margin: "0 0 30px",
+      margin: "0 0 74px",
       padding: "clamp(24px, 4vw, 38px)",
       borderRadius: 34,
       overflow: "hidden",

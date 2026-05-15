@@ -9,7 +9,7 @@ const phases = [
 
 export default function ComebackTimeline() {
   return (
-    <section className="card" style={{ padding: "clamp(24px, 4vw, 38px)", marginBottom: 28 }}>
+    <section className="card" style={{ padding: "clamp(30px, 5vw, 50px)", marginBottom: 74 }}>
       <p className="section-label">90 Day Comeback Path</p>
       <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", margin: 0 }}>A clear path from survival to momentum.</h2>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginTop: 24 }}>

@@ -4,7 +4,7 @@ import { Mic, PenLine, Sparkles } from "lucide-react";
 
 export default function AISteinHomeSection() {
   return (
-    <section className="card-glow" style={{ padding: "clamp(24px, 4vw, 38px)", marginBottom: 28, background: "linear-gradient(135deg, rgba(167,139,250,0.15), rgba(20,26,45,0.62), rgba(91,141,239,0.14))" }}>
+    <section className="card-glow" style={{ padding: "clamp(32px, 5vw, 54px)", marginBottom: 74, background: "linear-gradient(135deg, rgba(167,139,250,0.18), rgba(20,26,45,0.58), rgba(91,141,239,0.17))" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 22, alignItems: "center" }}>
         <div>
           <div className="pill pill-teal" style={{ marginBottom: 14 }}><Sparkles size={13} style={{ marginRight: 7 }} /> AI Stein</div>
