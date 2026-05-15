@@ -4,20 +4,18 @@ import { Activity, HeartCrack, RotateCcw } from "lucide-react";
 const years = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
 
 function RisingLineChart() {
-  const points = ["14,82", "52,76", "92,58", "132,42", "172,36", "212,26", "252,30"];
+  const dotOffsets = [18, 36, 72, 102, 132, 178, 226];
   return (
-    <div className="chart-panel">
-      <svg viewBox="0 0 266 104" style={{ width: "100%", height: 104, overflow: "visible" }}>
-        {[22, 50, 78].map((y) => <line key={y} x1="10" x2="256" y1={y} y2={y} stroke="rgba(255,255,255,.07)" />)}
-        <polyline points={points.join(" ")} fill="none" stroke="rgba(91,141,239,.15)" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
-        <polyline className="analytics-line" points={points.join(" ")} fill="none" stroke="url(#odGradient)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-        <defs><linearGradient id="odGradient" x1="0" x2="1"><stop stopColor="#5B8DEF"/><stop offset="1" stopColor="#A78BFA"/></linearGradient></defs>
-        {points.map((point, index) => {
-          const [x, y] = point.split(",");
-          return <circle key={point} className="analytics-dot" cx={x} cy={y} r="4" fill="#EAF0FF" style={{ animationDelay: `${index * 100}ms` }} />;
-        })}
-      </svg>
-      <div className="chart-years">{years.map((year) => <span key={year}>{year}</span>)}</div>
+    <div className="chart-panel dot-ladder-panel">
+      {years.map((year, index) => (
+        <div key={year} className="dot-ladder-row" style={{ animationDelay: `${index * 90}ms` }}>
+          <span className="dot-ladder-year">{year}</span>
+          <span className="dot-ladder-track">
+            <span className="dot-ladder-glow" style={{ width: `${dotOffsets[index]}px` }} />
+            <span className="dot-ladder-dot" style={{ left: `${dotOffsets[index]}px` }} />
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -128,8 +126,12 @@ export default function WhyThisMattersSection() {
         .card-topline span { display: block; margin-top: 8px; color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
         .card-icon { width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center; color: var(--accent); background: rgba(91,141,239,.13); border: 1px solid rgba(91,141,239,.30); box-shadow: 0 0 24px rgba(91,141,239,.16); flex-shrink: 0; }
         .chart-panel { position: relative; margin-top: 18px; padding: 12px 10px 8px; border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); }
-        .chart-years { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 4px; }
-        .chart-years span { color: var(--text-dim); font-size: 8px; font-weight: 900; text-align: center; }
+        .dot-ladder-panel { display: grid; gap: 7px; min-height: 152px; padding: 14px 12px; }
+        .dot-ladder-row { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: 10px; opacity: 0; animation: fadeUp .55s cubic-bezier(.22,1,.36,1) forwards; }
+        .dot-ladder-year { color: var(--text-muted); font-size: 11px; font-weight: 900; letter-spacing: .04em; }
+        .dot-ladder-track { position: relative; height: 14px; }
+        .dot-ladder-glow { position: absolute; left: 0; top: 6px; height: 2px; border-radius: 999px; background: linear-gradient(90deg, rgba(91,141,239,.08), rgba(167,139,250,.35)); box-shadow: 0 0 12px rgba(91,141,239,.24); transform-origin: left; animation: ladderLine .75s cubic-bezier(.22,1,.36,1) both; }
+        .dot-ladder-dot { position: absolute; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: #EAF0FF; box-shadow: 0 0 14px rgba(91,141,239,.75), 0 0 26px rgba(167,139,250,.42); animation: dotPulse 2.4s ease-in-out infinite; }
         .analytics-line { stroke-dasharray: 540; stroke-dashoffset: 540; filter: drop-shadow(0 0 10px rgba(91,141,239,.55)); animation: drawLine 1.45s cubic-bezier(.22,1,.36,1) forwards; }
         .analytics-dot { opacity: 0; filter: drop-shadow(0 0 8px rgba(234,240,255,.7)); animation: fadeIn .45s ease forwards; }
         .recidivism-panel { min-height: 144px; }
@@ -146,6 +148,8 @@ export default function WhyThisMattersSection() {
         .source-row { position: absolute; left: 18px; right: 18px; bottom: 16px; display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .13em; }
         .source-row span { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 16px rgba(52,211,153,.45); }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        @keyframes ladderLine { from { transform: scaleX(.1); opacity: .25; } to { transform: scaleX(1); opacity: 1; } }
+        @keyframes dotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
         @keyframes barRise { from { transform: scaleY(.2); opacity: .35; } to { transform: scaleY(1); opacity: 1; } }
         @keyframes donutPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
         @keyframes statFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -4px; } }
