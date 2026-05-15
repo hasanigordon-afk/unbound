@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BriefcaseBusiness, CalendarCheck, CheckCircle2, Dumbbell, Users } from "lucide-react";
+import { ArrowRight, CheckCircle2, Compass, Film, Lightbulb, Rocket } from "lucide-react";
 
 const missions = [
-  { label: "Daily Check-In", detail: "Log how you’re doing today", action: "Check in", icon: CalendarCheck, done: true, to: "/DailyCheckIn" },
-  { label: "Meeting", detail: "Find support and stay connected", action: "Find meeting", icon: Users, done: false, to: "/MeetingDirectory" },
-  { label: "Job Applications", detail: "Take one step toward stability", action: "Rebuild", icon: BriefcaseBusiness, done: false, to: "/RebuildHub" },
-  { label: "Exercise", detail: "Move your body and reset", action: "Open plan", icon: Dumbbell, done: false, to: "/WellnessPlan" },
+  { label: "Start My Journey", detail: "Begin with your foundation", action: "Start", icon: Rocket, done: true, to: "/MyFoundation" },
+  { label: "Ah Ha Moment", detail: "Capture a breakthrough", action: "Reflect", icon: Lightbulb, done: false, to: "/AhHaMoment" },
+  { label: "Resources", detail: "Find support near you", action: "Explore", icon: Compass, done: false, to: "/RecoveryHub" },
+  { label: "Media", detail: "Watch comeback content", action: "Watch", icon: Film, done: false, to: "/ComebackPortal" },
 ];
 
 export default function DailyFocusWidget({ firstName = "there", todayComplete = false }) {
-  const completed = missions.filter((item) => item.done || (item.label === "Daily Check-In" && todayComplete)).length;
+  const completed = missions.filter((item) => item.done).length;
   const percent = Math.round((completed / missions.length) * 100);
 
   return (
@@ -33,7 +33,7 @@ export default function DailyFocusWidget({ firstName = "there", todayComplete = 
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 14 }}>
         {missions.map(({ label, detail, action, icon: Icon, done, to }) => {
-          const checked = done || (label === "Daily Check-In" && todayComplete);
+          const checked = done;
           return (
             <Link key={label} to={to} style={{ textDecoration: "none", color: "inherit" }}>
               <div style={{ minHeight: 178, height: "100%", display: "flex", flexDirection: "column", gap: 12, padding: 18, borderRadius: 24, background: checked ? "rgba(52,211,153,0.13)" : "rgba(255,255,255,0.055)", border: checked ? "1px solid rgba(52,211,153,0.32)" : "1px solid var(--border)", boxShadow: checked ? "0 0 24px rgba(52,211,153,0.12)" : "none" }}>
