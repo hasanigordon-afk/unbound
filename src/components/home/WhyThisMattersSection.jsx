@@ -4,18 +4,27 @@ import { Activity, HeartCrack, RotateCcw } from "lucide-react";
 const years = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
 
 function RisingLineChart() {
-  const dotOffsets = [18, 36, 72, 102, 132, 178, 226];
+  const points = ["18,90", "55,82", "92,68", "129,56", "166,45", "203,28", "240,22"];
   return (
-    <div className="chart-panel dot-ladder-panel">
-      {years.map((year, index) => (
-        <div key={year} className="dot-ladder-row" style={{ animationDelay: `${index * 90}ms` }}>
-          <span className="dot-ladder-year">{year}</span>
-          <span className="dot-ladder-track">
-            <span className="dot-ladder-glow" style={{ width: `${dotOffsets[index]}px` }} />
-            <span className="dot-ladder-dot" style={{ left: `${dotOffsets[index]}px` }} />
-          </span>
-        </div>
-      ))}
+    <div className="chart-panel overdose-chart-panel">
+      <div className="trend-badge">+32% increase</div>
+      <svg viewBox="0 0 258 128" className="overdose-chart-svg">
+        {[30, 58, 86].map((y) => <line key={y} x1="10" x2="248" y1={y} y2={y} stroke="rgba(255,255,255,.07)" />)}
+        <polyline points={points.join(" ")} fill="none" stroke="rgba(91,141,239,.14)" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
+        <polyline className="analytics-line" points={points.join(" ")} fill="none" stroke="url(#overdoseGradient)" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+        <defs>
+          <linearGradient id="overdoseGradient" x1="0" x2="1">
+            <stop stopColor="#5B8DEF" />
+            <stop offset=".55" stopColor="#A78BFA" />
+            <stop offset="1" stopColor="#F0B753" />
+          </linearGradient>
+        </defs>
+        {points.map((point, index) => {
+          const [x, y] = point.split(",");
+          return <circle key={point} className="analytics-dot" cx={x} cy={y} r="5" fill="#EAF0FF" style={{ animationDelay: `${index * 90}ms` }} />;
+        })}
+      </svg>
+      <div className="chart-years overdose-years">{years.map((year) => <span key={year}>{year}</span>)}</div>
     </div>
   );
 }
@@ -94,21 +103,38 @@ export default function WhyThisMattersSection() {
       </div>
 
       <div className="crisis-card-grid">
-        {cards.map(({ title, icon: Icon, number, metric, description, source, chart }, index) => (
-          <article key={title} className="crisis-stat-card" style={{ animationDelay: `${index * 120}ms` }}>
-            <div className="card-topline">
-              <div>
-                <p>{title}</p>
-                <strong>{number}</strong>
-                <span>{metric}</span>
+        {cards.map(({ title, icon: Icon, number, metric, description, source, chart }, index) => {
+          const isOverdose = title === "Overdose Crisis";
+          return (
+            <article key={title} className={`crisis-stat-card ${isOverdose ? "overdose-card" : ""}`} style={{ animationDelay: `${index * 120}ms` }}>
+              <div className="card-topline">
+                <div>
+                  <p>{isOverdose ? "📈 " : ""}{title}</p>
+                  {!isOverdose && (
+                    <>
+                      <strong>{number}</strong>
+                      <span>{metric}</span>
+                    </>
+                  )}
+                </div>
+                <div className="card-icon"><Icon size={21} /></div>
               </div>
-              <div className="card-icon"><Icon size={21} /></div>
-            </div>
-            {chart}
-            <p className="card-description">{description}</p>
-            <div className="source-row"><span />{source}</div>
-          </article>
-        ))}
+              {chart}
+              {isOverdose ? (
+                <div className="overdose-bottom-metric">
+                  <strong>{number}</strong>
+                  <span>{metric}</span>
+                  <small>Source: CDC</small>
+                </div>
+              ) : (
+                <>
+                  <p className="card-description">{description}</p>
+                  <div className="source-row"><span />{source}</div>
+                </>
+              )}
+            </article>
+          );
+        })}
       </div>
 
       <style>{`
@@ -126,12 +152,18 @@ export default function WhyThisMattersSection() {
         .card-topline span { display: block; margin-top: 8px; color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
         .card-icon { width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center; color: var(--accent); background: rgba(91,141,239,.13); border: 1px solid rgba(91,141,239,.30); box-shadow: 0 0 24px rgba(91,141,239,.16); flex-shrink: 0; }
         .chart-panel { position: relative; margin-top: 18px; padding: 12px 10px 8px; border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); }
-        .dot-ladder-panel { display: grid; gap: 7px; min-height: 152px; padding: 14px 12px; }
-        .dot-ladder-row { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: 10px; opacity: 0; animation: fadeUp .55s cubic-bezier(.22,1,.36,1) forwards; }
-        .dot-ladder-year { color: var(--text-muted); font-size: 11px; font-weight: 900; letter-spacing: .04em; }
-        .dot-ladder-track { position: relative; height: 14px; }
-        .dot-ladder-glow { position: absolute; left: 0; top: 6px; height: 2px; border-radius: 999px; background: linear-gradient(90deg, rgba(91,141,239,.08), rgba(167,139,250,.35)); box-shadow: 0 0 12px rgba(91,141,239,.24); transform-origin: left; animation: ladderLine .75s cubic-bezier(.22,1,.36,1) both; }
-        .dot-ladder-dot { position: absolute; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: #EAF0FF; box-shadow: 0 0 14px rgba(91,141,239,.75), 0 0 26px rgba(167,139,250,.42); animation: dotPulse 2.4s ease-in-out infinite; }
+        .overdose-card { display: flex; flex-direction: column; min-height: 340px; padding: 18px; }
+        .overdose-chart-panel { flex: 1; min-height: 174px; margin-top: 14px; padding: 14px 12px 10px; display: flex; flex-direction: column; justify-content: center; }
+        .overdose-chart-svg { width: 100%; height: 128px; overflow: visible; }
+        .trend-badge { align-self: flex-start; margin-bottom: 2px; padding: 5px 10px; border-radius: 999px; color: var(--gold); background: rgba(240,183,83,.13); border: 1px solid rgba(240,183,83,.28); font-size: 11px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; box-shadow: 0 0 18px rgba(240,183,83,.12); }
+        .chart-years { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 3px; }
+        .chart-years span { color: var(--text-dim); font-size: 8px; font-weight: 900; text-align: center; }
+        .overdose-years span { color: var(--text-muted); }
+        .overdose-bottom-metric { position: relative; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.09); }
+        .overdose-bottom-metric strong { display: block; font-size: clamp(34px, 3.5vw, 44px); letter-spacing: -.055em; line-height: .9; background: linear-gradient(135deg, var(--text), var(--accent), var(--purple)); -webkit-background-clip: text; color: transparent; }
+        .overdose-bottom-metric span { display: block; margin-top: 7px; color: var(--text-muted); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+        .overdose-bottom-metric small { display: flex; align-items: center; gap: 7px; margin-top: 10px; color: var(--text-dim); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .13em; }
+        .overdose-bottom-metric small:before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 16px rgba(52,211,153,.45); }
         .analytics-line { stroke-dasharray: 540; stroke-dashoffset: 540; filter: drop-shadow(0 0 10px rgba(91,141,239,.55)); animation: drawLine 1.45s cubic-bezier(.22,1,.36,1) forwards; }
         .analytics-dot { opacity: 0; filter: drop-shadow(0 0 8px rgba(234,240,255,.7)); animation: fadeIn .45s ease forwards; }
         .recidivism-panel { min-height: 144px; }
@@ -148,7 +180,6 @@ export default function WhyThisMattersSection() {
         .source-row { position: absolute; left: 18px; right: 18px; bottom: 16px; display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .13em; }
         .source-row span { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 16px rgba(52,211,153,.45); }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
-        @keyframes ladderLine { from { transform: scaleX(.1); opacity: .25; } to { transform: scaleX(1); opacity: 1; } }
         @keyframes dotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
         @keyframes barRise { from { transform: scaleY(.2); opacity: .35; } to { transform: scaleY(1); opacity: 1; } }
         @keyframes donutPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
