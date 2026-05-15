@@ -142,7 +142,7 @@ const AuthenticatedApp = () => {
   if (authError) {
     if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
     if (authError.type === 'auth_required') {
-      // Logged-out visitors land on the public Re-siliant marketing page.
+      // Logged-out visitors land on the public ReZilient marketing page.
       const path = window.location.pathname.toLowerCase();
       const publicPaths = ['/resiliant', '/about', '/onboarding'];
       if (!publicPaths.includes(path)) {

@@ -26,7 +26,7 @@ export default function HomeTopNav() {
           boxShadow: "var(--glow)",
         }} />
         <div>
-          <p style={{ color: "var(--text)", fontWeight: 900, fontSize: 14, letterSpacing: ".02em" }}>Re-silient</p>
+          <p style={{ color: "var(--text)", fontWeight: 900, fontSize: 14, letterSpacing: ".02em" }}>ReZilient</p>
           <p style={{ color: "var(--text-dim)", fontSize: 9.5, textTransform: "uppercase", letterSpacing: ".16em" }}>Recovery Infrastructure</p>
         </div>
       </Link>

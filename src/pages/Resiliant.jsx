@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import ResiliantLogo from "@/components/shared/AhHaLogo";
 
-/* ── Re-siliant marketing landing page ─────────────────────────────────────
+/* ── ReZilient marketing landing page ─────────────────────────────────────
    Public-facing homepage describing the app for new visitors. */
 
 const NAVY      = "#0F1E3D";
@@ -125,7 +125,7 @@ export default function Resiliant() {
             fontFamily: "'Lora', Georgia, serif", fontSize: 52, fontWeight: 700,
             lineHeight: 1.05, letterSpacing: "-.02em", marginBottom: 18, color: "#fff",
           }}>
-            Re<span style={{ color: GOLD }}>-</span>siliant
+            Re<span style={{ color: GOLD }}>Z</span>ilient
           </h1>
 
           <p style={{
@@ -169,10 +169,10 @@ export default function Resiliant() {
 
       {/* ── 2. WHAT IS RE-SILIANT ────────────────────────────────────────── */}
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "72px 24px" }}>
-        <SectionLabel>What is Re-siliant?</SectionLabel>
+        <SectionLabel>What is ReZilient?</SectionLabel>
         <Heading>A digital comeback system for people rebuilding their lives.</Heading>
         <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.75 }}>
-          Re-siliant helps people stay accountable, find resources, create daily structure, and rebuild after addiction, incarceration, military transition, homelessness, or hardship. The "Re-" stands for recovery, reentry, rebuilding, restarting, reconnecting, and reclaiming life. The hyphen represents the break — and the decision to rebuild after it.
+          ReZilient helps people stay accountable, find resources, create daily structure, and rebuild after addiction, incarceration, military transition, homelessness, or hardship. The "Re-" stands for recovery, reentry, rebuilding, restarting, reconnecting, and reclaiming life. The hyphen represents the break — and the decision to rebuild after it.
         </p>
       </div>
 
@@ -182,7 +182,7 @@ export default function Resiliant() {
           <SectionLabel>Why does this matter?</SectionLabel>
           <Heading>People need the most support right after the hardest moments.</Heading>
           <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.75, marginBottom: 24 }}>
-            After treatment ends, after release, after a crisis, or after a major life change — that's when the real work begins, and that's exactly when most people lose the structure that was holding them up. Re-siliant gives users the tools to stay focused, supported, and moving forward, even on the hard days.
+            After treatment ends, after release, after a crisis, or after a major life change — that's when the real work begins, and that's exactly when most people lose the structure that was holding them up. ReZilient gives users the tools to stay focused, supported, and moving forward, even on the hard days.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 10 }}>
             {[
@@ -230,7 +230,7 @@ export default function Resiliant() {
           }}>The core tools</p>
           <Heading light>Three things that move you forward.</Heading>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.72)", lineHeight: 1.7, marginBottom: 36, maxWidth: 540 }}>
-            Re-siliant is more than a check-in app. It's a guided system designed around the moments people need most.
+            ReZilient is more than a check-in app. It's a guided system designed around the moments people need most.
           </p>
 
           <div style={{
@@ -271,7 +271,7 @@ export default function Resiliant() {
             { icon: Heart,   title: "Non-judgmental",       body: "We meet people where they are — recovery isn't a straight line." },
             { icon: Lock,    title: "Privacy-conscious",    body: "Your story is yours. Anonymous by default for community features." },
             { icon: Users,   title: "User-driven",          body: "Built around what real people in recovery and reentry actually need." },
-            { icon: Shield,  title: "A support — not a replacement", body: "Re-siliant supports professional care, counselors, sponsors, and treatment providers. It doesn't replace them." },
+            { icon: Shield,  title: "A support — not a replacement", body: "ReZilient supports professional care, counselors, sponsors, and treatment providers. It doesn't replace them." },
           ].map((item, i) => (
             <div key={i} style={{
               background: "#fff", border: "1px solid #E4DFD3", borderRadius: 16,
@@ -321,11 +321,11 @@ export default function Resiliant() {
               boxShadow: "0 10px 28px rgba(200,147,47,0.36)",
             }}
           >
-            Join Re-siliant <ArrowRight style={{ width: 18, height: 18 }} />
+            Join ReZilient <ArrowRight style={{ width: 18, height: 18 }} />
           </button>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.48)", marginTop: 32, lineHeight: 1.7 }}>
-            Re-siliant is a support tool, not a medical provider.<br/>
+            ReZilient is a support tool, not a medical provider.<br/>
             In an emergency, call 911 or 988.
           </p>
         </div>

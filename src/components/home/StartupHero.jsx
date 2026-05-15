@@ -26,15 +26,18 @@ export default function StartupHero() {
 
       <div style={{ position: "relative", zIndex: 2, maxWidth: 820, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div className="pill pill-sand" style={{ marginBottom: 18 }}><Sparkles size={14} style={{ marginRight: 7 }} /> Recovery Operating System</div>
-        <h1 style={{ fontSize: "clamp(66px, 12vw, 148px)", lineHeight: .86, margin: 0, letterSpacing: "-0.065em", textShadow: "0 0 42px rgba(91,141,239,0.36)" }}>Re-silient</h1>
+        <h1 style={{ fontSize: "clamp(66px, 12vw, 148px)", lineHeight: .86, margin: 0, letterSpacing: "-0.065em", textShadow: "0 0 42px rgba(91,141,239,0.36)" }}>ReZilient</h1>
         <h2 style={{ fontSize: "clamp(30px, 5vw, 66px)", lineHeight: 1.04, margin: "22px 0 0" }}>Your comeback starts here.</h2>
-        <p style={{ color: "rgba(234,240,255,0.74)", fontSize: "clamp(17px, 2vw, 21px)", lineHeight: 1.8, maxWidth: 700, marginTop: 20 }}>
-          Recovery, re-entry, accountability, resources and community all in one place.
+        <blockquote style={{ margin: "24px 0 0", color: "rgba(234,240,255,0.92)", fontSize: "clamp(22px, 3.2vw, 34px)", lineHeight: 1.28, fontFamily: "'Lora', Georgia, serif", maxWidth: 760 }}>
+          “You survived the fire.<br />Now rebuild the life that was always meant for you.”
+        </blockquote>
+        <p style={{ color: "rgba(234,240,255,0.74)", fontSize: "clamp(17px, 2vw, 21px)", lineHeight: 1.8, maxWidth: 760, marginTop: 22 }}>
+          Recovery, re-entry, accountability, resources, community and purpose—all in one place.
         </p>
         <div className="hero-button-stack" style={{ display: "grid", gap: 16, marginTop: 38, width: "min(100%, 360px)" }}>
           <Link to="/Onboarding" style={{ textDecoration: "none" }}><button className="btn-primary hero-primary-button" style={{ width: "100%" }}>Start My Journey <ArrowRight className="hero-arrow" size={17} style={{ marginLeft: 8, verticalAlign: "-3px" }} /></button></Link>
           <Link to="/DailyCheckIn" style={{ textDecoration: "none" }}><button className="btn-ghost" style={{ width: "100%" }}><CalendarCheck size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Daily Check-In</button></Link>
-          <Link to="/RebuildHub" style={{ textDecoration: "none" }}><button className="btn-ghost" style={{ width: "100%" }}><Compass size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Explore Resources</button></Link>
+          <Link to="/RecoveryHub" style={{ textDecoration: "none" }}><button className="btn-ghost" style={{ width: "100%" }}><Compass size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Explore Resources</button></Link>
         </div>
       </div>
 

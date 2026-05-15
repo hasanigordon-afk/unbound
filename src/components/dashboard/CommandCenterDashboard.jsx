@@ -5,6 +5,8 @@ import StartupHero from "@/components/home/StartupHero";
 import DailyFocusWidget from "@/components/home/DailyFocusWidget";
 import NonNegotiablesPreview from "@/components/nonnegotiables/NonNegotiablesPreview";
 import FourPillarsSection from "@/components/home/FourPillarsSection";
+import WhyThisMattersSection from "@/components/home/WhyThisMattersSection";
+import WhyReZilientExistsSection from "@/components/home/WhyReZilientExistsSection";
 import ComebackTimeline from "@/components/home/ComebackTimeline";
 import AhHaVideoFeed from "@/components/home/AhHaVideoFeed";
 import AISteinHomeSection from "@/components/home/AISteinHomeSection";
@@ -30,9 +32,11 @@ export default function CommandCenterDashboard({
     <main style={{ minHeight: "100vh", padding: "54px 0 190px", color: "var(--text)", background: "radial-gradient(circle at 50% 0%, rgba(91,141,239,0.10), transparent 34%)" }}>
       <div style={{ width: "min(1240px, calc(100vw - 40px))", margin: "0 auto" }}>
         <StartupHero />
-        <DailyFocusWidget firstName={firstName} todayComplete={todayComplete} />
-        <NonNegotiablesPreview />
+        <WhyThisMattersSection />
+        <WhyReZilientExistsSection />
         <FourPillarsSection />
+        <NonNegotiablesPreview />
+        <DailyFocusWidget firstName={firstName} todayComplete={todayComplete} />
         <ComebackTimeline />
         <AhHaVideoFeed />
         <AISteinHomeSection />

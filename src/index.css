@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /*
-  ── Re-siliant futuristic baseline ──
+  ── ReZilient futuristic baseline ──
   All design tokens live as CSS variables on :root.
   The ThemeContext (lib/ThemeContext.jsx) overwrites these at runtime
   to swap themes. The values below are the "Midnight Elite" defaults —
@@ -155,7 +155,7 @@
   ::-webkit-scrollbar-thumb:hover { background: var(--border-glow); }
 }
 
-/* ── Re-siliant primitives — premium dark baseline ── */
+/* ── ReZilient primitives — premium dark baseline ── */
 
 /* Glass cards */
 .card {

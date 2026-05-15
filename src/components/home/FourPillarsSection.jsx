@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { ArrowRight, HeartPulse, LifeBuoy, Map, Sprout } from "lucide-react";
 
 const pillars = [
-  { title: "Healing", icon: HeartPulse, to: "/HealingHub", color: "var(--green)", items: ["Reset tools", "Reflection", "Wellness"] },
-  { title: "Support", icon: LifeBuoy, to: "/HopeHub", color: "var(--purple)", items: ["AI Stein", "Community", "Safety"] },
-  { title: "Resources", icon: Map, to: "/RebuildHub", color: "var(--gold)", items: ["Food", "Housing", "Jobs"] },
-  { title: "Growth", icon: Sprout, to: "/GrowthHub", color: "var(--accent)", items: ["Goals", "Fitness", "Future"] },
+  { title: "Help", icon: LifeBuoy, to: "/RecoveryHub", color: "var(--accent)", items: ["Resources", "Guidance", "Next steps"] },
+  { title: "Hope", icon: HeartPulse, to: "/HopeHub", color: "var(--gold)", items: ["Stories", "Belief", "Support"] },
+  { title: "Healing", icon: Map, to: "/HealingHub", color: "var(--green)", items: ["Reset tools", "Reflection", "Wellness"] },
+  { title: "Growth", icon: Sprout, to: "/GrowthHub", color: "var(--purple)", items: ["Goals", "Purpose", "Future"] },
 ];
 
 export default function FourPillarsSection() {
@@ -14,8 +14,8 @@ export default function FourPillarsSection() {
     <section style={{ marginBottom: 74 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "end", marginBottom: 16 }}>
         <div>
-          <p className="section-label">The Platform</p>
-          <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", margin: 0 }}>Four Pillars</h2>
+          <p className="section-label">The Mission</p>
+          <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", margin: 0 }}>Help. Hope. Healing. Growth.</h2>
         </div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 14 }}>

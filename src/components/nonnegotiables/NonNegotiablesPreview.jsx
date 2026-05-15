@@ -45,9 +45,9 @@ export default function NonNegotiablesPreview() {
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 13px", borderRadius: 999, background: "rgba(255,255,255,0.08)", border: "1px solid var(--border)", color: "var(--gold)", fontSize: 11, fontWeight: 900, letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 14 }}>
             <ClipboardList style={{ width: 14, height: 14 }} /> Mission Board
           </div>
-          <h2 style={{ fontSize: "clamp(30px, 4.5vw, 52px)", lineHeight: 1, margin: 0 }}>Top 5 Non‑Negotiables</h2>
+          <h2 style={{ fontSize: "clamp(30px, 4.5vw, 52px)", lineHeight: 1, margin: 0 }}>My Non-Negotiables</h2>
           <p style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 15.5, lineHeight: 1.7, maxWidth: 560 }}>
-            The 5 promises you made to yourself.
+            Your comeback starts with five promises you refuse to break.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 22, alignItems: "center" }}>
             <Link to="/TopFiveNonNegotiables" style={{ textDecoration: "none" }}>

@@ -123,7 +123,7 @@ export default function PillarSidebar() {
       <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 11, padding: "8px 8px 16px" }}>
         <div style={{ width: 40, height: 40, borderRadius: 14, background: "linear-gradient(135deg, var(--accent), var(--purple))", boxShadow: "var(--glow)" }} />
         <div>
-          <p style={{ color: "var(--text)", fontWeight: 900, fontSize: 15 }}>Re-silient</p>
+          <p style={{ color: "var(--text)", fontWeight: 900, fontSize: 15 }}>ReZilient</p>
           <p style={{ color: "var(--text-dim)", fontSize: 10, textTransform: "uppercase", letterSpacing: ".14em" }}>4-pillar ecosystem</p>
         </div>
       </Link>
