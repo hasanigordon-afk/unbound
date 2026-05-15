@@ -92,6 +92,7 @@ export default function SuperAgentChat() {
         await base44.entities.Goal.create({
           title: conversation.ai_summary || conversation.user_message.slice(0, 80),
           description: conversation.suggested_next_steps?.join("\n") || "",
+          category: "personal_growth",
           status: "active",
         });
         await base44.entities.SuperAgentInsight.create({

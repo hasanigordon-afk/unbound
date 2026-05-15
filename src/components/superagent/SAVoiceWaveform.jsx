@@ -9,7 +9,10 @@ export default function SAVoiceWaveform({ active }) {
           width: 4, borderRadius: 2,
           background: active ? C.gold : "rgba(15,30,61,0.18)",
           height: active ? `${20 + Math.abs(Math.sin(i + Date.now()/300)) * 30}px` : 8,
-          animation: active ? `sa-wave 0.9s ease-in-out infinite` : "none",
+          animationName: active ? "sa-wave" : "none",
+          animationDuration: "0.9s",
+          animationTimingFunction: "ease-in-out",
+          animationIterationCount: "infinite",
           animationDelay: `${i * 0.08}s`,
           transition: "background .2s",
         }} />
