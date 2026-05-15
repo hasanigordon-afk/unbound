@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, ChevronDown, ChevronUp, Image, Mic, Plus, Quote, Sparkles, Target, Trash2 } from "lucide-react";
+import { ArrowLeft, CalendarClock, ChevronDown, ChevronUp, Flame, Flag, Image, Mic, Plus, Quote, Sparkles, Target, Trash2 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,10 +37,17 @@ export default function TopFiveNonNegotiables() {
 
   const goals = data.goals || [];
   const canAdd = goals.length < 5;
+  const focusOptions = [
+    { value: "struggling", label: "Struggling" },
+    { value: "focused", label: "Focused" },
+    { value: "locked_in", label: "Locked In" },
+  ];
+  const priorityLabels = { low: "Low priority", medium: "Medium priority", high: "High priority" };
+  const formatLastCheckIn = (date) => date ? new Date(date).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "Not checked in";
 
   const createGoal = () => {
     if (!draft.title.trim() || !data.user || !canAdd) return;
-    createMutation.mutate({ ...draft, user_email: data.user.email, sort_order: goals.length + 1, progress: 0, is_active: true });
+    createMutation.mutate({ ...draft, user_email: data.user.email, sort_order: goals.length + 1, progress: 0, months_complete: 0, duration_months: 12, daily_focus_level: "focused", current_streak: 0, priority_level: "medium", is_active: true });
     setDraft({ title: "", why_it_matters: "", personal_quote: "" });
   };
 
@@ -136,10 +143,48 @@ export default function TopFiveNonNegotiables() {
                 </div>
               </div>
               <h3 style={{ fontSize: 22, lineHeight: 1.1, minHeight: 72 }}>{goal.title}</h3>
-              <div style={{ marginTop: 18, height: 9, background: "rgba(255,255,255,0.08)", borderRadius: 999, overflow: "hidden" }}>
-                <div style={{ width: `${goal.progress || 0}%`, height: "100%", background: "linear-gradient(90deg, var(--accent), var(--purple), var(--gold))" }} />
+              <div style={{ marginTop: 18 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline", marginBottom: 8 }}>
+                  <span style={{ color: "var(--text-muted)", fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: ".08em" }}>Mission progress indicator</span>
+                  <strong style={{ color: "var(--gold)", fontSize: 13 }}>{goal.progress || 0}%</strong>
+                </div>
+                <div style={{ height: 10, background: "rgba(255,255,255,0.08)", borderRadius: 999, overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)" }}>
+                  <div style={{ width: `${goal.progress || 0}%`, height: "100%", background: "linear-gradient(90deg, var(--accent), var(--purple), var(--gold))" }} />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 8, color: "var(--text-muted)", fontSize: 12, fontWeight: 800 }}>
+                  <span>{goal.months_complete ?? Math.round(((goal.progress || 0) / 100) * (goal.duration_months || 12))}/{goal.duration_months || 12} months complete</span>
+                  <span>Milestone progress</span>
+                </div>
               </div>
-              <input type="range" min="0" max="100" value={goal.progress || 0} onChange={(e) => updateField(goal, "progress", Number(e.target.value))} style={{ width: "100%", marginTop: 12 }} />
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8, marginTop: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-muted)", fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: ".08em" }}>Daily Focus Level</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
+                  {focusOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => updateField(goal, "daily_focus_level", option.value)}
+                      style={{
+                        minHeight: 34,
+                        borderRadius: 999,
+                        border: (goal.daily_focus_level || "focused") === option.value ? "1px solid var(--gold-border)" : "1px solid var(--border)",
+                        background: (goal.daily_focus_level || "focused") === option.value ? "var(--gold-dim)" : "rgba(255,255,255,0.05)",
+                        color: (goal.daily_focus_level || "focused") === option.value ? "var(--gold)" : "var(--text-muted)",
+                        fontSize: 11,
+                        fontWeight: 900,
+                        cursor: "pointer"
+                      }}
+                    >{option.label}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gap: 8, marginTop: 14, color: "var(--text-muted)", fontSize: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}><span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Flame size={14} color="var(--gold)" /> Current streak</span><b style={{ color: "var(--text)" }}>{goal.current_streak || 0} days</b></div>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}><span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Flag size={14} color="var(--accent)" /> Priority level</span><b style={{ color: "var(--text)" }}>{priorityLabels[goal.priority_level || "medium"]}</b></div>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}><span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><CalendarClock size={14} color="var(--muted-green)" /> Last check-in</span><b style={{ color: "var(--text)" }}>{formatLastCheckIn(goal.last_checkin_date)}</b></div>
+              </div>
+
               <button onClick={() => setExpanded(expanded === goal.id ? null : goal.id)} className="btn-ghost" style={{ width: "100%", marginTop: 14 }}>Details</button>
               {expanded === goal.id && (
                 <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
