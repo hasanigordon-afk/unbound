@@ -92,7 +92,6 @@ import OutcomesProgress from './pages/OutcomesProgress.jsx';
 import TopFiveNonNegotiables from './pages/TopFiveNonNegotiables.jsx';
 import AIAftercareTeam from './pages/AIAftercareTeam.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
-import AIStein from '@/components/aistein/AIStein';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
@@ -156,7 +155,6 @@ const AuthenticatedApp = () => {
   return (
     <>
     <SubscriptionPrompt />
-    <AIStein />
     <Routes>
       {/* ── Splash ── */}
       <Route path="/splash" element={<Splash />} />
