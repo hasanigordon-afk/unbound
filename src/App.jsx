@@ -97,6 +97,7 @@ import AmbientBackground from '@/components/shared/AmbientBackground';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 import Phase4PolishLayer from '@/components/shared/Phase4PolishLayer';
 import EmergencyCalmMode from '@/components/commandCenter/EmergencyCalmMode';
+import AIStein from '@/components/aistein/AIStein';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -272,6 +273,7 @@ function App() {
               <AuthenticatedApp />
               <ThemeSwitcher />
               <EmergencyCalmMode />
+              <AIStein />
             </Router>
             <Toaster />
           </QueryClientProvider>
