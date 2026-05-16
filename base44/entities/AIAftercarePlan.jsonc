@@ -40,6 +40,9 @@
     "requirements": {
       "type": "string"
     },
+    "discovery_answers": {
+      "type": "object"
+    },
     "plan": {
       "type": "object"
     },
@@ -57,6 +60,13 @@
     "last_completed_date": {
       "type": "string",
       "format": "date"
+    },
+    "activity_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     },
     "status": {
       "type": "string",

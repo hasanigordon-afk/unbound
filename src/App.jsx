@@ -97,6 +97,7 @@ import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
 import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 import Phase4PolishLayer from '@/components/shared/Phase4PolishLayer';
+import EmergencyCalmMode from '@/components/commandCenter/EmergencyCalmMode';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -272,6 +273,7 @@ function App() {
               <NavigationTracker />
               <AuthenticatedApp />
               <ThemeSwitcher />
+              <EmergencyCalmMode />
             </Router>
             <Toaster />
           </QueryClientProvider>

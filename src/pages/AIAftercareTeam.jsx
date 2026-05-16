@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { Brain, Users, ShieldCheck } from "lucide-react";
-import AftercareOnboardingForm from "@/components/aftercareTeam/AftercareOnboardingForm";
+import CommandCenterHero from "@/components/commandCenter/CommandCenterHero";
+import DiscoveryEngineForm from "@/components/commandCenter/DiscoveryEngineForm";
+import LifeBlueprintDashboard from "@/components/commandCenter/LifeBlueprintDashboard";
+import CommandCenterHomeDashboard from "@/components/commandCenter/CommandCenterHomeDashboard";
 import AftercarePlanDashboard from "@/components/aftercareTeam/AftercarePlanDashboard";
+import ResourceIntelPanel from "@/components/commandCenter/ResourceIntelPanel";
+import VoiceAIMentor from "@/components/commandCenter/VoiceAIMentor";
 
 const emptyForm = {
-  top_goals: ["", "", "", "", ""],
-  focus_areas: [],
-  biggest_challenge: "",
-  support_this_week: "",
-  support_30_days: "",
-  support_60_days: "",
-  support_90_days: "",
-  requirements: "",
-  city_state: "",
+  top_goals: ["", "", "", "", ""], city_state: "", current_strengths: "",
+  life_to_create: "", motivation: "", refuse_to_lose: "", one_year: "", five_year: "",
+  recovery_stage: "", housing_status: "", employment_status: "", transportation: "", education: "", family_support: "", legal_obligations: "", stress_level: "", biggest_obstacle: "",
+  sleep_quality: "", exercise_habits: "", anxiety_level: "", depression_level: "", daily_energy: "", nutrition_habits: "",
+  sponsor: "", mentor: "", counselor: "", family: "", friends: "", veterans_support: "", faith_community: "",
 };
 
+const specialist = { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } };
 const responseSchema = {
   type: "object",
   properties: {
     today_focus: { type: "array", items: { type: "string" } },
-    recovery: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } },
-    reentry: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } },
-    career: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } },
-    wellness: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } },
-    resources: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } },
+    blueprint: { type: "object", properties: { today: { type: "string" }, week: { type: "string" }, day30: { type: "string" }, day60: { type: "string" }, day90: { type: "string" }, year1: { type: "string" }, year5: { type: "string" } } },
+    recovery: specialist, reentry: specialist, career: specialist, wellness: specialist, goals: specialist,
+    resources: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } }, local: { type: "array", items: { type: "object", properties: { name: { type: "string" }, type: { type: "string" }, distance: { type: "string" }, next_step: { type: "string" } } } } } },
     accountability: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } }, daily: { type: "array", items: { type: "string" } }, weekly: { type: "array", items: { type: "string" } }, thirty_day: { type: "array", items: { type: "string" } }, sixty_day: { type: "array", items: { type: "string" } }, ninety_day: { type: "array", items: { type: "string" } } } },
-    goals: { type: "object", properties: { summary: { type: "string" }, steps: { type: "array", items: { type: "string" } } } },
-  },
+    ai_suggestions: { type: "array", items: { type: "string" } }, next_milestone: { type: "string" }
+  }
 };
 
 export default function AIAftercareTeam() {
@@ -43,17 +42,7 @@ export default function AIAftercareTeam() {
       const records = await base44.entities.AIAftercarePlan.filter({ user_email: me.email, status: "active" }, "-updated_date", 1);
       if (records[0]) {
         setPlanRecord(records[0]);
-        setForm({
-          top_goals: [...(records[0].top_goals || []), "", "", "", "", ""].slice(0, 5),
-          focus_areas: records[0].focus_areas || [],
-          biggest_challenge: records[0].biggest_challenge || "",
-          support_this_week: records[0].support_this_week || "",
-          support_30_days: records[0].support_30_days || "",
-          support_60_days: records[0].support_60_days || "",
-          support_90_days: records[0].support_90_days || "",
-          requirements: records[0].requirements || "",
-          city_state: records[0].city_state || "",
-        });
+        setForm({ ...emptyForm, ...(records[0].discovery_answers || {}), top_goals: [...(records[0].top_goals || []), "", "", "", "", ""].slice(0, 5), city_state: records[0].city_state || "" });
       }
     };
     load();
@@ -62,11 +51,12 @@ export default function AIAftercareTeam() {
   const generatePlan = async () => {
     setLoading(true);
     const cleanedGoals = form.top_goals.filter(Boolean);
+    const completed = planRecord?.completed_actions || [];
     const plan = await base44.integrations.Core.InvokeLLM({
-      prompt: `Create a supportive, motivating, non-judgmental, non-medical personalized aftercare, recovery, and reentry plan. Make it practical and checklist-friendly. Include local resource suggestions for ${form.city_state}, using categories like shelters, food pantries, support groups, clinics, transportation, gyms/YMCAs, churches, and staffing agencies. Do not provide medical, legal, or emergency advice. User answers: ${JSON.stringify({ ...form, top_goals: cleanedGoals })}`,
+      prompt: `Create the ReZilient Command Center: AI Aftercare Intelligence System Life Blueprint. Make it deeply personalized, practical, supportive, non-clinical, non-medical, and non-judgmental. Include Today, This Week, 30/60/90 day roadmap, 1 year vision, 5 year vision. Activate Recovery Strategist AI, Reentry AI, Career AI, Resource AI, Wellness AI, Goals AI, and Accountability AI. Resource AI should suggest local categories near ${form.city_state}, sorted by likely usefulness/distance language, including food pantries, shelters, free meals, community programs, YMCA, churches, gyms, recovery centers, staffing agencies, transportation, free services. Adapt to completed actions/patterns: ${JSON.stringify(completed)}. User discovery: ${JSON.stringify({ ...form, top_goals: cleanedGoals })}`,
       response_json_schema: responseSchema,
     });
-    const payload = { ...form, top_goals: cleanedGoals, user_email: user.email, plan, completed_actions: planRecord?.completed_actions || [], completion_streak: planRecord?.completion_streak || 0, status: "active" };
+    const payload = { user_email: user.email, city_state: form.city_state, top_goals: cleanedGoals, discovery_answers: form, plan, completed_actions: completed, completion_streak: planRecord?.completion_streak || 0, activity_patterns: planRecord?.activity_patterns || [], status: "active" };
     const saved = planRecord ? await base44.entities.AIAftercarePlan.update(planRecord.id, payload) : await base44.entities.AIAftercarePlan.create(payload);
     setPlanRecord(saved);
     setLoading(false);
@@ -75,33 +65,25 @@ export default function AIAftercareTeam() {
   const toggleAction = async (id) => {
     const completed = planRecord.completed_actions || [];
     const nextCompleted = completed.includes(id) ? completed.filter(item => item !== id) : [...completed, id];
-    const today = new Date().toISOString().slice(0, 10);
-    const next = { ...planRecord, completed_actions: nextCompleted, completion_streak: nextCompleted.length > completed.length ? (planRecord.completion_streak || 0) + 1 : planRecord.completion_streak || 0, last_completed_date: today };
+    const next = { ...planRecord, completed_actions: nextCompleted, completion_streak: nextCompleted.length > completed.length ? (planRecord.completion_streak || 0) + 1 : planRecord.completion_streak || 0, last_completed_date: new Date().toISOString().slice(0, 10), activity_patterns: [...(planRecord.activity_patterns || []), `Action ${nextCompleted.length > completed.length ? "completed" : "unchecked"}: ${id}`].slice(-25) };
     setPlanRecord(next);
     await base44.entities.AIAftercarePlan.update(planRecord.id, next);
   };
 
+  const scrollToDiscovery = () => document.getElementById("discovery-engine")?.scrollIntoView({ behavior: "smooth" });
+  const plan = planRecord?.plan;
+
   return (
     <main className="min-h-screen px-4 py-6 md:px-8 md:py-10">
       <div className="max-w-7xl mx-auto space-y-8">
-        <section className="card-glow p-6 md:p-8 overflow-hidden relative">
-          <div className="relative z-10 max-w-4xl">
-            <div className="inline-flex items-center gap-2 pill pill-teal mb-5"><Brain className="w-4 h-4" /> AI Aftercare Team</div>
-            <h1 className="text-4xl md:text-6xl font-serif font-semibold text-[var(--text)] leading-tight">A full support team to help organize your comeback.</h1>
-            <p className="text-base md:text-lg text-[var(--text-muted)] mt-4 max-w-3xl">Build a personalized plan for recovery, reentry, work, wellness, resources, accountability, and your top five life goals.</p>
-            <div className="flex flex-wrap gap-3 mt-6 text-sm text-[var(--text-muted)]">
-              <span className="pill pill-ghost"><Users className="w-3.5 h-3.5 mr-1" /> 7 AI specialists</span>
-              <span className="pill pill-ghost"><ShieldCheck className="w-3.5 h-3.5 mr-1" /> Supportive, non-medical guidance</span>
-            </div>
-          </div>
-        </section>
-
-        <AftercareOnboardingForm form={form} setForm={setForm} onGenerate={generatePlan} loading={loading} hasPlan={!!planRecord?.plan} />
-        <AftercarePlanDashboard plan={planRecord?.plan} completedActions={planRecord?.completed_actions || []} onToggleAction={toggleAction} streak={planRecord?.completion_streak || 0} />
-
-        <section className="card-soft p-5 text-sm text-[var(--text-muted)] leading-relaxed">
-          <strong className="text-[var(--text)]">Important:</strong> ReZilient and AI Aftercare Team do not replace professional treatment, legal advice, medical advice, emergency services, probation/parole instructions, court orders, or licensed care. If you are in immediate danger or crisis, contact emergency services or a local crisis line right away.
-        </section>
+        <CommandCenterHero onStart={scrollToDiscovery} />
+        <DiscoveryEngineForm form={form} setForm={setForm} onGenerate={generatePlan} loading={loading} hasPlan={!!plan} />
+        {plan && <CommandCenterHomeDashboard suggestions={plan.ai_suggestions} nextMilestone={plan.next_milestone} />}
+        {plan && <LifeBlueprintDashboard blueprint={plan.blueprint} goals={form.top_goals} completedCount={(planRecord.completed_actions || []).length} streak={planRecord.completion_streak || 0} />}
+        <AftercarePlanDashboard plan={plan} completedActions={planRecord?.completed_actions || []} onToggleAction={toggleAction} streak={planRecord?.completion_streak || 0} />
+        {plan && <ResourceIntelPanel resources={plan.resources?.local || []} />}
+        {plan && <VoiceAIMentor context={{ plan, form }} />}
+        <section className="card-soft p-5 text-sm text-[var(--text-muted)] leading-relaxed"><strong className="text-[var(--text)]">Important:</strong> This system supports planning and momentum. It does not replace professional treatment, legal advice, medical advice, emergency services, probation/parole instructions, court orders, or licensed care.</section>
       </div>
     </main>
   );

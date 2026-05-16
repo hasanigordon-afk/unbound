@@ -1,0 +1,32 @@
+{
+  "name": "AIAftercareConversation",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "user_message": {
+      "type": "string"
+    },
+    "ai_response": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "voice",
+        "text"
+      ],
+      "default": "text"
+    },
+    "saved_to_profile": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "user_email",
+    "user_message",
+    "ai_response"
+  ]
+}

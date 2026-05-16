@@ -34,7 +34,7 @@ const SECTIONS = [
       { label: "Meetings", href: "/MeetingDirectory", icon: MapPin },
       { label: "Safety Plan", href: "/MySafetyPlan", icon: ShieldCheck },
       { label: "AI Support", href: "/SuperAgent", icon: Sparkles },
-      { label: "AI Aftercare Team", href: "/AIAftercareTeam", icon: Users },
+      { label: "Command Center", href: "/AIAftercareTeam", icon: Users },
       { label: "Crisis Lifeline", href: "/Lifeline", icon: HeartHandshake },
     ],
   },
