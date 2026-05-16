@@ -1,0 +1,73 @@
+{
+  "name": "AIAftercarePlan",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "city_state": {
+      "type": "string"
+    },
+    "top_goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "focus_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "biggest_challenge": {
+      "type": "string"
+    },
+    "support_this_week": {
+      "type": "string"
+    },
+    "support_30_days": {
+      "type": "string"
+    },
+    "support_60_days": {
+      "type": "string"
+    },
+    "support_90_days": {
+      "type": "string"
+    },
+    "requirements": {
+      "type": "string"
+    },
+    "plan": {
+      "type": "object"
+    },
+    "completed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "completion_streak": {
+      "type": "number",
+      "default": 0
+    },
+    "last_completed_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "user_email"
+  ]
+}
