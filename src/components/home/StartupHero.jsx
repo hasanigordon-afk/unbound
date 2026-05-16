@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarCheck, Compass, Sparkles } from "lucide-react";
+import { CalendarCheck, Compass, Sparkles, Footprints } from "lucide-react";
 
 export default function StartupHero() {
   return (
@@ -35,9 +35,9 @@ export default function StartupHero() {
           Recovery, re-entry, accountability, resources, community and purpose — all in one place.
         </p>
         <div className="hero-button-stack" style={{ display: "flex", flexWrap: "wrap", gap: 14, marginTop: 38 }}>
-          <Link to="/Onboarding" style={{ textDecoration: "none" }}><button className="btn-primary hero-primary-button">Start My Journey <ArrowRight className="hero-arrow" size={17} style={{ marginLeft: 8, verticalAlign: "-3px" }} /></button></Link>
-          <Link to="/DailyCheckIn" style={{ textDecoration: "none" }}><button className="btn-ghost"><CalendarCheck size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Daily Check-In</button></Link>
-          <Link to="/RecoveryHub" style={{ textDecoration: "none" }}><button className="btn-ghost"><Compass size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Explore Resources</button></Link>
+          <Link to="/Onboarding" style={{ textDecoration: "none" }}><button className="btn-primary hero-primary-button"><Footprints size={17} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Continue Journey</button></Link>
+          <Link to="/DailyCheckIn" style={{ textDecoration: "none" }}><button className="btn-ghost"><CalendarCheck size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Start Check-In</button></Link>
+          <Link to="/RecoveryHub" style={{ textDecoration: "none" }}><button className="btn-ghost"><Compass size={16} style={{ marginRight: 8, verticalAlign: "-3px" }} /> Open Resource Hub</button></Link>
         </div>
       </div>
 
