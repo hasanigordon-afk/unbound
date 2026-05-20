@@ -1,0 +1,32 @@
+{
+  "name": "DailyReminders",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "reminder_time": {
+      "type": "string"
+    },
+    "frequency": {
+      "type": "string"
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

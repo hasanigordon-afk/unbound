@@ -4,10 +4,10 @@ import { Home, ClipboardList, LayoutDashboard, UserRound, MessageSquare, Smartph
 
 const tabs = [
   { label: 'Home', to: '/', icon: Home },
-  { label: 'Plan', to: '/PilotTreatmentPlan', icon: ClipboardList },
+  { label: 'Plan', to: '/SEESuperAgent', icon: ClipboardList },
   { label: 'Clients', to: '/PilotClientIntake', icon: UserRound },
   { label: 'Dashboard', to: '/FacilityPilotDashboard', icon: LayoutDashboard },
-  { label: 'Feedback', to: '/PilotFeedback', icon: MessageSquare },
+  { label: 'Chat', to: '/SuperAgentChat', icon: MessageSquare },
 ];
 
 export default function PilotShell({ children, title = 'ReZilient Pilot', subtitle }) {

@@ -1,0 +1,35 @@
+{
+  "name": "AftercarePlans",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "source_notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "archived"
+      ],
+      "default": "active"
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": false
+    },
+    "roadmap_summary": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_name",
+    "source_notes"
+  ]
+}

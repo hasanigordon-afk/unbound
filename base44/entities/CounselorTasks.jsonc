@@ -1,0 +1,40 @@
+{
+  "name": "CounselorTasks",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "due_text": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "completed"
+      ],
+      "default": "open"
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

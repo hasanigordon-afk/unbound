@@ -1,0 +1,39 @@
+{
+  "name": "CalendarEvents",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "schedule_text": {
+      "type": "string"
+    },
+    "recurrence": {
+      "type": "string"
+    },
+    "time_text": {
+      "type": "string"
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

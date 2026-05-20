@@ -1,0 +1,35 @@
+{
+  "name": "TransportationNeeds",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "support_type": {
+      "type": "string"
+    },
+    "schedule_text": {
+      "type": "string"
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": true
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
