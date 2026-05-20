@@ -31,6 +31,8 @@ export default function ThemeSwitcher() {
         }}
         onMouseDown={(e) => e.currentTarget.style.transform = "scale(.94)"}
         onMouseUp={(e) => e.currentTarget.style.transform = "scale(1)"}
+        onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
+        onBlur={(e) => e.currentTarget.style.transform = "scale(1)"}
       >
         <Palette style={{ width: 18, height: 18, color: "var(--accent)" }} strokeWidth={2} />
       </button>

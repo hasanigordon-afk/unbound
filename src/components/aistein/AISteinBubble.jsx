@@ -43,8 +43,37 @@ export default function AISteinBubble({ onOpen }) {
     return () => window.removeEventListener("resize", onResize);
   }, [corner]);
 
+  const finishDrag = () => {
+    setDragging((wasDragging) => {
+      if (!wasDragging) return false;
+      if (!startRef.current.moved) {
+        onOpen?.();
+      } else {
+        const c = nearestCorner(pos.x, pos.y);
+        setCorner(c);
+        try { localStorage.setItem(STORAGE_KEY, c); } catch {}
+      }
+      return false;
+    });
+  };
+
+  useEffect(() => {
+    if (!dragging) return;
+    window.addEventListener("mouseup", finishDrag);
+    window.addEventListener("touchend", finishDrag);
+    window.addEventListener("touchcancel", finishDrag);
+    window.addEventListener("blur", finishDrag);
+    return () => {
+      window.removeEventListener("mouseup", finishDrag);
+      window.removeEventListener("touchend", finishDrag);
+      window.removeEventListener("touchcancel", finishDrag);
+      window.removeEventListener("blur", finishDrag);
+    };
+  }, [dragging, pos.x, pos.y]);
+
   const onPointerDown = (e) => {
     e.preventDefault();
+    e.currentTarget.setPointerCapture?.(e.pointerId);
     const p = "touches" in e ? e.touches[0] : e;
     startRef.current = { x: p.clientX, y: p.clientY, px: pos.x, py: pos.y, moved: false };
     setDragging(true);
@@ -62,13 +91,9 @@ export default function AISteinBubble({ onOpen }) {
     });
   };
 
-  const onPointerUp = () => {
-    if (!dragging) return;
-    setDragging(false);
-    if (!startRef.current.moved) { onOpen?.(); return; }
-    const c = nearestCorner(pos.x, pos.y);
-    setCorner(c);
-    try { localStorage.setItem(STORAGE_KEY, c); } catch {}
+  const onPointerUp = (e) => {
+    e?.currentTarget?.releasePointerCapture?.(e.pointerId);
+    finishDrag();
   };
 
   return (
@@ -96,7 +121,7 @@ export default function AISteinBubble({ onOpen }) {
         userSelect: "none",
       }}
     >
-      <Sparkles style={{ width: 22, height: 22 }} strokeWidth={2} />
+      <Sparkles style={{ width: 22, height: 22, pointerEvents: "none" }} strokeWidth={2} />
       <span style={{
         position: "absolute", bottom: -2, right: -2,
         width: 14, height: 14, borderRadius: "50%",
