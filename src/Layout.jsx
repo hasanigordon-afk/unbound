@@ -41,9 +41,7 @@ export default function Layout({ children, currentPageName }) {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-5">
-        <div className="rounded-[34px] bg-white/6 border border-white/10 p-1 shadow-2xl backdrop-blur-2xl">
-          {children}
-        </div>
+        {children}
       </main>
 
       <nav className="fixed bottom-0 left-0 right-0 z-40 px-3 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 bg-[#07101f]/85 backdrop-blur-2xl border-t border-white/10">
