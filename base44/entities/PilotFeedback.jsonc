@@ -1,0 +1,32 @@
+{
+  "name": "PilotFeedback",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "client",
+        "counselor",
+        "mentor",
+        "admin"
+      ],
+      "default": "client"
+    },
+    "rating": {
+      "type": "number"
+    },
+    "what_worked": {
+      "type": "string"
+    },
+    "what_was_confusing": {
+      "type": "string"
+    },
+    "improvement_request": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "role",
+    "rating"
+  ]
+}

@@ -92,6 +92,12 @@ import OutcomesProgress from './pages/OutcomesProgress.jsx';
 import TopFiveNonNegotiables from './pages/TopFiveNonNegotiables.jsx';
 import AIAftercareTeam from './pages/AIAftercareTeam.jsx';
 import JusticeRadar from './pages/JusticeRadar.jsx';
+import PilotHome from './pages/PilotHome.jsx';
+import FacilityPilotDashboard from './pages/FacilityPilotDashboard.jsx';
+import PilotTreatmentPlan from './pages/PilotTreatmentPlan.jsx';
+import PilotClientIntake from './pages/PilotClientIntake.jsx';
+import PilotFeedback from './pages/PilotFeedback.jsx';
+import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
@@ -162,7 +168,7 @@ const AuthenticatedApp = () => {
       <Route path="/splash" element={<Splash />} />
 
       {/* ── Main page ── */}
-      <Route path="/" element={<LW name={mainPageKey}><MainPage /></LW>} />
+      <Route path="/" element={<PilotHome />} />
 
       {/* ── pagesConfig loop (existing pages) ── */}
       {Object.entries(Pages).map(([path, Page]) => (
@@ -255,6 +261,11 @@ const AuthenticatedApp = () => {
       <Route path="/TopFiveNonNegotiables"                element={<LW name="TopFiveNonNegotiables"><TopFiveNonNegotiables /></LW>} />
       <Route path="/AIAftercareTeam"                       element={<LW name="AIAftercareTeam"><AIAftercareTeam /></LW>} />
       <Route path="/JusticeRadar"                          element={<LW name="JusticeRadar"><JusticeRadar /></LW>} />
+      <Route path="/FacilityPilotDashboard"                 element={<FacilityPilotDashboard />} />
+      <Route path="/PilotTreatmentPlan"                     element={<PilotTreatmentPlan />} />
+      <Route path="/PilotClientIntake"                      element={<PilotClientIntake />} />
+      <Route path="/PilotFeedback"                          element={<PilotFeedback />} />
+      <Route path="/AddToHomeScreen"                        element={<AddToHomeScreen />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

@@ -1,0 +1,34 @@
+{
+  "name": "PilotClientIntake",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "recovery_focus": {
+      "type": "string"
+    },
+    "housing_status": {
+      "type": "string"
+    },
+    "primary_support": {
+      "type": "string"
+    },
+    "urgent_needs": {
+      "type": "string"
+    },
+    "preferred_checkin_time": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "full_name",
+    "email"
+  ]
+}

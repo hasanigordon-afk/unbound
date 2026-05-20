@@ -1,0 +1,51 @@
+{
+  "name": "PilotTreatmentPlan",
+  "type": "object",
+  "properties": {
+    "client_name": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "discharge_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "diagnosis_summary": {
+      "type": "string"
+    },
+    "treatment_goals": {
+      "type": "string"
+    },
+    "medications": {
+      "type": "string"
+    },
+    "relapse_triggers": {
+      "type": "string"
+    },
+    "required_aftercare_tasks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "counselor_notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "completed"
+      ],
+      "default": "draft"
+    }
+  },
+  "required": [
+    "client_name",
+    "client_email"
+  ]
+}
