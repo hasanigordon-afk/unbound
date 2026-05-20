@@ -11,6 +11,7 @@ import ComebackTimeline from "@/components/home/ComebackTimeline";
 import AhHaVideoFeed from "@/components/home/AhHaVideoFeed";
 import AISteinHomeSection from "@/components/home/AISteinHomeSection";
 import ResourceMapSection from "@/components/home/ResourceMapSection";
+import RecoveryCompanionWidget from "@/components/home/RecoveryCompanionWidget";
 
 export default function CommandCenterDashboard({
   firstName,
@@ -35,6 +36,7 @@ export default function CommandCenterDashboard({
         <WhyThisMattersSection />
         <WhyReZilientExistsSection />
         <FourPillarsSection />
+        <RecoveryCompanionWidget />
         <NonNegotiablesPreview />
         <DailyFocusWidget firstName={firstName} todayComplete={todayComplete} />
         <ComebackTimeline />
