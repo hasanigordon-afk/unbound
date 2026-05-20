@@ -12,12 +12,11 @@ import AhHaLogo from "@/components/shared/AhHaLogo";
 // ─── Data ──────────────────────────────────────────────────────────────────
 
 const REASONS = [
-  { value: "leaving_rehab",       label: "I'm leaving rehab",                    emoji: "🌱", stage: "early_recovery_15_90" },
-  { value: "coming_home",         label: "I'm coming home from jail or prison",  emoji: "🔑", stage: "trying_to_stop"        },
-  { value: "staying_sober",       label: "I'm trying to stay sober",             emoji: "💪", stage: "recovery_3_12_months"  },
-  { value: "basic_needs",         label: "I need housing or basic help",          emoji: "🏠", stage: "trying_to_stop"        },
-  { value: "getting_back",        label: "I'm getting back on my feet",           emoji: "⬆️", stage: "early_recovery_15_90" },
-  { value: "support_resources",   label: "I'm here for support and resources",   emoji: "🤝", stage: "recovery_3_12_months"  },
+  { value: "recovery",     label: "Recovery",     emoji: "🌱", stage: "early_recovery_15_90" },
+  { value: "reentry",      label: "Reentry",      emoji: "🔑", stage: "trying_to_stop" },
+  { value: "veteran",      label: "Veteran",      emoji: "🇺🇸", stage: "recovery_3_12_months" },
+  { value: "need_support", label: "Need Support", emoji: "🆘", stage: "trying_to_stop" },
+  { value: "supporter",    label: "Supporter",    emoji: "🤝", stage: "recovery_3_12_months" },
 ];
 
 const NEEDS = [
@@ -71,12 +70,11 @@ const NEED_HREFS = {
 };
 
 const NEXT_STEP = {
-  leaving_rehab:      { label: "Complete your first check-in",           href: "DailyCheckIn",                    emoji: "✅" },
-  coming_home:        { label: "Find housing and benefits near you",     href: "FindHelpNow?category=Housing",     emoji: "🏠" },
-  staying_sober:      { label: "Find a meeting near you",                href: "Meetings",                        emoji: "🤝" },
-  basic_needs:        { label: "Find help near you right now",           href: "FindHelpNow",                     emoji: "📍" },
-  getting_back:       { label: "Set your first goal in My Plan",         href: "ForwardPlan",                     emoji: "📋" },
-  support_resources:  { label: "Explore what's available near you",     href: "FindHelpNow",                     emoji: "🗺️" },
+  recovery:     { label: "Complete your first check-in",       href: "DailyCheckIn",                emoji: "✅" },
+  reentry:      { label: "Find housing and benefits near you", href: "HelpHub",                     emoji: "🏠" },
+  veteran:      { label: "Open your Veteran Support Hub",      href: "VeteranSupportHub",           emoji: "🇺🇸" },
+  need_support: { label: "Find help near you right now",       href: "HelpHub",                     emoji: "🆘" },
+  supporter:    { label: "Build a support circle",             href: "ClientConnectionsPage",       emoji: "🤝" },
 };
 
 // ─── Styles ────────────────────────────────────────────────────────────────
@@ -225,7 +223,7 @@ export default function Onboarding() {
       await base44.entities.MemberProfile.create({
         track: "both",
         stage: reason?.stage || "trying_to_stop",
-        goals: [data.reason],
+        goals: [data.reason, `persona:${data.reason}`],
         support_needs: data.needs,
         challenges: [data.feeling],
         who_to_talk_to: WHO_MAP[data.support] || "both_best_match",
@@ -253,7 +251,7 @@ export default function Onboarding() {
 
   const isUrgent = FEELINGS.find(f => f.value === data.feeling)?.urgent;
   const topNeeds = data.needs.slice(0, 3);
-  const nextStep = NEXT_STEP[data.reason] || NEXT_STEP.support_resources;
+  const nextStep = NEXT_STEP[data.reason] || NEXT_STEP.recovery;
 
   const canNext = () => {
     if (step === 2) return !!data.reason;
@@ -483,8 +481,8 @@ export default function Onboarding() {
           {step === 2 && (
             <>
               <Heading
-                title="What brings you here today?"
-                sub="Pick whatever fits your situation."
+                title="How should ReZilient personalize your support?"
+                sub="Pick the path that best fits why you are here today. This does not create a separate app — it adapts your experience."
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {REASONS.map(r => (

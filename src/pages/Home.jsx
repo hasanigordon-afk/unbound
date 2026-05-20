@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Loader2 } from "lucide-react";
-import CommandCenterDashboard from "@/components/dashboard/CommandCenterDashboard";
+import DailyNeedsHub from "@/components/home/DailyNeedsHub";
 
 import DashFocusOfDay       from "@/components/dashboard/DashFocusOfDay";
 import DashMomentum         from "@/components/dashboard/DashMomentum";
@@ -127,16 +127,11 @@ export default function Home() {
 
   /* ── Render ─────────────────────────────────────────────────────────── */
   return (
-    <CommandCenterDashboard
+    <DailyNeedsHub
       firstName={firstName}
       streak={streak}
       stability={stability}
-      wellnessScore={wellnessScore}
-      stage={stage}
-      checkIns={checkIns}
-      journalCount={journalEntries.length}
-      communityPostCount={communityPosts.length}
-      campaignSettings={campaignSettings}
+      profile={profiles?.[0]}
     />
   );
 }
