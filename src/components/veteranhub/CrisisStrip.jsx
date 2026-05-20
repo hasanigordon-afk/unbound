@@ -20,9 +20,10 @@ export default function CrisisStrip() {
 
   return (
     <div style={{
-      background: "linear-gradient(135deg,#B5483D 0%,#8E342B 100%)",
-      borderRadius: 18, padding: "14px 14px 12px", color: "#fff",
-      boxShadow: "0 6px 22px rgba(181,72,61,0.28)",
+      background: "linear-gradient(135deg, rgba(248,113,113,.92), rgba(127,29,29,.72), rgba(13,18,32,.86))",
+      borderRadius: 24, padding: "15px 16px 13px", color: "#fff",
+      boxShadow: "0 0 34px rgba(248,113,113,.24), 0 16px 44px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.14)",
+      border: "1px solid rgba(255,210,210,.20)", backdropFilter: "blur(24px) saturate(160%)",
     }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".14em", textTransform: "uppercase",
@@ -60,8 +61,8 @@ export default function CrisisStrip() {
 
 const btn = {
   display: "flex", alignItems: "center", gap: 8,
-  padding: "10px 10px", borderRadius: 12,
-  background: "rgba(255,255,255,0.14)", color: "#fff",
+  padding: "10px 10px", borderRadius: 16,
+  background: "rgba(255,255,255,0.12)", color: "#fff",
   textDecoration: "none", fontFamily: "'DM Sans', sans-serif",
   border: "1px solid rgba(255,255,255,0.18)",
 };

@@ -13,9 +13,9 @@ function Pills({ value, options, onChange, getKey, getLabel, getEmoji }) {
           <button key={k} onClick={() => onChange(k)}
             style={{
               padding: "7px 11px", borderRadius: 999,
-              border: `1px solid ${active ? C.navy : C.border}`,
-              background: active ? C.navy : "#fff",
-              color: active ? "#fff" : C.muted,
+              border: active ? "1px solid rgba(34,211,238,.42)" : "1px solid rgba(255,255,255,.12)",
+              background: active ? "linear-gradient(135deg, rgba(91,141,239,.94), rgba(34,211,238,.62))" : "rgba(255,255,255,.06)",
+              color: active ? "#fff" : "var(--text-muted)",
               fontSize: 12, fontWeight: 700, cursor: "pointer",
               fontFamily: "'DM Sans', sans-serif",
               display: "inline-flex", alignItems: "center", gap: 5,
@@ -32,8 +32,8 @@ function Pills({ value, options, onChange, getKey, getLabel, getEmoji }) {
 function Section({ label, children }) {
   return (
     <div style={{ marginBottom: 10 }}>
-      <p style={{ fontSize: 10, fontWeight: 800, color: C.muted,
-        letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 6 }}>{label}</p>
+      <p style={{ fontSize: 10, fontWeight: 900, color: "var(--text-dim)",
+       letterSpacing: ".12em", textTransform: "uppercase", marginBottom: 8 }}>{label}</p>
       {children}
     </div>
   );
@@ -44,8 +44,9 @@ export default function SmartFilters({ filters, setFilters, location, onLocate, 
 
   return (
     <div style={{
-      background: C.surface, border: `1px solid ${C.border}`,
-      borderRadius: 18, padding: 14, marginBottom: 14,
+      background: "linear-gradient(145deg, rgba(255,255,255,.10), rgba(13,18,32,.74))", border: "1px solid rgba(190,225,255,.15)",
+      borderRadius: 26, padding: 18, marginBottom: 14,
+      boxShadow: "0 20px 54px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.10)", backdropFilter: "blur(24px) saturate(160%)",
     }}>
       <Section label="What do you need?">
         <Pills
@@ -73,9 +74,9 @@ export default function SmartFilters({ filters, setFilters, location, onLocate, 
           style={{
             display: "inline-flex", alignItems: "center", gap: 7,
             padding: "9px 14px", borderRadius: 999,
-            border: `1px solid ${location ? C.olive : C.border}`,
-            background: location ? "rgba(91,110,72,0.10)" : "#fff",
-            color: location ? C.olive : C.muted,
+            border: location ? "1px solid rgba(52,211,153,.34)" : "1px solid rgba(255,255,255,.12)",
+            background: location ? "rgba(52,211,153,.12)" : "rgba(255,255,255,.06)",
+            color: location ? "#34D399" : "var(--text-muted)",
             fontSize: 12.5, fontWeight: 700, cursor: locating ? "wait" : "pointer",
             fontFamily: "'DM Sans', sans-serif",
           }}>

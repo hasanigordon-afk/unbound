@@ -143,36 +143,36 @@ export default function VeteranSupportHub() {
   }, []);
 
   return (
-    <div style={{ background: C.cream, minHeight: "100vh", paddingBottom: 130 }}>
-      <div style={{ maxWidth: 560, margin: "0 auto" }}>
+    <div className="vet-hub-premium-shell" style={{ minHeight: "100vh", paddingBottom: 130 }}>
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 18px" }}>
 
         {/* Pinned crisis strip */}
         <div ref={crisisRef} style={{
           position: "sticky", top: 0, zIndex: 40,
           padding: "10px 12px 6px",
-          background: `linear-gradient(180deg, ${C.cream} 80%, rgba(246,244,239,0) 100%)`,
+          background: "linear-gradient(180deg, rgba(7,10,20,.94) 72%, rgba(7,10,20,0) 100%)",
         }}>
           <CrisisStrip />
         </div>
 
         {/* Header */}
-        <div style={{ padding: "16px 20px 8px" }}>
+        <div className="vet-hub-hero" style={{ padding: "28px 24px 24px", marginTop: 10 }}>
           <button onClick={() => navigate("/")}
             style={{
               background: "transparent", border: "none", padding: 0, cursor: "pointer",
               display: "inline-flex", alignItems: "center", gap: 6,
-              color: C.muted, fontSize: 13, fontWeight: 600, marginBottom: 12,
+              color: "var(--text-muted)", fontSize: 13, fontWeight: 800, marginBottom: 14,
             }}>
             <ArrowLeft style={{ width: 15, height: 15 }} /> Home
           </button>
           <h1 style={{
             fontFamily: "'Lora', Georgia, serif", fontSize: 30, fontWeight: 700,
-            color: C.navy, lineHeight: 1.1, marginBottom: 6,
+            color: "var(--text)", lineHeight: 0.98, marginBottom: 10, letterSpacing: "-.045em",
           }}>
-            Veteran <span style={{ color: C.gold }}>Support Hub</span>
+            Veteran <span style={{ color: "var(--gold)", textShadow: "0 0 28px rgba(240,183,83,.24)" }}>Support Hub</span>
           </h1>
-          <p style={{ fontSize: 13.5, color: C.muted, lineHeight: 1.6 }}>
-            You served your country. Now let us serve you.
+          <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 680 }}>
+            You served your country. Now let ReZilient help you find support, structure, benefits, housing, work, healing, and community.
           </p>
         </div>
 
@@ -180,33 +180,32 @@ export default function VeteranSupportHub() {
 
           {/* Primary actions */}
           <div>
-            <p style={{ fontSize: 10, fontWeight: 800, color: C.muted,
-              letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 8 }}>Get help fast</p>
+            <p className="section-label">Get help fast</p>
             <PrimaryActionGrid onPick={handlePickAction} />
           </div>
 
           {/* Map CTA */}
           <Link to="/VeteranResourceMap" style={{ textDecoration: "none" }}>
             <div style={{
-              background: "#fff", border: `1px solid ${C.border}`,
-              borderRadius: 18, padding: "14px 16px",
-              display: "flex", alignItems: "center", gap: 12,
-              boxShadow: "0 2px 10px rgba(15,30,61,0.05)",
+              background: "linear-gradient(145deg, rgba(255,255,255,.10), rgba(13,18,32,.72))", border: "1px solid rgba(190,225,255,.16)",
+              borderRadius: 24, padding: "18px 20px",
+              display: "flex", alignItems: "center", gap: 14,
+              boxShadow: "0 18px 48px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10)", backdropFilter: "blur(24px) saturate(160%)",
             }}>
               <div style={{
                 width: 42, height: 42, borderRadius: 12, flexShrink: 0,
-                background: "rgba(15,30,61,0.08)",
+                background: "rgba(34,211,238,0.10)", border: "1px solid rgba(34,211,238,.22)", boxShadow: "0 0 24px rgba(34,211,238,.14)",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <MapPin style={{ width: 20, height: 20, color: C.navy }} />
+                <MapPin style={{ width: 20, height: 20, color: "#22D3EE" }} />
               </div>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 11, fontWeight: 800, color: C.navy,
+                <p style={{ fontSize: 11, fontWeight: 900, color: "#22D3EE",
                   letterSpacing: ".12em", textTransform: "uppercase", marginBottom: 2 }}>Map View</p>
-                <p style={{ fontSize: 14, fontWeight: 800, color: C.text, marginBottom: 2 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "var(--text)", marginBottom: 2 }}>
                   Resources near you
                 </p>
-                <p style={{ fontSize: 11.5, color: C.dim }}>
+                <p style={{ fontSize: 12, color: "var(--text-muted)" }}>
                   VA hospitals, shelters, jobs · filter by distance →
                 </p>
               </div>
@@ -216,16 +215,16 @@ export default function VeteranSupportHub() {
           {/* AI Assistant CTA */}
           <button onClick={openAssistant}
             style={{
-              background: "linear-gradient(135deg,#0F1E3D 0%,#1A2E5C 100%)",
-              border: "1px solid rgba(200,147,47,0.32)",
-              borderRadius: 18, padding: "16px 18px", cursor: "pointer",
+              background: "linear-gradient(135deg, rgba(91,141,239,.92), rgba(34,211,238,.42), rgba(167,139,250,.68))",
+              border: "1px solid rgba(220,245,255,0.28)",
+              borderRadius: 24, padding: "18px 20px", cursor: "pointer",
               display: "flex", alignItems: "center", gap: 14, color: "#fff",
-              boxShadow: "0 4px 16px rgba(15,30,61,0.18)",
+              boxShadow: "0 0 34px rgba(91,141,239,.28), 0 18px 48px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.20)",
               fontFamily: "'DM Sans', sans-serif", textAlign: "left",
             }}>
             <div style={{
               width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-              background: "rgba(200,147,47,0.20)",
+              background: "rgba(240,183,83,0.18)", border: "1px solid rgba(240,183,83,.28)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               <MessageCircle style={{ width: 20, height: 20, color: C.gold }} />
@@ -286,11 +285,54 @@ export default function VeteranSupportHub() {
           )}
 
           {/* Footer disclaimer */}
-          <p style={{ textAlign: "center", fontSize: 11, color: C.dim,
-            lineHeight: 1.7, padding: "8px 12px 0" }}>
-            Re-siliant is a support tool, not a medical or legal provider.<br/>
+          <p style={{ textAlign: "center", fontSize: 11, color: "var(--text-dim)",
+            lineHeight: 1.7, padding: "10px 12px 0", fontWeight: 800, letterSpacing: ".04em" }}>
+            ReZilient is a support tool, not a medical or legal provider.<br/>
             In an emergency, call 911 or 988.
           </p>
+
+          <style>{`
+            .vet-hub-premium-shell {
+              position: relative;
+              overflow: hidden;
+              background:
+                radial-gradient(circle at 18% 4%, rgba(34,211,238,.15), transparent 30%),
+                radial-gradient(circle at 88% 12%, rgba(240,183,83,.10), transparent 28%),
+                linear-gradient(180deg, #070A14 0%, #0A1020 54%, #070A14 100%);
+              color: var(--text);
+            }
+            .vet-hub-premium-shell:before {
+              content: '';
+              position: fixed;
+              inset: 0;
+              pointer-events: none;
+              opacity: .10;
+              background-image:
+                linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px),
+                radial-gradient(circle, rgba(255,255,255,.8) 0 1px, transparent 1.5px);
+              background-size: 70px 70px, 70px 70px, 58px 58px;
+              animation: vetHubDrift 28s linear infinite;
+            }
+            .vet-hub-hero {
+              position: relative;
+              overflow: hidden;
+              border-radius: 34px;
+              background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(13,18,32,.78));
+              border: 1px solid rgba(190,225,255,.16);
+              box-shadow: 0 24px 70px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.10);
+              backdrop-filter: blur(28px) saturate(165%);
+            }
+            .vet-hub-hero:before {
+              content: '';
+              position: absolute;
+              inset: 0;
+              pointer-events: none;
+              background: radial-gradient(circle at 78% 10%, rgba(34,211,238,.16), transparent 34%), radial-gradient(circle at 8% 100%, rgba(240,183,83,.10), transparent 38%);
+            }
+            .vet-hub-hero > * { position: relative; z-index: 1; }
+            @keyframes vetHubDrift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-70px,-70px,0); } }
+          `}</style>
         </div>
       </div>
     </div>
