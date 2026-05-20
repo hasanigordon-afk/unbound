@@ -71,17 +71,25 @@ export default function AISteinBubble({ onOpen }) {
     };
   }, [dragging, pos.x, pos.y]);
 
+  const getEventPoint = (e) => {
+    if (e.touches?.[0]) return e.touches[0];
+    if (e.changedTouches?.[0]) return e.changedTouches[0];
+    return e;
+  };
+
   const onPointerDown = (e) => {
     e.preventDefault();
-    e.currentTarget.setPointerCapture?.(e.pointerId);
-    const p = "touches" in e ? e.touches[0] : e;
+    if (typeof e.pointerId === "number" && e.currentTarget.setPointerCapture) {
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch {}
+    }
+    const p = getEventPoint(e);
     startRef.current = { x: p.clientX, y: p.clientY, px: pos.x, py: pos.y, moved: false };
     setDragging(true);
   };
 
   const onPointerMove = (e) => {
     if (!dragging) return;
-    const p = "touches" in e ? e.touches[0] : e;
+    const p = getEventPoint(e);
     const dx = p.clientX - startRef.current.x;
     const dy = p.clientY - startRef.current.y;
     if (Math.abs(dx) + Math.abs(dy) > 5) startRef.current.moved = true;
@@ -92,7 +100,9 @@ export default function AISteinBubble({ onOpen }) {
   };
 
   const onPointerUp = (e) => {
-    e?.currentTarget?.releasePointerCapture?.(e.pointerId);
+    if (typeof e?.pointerId === "number" && e.currentTarget?.releasePointerCapture) {
+      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch {}
+    }
     finishDrag();
   };
 
