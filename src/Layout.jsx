@@ -1,129 +1,64 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Home, Compass, Sparkles, Users, User } from "lucide-react";
-import EmergencyFAB from "@/components/shared/EmergencyFAB";
-import DonateFAB from "@/components/shared/DonateFAB";
-import PillarSidebar from "@/components/navigation/PillarSidebar";
+import { Link, useLocation } from "react-router-dom";
+import { Home, ClipboardList, LayoutDashboard, UserRound, MessageSquare, Smartphone } from "lucide-react";
 
-const NAV = [
-  { name: "Home",      icon: Home,     page: "Home",          href: "/" },
-  { name: "Resources", icon: Compass,  page: "RecoveryHub",   href: "/RecoveryHub" },
-  { name: "AI",        icon: Sparkles, page: "SuperAgent",    href: "/SuperAgent", center: true },
-  { name: "Community", icon: Users,    page: "AhHaCommunity", href: "/AhHaCommunity" },
-  { name: "Profile",   icon: User,     page: "Profile",       href: "/Profile" },
+const tabs = [
+  { label: "Home", to: "/", icon: Home },
+  { label: "Plan", to: "/PilotTreatmentPlan", icon: ClipboardList },
+  { label: "Clients", to: "/PilotClientIntake", icon: UserRound },
+  { label: "Dashboard", to: "/FacilityPilotDashboard", icon: LayoutDashboard },
+  { label: "Feedback", to: "/PilotFeedback", icon: MessageSquare },
 ];
 
-const HIDE_NAV_PAGES = [
-  "Splash","RoleSelect","GuidedProfileSetup","CounselorGuide","CounselorDashboard",
-  "ProbationDashboard","FamilyView","Onboarding","UrgentHelp","ProfessionalPortal",
-  "CravingControlCenter","DailyCheckIn","TelehealthHub","EmploymentOpportunities",
-  "HousingAssistance","BenefitsAssistance","ComplianceReports","BillingDashboard",
-  "EHRIntegration","NJTreatmentFacilities","FacilityAdmin","ResourceHub",
-  "VoicesOfRecovery","ContentAdmin","EachOneTeachOne",
-];
+const pageTitles = {
+  RecoveryPath: "Recovery Path",
+  MyFoundation: "My Foundation",
+  DailyFlow: "Daily Flow",
+  TopFiveNonNegotiables: "Top 5 Goals",
+  SuperAgent: "AI Support",
+  MeetingDirectory: "Meetings",
+  VeteranSupportHub: "Resources",
+  MySafetyPlan: "Safety Plan",
+};
 
 export default function Layout({ children, currentPageName }) {
-  const showNav = !HIDE_NAV_PAGES.includes(currentPageName);
+  const location = useLocation();
+  const title = pageTitles[currentPageName] || currentPageName?.replace(/([A-Z])/g, " $1").trim() || "ReZilient Pilot";
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "transparent" }}>
+    <div className="min-h-screen bg-transparent text-white pb-28">
+      <header className="sticky top-0 z-30 px-4 pt-[calc(14px+env(safe-area-inset-top))] pb-3 backdrop-blur-2xl bg-[#07101f]/80 border-b border-white/10">
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs uppercase tracking-[0.24em] text-blue-200/70 font-bold">ReZilient</p>
+            <h1 className="text-2xl font-semibold tracking-tight font-sans">{title}</h1>
+            <p className="text-sm text-slate-300 mt-1">Calm, mobile-first recovery support.</p>
+          </div>
+          <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition shrink-0">
+            <Smartphone className="w-5 h-5" />
+          </Link>
+        </div>
+      </header>
 
-      {showNav && <PillarSidebar />}
+      <main className="max-w-5xl mx-auto px-4 py-5">
+        <div className="rounded-[34px] bg-white/6 border border-white/10 p-1 shadow-2xl backdrop-blur-2xl">
+          {children}
+        </div>
+      </main>
 
-      <div className="flex-1 lg:pl-[310px]" style={{ paddingBottom: showNav ? 110 : 24 }}>
-        {children}
-      </div>
-
-      {showNav && <EmergencyFAB />}
-      <DonateFAB />
-
-      {showNav && (
-        <nav className="lg:hidden" aria-label="Primary" style={{
-          position: "fixed",
-          left: "50%", bottom: 18, transform: "translateX(-50%)",
-          zIndex: 50,
-          width: "calc(100% - 24px)", maxWidth: 460,
-          padding: "10px 8px",
-          background: "linear-gradient(180deg, rgba(20,26,45,0.78), rgba(13,18,32,0.70))",
-          border: "1px solid var(--border-glow)",
-          borderRadius: 999,
-          backdropFilter: "blur(30px) saturate(170%)",
-          WebkitBackdropFilter: "blur(30px) saturate(170%)",
-          boxShadow: "var(--glow), 0 18px 44px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.06)",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          paddingBottom: "calc(10px + env(safe-area-inset-bottom, 0px))",
-        }}>
-          {NAV.map(({ name, icon: Icon, page, href, center }) => {
-            const isActive = currentPageName === page;
-            if (center) {
-              return (
-                <Link key={page} to={href} aria-label={name} style={{
-                  textDecoration: "none",
-                  flexShrink: 0,
-                  marginTop: -28,
-                }}>
-                  <div style={{
-                    width: 56, height: 56, borderRadius: "50%",
-                    background: "linear-gradient(135deg, var(--accent), var(--purple))",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "#fff",
-                    border: "1px solid var(--border-glow)",
-                    boxShadow: "var(--glow), 0 8px 22px rgba(0,0,0,0.35)",
-                    animation: "navCenterPulse 3s ease-in-out infinite",
-                    position: "relative",
-                  }}>
-                    <span aria-hidden style={{
-                      position: "absolute", inset: -6, borderRadius: "50%",
-                      background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
-                      opacity: 0.55, filter: "blur(6px)",
-                      animation: "navCenterHalo 2.6s ease-in-out infinite",
-                      pointerEvents: "none",
-                    }} />
-                    <Icon style={{ width: 22, height: 22, position: "relative" }} strokeWidth={2.2} />
-                  </div>
-                </Link>
-              );
-            }
+      <nav className="fixed bottom-0 left-0 right-0 z-40 px-3 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 bg-[#07101f]/85 backdrop-blur-2xl border-t border-white/10">
+        <div className="max-w-md mx-auto grid grid-cols-5 gap-1 rounded-[28px] bg-white/8 border border-white/10 p-1.5 shadow-2xl">
+          {tabs.map(({ label, to, icon: Icon }) => {
+            const active = location.pathname === to || (to === "/" && location.pathname === "/");
             return (
-              <Link
-                key={page}
-                to={href}
-                aria-label={name}
-                style={{
-                  flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
-                  gap: 3, padding: "6px 0",
-                  textDecoration: "none",
-                  color: isActive ? "var(--accent)" : "var(--text-muted)",
-                  transition: "color .18s",
-                  position: "relative",
-                }}
-              >
-                <div style={{
-                  padding: "5px 12px", borderRadius: 12,
-                  background: isActive ? "var(--navy-dim)" : "transparent",
-                  border: isActive ? "1px solid var(--border-glow)" : "1px solid transparent",
-                  boxShadow: isActive ? "var(--glow)" : "none",
-                  transition: "all .22s cubic-bezier(.22,1,.36,1)",
-                }}>
-                  <Icon style={{ width: 18, height: 18 }} strokeWidth={isActive ? 2.2 : 1.6} />
-                </div>
-                <span style={{
-                  fontSize: 9.5,
-                  fontWeight: isActive ? 700 : 500,
-                  letterSpacing: ".08em",
-                  textTransform: "uppercase",
-                  fontFamily: "'Space Grotesk', 'DM Sans', sans-serif",
-                }}>{name}</span>
+              <Link key={to} to={to} className={`min-h-[58px] rounded-3xl flex flex-col items-center justify-center gap-1 text-[10px] font-bold transition active:scale-95 ${active ? "bg-white text-slate-950 shadow-lg" : "text-slate-300"}`}>
+                <Icon className="w-5 h-5" />
+                {label}
               </Link>
             );
           })}
-
-          <style>{`
-            @keyframes navCenterPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-            @keyframes navCenterHalo  { 0%,100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.3); opacity: .85; } }
-          `}</style>
-        </nav>
-      )}
+        </div>
+      </nav>
     </div>
   );
 }
