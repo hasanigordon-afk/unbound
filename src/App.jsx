@@ -91,6 +91,7 @@ import InstitutionalPortal from './pages/InstitutionalPortal.jsx';
 import OutcomesProgress from './pages/OutcomesProgress.jsx';
 import TopFiveNonNegotiables from './pages/TopFiveNonNegotiables.jsx';
 import AIAftercareTeam from './pages/AIAftercareTeam.jsx';
+import JusticeRadar from './pages/JusticeRadar.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
@@ -253,6 +254,7 @@ const AuthenticatedApp = () => {
       <Route path="/OutcomesProgress"                    element={<LW name="OutcomesProgress"><OutcomesProgress /></LW>} />
       <Route path="/TopFiveNonNegotiables"                element={<LW name="TopFiveNonNegotiables"><TopFiveNonNegotiables /></LW>} />
       <Route path="/AIAftercareTeam"                       element={<LW name="AIAftercareTeam"><AIAftercareTeam /></LW>} />
+      <Route path="/JusticeRadar"                          element={<LW name="JusticeRadar"><JusticeRadar /></LW>} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

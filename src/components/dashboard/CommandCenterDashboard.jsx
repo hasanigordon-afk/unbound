@@ -12,6 +12,7 @@ import AhHaVideoFeed from "@/components/home/AhHaVideoFeed";
 import AISteinHomeSection from "@/components/home/AISteinHomeSection";
 import ResourceMapSection from "@/components/home/ResourceMapSection";
 import RecoveryCompanionWidget from "@/components/home/RecoveryCompanionWidget";
+import JusticeRadarFeature from "@/components/justiceRadar/JusticeRadarFeature";
 
 export default function CommandCenterDashboard({
   firstName,
@@ -37,6 +38,7 @@ export default function CommandCenterDashboard({
         <WhyReZilientExistsSection />
         <FourPillarsSection />
         <RecoveryCompanionWidget />
+        <JusticeRadarFeature compact />
         <NonNegotiablesPreview />
         <DailyFocusWidget firstName={firstName} todayComplete={todayComplete} />
         <ComebackTimeline />
