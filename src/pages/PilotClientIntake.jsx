@@ -18,13 +18,13 @@ export default function PilotClientIntake() {
   };
 
   return (
-    <PilotShell title="Client Intake" subtitle="A light profile that keeps the client experience simple after discharge.">
+    <PilotShell title="Client App" subtitle="Client-facing intake. Saved submissions appear in the Counselor View dashboard.">
       <form onSubmit={save} className="rounded-[34px] bg-white/10 border border-white/12 p-5 backdrop-blur-2xl shadow-2xl space-y-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-12 h-12 rounded-2xl bg-blue-400/15 flex items-center justify-center"><UserRound className="w-6 h-6" /></div>
           <div>
             <h2 className="text-xl font-bold font-sans">Basic support profile</h2>
-            <p className="text-sm text-slate-300">Only the essentials for pilot onboarding.</p>
+            <p className="text-sm text-slate-300">Client App intake. Counselors can review saved submissions.</p>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-3">
@@ -40,7 +40,7 @@ export default function PilotClientIntake() {
         <button type="submit" className="w-full min-h-[58px] rounded-3xl bg-white text-slate-950 font-black flex items-center justify-center gap-2 active:scale-95 transition">
           <ShieldCheck className="w-5 h-5" /> Save intake
         </button>
-        {saved && <p className="text-sm text-emerald-200 font-bold text-center">Client intake saved.</p>}
+        {saved && <p className="text-sm text-emerald-200 font-bold text-center">Client intake saved to the Counselor View dashboard.</p>}
       </form>
     </PilotShell>
   );

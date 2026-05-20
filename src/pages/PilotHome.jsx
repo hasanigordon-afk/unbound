@@ -11,8 +11,8 @@ const pillars = [
 ];
 
 const roles = [
-  { title: 'Clients', body: 'Simple profile, check-ins, Top 5 goals, resources, and emergency calm support.', icon: UserRound, to: '/PilotClientIntake', tone: 'blue' },
-  { title: 'Counselors', body: 'Enter treatment details before discharge and build aftercare plans faster.', icon: BriefcaseMedical, to: '/PilotTreatmentPlan', tone: 'green' },
+  { title: 'Client App', body: 'Client-facing intake, check-ins, Top 5 goals, resources, and emergency calm support.', icon: UserRound, to: '/PilotClientIntake', tone: 'blue' },
+  { title: 'Counselor View', body: 'Review saved intakes, enter treatment details, and build aftercare plans faster.', icon: BriefcaseMedical, to: '/FacilityPilotDashboard', tone: 'green' },
   { title: 'Sponsors / mentors', body: 'Support accountability, goals, and follow-up without overwhelming the client.', icon: UsersRound, to: '/TopFiveNonNegotiables', tone: 'violet' },
   { title: 'Facility admins', body: 'Track engagement, missed check-ins, follow-up needs, and pilot outcomes.', icon: Building2, to: '/FacilityPilotDashboard', tone: 'gold' },
 ];
