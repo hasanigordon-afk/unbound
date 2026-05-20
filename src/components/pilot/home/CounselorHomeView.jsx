@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AlertTriangle, CalendarCheck, ClipboardList, FileText, Home, MessageSquare, Target, TrendingUp, UsersRound } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { AlertTriangle, CalendarCheck, ClipboardList, FileText, Home, MessageSquare, Sparkles, Target, TrendingUp, UsersRound } from 'lucide-react';
 
 const overview = [
   { label: 'Active clients', value: '42', icon: UsersRound, tone: 'text-blue-100 bg-blue-400/15' },
@@ -27,6 +28,19 @@ export default function CounselorHomeView() {
 
   return (
     <div className="space-y-5">
+      <section className="rounded-[34px] border border-white/12 bg-gradient-to-br from-blue-400/15 to-violet-400/10 p-5 shadow-2xl backdrop-blur-2xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-200">New AI workflow</p>
+            <h2 className="mt-2 font-sans text-2xl font-black">S.E.E. Super Agent</h2>
+            <p className="mt-2 text-sm text-slate-300">Turn natural-language aftercare notes into calendars, reminders, referrals, and accountability steps.</p>
+          </div>
+          <Link to="/SEESuperAgent" className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-3xl bg-white px-5 font-black text-slate-950 active:scale-95 transition">
+            <Sparkles className="h-5 w-5" /> Open S.E.E.
+          </Link>
+        </div>
+      </section>
+
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {overview.map(({ label, value, icon: Icon, tone }) => (
           <div key={label} className="rounded-[28px] border border-white/12 bg-white/10 p-4 shadow-xl backdrop-blur-2xl">
