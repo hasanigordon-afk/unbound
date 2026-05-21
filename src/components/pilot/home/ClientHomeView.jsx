@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Briefcase, Bus, CalendarCheck, CheckSquare, HeartPulse, Home, LifeBuoy, MapPinned, PenLine, Search, ShieldCheck, Target, Utensils, UsersRound } from 'lucide-react';
+import { Brain, Briefcase, Bus, CheckSquare, HeartPulse, Home, LifeBuoy, MapPinned, Search, ShieldCheck, Target, Utensils } from 'lucide-react';
+import WeeklyRecoveryItinerary from './WeeklyRecoveryItinerary';
 
 const pillars = [
   { title: 'Recovery Support', icon: HeartPulse, actions: ['Daily check-in', 'Meeting finder', 'Craving reset', 'Sponsor contact'] },
@@ -27,6 +28,8 @@ export default function ClientHomeView() {
 
   return (
     <div className="space-y-5">
+      <WeeklyRecoveryItinerary />
+
       <section className="rounded-[34px] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
         <p className="text-sm font-bold text-blue-200">Welcome back</p>
         <h2 className="mt-2 text-3xl font-black tracking-tight font-sans">Today is about one steady step.</h2>
