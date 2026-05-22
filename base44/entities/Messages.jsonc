@@ -1,0 +1,33 @@
+{
+  "name": "Messages",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "counselor_id": {
+      "type": "string"
+    },
+    "sender_role": {
+      "type": "string",
+      "enum": [
+        "client",
+        "counselor"
+      ],
+      "default": "client"
+    },
+    "message": {
+      "type": "string"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false
+    },
+    "related_appointment_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "message"
+  ]
+}

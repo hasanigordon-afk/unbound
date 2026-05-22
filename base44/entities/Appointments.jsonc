@@ -1,0 +1,74 @@
+{
+  "name": "Appointments",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "counselor_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "appointment_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "day": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "virtual_link": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "confirmed",
+        "cancelled",
+        "missed",
+        "completed"
+      ],
+      "default": "scheduled"
+    },
+    "confirmed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reminder_status": {
+      "type": "string",
+      "default": "On"
+    },
+    "transportation_needed": {
+      "type": "boolean",
+      "default": false
+    },
+    "checkin_required": {
+      "type": "boolean",
+      "default": false
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

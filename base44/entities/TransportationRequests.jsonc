@@ -1,0 +1,46 @@
+{
+  "name": "TransportationRequests",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "appointment_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "appointment": {
+      "type": "string"
+    },
+    "pickup_address": {
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "pickup_time": {
+      "type": "string"
+    },
+    "ride_type": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "requested",
+        "scheduled",
+        "confirmed",
+        "completed"
+      ],
+      "default": "requested"
+    }
+  },
+  "required": [
+    "appointment"
+  ]
+}

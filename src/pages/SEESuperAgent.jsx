@@ -99,10 +99,27 @@ export default function SEESuperAgent() {
     const client = clients.find((item) => item.id === selectedClientId);
     const plan = await base44.entities.AftercarePlans.create({ client_id: selectedClientId, client_name: client?.full_name || review.clientName, source_notes: notes, needs_review: review.needsReview, roadmap_summary: 'S.E.E. generated roadmap with calendar, reminders, transportation, tasks, and goals.' });
     const attach = (items) => items.map(({ id, detail, ...item }) => ({ ...item, client_id: selectedClientId, plan_id: plan.id, confirmed: true }));
+    const appointmentRows = review.calendarEvents.map((item) => ({
+      client_id: selectedClientId,
+      plan_id: plan.id,
+      title: item.title,
+      day: item.schedule_text?.split(' ')[0]?.replace(',', '') || '',
+      time: item.time_text || '',
+      location: item.category === 'meeting' ? 'Recovery meeting location' : item.category === 'follow_up' ? 'Phone / virtual' : 'Appointment location',
+      category: item.category,
+      status: 'scheduled',
+      reminder_status: 'On',
+      transportation_needed: review.transportation.length > 0,
+      checkin_required: ['probation', 'treatment', 'follow_up'].includes(item.category),
+      needs_review: item.needs_review,
+    }));
     await Promise.all([
       review.calendarEvents.length ? base44.entities.CalendarEvents.bulkCreate(attach(review.calendarEvents)) : Promise.resolve(),
+      appointmentRows.length ? base44.entities.Appointments.bulkCreate(appointmentRows) : Promise.resolve(),
       review.reminders.length ? base44.entities.DailyReminders.bulkCreate(attach(review.reminders)) : Promise.resolve(),
+      review.reminders.length ? base44.entities.Reminders.bulkCreate(review.reminders.map((item) => ({ client_id: selectedClientId, plan_id: plan.id, title: item.title, time: item.reminder_time, repeat: item.frequency?.toLowerCase() === 'daily' ? 'daily' : 'weekly', priority: 'medium', notes: item.frequency }))) : Promise.resolve(),
       review.transportation.length ? base44.entities.TransportationNeeds.bulkCreate(attach(review.transportation)) : Promise.resolve(),
+      review.transportation.length ? base44.entities.TransportationRequests.bulkCreate(review.transportation.map((item) => ({ client_id: selectedClientId, plan_id: plan.id, appointment: item.title, destination: item.destination, pickup_time: item.schedule_text, ride_type: item.support_type, notes: 'Auto-created by S.E.E.', status: 'requested' }))) : Promise.resolve(),
       review.tasks.length ? base44.entities.CounselorTasks.bulkCreate(attach(review.tasks)) : Promise.resolve(),
       review.goals.length ? base44.entities.AccountabilityGoals.bulkCreate(attach(review.goals)) : Promise.resolve(),
     ]);

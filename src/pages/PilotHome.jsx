@@ -11,6 +11,7 @@ export default function PilotHome() {
     <PilotShell
       title="ReZilient Dashboard"
       subtitle="One recovery support app with focused dashboards for clients and counselors."
+      activeView={activeView}
     >
       <HomeViewToggle activeView={activeView} onChange={setActiveView} />
       {activeView === 'client' ? <ClientHomeView /> : <CounselorHomeView />}
