@@ -19,9 +19,9 @@ export default function CounselorConnectedView() {
         <Link to="/SEESuperAgent" className="inline-flex min-h-[54px] items-center gap-2 rounded-full bg-white px-6 font-black text-slate-950 transition hover:-translate-y-1 active:scale-95"><Sparkles className="h-5 w-5" />Create a client roadmap</Link>
       </section>
       <section className="grid gap-4 md:grid-cols-2">
-        {modules.map(([title, body, Icon, to]) => (
+        {modules.map(([title, body, ModuleIcon, to]) => (
           <Link key={title} to={to} className="card p-5 transition hover:-translate-y-1 active:scale-[0.99]">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-3xl bg-blue-300/15 text-blue-100"><Icon className="h-6 w-6" /></div>
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-3xl bg-blue-300/15 text-blue-100"><ModuleIcon className="h-6 w-6" /></div>
             <h3 className="font-sans text-xl font-black text-white">{title}</h3>
             <p className="mt-2 text-sm font-bold leading-relaxed text-slate-300">{body}</p>
           </Link>

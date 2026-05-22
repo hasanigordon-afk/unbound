@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Bot, Building2, Car, Church, Dumbbell, HeartHandshake, Home, MapPinned, MessageCircle, Search, Trophy, Users, Utensils } from 'lucide-react';
 import HomeSectionHeader from './HomeSectionHeader';
 
-const wins = ['Completed meetings', 'Achievements', 'Goals reached', 'Appointments completed', 'Community contributions', 'Milestones', 'Family progress', 'Growth moments'];
+const wins = ['Completed meetings', 'Completed appointments', 'Goals achieved', 'Streaks', 'Growth moments', 'Family wins', 'Helping community members', 'Job applications', 'Milestones'];
 const circle = [
   ['Counselor', 'Available'], ['Sponsor', 'Online'], ['Family', 'Recently active'], ['Mentor', 'Available'], ['Community', 'Online'],
 ];
 const resources = [
-  ['Food', Utensils], ['Housing', Home], ['Meetings', Users], ['Transportation', Car], ['Staffing agencies', Building2], ['Support services', HeartHandshake], ['Churches', Church], ['Gyms', Dumbbell],
+  ['Housing', Home], ['Food', Utensils], ['Meetings', Users], ['Gyms', Dumbbell], ['Transportation', Car], ['Jobs', Building2], ['Churches', Church], ['Staffing agencies', Building2], ['Legal support', HeartHandshake], ['Medicaid resources', HeartHandshake],
 ];
 
 export default function WinsSupportAIResources() {
@@ -42,7 +42,7 @@ export default function WinsSupportAIResources() {
         </div>
 
         <div className="card-glow p-5">
-          <HomeSectionHeader eyebrow="Ask AI" title="Ask anything." subtitle="Recovery, jobs, resources, transportation, life guidance, wellness, or reentry." />
+          <HomeSectionHeader eyebrow="Ask AI" title="Your AI companion is always available." subtitle="Recovery, jobs, resources, transportation, life guidance, wellness, reentry, and aftercare next steps." />
           <Link to="/SuperAgentChat" className="flex min-h-[120px] items-center gap-4 rounded-[30px] bg-white p-5 text-slate-950 transition hover:-translate-y-1 active:scale-95">
             <div className="rounded-3xl bg-slate-950 p-4 text-white"><Bot className="h-7 w-7" /></div>
             <div><p className="font-sans text-2xl font-black">What do you need next?</p><p className="text-sm font-bold text-slate-500">Get a clear step, not a wall of advice.</p></div>
@@ -51,11 +51,11 @@ export default function WinsSupportAIResources() {
       </section>
 
       <section className="card p-5">
-        <HomeSectionHeader eyebrow="Local Help Near Me" title="Real-world support close by." subtitle="Food, housing, meetings, transportation, staffing agencies, support services, churches, and gyms." />
+        <HomeSectionHeader eyebrow="Resource Map" title="Local Help Near Me" subtitle="Housing, food, meetings, gyms, transportation, jobs, churches, staffing agencies, legal support, and Medicaid resources sorted by what is closest and useful." />
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          {resources.map(([label, Icon]) => (
+          {resources.map(([label, ResourceIcon]) => (
             <Link key={label} to="/RecoveryMapFinder" className="rounded-[26px] border border-white/10 bg-white/8 p-4 text-center transition hover:-translate-y-1 active:scale-95">
-              <Icon className="mx-auto mb-3 h-6 w-6 text-blue-200" />
+              <ResourceIcon className="mx-auto mb-3 h-6 w-6 text-blue-200" />
               <p className="text-xs font-black text-slate-200">{label}</p>
             </Link>
           ))}

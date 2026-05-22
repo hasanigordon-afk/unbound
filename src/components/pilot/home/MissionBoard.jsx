@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Target } from 'lucide-react';
 import HomeSectionHeader from './HomeSectionHeader';
 
-const examples = ['Reconnect with daughter', 'Attend meetings', 'Apply for jobs', 'Exercise', 'Build routine'];
+const examples = ['Reconnect with daughter', 'Find stable housing', 'Attend meetings', 'Apply for jobs', 'Improve health'];
 
 export default function MissionBoard() {
   const [goals, setGoals] = useState(examples);
