@@ -6,7 +6,9 @@ import SEEProcessingAnimation from '@/components/see/SEEProcessingAnimation';
 import SEEDashboardCards from '@/components/see/SEEDashboardCards';
 import GoogleCalendarSyncPanel from '@/components/see/GoogleCalendarSyncPanel';
 import SEEReviewSection from '@/components/see/SEEReviewSection';
-import { CheckCircle2, UserPlus } from 'lucide-react';
+import SEEMobileHero from '@/components/see/SEEMobileHero';
+import SEEClientSelector from '@/components/see/SEEClientSelector';
+import { CheckCircle2 } from 'lucide-react';
 
 const sampleNotes = 'Client has IOP Mondays and Wednesdays at 6 PM, probation check-in every Friday at 10 AM, needs bus support to appointments, NA meetings Tuesday and Saturday, sponsor calls nightly, housing referral this week, job search goal, medication reminders each morning, and counselor check-in every Thursday afternoon.';
 const loadingSteps = ['Reading counselor notes…', 'Extracting recovery tasks…', 'Building calendar…', 'Creating reminders…', 'Checking transportation needs…', 'Finalizing client roadmap…'];
@@ -131,30 +133,23 @@ export default function SEESuperAgent() {
   };
 
   return (
-    <PilotShell title="S.E.E. Super Agent" subtitle="Simplify counselor notes, execute the roadmap, and empower client accountability.">
+    <PilotShell title="S.E.E. Super Agent" subtitle="Mobile recovery roadmap builder" activeView="counselor">
       <div className="space-y-5">
-        <section className="rounded-[38px] border border-white/12 bg-gradient-to-br from-white/14 via-blue-400/10 to-violet-400/10 p-6 shadow-2xl backdrop-blur-2xl">
-          <p className="text-sm font-black text-blue-200">AI-powered aftercare onboarding</p>
-          <h1 className="mt-3 font-sans text-4xl font-black tracking-tight">Turn one note into a complete recovery roadmap.</h1>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-300">S.E.E. extracts appointments, meetings, probation, transportation, support contacts, reminders, goals, and accountability actions.</p>
-        </section>
+        <SEEMobileHero />
 
-        <section className="rounded-[30px] border border-white/12 bg-white/10 p-5 shadow-xl backdrop-blur-2xl">
-          <h2 className="mb-3 font-sans text-xl font-black">Select or create client</h2>
-          <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-            <select value={selectedClientId} onChange={(e) => setSelectedClientId(e.target.value)} className="min-h-[54px]">
-              <option value="">Select client</option>
-              {clients.map((client) => <option key={client.id} value={client.id}>{client.full_name}</option>)}
-            </select>
-            <input value={newClientName} onChange={(e) => setNewClientName(e.target.value)} placeholder="New client name" className="min-h-[54px]" />
-            <button onClick={createClient} className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-3xl bg-white px-5 font-black text-slate-950"><UserPlus className="h-5 w-5" />Create</button>
-          </div>
-        </section>
+        <SEEClientSelector
+          clients={clients}
+          selectedClientId={selectedClientId}
+          setSelectedClientId={setSelectedClientId}
+          newClientName={newClientName}
+          setNewClientName={setNewClientName}
+          onCreateClient={createClient}
+        />
 
         {error && <div className="rounded-3xl border border-rose-300/20 bg-rose-400/15 p-4 text-sm font-black text-rose-100">{error}</div>}
         {success && <div className="rounded-3xl border border-emerald-300/20 bg-emerald-400/15 p-4 text-sm font-black text-emerald-100 flex items-center gap-2"><CheckCircle2 className="h-5 w-5" />{success}</div>}
 
-        <div className="grid gap-5 xl:grid-cols-[1fr_0.9fr]">
+        <div className="grid gap-5 lg:grid-cols-[1fr_0.9fr]">
           <SEENotesIntake notes={notes} setNotes={setNotes} onProcess={generate} processing={processing} />
           <SEEProcessingAnimation processing={processing} />
         </div>
@@ -169,7 +164,7 @@ export default function SEESuperAgent() {
             <SEEReviewSection title="Transportation Needs" items={review.transportation} onEdit={(id) => editItem('transportation', id)} onDelete={(id) => deleteItem('transportation', id)} onConfirm={(id) => confirmItem('transportation', id)} />
             <SEEReviewSection title="Accountability Goals" items={review.goals} onEdit={(id) => editItem('goals', id)} onDelete={(id) => deleteItem('goals', id)} onConfirm={(id) => confirmItem('goals', id)} />
             <SEEReviewSection title="Counselor Follow-Ups" items={review.tasks} onEdit={(id) => editItem('tasks', id)} onDelete={(id) => deleteItem('tasks', id)} onConfirm={(id) => confirmItem('tasks', id)} />
-            <button onClick={approveAndSave} disabled={processing} className="w-full rounded-[28px] bg-white px-5 py-5 font-black text-slate-950 shadow-2xl active:scale-95 transition disabled:opacity-70">Approve & Save Plan</button>
+            <button onClick={approveAndSave} disabled={processing} className="sticky bottom-28 z-20 w-full rounded-[28px] bg-white px-5 py-5 font-black text-slate-950 shadow-2xl active:scale-95 transition disabled:opacity-70">Approve & Save Plan</button>
           </div>
         )}
       </div>
