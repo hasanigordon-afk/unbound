@@ -18,8 +18,24 @@ const progress = [
   { label: 'Resource usage', value: 'High', pct: 76 },
 ];
 
-const tasks = ['Attend meeting', 'Call sponsor', 'Complete journal', 'Apply for ID', 'Apply for benefits', 'Contact housing resource', 'Job search task'];
-const referrals = ['Rehab / IOP', 'Shelter', 'Food pantry', 'Job agency', 'Veteran support', 'Transportation', 'Legal aid'];
+const tasks = [
+  { label: 'Attend meeting', to: '/MeetingDirectory' },
+  { label: 'Call sponsor', to: '/SuperAgentChat' },
+  { label: 'Complete journal', to: '/Journal' },
+  { label: 'Apply for ID', to: '/IdentityBridge' },
+  { label: 'Apply for benefits', to: '/BenefitsAssistance' },
+  { label: 'Contact housing resource', to: '/NJHousingSearch' },
+  { label: 'Job search task', to: '/EmploymentOpportunities' },
+];
+const referrals = [
+  { label: 'Rehab / IOP', to: '/RecoveryMapFinder' },
+  { label: 'Shelter', to: '/NJHousingSearch' },
+  { label: 'Food pantry', to: '/RecoveryMapFinder' },
+  { label: 'Job agency', to: '/EmploymentOpportunities' },
+  { label: 'Veteran support', to: '/VeteranSupportHub' },
+  { label: 'Transportation', to: '/RecoveryMapFinder' },
+  { label: 'Legal aid', to: '/JusticeRadar' },
+];
 
 export default function CounselorHomeView() {
   const [plan, setPlan] = useState({ client: 'Marcus J.', discharge: '2026-05-28', goals: 'Maintain outpatient care, attend meetings, stabilize housing.', notes: 'Client responds well to clear daily structure and morning reminders.' });
@@ -84,11 +100,11 @@ export default function CounselorHomeView() {
       <section className="grid gap-5 lg:grid-cols-2">
         <div className="rounded-[30px] border border-white/12 bg-white/10 p-5 backdrop-blur-2xl shadow-xl">
           <div className="mb-4 flex items-center gap-3"><Target className="h-5 w-5 text-violet-200" /><h2 className="font-sans text-xl font-black">Assign Support Tasks</h2></div>
-          <div className="grid grid-cols-2 gap-2">{tasks.map((task) => <button key={task} className="rounded-2xl bg-white/8 px-3 py-3 text-left text-xs font-black text-slate-200 active:scale-95 transition">{task}</button>)}</div>
+          <div className="grid grid-cols-2 gap-2">{tasks.map((task) => <Link key={task.label} to={task.to} className="rounded-2xl bg-white/8 px-3 py-3 text-left text-xs font-black text-slate-200 active:scale-95 transition">{task.label}</Link>)}</div>
         </div>
         <div className="rounded-[30px] border border-white/12 bg-white/10 p-5 backdrop-blur-2xl shadow-xl">
           <div className="mb-4 flex items-center gap-3"><Home className="h-5 w-5 text-sky-200" /><h2 className="font-sans text-xl font-black">Resource Referral Panel</h2></div>
-          <div className="grid grid-cols-2 gap-2">{referrals.map((item) => <button key={item} className="rounded-2xl bg-white/8 px-3 py-3 text-left text-xs font-black text-slate-200 active:scale-95 transition">Send {item}</button>)}</div>
+          <div className="grid grid-cols-2 gap-2">{referrals.map((item) => <Link key={item.label} to={item.to} className="rounded-2xl bg-white/8 px-3 py-3 text-left text-xs font-black text-slate-200 active:scale-95 transition">Send {item.label}</Link>)}</div>
         </div>
       </section>
 

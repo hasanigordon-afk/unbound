@@ -4,10 +4,10 @@ import { Brain, Briefcase, Bus, CheckSquare, HeartPulse, Home, LifeBuoy, MapPinn
 import WeeklyRecoveryItinerary from './WeeklyRecoveryItinerary';
 
 const pillars = [
-  { title: 'Recovery Support', icon: HeartPulse, actions: ['Daily check-in', 'Meeting finder', 'Craving reset', 'Sponsor contact'] },
-  { title: 'Reentry & Stability', icon: Home, actions: ['ID help', 'Housing leads', 'Benefits checklist', 'Legal reminders'] },
-  { title: 'Mental Wellness', icon: Brain, actions: ['Breathing reset', 'Journal prompt', 'Mood tracker', 'Calming audio'] },
-  { title: 'Growth & Accountability', icon: Target, actions: ['Top 5 goals', 'Task tracker', 'Progress streaks', 'Mentor follow-up'] },
+  { title: 'Recovery Support', icon: HeartPulse, actions: [{ label: 'Daily check-in', to: '/RecoveryPath' }, { label: 'Meeting finder', to: '/MeetingDirectory' }, { label: 'Craving reset', to: '/ResetButton' }, { label: 'Sponsor contact', to: '/InnerCircle' }] },
+  { title: 'Reentry & Stability', icon: Home, actions: [{ label: 'ID help', to: '/IdentityBridge' }, { label: 'Housing leads', to: '/NJHousingSearch' }, { label: 'Benefits checklist', to: '/BenefitsAssistance' }, { label: 'Legal reminders', to: '/JusticeRadar' }] },
+  { title: 'Mental Wellness', icon: Brain, actions: [{ label: 'Breathing reset', to: '/MentalReset' }, { label: 'Journal prompt', to: '/Journal' }, { label: 'Mood tracker', to: '/MindBodyRecovery' }, { label: 'Calming audio', to: '/ResetButton' }] },
+  { title: 'Growth & Accountability', icon: Target, actions: [{ label: 'Top 5 goals', to: '/TopFiveNonNegotiables' }, { label: 'Task tracker', to: '/RecoveryPath' }, { label: 'Progress streaks', to: '/PositiveProgressHub' }, { label: 'Mentor follow-up', to: '/InnerCircle' }] },
 ];
 
 const resources = [
@@ -46,7 +46,7 @@ export default function ClientHomeView() {
         <h2 className="mt-2 text-3xl font-black tracking-tight font-sans">Today is about one steady step.</h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-300">Focus: protect your routine, reach out early, and complete one action that moves life forward.</p>
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <button className="rounded-3xl bg-white px-4 py-4 text-left font-black text-slate-950 active:scale-95 transition">How are you feeling today?</button>
+          <Link to="/RecoveryPath" className="rounded-3xl bg-white px-4 py-4 text-left font-black text-slate-950 active:scale-95 transition">How are you feeling today?</Link>
           <Link to="/MySafetyPlan" className="rounded-3xl border border-rose-300/20 bg-rose-400/15 px-4 py-4 font-black text-rose-100 active:scale-95 transition flex items-center gap-2">
             <LifeBuoy className="h-5 w-5" /> Emergency calming
           </Link>
@@ -84,7 +84,7 @@ export default function ClientHomeView() {
                 <h3 className="font-sans text-lg font-black">{title}</h3>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {actions.map((action) => <span key={action} className="rounded-2xl bg-white/8 px-3 py-2 text-xs font-bold text-slate-200">{action}</span>)}
+                {actions.map((action) => <Link key={action.label} to={action.to} className="rounded-2xl bg-white/8 px-3 py-2 text-xs font-bold text-slate-200 active:scale-95 transition">{action.label}</Link>) }
               </div>
             </div>
           ))}
@@ -114,10 +114,10 @@ export default function ClientHomeView() {
       </section>
 
       <section className="rounded-[30px] border border-white/12 bg-white/10 p-4 backdrop-blur-2xl shadow-xl">
-        <div className="flex items-center gap-3 rounded-3xl bg-white px-4 py-4 text-slate-950">
+        <Link to="/SuperAgentChat" className="flex items-center gap-3 rounded-3xl bg-white px-4 py-4 text-slate-950 active:scale-95 transition">
           <Search className="h-5 w-5 shrink-0" />
           <p className="text-sm font-bold text-slate-600">Ask anything about recovery, reentry, resources, goals, or getting through today.</p>
-        </div>
+        </Link>
       </section>
     </div>
   );
