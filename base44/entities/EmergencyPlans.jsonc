@@ -1,0 +1,56 @@
+{
+  "name": "EmergencyPlans",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "crisis_contacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "relapse_warning_signs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "coping_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "safe_places": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "people_to_call": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "emergency_services_info": {
+      "type": "string"
+    },
+    "overdose_prevention_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_id"
+  ]
+}

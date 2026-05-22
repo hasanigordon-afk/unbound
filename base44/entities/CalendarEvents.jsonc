@@ -11,13 +11,54 @@
     "title": {
       "type": "string"
     },
+    "event_title": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string"
+    },
     "category": {
       "type": "string"
     },
-    "schedule_text": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "start_time": {
+      "type": "string"
+    },
+    "end_time": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "reminder_time": {
       "type": "string"
     },
     "recurrence": {
+      "type": "string"
+    },
+    "transportation_needed": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "scheduled",
+        "confirmed",
+        "completed",
+        "missed",
+        "cancelled"
+      ],
+      "default": "scheduled"
+    },
+    "schedule_text": {
       "type": "string"
     },
     "time_text": {
@@ -33,7 +74,6 @@
     }
   },
   "required": [
-    "title",
-    "category"
+    "title"
   ]
 }

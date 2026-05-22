@@ -1,0 +1,38 @@
+{
+  "name": "RawAftercareInput",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "counselor_id": {
+      "type": "string"
+    },
+    "raw_text": {
+      "type": "string"
+    },
+    "uploaded_file_url": {
+      "type": "string"
+    },
+    "input_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "document"
+      ],
+      "default": "text"
+    },
+    "processed_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "processed",
+        "executed"
+      ],
+      "default": "draft"
+    }
+  },
+  "required": [
+    "raw_text"
+  ]
+}

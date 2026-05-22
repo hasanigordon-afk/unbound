@@ -1,0 +1,99 @@
+{
+  "name": "AIExtractionResult",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "raw_input_id": {
+      "type": "string"
+    },
+    "extracted_client_basics": {
+      "type": "object"
+    },
+    "extracted_appointments": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_recovery_support": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_legal_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_transportation_needs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_housing_needs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_employment_needs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_health_needs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_risk_factors": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_goals": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "missing_information": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "suggested_next_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "confidence_score": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "client_id"
+  ]
+}

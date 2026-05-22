@@ -14,11 +14,27 @@
     "title": {
       "type": "string"
     },
+    "reminder_title": {
+      "type": "string"
+    },
+    "reminder_type": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
     "reminder_date": {
       "type": "string",
       "format": "date"
     },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date"
+    },
     "time": {
+      "type": "string"
+    },
+    "scheduled_time": {
       "type": "string"
     },
     "repeat": {
@@ -30,6 +46,22 @@
         "monthly"
       ],
       "default": "none"
+    },
+    "recurrence": {
+      "type": "string"
+    },
+    "delivery_method": {
+      "type": "string",
+      "enum": [
+        "in_app",
+        "email",
+        "sms"
+      ],
+      "default": "in_app"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
     },
     "priority": {
       "type": "string",

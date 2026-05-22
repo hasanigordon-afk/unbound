@@ -1,0 +1,25 @@
+{
+  "name": "SEEActivityLogs",
+  "type": "object",
+  "properties": {
+    "counselor_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "action_type": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "related_plan_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_type",
+    "description"
+  ]
+}

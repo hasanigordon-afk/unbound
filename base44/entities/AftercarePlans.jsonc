@@ -5,11 +5,27 @@
     "client_id": {
       "type": "string"
     },
+    "counselor_id": {
+      "type": "string"
+    },
     "client_name": {
       "type": "string"
     },
     "source_notes": {
       "type": "string"
+    },
+    "plan_title": {
+      "type": "string"
+    },
+    "plan_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "approved",
+        "executed",
+        "archived"
+      ],
+      "default": "draft"
     },
     "status": {
       "type": "string",
@@ -20,16 +36,52 @@
       ],
       "default": "active"
     },
-    "needs_review": {
-      "type": "boolean",
-      "default": false
+    "recovery_category": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "clinical_disclaimer": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Moderate",
+        "High",
+        "Urgent"
+      ],
+      "default": "Moderate"
+    },
+    "counselor_notes": {
+      "type": "string"
+    },
+    "client_visible_summary": {
+      "type": "string"
     },
     "roadmap_summary": {
       "type": "string"
+    },
+    "plan_data": {
+      "type": "object"
+    },
+    "needs_review": {
+      "type": "boolean",
+      "default": false
     }
   },
   "required": [
-    "client_name",
-    "source_notes"
+    "client_id",
+    "client_name"
   ]
 }

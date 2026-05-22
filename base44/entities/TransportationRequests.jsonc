@@ -11,16 +11,32 @@
     "plan_id": {
       "type": "string"
     },
+    "event_id": {
+      "type": "string"
+    },
     "appointment": {
       "type": "string"
     },
     "pickup_address": {
       "type": "string"
     },
+    "pickup_location": {
+      "type": "string"
+    },
     "destination": {
       "type": "string"
     },
     "pickup_time": {
+      "type": "string"
+    },
+    "requested_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "requested_time": {
+      "type": "string"
+    },
+    "transportation_type": {
       "type": "string"
     },
     "ride_type": {
@@ -41,6 +57,6 @@
     }
   },
   "required": [
-    "appointment"
+    "destination"
   ]
 }

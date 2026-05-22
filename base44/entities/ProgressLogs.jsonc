@@ -1,0 +1,44 @@
+{
+  "name": "ProgressLogs",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "check_in_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "mood_score": {
+      "type": "number"
+    },
+    "craving_score": {
+      "type": "number"
+    },
+    "task_completion_rate": {
+      "type": "number",
+      "default": 0
+    },
+    "meetings_attended": {
+      "type": "number",
+      "default": 0
+    },
+    "missed_events": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    },
+    "risk_score": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "client_id"
+  ]
+}

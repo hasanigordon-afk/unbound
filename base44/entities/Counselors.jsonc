@@ -5,11 +5,24 @@
     "full_name": {
       "type": "string"
     },
+    "role": {
+      "type": "string"
+    },
+    "facility_name": {
+      "type": "string"
+    },
     "email": {
       "type": "string"
     },
     "phone": {
       "type": "string"
+    },
+    "assigned_clients": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     },
     "status": {
       "type": "string",
