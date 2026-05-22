@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PilotShell from '@/components/pilot/PilotShell';
+import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import { base44 } from '@/api/base44Client';
 import { Award, CheckCircle2, HeartHandshake, MessageCircle, Plus, Send, ShieldCheck, Sparkles, Star, Trophy, UsersRound } from 'lucide-react';
 
@@ -112,7 +113,10 @@ export default function PositiveProgressHub() {
     <PilotShell title="Positive Progress" subtitle="Your growth is witnessed, celebrated, and protected.">
       <div className="space-y-5">
         <SoftCard className="bg-gradient-to-br from-emerald-400/16 via-blue-400/10 to-amber-300/12">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-200">Dignity-first sharing</p>
+          <div className="mb-4 flex items-center gap-3">
+            <ReZilientLogo className="h-14 w-14" />
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-200">Dignity-first sharing</p>
+          </div>
           <h1 className="mt-2 font-sans text-4xl font-black tracking-tight">Progress made. Wins collected. Steps forward.</h1>
           <p className="mt-3 max-w-2xl text-sm font-bold text-slate-300">Share only the progress you choose with approved supporters. This space does not collect relapse logs, failure counters, missed-day shame, or negative scoring.</p>
         </SoftCard>
