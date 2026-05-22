@@ -3,7 +3,7 @@ import React from 'react';
 export default function HomeViewToggle({ activeView, onChange }) {
   const views = [
     { id: 'client', label: 'Client View' },
-    { id: 'counselor', label: 'Counselor View' },
+    { id: 'counselor', label: 'Counselor / Rehab View' },
   ];
 
   return (
