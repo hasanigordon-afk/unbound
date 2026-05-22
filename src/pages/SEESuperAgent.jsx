@@ -4,6 +4,7 @@ import PilotShell from '@/components/pilot/PilotShell';
 import SEENotesIntake from '@/components/see/SEENotesIntake';
 import SEEProcessingAnimation from '@/components/see/SEEProcessingAnimation';
 import SEEDashboardCards from '@/components/see/SEEDashboardCards';
+import GoogleCalendarSyncPanel from '@/components/see/GoogleCalendarSyncPanel';
 import SEEReviewSection from '@/components/see/SEEReviewSection';
 import { CheckCircle2, UserPlus } from 'lucide-react';
 
@@ -113,7 +114,7 @@ export default function SEESuperAgent() {
       checkin_required: ['probation', 'treatment', 'follow_up'].includes(item.category),
       needs_review: item.needs_review,
     }));
-    await Promise.all([
+    const [, , , , , , , , calendarSync] = await Promise.all([
       review.calendarEvents.length ? base44.entities.CalendarEvents.bulkCreate(attach(review.calendarEvents)) : Promise.resolve(),
       appointmentRows.length ? base44.entities.Appointments.bulkCreate(appointmentRows) : Promise.resolve(),
       review.reminders.length ? base44.entities.DailyReminders.bulkCreate(attach(review.reminders)) : Promise.resolve(),
@@ -122,10 +123,11 @@ export default function SEESuperAgent() {
       review.transportation.length ? base44.entities.TransportationRequests.bulkCreate(review.transportation.map((item) => ({ client_id: selectedClientId, plan_id: plan.id, appointment: item.title, destination: item.destination, pickup_time: item.schedule_text, ride_type: item.support_type, notes: 'Auto-created by S.E.E.', status: 'requested' }))) : Promise.resolve(),
       review.tasks.length ? base44.entities.CounselorTasks.bulkCreate(attach(review.tasks)) : Promise.resolve(),
       review.goals.length ? base44.entities.AccountabilityGoals.bulkCreate(attach(review.goals)) : Promise.resolve(),
+      base44.functions.invoke('syncSeeCalendar', { clientName: client?.full_name || review.clientName, calendarEvents: review.calendarEvents, tasks: review.tasks }),
     ]);
     setProcessing(false);
     setLoadingText('');
-    setSuccess('S.E.E. Roadmap Created Successfully');
+    setSuccess(calendarSync?.data?.personalConnected === false ? 'S.E.E. Roadmap created and synced to the facility calendar. Connect the client calendar to sync personally.' : 'S.E.E. Roadmap Created Successfully and synced to Google Calendar.');
   };
 
   return (
@@ -158,6 +160,7 @@ export default function SEESuperAgent() {
         </div>
         {loadingText && <div className="rounded-3xl border border-blue-300/20 bg-blue-400/15 p-4 text-center text-sm font-black text-blue-100 animate-pulse">{loadingText}</div>}
         <SEEDashboardCards />
+        <GoogleCalendarSyncPanel />
 
         {review && (
           <div className="space-y-5">
