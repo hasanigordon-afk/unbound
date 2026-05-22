@@ -533,6 +533,40 @@ main::before {
   background: transparent !important;
 }
 
+/* ── ReZilient system-wide enforcement: remove generic generated feel ── */
+[data-radix-popper-content-wrapper],
+[role="dialog"],
+[role="menu"],
+[role="listbox"] {
+  font-family: 'DM Sans', sans-serif;
+}
+
+label {
+  color: var(--text-muted);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+[role="tab"],
+[role="menuitem"],
+[role="option"],
+[type="button"],
+[type="submit"],
+a {
+  transition: transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s, background .22s, border-color .22s, color .22s;
+}
+
+[role="tab"]:active,
+[role="menuitem"]:active,
+[role="option"]:active,
+a:active {
+  transform: scale(.975);
+}
+
+ul, ol {
+  color: var(--text-muted);
+}
+
 /* Reduce motion respect */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
