@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ClipboardList, LayoutDashboard, UserRound, MessageSquare, Smartphone, Trophy } from 'lucide-react';
+import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
 const tabs = [
   { label: 'Home', to: '/', icon: Home },
@@ -18,10 +19,13 @@ export default function PilotShell({ children, title = 'ReZilient Pilot', subtit
     <div className="min-h-screen bg-transparent text-white pb-28">
       <header className="sticky top-0 z-30 px-4 pt-[calc(14px+env(safe-area-inset-top))] pb-3 backdrop-blur-2xl bg-[#07101f]/80 border-b border-white/10">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-blue-200/70 font-bold">ReZilient</p>
-            <h1 className="text-2xl font-semibold tracking-tight font-sans">{title}</h1>
-            {subtitle && <p className="text-sm text-slate-300 mt-1">{subtitle}</p>}
+          <div className="flex items-center gap-3">
+            <ReZilientLogo className="h-12 w-12" />
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-blue-200/70 font-bold">ReZilient</p>
+              <h1 className="text-2xl font-semibold tracking-tight font-sans">{title}</h1>
+              {subtitle && <p className="text-sm text-slate-300 mt-1">{subtitle}</p>}
+            </div>
           </div>
           <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
             <Smartphone className="w-5 h-5" />

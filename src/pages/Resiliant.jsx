@@ -5,7 +5,7 @@ import {
   ArrowRight, Map, Compass, Heart, Shield, Users, Briefcase,
   Home as HomeIcon, HandHeart, UserCheck, Sparkles, Lock, CheckCircle2,
 } from "lucide-react";
-import ResiliantLogo from "@/components/shared/AhHaLogo";
+import ResiliantLogo from "@/components/shared/ReZilientLogo";
 
 /* ── ReZilient marketing landing page ─────────────────────────────────────
    Public-facing homepage describing the app for new visitors. */

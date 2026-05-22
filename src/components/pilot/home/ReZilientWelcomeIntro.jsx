@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
 export default function ReZilientWelcomeIntro({ onContinue }) {
   const [soundOn, setSoundOn] = useState(false);
@@ -33,8 +34,8 @@ export default function ReZilientWelcomeIntro({ onContinue }) {
       <div className="welcome-light-delayed absolute -right-24 bottom-0 h-60 w-60 rounded-full bg-emerald-300/16 blur-3xl" />
 
       <div className="relative z-10 flex min-h-[430px] flex-col items-center justify-center text-center">
-        <div className="welcome-logo mb-8 flex h-24 w-24 items-center justify-center rounded-[32px] border border-white/15 bg-white/10 shadow-2xl">
-          <span className="font-sans text-4xl font-black text-white">R</span>
+        <div className="welcome-logo mb-8 flex h-28 w-28 items-center justify-center rounded-[34px] border border-white/15 bg-white/10 shadow-2xl">
+          <ReZilientLogo className="h-24 w-24" rounded="rounded-[30px]" />
         </div>
 
         <div className="space-y-3">
