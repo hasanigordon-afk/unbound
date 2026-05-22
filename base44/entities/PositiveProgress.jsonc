@@ -1,0 +1,48 @@
+{
+  "name": "PositiveProgress",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "check_in",
+        "appointment",
+        "goal",
+        "streak",
+        "job",
+        "meeting",
+        "journal",
+        "workout",
+        "meditation",
+        "community",
+        "achievement"
+      ],
+      "default": "achievement"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "count": {
+      "type": "number",
+      "default": 1
+    },
+    "notes": {
+      "type": "string"
+    },
+    "share_with_supporters": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "AchievementVault",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "badge_type": {
+      "type": "string",
+      "enum": [
+        "first_week",
+        "meetings",
+        "appointment",
+        "goal",
+        "job",
+        "family",
+        "meditation",
+        "community",
+        "consistency",
+        "custom"
+      ],
+      "default": "custom"
+    },
+    "earned_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "shared": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "CommunityEncouragementPost",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "post_type": {
+      "type": "string",
+      "enum": [
+        "win",
+        "encouragement",
+        "comeback_moment",
+        "helpful_advice"
+      ],
+      "default": "win"
+    },
+    "message": {
+      "type": "string"
+    },
+    "reaction_proud": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_keep_going": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_big_win": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_respect": {
+      "type": "number",
+      "default": 0
+    },
+    "reaction_inspired": {
+      "type": "number",
+      "default": 0
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "pending_review"
+      ],
+      "default": "approved"
+    }
+  },
+  "required": [
+    "message"
+  ]
+}

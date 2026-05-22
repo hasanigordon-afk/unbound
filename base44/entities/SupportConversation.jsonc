@@ -1,0 +1,54 @@
+{
+  "name": "SupportConversation",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "participant_name": {
+      "type": "string"
+    },
+    "participant_role": {
+      "type": "string",
+      "enum": [
+        "counselor",
+        "sponsor",
+        "mentor",
+        "family",
+        "community_group",
+        "professional_support"
+      ],
+      "default": "counselor"
+    },
+    "message": {
+      "type": "string"
+    },
+    "encouragement_reaction": {
+      "type": "string",
+      "enum": [
+        "Proud of you",
+        "Keep going",
+        "Big win",
+        "Respect",
+        "Inspired",
+        ""
+      ],
+      "default": ""
+    },
+    "thread_type": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "group"
+      ],
+      "default": "direct"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "message"
+  ]
+}

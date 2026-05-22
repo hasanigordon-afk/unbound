@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Briefcase, Bus, CheckSquare, HeartPulse, Home, LifeBuoy, MapPinned, Search, ShieldCheck, Target, Utensils } from 'lucide-react';
+import { Brain, Briefcase, Bus, CheckSquare, HeartPulse, Home, LifeBuoy, MapPinned, Search, ShieldCheck, Target, Trophy, Utensils } from 'lucide-react';
 import WeeklyRecoveryItinerary from './WeeklyRecoveryItinerary';
 
 const pillars = [
@@ -29,6 +29,17 @@ export default function ClientHomeView() {
   return (
     <div className="space-y-5">
       <WeeklyRecoveryItinerary />
+
+      <Link to="/PositiveProgressHub" className="block rounded-[34px] border border-emerald-200/20 bg-gradient-to-br from-emerald-400/14 to-blue-400/10 p-5 shadow-2xl backdrop-blur-2xl active:scale-[0.99] transition">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/12"><Trophy className="h-6 w-6 text-emerald-200" /></div>
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-200">Positive progress</p>
+            <h2 className="font-sans text-2xl font-black text-white">Share wins, not shame.</h2>
+            <p className="mt-1 text-sm font-bold text-slate-300">Invite supporters, collect achievements, and celebrate steps forward.</p>
+          </div>
+        </div>
+      </Link>
 
       <section className="rounded-[34px] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
         <p className="text-sm font-bold text-blue-200">Welcome back</p>

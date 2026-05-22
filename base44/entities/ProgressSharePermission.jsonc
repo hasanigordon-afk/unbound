@@ -1,0 +1,69 @@
+{
+  "name": "ProgressSharePermission",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "viewer_name": {
+      "type": "string"
+    },
+    "viewer_email": {
+      "type": "string"
+    },
+    "viewer_role": {
+      "type": "string",
+      "enum": [
+        "family",
+        "counselor",
+        "sponsor",
+        "mentor",
+        "probation_officer",
+        "facility_staff",
+        "support_professional"
+      ],
+      "default": "family"
+    },
+    "share_achievements": {
+      "type": "boolean",
+      "default": true
+    },
+    "share_appointments_completed": {
+      "type": "boolean",
+      "default": true
+    },
+    "share_weekly_progress_summary": {
+      "type": "boolean",
+      "default": true
+    },
+    "share_goals_completed": {
+      "type": "boolean",
+      "default": true
+    },
+    "share_encouragement_messages": {
+      "type": "boolean",
+      "default": true
+    },
+    "hide_personal_journal_entries": {
+      "type": "boolean",
+      "default": true
+    },
+    "hide_sensitive_notes": {
+      "type": "boolean",
+      "default": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "invited",
+        "approved",
+        "paused"
+      ],
+      "default": "approved"
+    }
+  },
+  "required": [
+    "viewer_name",
+    "viewer_email"
+  ]
+}

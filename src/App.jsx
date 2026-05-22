@@ -99,6 +99,7 @@ import PilotClientIntake from './pages/PilotClientIntake.jsx';
 import PilotFeedback from './pages/PilotFeedback.jsx';
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import SEESuperAgent from './pages/SEESuperAgent.jsx';
+import PositiveProgressHub from './pages/PositiveProgressHub.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
@@ -268,6 +269,7 @@ const AuthenticatedApp = () => {
       <Route path="/PilotFeedback"                          element={<PilotFeedback />} />
       <Route path="/AddToHomeScreen"                        element={<AddToHomeScreen />} />
       <Route path="/SEESuperAgent"                           element={<SEESuperAgent />} />
+      <Route path="/PositiveProgressHub"                      element={<PositiveProgressHub />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>
