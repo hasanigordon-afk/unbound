@@ -1,20 +1,24 @@
 import React from 'react';
-import RoadmapCommandCenter from './RoadmapCommandCenter';
-import MissionBoard from './MissionBoard';
-import CorePillarsGrid from './CorePillarsGrid';
-import WinsSupportAIResources from './WinsSupportAIResources';
-import AIAftercareEngine from './AIAftercareEngine';
-import PositiveCommunityHub from './PositiveCommunityHub';
+import {
+  AICompanionCarouselSection,
+  MissionCarouselSection,
+  PillarsCarouselSection,
+  ResourceCarouselSection,
+  RoadmapCarouselSection,
+  SupportCarouselSection,
+  WinsCarouselSection,
+} from './CarouselHomeSections';
 
 export default function ClientHomeView() {
   return (
-    <div className="space-y-5">
-      <RoadmapCommandCenter />
-      <MissionBoard />
-      <CorePillarsGrid />
-      <WinsSupportAIResources />
-      <AIAftercareEngine />
-      <PositiveCommunityHub />
+    <div className="space-y-8 overflow-hidden">
+      <RoadmapCarouselSection />
+      <MissionCarouselSection />
+      <PillarsCarouselSection />
+      <WinsCarouselSection />
+      <SupportCarouselSection />
+      <AICompanionCarouselSection />
+      <ResourceCarouselSection />
     </div>
   );
 }
