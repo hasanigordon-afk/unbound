@@ -1,96 +1,65 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  AlertTriangle,
-  CalendarDays,
-  CheckCircle2,
-  ClipboardList,
-  FileText,
-  Gauge,
-  MessageCircle,
-  Route,
-  Sparkles,
-  TrendingUp,
-  Users,
-} from 'lucide-react';
+import { CalendarDays, ClipboardList, Gauge, MessageCircle, Route, Sparkles, TrendingUp, Users } from 'lucide-react';
 import HomeSectionHeader from './HomeSectionHeader';
 
 const modules = [
-  ['Client overview', 'See each person\'s roadmap, support circle, wins, and resource needs.', Users, '/FacilityPilotDashboard'],
+  ['Client overview', 'See each person’s roadmap, support circle, wins, and resource needs.', Users, '/FacilityPilotDashboard'],
   ['Aftercare builder', 'Turn discharge notes into a clear plan clients can actually follow.', ClipboardList, '/SEESuperAgent'],
   ['Client progress', 'Review positive momentum, goals reached, appointments completed, and milestones.', TrendingUp, '/PositiveProgressHub'],
   ['Message center', 'Stay connected with clients and support teams.', MessageCircle, '/CounselorMessaging'],
   ['Roadmap creator', 'Build connected weekly missions across recovery, reentry, wellness, and family.', Route, '/SEESuperAgent'],
-  ['Quick notes', 'Capture counselor observations without making the client experience feel clinical.', FileText, '/CounselorPortal'],
-];
-
-const seeOutputs = [
-  ['Calendar events', 'Therapy, meetings, court, work, reminders'],
-  ['Transportation', 'Ride needs, bus routes, leave-time prompts'],
-  ['Goals and tasks', 'Daily routine, job search, housing, family'],
-  ['Risk indicators', 'Missing info, legal gaps, isolation, triggers'],
-  ['Roadmaps', '30/60/90 plus 6 month, 1 year, 5 year vision'],
-  ['Client launch', 'A ready-made app experience after discharge'],
-];
-
-const clients = [
-  { name: 'Marcus J.', plan: 'Discharge Friday', engagement: '86%', risk: 'Moderate', next: 'IOP Mon 1 PM' },
-  { name: 'Alyssa R.', plan: 'Week 3 Structure', engagement: '94%', risk: 'Low', next: 'Therapy today' },
-  { name: 'Devon P.', plan: 'Housing pending', engagement: '61%', risk: 'High', next: 'Call shelter intake' },
 ];
 
 export default function CounselorConnectedView() {
   return (
     <div className="space-y-5">
       <section className="card-glow relative overflow-hidden p-5 sm:p-7">
-        <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-cyan-300/16 blur-3xl" />
+        <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full bg-amber-300/16 blur-3xl" />
         <div className="relative">
-          <HomeSectionHeader
-            eyebrow="Counselor command center"
-            title="Build the plan before discharge. Let the client open structure on day one."
-            subtitle="S.E.E. converts plain-English aftercare notes into calendars, reminders, roadmaps, tasks, transportation needs, check-ins, and risk review."
-          />
+          <HomeSectionHeader eyebrow="Counselor command center" title="Aftercare that continues after discharge." subtitle="Premium overview for plans, progress, risk, messages, and S.E.E. roadmap creation." />
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               ['Active clients', '28', Users],
-              ['Plans ready', '19', CheckCircle2],
-              ['High risk', '3', AlertTriangle],
+              ['Plans ready', '19', ClipboardList],
+              ['Avg engagement', '84%', Gauge],
             ].map(([label, value, Icon]) => (
               <div key={label} className="rounded-[26px] border border-white/10 bg-white/8 p-4">
-                <Icon className="h-5 w-5 text-blue-200" />
-                <p className="mt-3 text-3xl font-black text-white">{value}</p>
+                <Icon className="h-5 w-5 text-amber-200" />
+                <p className="mt-3 font-sans text-3xl font-black text-white">{value}</p>
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">{label}</p>
               </div>
             ))}
           </div>
-          <Link to="/SEESuperAgent" className="btn-primary mt-5 inline-flex min-h-[58px] items-center gap-2 px-6 text-sm">
-            <Sparkles className="h-5 w-5" />
-            Open S.E.E. planner
-          </Link>
+          <Link to="/SEESuperAgent" className="btn-gold mt-5 inline-flex min-h-[58px] items-center gap-2 px-6 text-sm"><Sparkles className="h-5 w-5" />Create a client roadmap</Link>
         </div>
       </section>
-
       <section className="card p-5 sm:p-6">
-        <HomeSectionHeader
-          eyebrow="S.E.E. super onboarding assistant"
-          title="Plain English in. Complete aftercare structure out."
-          subtitle="Example: John attends NA Tuesday and Friday at 7pm, job search weekdays, therapy Monday at 3pm, and gym three times weekly."
-        />
-        <div className="rounded-[28px] border border-white/10 bg-black/20 p-4">
-          <p className="text-sm font-bold leading-relaxed text-slate-300">
-            "John attends NA every Tuesday and Friday at 7pm. Job search every weekday. Therapy Mondays at 3pm. Wants gym three times weekly."
-          </p>
-        </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {seeOutputs.map(([title, body]) => (
-            <div key={title} className="rounded-[24px] border border-white/10 bg-white/8 p-4">
-              <p className="font-black text-white">{title}</p>
-              <p className="mt-1 text-sm font-bold leading-relaxed text-slate-300">{body}</p>
+        <HomeSectionHeader eyebrow="Today's caseload focus" title="Real activity, no empty panels." subtitle="Sample dashboard data shows how the production experience should feel with live records." />
+        <div className="space-y-3">
+          {[
+            ['Marcus Johnson', 'IOP Mon/Wed/Fri · NA Tue/Fri · ride needed tonight', 'Moderate', '86%'],
+            ['Alyssa Rivera', 'Therapy today · 21-day streak · housing application complete', 'Low', '94%'],
+            ['Devon Price', 'Court Wednesday · food resource saved · mentor call due', 'High', '68%'],
+          ].map(([name, details, risk, engagement]) => (
+            <div key={name} className="rounded-[26px] border border-white/10 bg-white/8 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-black text-white">{name}</p>
+                  <p className="mt-1 text-sm font-bold leading-relaxed text-slate-300">{details}</p>
+                </div>
+                <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-amber-100">{risk}</span>
+              </div>
+              <div className="mt-3 flex items-center gap-3 text-xs font-black text-slate-300">
+                <CalendarDays className="h-4 w-4 text-blue-200" />
+                <span>{engagement} engagement</span>
+                <span className="h-1 w-1 rounded-full bg-slate-500" />
+                <span>Next action assigned</span>
+              </div>
             </div>
           ))}
         </div>
       </section>
-
       <section className="grid gap-4 md:grid-cols-2">
         {modules.map(([title, body, ModuleIcon, to]) => (
           <Link key={title} to={to} className="card p-5 transition hover:-translate-y-1 active:scale-[0.99]">
@@ -100,39 +69,6 @@ export default function CounselorConnectedView() {
           </Link>
         ))}
       </section>
-      <section className="card p-5 sm:p-6">
-        <HomeSectionHeader eyebrow="Client overview" title="Progress, engagement, and risk without shame." subtitle="Staff see the signal they need while clients see positive growth, next steps, and support." />
-        <div className="space-y-3">
-          {clients.map((client) => (
-            <div key={client.name} className="rounded-[26px] border border-white/10 bg-white/8 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-black text-white">{client.name}</p>
-                  <p className="text-sm font-bold text-slate-300">{client.plan}</p>
-                </div>
-                <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${client.risk === 'High' ? 'bg-rose-300/15 text-rose-100' : client.risk === 'Moderate' ? 'bg-amber-300/15 text-amber-100' : 'bg-emerald-300/15 text-emerald-100'}`}>{client.risk}</span>
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-2xl bg-white/8 p-3">
-                  <Gauge className="mx-auto h-4 w-4 text-blue-200" />
-                  <p className="mt-1 text-sm font-black text-white">{client.engagement}</p>
-                  <p className="text-[10px] font-bold text-slate-400">Engagement</p>
-                </div>
-                <div className="rounded-2xl bg-white/8 p-3">
-                  <CalendarDays className="mx-auto h-4 w-4 text-amber-200" />
-                  <p className="mt-1 text-sm font-black text-white">Next</p>
-                  <p className="truncate text-[10px] font-bold text-slate-400">{client.next}</p>
-                </div>
-                <Link to="/SEESuperAgent" className="rounded-2xl bg-white p-3 text-center text-slate-950">
-                  <Sparkles className="mx-auto h-4 w-4" />
-                  <p className="mt-1 text-xs font-black">Plan</p>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section className="card p-5">
         <HomeSectionHeader eyebrow="Connected care loop" title="One plan, two views." subtitle="Counselors build the structure. Clients see the daily roadmap. Wins and support activity flow back into the overview." />
         <div className="grid gap-3 sm:grid-cols-3">
