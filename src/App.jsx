@@ -100,6 +100,13 @@ import PilotFeedback from './pages/PilotFeedback.jsx';
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import SEESuperAgent from './pages/SEESuperAgent.jsx';
 import PositiveProgressHub from './pages/PositiveProgressHub.jsx';
+import JourneyRoadmap from './pages/JourneyRoadmap.jsx';
+import MyMissionBoard from './pages/MyMissionBoard.jsx';
+import Progress from './pages/Progress.jsx';
+import ResourceHub from './pages/ResourceHub.jsx';
+import WellnessCenter from './pages/WellnessCenter.jsx';
+import CommunityHub from './pages/CommunityHub.jsx';
+import AICompanion from './pages/AICompanion.jsx';
 import SubscriptionPrompt from '@/components/subscription/SubscriptionPrompt';
 import { ThemeProvider } from '@/lib/ThemeContext';
 import AmbientBackground from '@/components/shared/AmbientBackground';
@@ -270,6 +277,13 @@ const AuthenticatedApp = () => {
       <Route path="/AddToHomeScreen"                        element={<AddToHomeScreen />} />
       <Route path="/SEESuperAgent"                           element={<SEESuperAgent />} />
       <Route path="/PositiveProgressHub"                      element={<PositiveProgressHub />} />
+      <Route path="/JourneyRoadmap"                            element={<JourneyRoadmap />} />
+      <Route path="/MyMissionBoard"                            element={<MyMissionBoard />} />
+      <Route path="/Progress"                                  element={<Progress />} />
+      <Route path="/ResourceHub"                               element={<ResourceHub />} />
+      <Route path="/WellnessCenter"                            element={<WellnessCenter />} />
+      <Route path="/Community"                                 element={<CommunityHub />} />
+      <Route path="/AICompanion"                               element={<AICompanion />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

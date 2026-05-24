@@ -1,14 +1,19 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bot, Home, MapPinned, MessageSquare, Smartphone, Trophy } from 'lucide-react';
+import { Bot, Home, LifeBuoy, MapPinned, MessageSquare, Settings, Smartphone, Target, Trophy, UserRound } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
 const tabs = [
   { label: 'Home', to: '/', icon: Home },
-  { label: 'Roadmap', to: '/RecoveryPath', icon: MapPinned },
-  { label: 'Progress', to: '/PositiveProgressHub', icon: Trophy },
-  { label: 'Community', to: '/AhHaCommunity', icon: MessageSquare },
-  { label: 'AI', to: '/SuperAgentChat', icon: Bot },
+  { label: 'Roadmap', to: '/JourneyRoadmap', icon: MapPinned },
+  { label: 'Mission', to: '/MyMissionBoard', icon: Target },
+  { label: 'Progress', to: '/Progress', icon: Trophy },
+  { label: 'Resources', to: '/ResourceHub', icon: MapPinned },
+  { label: 'Wellness', to: '/WellnessCenter', icon: LifeBuoy },
+  { label: 'Community', to: '/Community', icon: MessageSquare },
+  { label: 'AI', to: '/AICompanion', icon: Bot },
+  { label: 'Profile', to: '/Profile', icon: UserRound },
+  { label: 'Settings', to: '/NotificationSettings', icon: Settings },
 ];
 
 export default function PilotShell({ children, title = 'ReZilient', subtitle }) {
