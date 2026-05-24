@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, Briefcase, CalendarDays, Car, Church, Dumbbell, GraduationCap, Heart, HeartPulse, Home, MapPinned, MessageCircle, Sparkles, Star, Target, Trophy, Users, Utensils } from 'lucide-react';
+import { Bot, Briefcase, CalendarDays, Car, CheckCircle2, Church, Dumbbell, GraduationCap, Heart, HeartPulse, Home, MapPinned, MessageCircle, Sparkles, Star, Target, Trophy, Users, Utensils } from 'lucide-react';
 import ImmersiveCarousel from './ImmersiveCarousel';
 
 const gradients = {
@@ -21,31 +21,33 @@ export function RoadmapCarouselSection() {
     { title: 'Transportation', kicker: 'Ride · Confirm', subtitle: 'Check your ride before the appointment window.', meta: '⚡ Focus Now', status: 'Current', icon: Car, gradient: gradients.slate, to: '/RecoveryMapFinder', cta: 'Confirm ride' },
     { title: 'Education', kicker: 'Future · Learn', subtitle: 'One lesson, one certificate, one stronger option.', meta: '🌙 Coming Up', status: 'Upcoming', icon: GraduationCap, gradient: gradients.blue, to: '/LearnRecovery', cta: 'Keep learning' },
   ];
-  return <ImmersiveCarousel eyebrow="Life Journey Carousel" title="Your Roadmap" subtitle="Your week. Your plan. Your progress." items={items} viewAllTo="/RecoveryPath" />;
+  return <ImmersiveCarousel eyebrow="Weekly Journey Roadmap" title="Weekly Journey Roadmap" subtitle="Your structured path for this week with appointments, goals, reminders, meetings, transportation, and progress." items={items} viewAllTo="/RecoveryPath" />;
 }
 
 export function MissionCarouselSection() {
   const items = [
     ['Reconnect with daughter', Heart, gradients.rose], ['Find stable housing', Home, gradients.blue], ['Attend meetings', Users, gradients.green], ['Apply for jobs', Briefcase, gradients.gold], ['Improve health', Dumbbell, gradients.violet],
-  ].map(([title, icon, gradient]) => ({ title, kicker: 'My Non-Negotiable', subtitle: 'A permanent mission album that guides today’s choices.', meta: 'Top 5 life goal', icon, gradient, to: '/TopFiveNonNegotiables', cta: 'Refine mission' }));
-  return <ImmersiveCarousel eyebrow="My Non-Negotiables" title="Mission Albums" subtitle="Top 5 life goals that stay visible and shape the plan." items={items} />;
+  ].map(([title, icon, gradient]) => ({ title, kicker: 'Life Mission', subtitle: 'One of the top 5 life goals that remains visible every day and guides decision making.', meta: 'Top 5 life goal', icon, gradient, to: '/TopFiveNonNegotiables', cta: 'Refine mission' }));
+  return <ImmersiveCarousel eyebrow="My Non-Negotiables" title="My Non-Negotiables" subtitle="The top 5 life goals that remain visible every day and guide decision making." items={items} />;
 }
 
 export function PillarsCarouselSection() {
   const items = [
-    { title: 'Recovery & Accountability', icon: HeartPulse, gradient: gradients.green, subtitle: 'Positive check-ins, sponsor support, roadmap progress, achievements, and AI accountability.', meta: '76% momentum', to: '/RecoveryPath' },
-    { title: 'Reentry & Stability', icon: Home, gradient: gradients.blue, subtitle: 'Housing, transportation, jobs, food assistance, legal help, and local resources.', meta: 'Resources ready', to: '/RecoveryMapFinder' },
-    { title: 'Community & Relationships', icon: Users, gradient: gradients.violet, subtitle: 'Mentors, family support, sober friendships, Ah Ha stories, groups, veterans, and community feed.', meta: '3 supporters active', to: '/AhHaCommunity' },
-    { title: 'Growth & Future Building', icon: Sparkles, gradient: gradients.gold, subtitle: 'Wellness, meditation, journaling, education, exercise, goals, and routines.', meta: 'Future building', to: '/MindBodyRecovery' },
-  ].map((item) => ({ ...item, kicker: 'Core Pillar', status: 'Explore', cta: 'Enter world' }));
-  return <ImmersiveCarousel eyebrow="The 4 Core Pillars" title="Choose Your World" subtitle="Swipe through the connected systems that rebuild life." items={items} />;
+    { title: 'Attend meeting', icon: Users, gradient: gradients.green, subtitle: 'Show up for one recovery support meeting today.', meta: 'Today action', to: '/MeetingDirectory' },
+    { title: 'Apply to jobs', icon: Briefcase, gradient: gradients.gold, subtitle: 'Complete one job search step that moves stability forward.', meta: 'Life stability', to: '/EmploymentOpportunities' },
+    { title: 'Journal', icon: Sparkles, gradient: gradients.violet, subtitle: 'Write down what happened, what helped, and the next right step.', meta: 'Reflection', to: '/DailyFlow' },
+    { title: 'Call sponsor', icon: HeartPulse, gradient: gradients.blue, subtitle: 'Reach out before pressure builds and stay connected.', meta: 'Support', to: '/SuperAgentChat' },
+    { title: 'Exercise', icon: Dumbbell, gradient: gradients.rose, subtitle: 'Move your body to support mood, sleep, and recovery.', meta: 'Wellness', to: '/MindBodyRecovery' },
+    { title: 'Meditate', icon: Heart, gradient: gradients.slate, subtitle: 'Take a quiet reset and return to the plan.', meta: 'Grounding', to: '/MentalReset' },
+  ].map((item) => ({ ...item, kicker: 'Focus Action', status: 'Today', cta: 'Start action' }));
+  return <ImmersiveCarousel eyebrow="Focus Actions" title="Focus Actions" subtitle="Small actions that move life forward today." items={items} />;
 }
 
 export function WinsCarouselSection() {
   const items = [
-    ['Meetings Completed', Users, gradients.green], ['Goals Achieved', Star, gradients.gold], ['Streaks', Target, gradients.blue], ['Family Wins', Heart, gradients.rose], ['Community Support', Trophy, gradients.violet], ['Job Applications', Briefcase, gradients.slate],
-  ].map(([title, icon, gradient]) => ({ title, kicker: 'Achievement Album', subtitle: 'Collected as positive proof of progress. No shame metrics, ever.', meta: '✨ Progress Made', status: 'Collected', icon, gradient, to: '/PositiveProgressHub', cta: 'View vault' }));
-  return <ImmersiveCarousel eyebrow="My Wins" title="Achievement Albums" subtitle="Collect forward movement like moments worth replaying." items={items} viewAllTo="/PositiveProgressHub" />;
+    ['Current streak', Target, gradients.blue], ['Meetings attended', Users, gradients.green], ['Check-in consistency', CheckCircle2, gradients.gold], ['Mood trends', HeartPulse, gradients.rose], ['Milestones', Trophy, gradients.violet], ['Accountability score', Star, gradients.slate],
+  ].map(([title, icon, gradient]) => ({ title, kicker: 'Recovery Progress', subtitle: 'A clear progress signal that shows forward movement without shame metrics.', meta: 'Progress indicator', status: 'Active', icon, gradient, to: '/PositiveProgressHub', cta: 'View progress' }));
+  return <ImmersiveCarousel eyebrow="Recovery Progress" title="Recovery Progress" subtitle="Track current streak, meetings attended, check-in consistency, mood trends, milestones, and accountability score." items={items} viewAllTo="/PositiveProgressHub" />;
 }
 
 export function SupportCarouselSection() {
@@ -62,7 +64,7 @@ export function AICompanionCarouselSection() {
 
 export function ResourceCarouselSection() {
   const items = [
-    ['Housing', '1.2 mi', Home, gradients.blue], ['Food', '0.7 mi', Utensils, gradients.green], ['Meetings', '2.3 mi', Users, gradients.violet], ['Jobs', '1.8 mi', Briefcase, gradients.gold], ['Churches', '0.9 mi', Church, gradients.rose], ['Gyms', '1.5 mi', Dumbbell, gradients.slate], ['Transportation', '0.4 mi', Car, gradients.blue],
-  ].map(([title, distance, icon, gradient]) => ({ title, kicker: 'Local Help Near Me', subtitle: 'Nearby resource sorted for what is useful right now.', meta: distance, status: 'Near Me', icon, gradient, to: '/RecoveryMapFinder', cta: 'Open map' }));
-  return <ImmersiveCarousel eyebrow="Local Help Near Me" title="Resource Covers" subtitle="Swipe nearby housing, food, meetings, jobs, churches, gyms, and transportation." items={items} viewAllTo="/RecoveryMapFinder" />;
+    ['Food assistance', 'Nearby', Utensils, gradients.green], ['Housing', 'Nearby', Home, gradients.blue], ['Transportation', 'Nearby', Car, gradients.slate], ['Shelters', 'Nearby', MapPinned, gradients.rose], ['Staffing agencies', 'Nearby', Briefcase, gradients.gold], ['Veteran support', 'Nearby', Star, gradients.violet], ['Recovery resources', 'Nearby', HeartPulse, gradients.blue], ['Community support', 'Nearby', Users, gradients.green],
+  ].map(([title, distance, icon, gradient]) => ({ title, kicker: 'Resource Hub', subtitle: 'Practical support for rebuilding life and staying connected.', meta: distance, status: 'Support', icon, gradient, to: '/RecoveryMapFinder', cta: 'Open resource' }));
+  return <ImmersiveCarousel eyebrow="Resource Hub" title="Resource Hub" subtitle="Food assistance, housing, transportation, shelters, staffing agencies, veteran support, recovery resources, and community support." items={items} viewAllTo="/RecoveryMapFinder" />;
 }

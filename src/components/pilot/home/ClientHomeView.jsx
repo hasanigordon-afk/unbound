@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-  AICompanionCarouselSection,
   MissionCarouselSection,
   PillarsCarouselSection,
   ResourceCarouselSection,
   RoadmapCarouselSection,
-  SupportCarouselSection,
   WinsCarouselSection,
 } from './CarouselHomeSections';
 
@@ -16,8 +14,6 @@ export default function ClientHomeView() {
       <MissionCarouselSection />
       <PillarsCarouselSection />
       <WinsCarouselSection />
-      <SupportCarouselSection />
-      <AICompanionCarouselSection />
       <ResourceCarouselSection />
     </div>
   );
