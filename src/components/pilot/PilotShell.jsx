@@ -27,8 +27,9 @@ export default function PilotShell({ children, title = 'ReZilient Pilot', subtit
               {subtitle && <p className="text-sm text-slate-300 mt-1">{subtitle}</p>}
             </div>
           </div>
-          <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
+          <Link to="/AddToHomeScreen" aria-label="View ReZilient on my device" className="min-h-12 rounded-2xl bg-white/10 border border-white/10 px-3 flex items-center justify-center gap-2 active:scale-95 transition shrink-0">
             <Smartphone className="w-5 h-5" />
+            <span className="hidden sm:inline text-xs font-black">View on device</span>
           </Link>
         </div>
       </header>
