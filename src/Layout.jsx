@@ -31,7 +31,7 @@ export default function Layout({ children, currentPageName }) {
       <header className="sticky top-0 z-30 px-4 pt-[calc(14px+env(safe-area-inset-top))] pb-3 backdrop-blur-2xl bg-[#07101f]/80 border-b border-white/10">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <ReZilientLogo className="h-12 w-12" />
+            <ReZilientLogo size={48} className="h-12 w-12" />
             <div>
               <p className="text-xs uppercase tracking-[0.24em] text-blue-200/70 font-bold">ReZilient</p>
               <h1 className="text-2xl font-semibold tracking-tight font-sans">{title}</h1>

@@ -121,7 +121,7 @@ export default function RoleSelect() {
     <main className="role-select-shell">
       <section className="role-select-hero">
         <div className="role-brand">
-          <ReZilientLogo className="h-16 w-16" />
+          <ReZilientLogo size={64} className="h-16 w-16" />
           <div>
             <p>ReZilient onboarding</p>
             <span>Built For Life's Biggest Comebacks.</span>

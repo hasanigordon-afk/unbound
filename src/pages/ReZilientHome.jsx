@@ -11,7 +11,6 @@ import {
   Church,
   ClipboardCheck,
   Compass,
-  Dumbbell,
   Flame,
   Heart,
   HeartHandshake,
@@ -515,7 +514,7 @@ export default function ReZilientHome() {
     <main className="rez-app-shell">
       <section className="rez-hero">
         <div className="rez-hero-brand">
-          <ReZilientLogo className="h-16 w-16" />
+          <ReZilientLogo size={64} className="h-16 w-16" />
           <div>
             <p>ReZilient</p>
             <span>Built For Life's Biggest Comebacks.</span>
