@@ -1,0 +1,44 @@
+{
+  "name": "CheckIns",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "check_in_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "mood": {
+      "type": "number"
+    },
+    "stress": {
+      "type": "number"
+    },
+    "energy": {
+      "type": "number"
+    },
+    "meetings_attended": {
+      "type": "number"
+    },
+    "cravings": {
+      "type": "number"
+    },
+    "sleep_hours": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "engagement_score": {
+      "type": "number"
+    },
+    "risk_indicator": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "check_in_date"
+  ]
+}

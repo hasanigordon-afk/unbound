@@ -1,0 +1,39 @@
+{
+  "name": "Transportation",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "pickup_location": {
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "requested_time": {
+      "type": "string"
+    },
+    "transportation_type": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "needed",
+        "requested",
+        "confirmed",
+        "completed",
+        "cancelled"
+      ],
+      "default": "needed"
+    }
+  },
+  "required": [
+    "user_id",
+    "destination"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Roadmaps",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "start_day": {
+      "type": "number"
+    },
+    "end_day": {
+      "type": "number"
+    },
+    "progress": {
+      "type": "number",
+      "default": 0
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "vision_statement": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "phase"
+  ]
+}

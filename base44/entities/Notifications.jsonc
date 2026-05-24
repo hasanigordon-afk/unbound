@@ -1,0 +1,42 @@
+{
+  "name": "Notifications",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "notification_type": {
+      "type": "string"
+    },
+    "scheduled_at": {
+      "type": "string"
+    },
+    "recurrence": {
+      "type": "string"
+    },
+    "delivery_method": {
+      "type": "string",
+      "enum": [
+        "in_app",
+        "push",
+        "sms",
+        "email"
+      ],
+      "default": "in_app"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_id",
+    "title"
+  ]
+}

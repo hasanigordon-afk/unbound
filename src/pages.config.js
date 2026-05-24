@@ -1,4 +1,5 @@
 import AftercareMonitoring from './pages/AftercareMonitoring';
+import AudioVault from './pages/AudioVault';
 import BenefitsAssistance from './pages/BenefitsAssistance';
 import BillingDashboard from './pages/BillingDashboard';
 import ClientProgress from './pages/ClientProgress';
@@ -21,7 +22,7 @@ import FindHelpNow from './pages/FindHelpNow';
 import ForwardPlan from './pages/ForwardPlan';
 import GoalBoard from './pages/GoalBoard';
 import GuidedProfileSetup from './pages/GuidedProfileSetup';
-import Home from './pages/Home';
+import Home from './pages/ReZilientHome';
 import HousingAssistance from './pages/HousingAssistance';
 import IdentityBridge from './pages/IdentityBridge';
 import Journal from './pages/Journal';
@@ -54,6 +55,7 @@ import __Layout from './Layout.jsx';
 
 export const PAGES = {
     "AftercareMonitoring": AftercareMonitoring,
+    "AudioVault": AudioVault,
     "BenefitsAssistance": BenefitsAssistance,
     "BillingDashboard": BillingDashboard,
     "ClientProgress": ClientProgress,

@@ -1,0 +1,42 @@
+{
+  "name": "SupportContacts",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "last_contact_at": {
+      "type": "string"
+    },
+    "encouragement": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "emergency_contact": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_id",
+    "name",
+    "role"
+  ]
+}

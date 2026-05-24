@@ -1,0 +1,45 @@
+{
+  "name": "AudioLibrary",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "NA audio",
+        "AA speakers",
+        "motivation",
+        "meditation",
+        "calming frequencies",
+        "binaural beats",
+        "success stories",
+        "podcasts"
+      ]
+    },
+    "duration_seconds": {
+      "type": "number"
+    },
+    "audio_url": {
+      "type": "string"
+    },
+    "speaker": {
+      "type": "string"
+    },
+    "mood_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}
