@@ -155,7 +155,7 @@ const AuthenticatedApp = () => {
     if (authError.type === 'auth_required') {
       // Logged-out visitors land on the public ReZilient marketing page.
       const path = window.location.pathname.toLowerCase();
-      const publicPaths = ['/resiliant', '/about', '/onboarding'];
+      const publicPaths = ['/resiliant', '/about', '/onboarding', '/roleselect', '/roles'];
       if (!publicPaths.includes(path)) {
         return <Navigate to="/Resiliant" replace />;
       }

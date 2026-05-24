@@ -1,0 +1,69 @@
+{
+  "name": "Roadmaps",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "days_1_14",
+        "days_15_30",
+        "days_31_60",
+        "days_61_90",
+        "six_month",
+        "one_year",
+        "five_year"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "progress_percent": {
+      "type": "number",
+      "default": 0
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "visible_to_support_circle": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "paused",
+        "complete"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "title",
+    "phase"
+  ]
+}
