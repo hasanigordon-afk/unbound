@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
   ArrowRight, Map, Compass, Heart, Shield, Users, Briefcase,
