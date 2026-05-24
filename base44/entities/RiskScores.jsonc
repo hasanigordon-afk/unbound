@@ -1,0 +1,65 @@
+{
+  "name": "RiskScores",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "score_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "overall_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "urgent"
+      ],
+      "default": "low"
+    },
+    "indicators": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "protective_factors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "counselor_reviewed": {
+      "type": "boolean",
+      "default": false
+    },
+    "client_visible": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "score_date",
+    "overall_score",
+    "risk_level"
+  ]
+}

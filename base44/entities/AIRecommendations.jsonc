@@ -1,0 +1,67 @@
+{
+  "name": "AIRecommendations",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "SEE",
+        "Ask ReZilient AI",
+        "daily_checkin",
+        "resource_map",
+        "risk_scan"
+      ]
+    },
+    "recommendation_type": {
+      "type": "string",
+      "enum": [
+        "calendar_event",
+        "task",
+        "resource",
+        "support_contact",
+        "transportation",
+        "goal",
+        "check_in",
+        "risk_review"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "payload": {
+      "type": "object"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "suggested",
+        "accepted",
+        "dismissed",
+        "completed"
+      ],
+      "default": "suggested"
+    },
+    "created_for_role": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "recommendation_type",
+    "title"
+  ]
+}

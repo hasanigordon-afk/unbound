@@ -1,0 +1,77 @@
+{
+  "name": "Notifications",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "notification_type": {
+      "type": "string",
+      "enum": [
+        "reminder",
+        "check_in",
+        "calendar",
+        "transportation",
+        "support",
+        "risk",
+        "milestone",
+        "resource"
+      ]
+    },
+    "scheduled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delivery_channel": {
+      "type": "string",
+      "enum": [
+        "in_app",
+        "push",
+        "sms",
+        "email"
+      ],
+      "default": "in_app"
+    },
+    "read_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "action_url": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ],
+      "default": "normal"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "sent",
+        "read",
+        "dismissed"
+      ],
+      "default": "scheduled"
+    }
+  },
+  "required": [
+    "user_email",
+    "title",
+    "notification_type"
+  ]
+}

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
   ArrowRight, Map, Compass, Heart, Shield, Users, Briefcase,
@@ -84,7 +83,7 @@ function FeatureCard({ icon: Icon, label, title, body, accent }) {
 }
 
 export default function Resiliant() {
-  const handleStart = () => base44.auth.redirectToLogin("/Onboarding");
+  const handleStart = () => base44.auth.redirectToLogin("/RoleSelect");
 
   return (
     <div style={{ background: CREAM, minHeight: "100vh" }}>
@@ -132,14 +131,14 @@ export default function Resiliant() {
             fontSize: 22, fontFamily: "'Lora', Georgia, serif", fontStyle: "italic",
             color: GOLD, marginBottom: 22, fontWeight: 500,
           }}>
-            Rebuild. Recover. Rise.
+            Built For Life's Biggest Comebacks.
           </p>
 
           <p style={{
             fontSize: 16, color: "rgba(255,255,255,0.82)", lineHeight: 1.7,
             maxWidth: 540, marginBottom: 32,
           }}>
-            A recovery, reentry, and life-rebuilding app for people ready to take back control of their future. Stay accountable, find real-world resources, build daily structure, and follow a guided rebuilding plan — one day at a time.
+            An AI-powered recovery, aftercare, accountability, and reentry ecosystem for people rebuilding after treatment, incarceration, homelessness, trauma, military transition, or major life setbacks. ReZilient creates structure, support, purpose, and personal growth after treatment ends.
           </p>
 
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>

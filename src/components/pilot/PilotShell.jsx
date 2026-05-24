@@ -1,19 +1,29 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardList, LayoutDashboard, UserRound, MessageSquare, Smartphone, Trophy } from 'lucide-react';
+import { ClipboardList, HeartHandshake, Home, LayoutDashboard, MapPinned, MessageSquare, ShieldAlert, Smartphone, UserRound } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
-const tabs = [
+const clientTabs = [
   { label: 'Home', to: '/', icon: Home },
-  { label: 'Plan', to: '/SEESuperAgent', icon: ClipboardList },
-  { label: 'Clients', to: '/PilotClientIntake', icon: UserRound, counselorOnly: true },
-  { label: 'Dashboard', to: '/FacilityPilotDashboard', icon: LayoutDashboard },
-  { label: 'Wins', to: '/PositiveProgressHub', icon: Trophy },
-  { label: 'Chat', to: '/SuperAgentChat', icon: MessageSquare },
+  { label: 'Today', to: '/DailyCheckIn', icon: ClipboardList },
+  { label: 'Map', to: '/RecoveryMapFinder', icon: MapPinned },
+  { label: 'Circle', to: '/InnerCircle', icon: HeartHandshake },
+  { label: 'Profile', to: '/Profile', icon: UserRound },
+  { label: 'AI', to: '/SuperAgentChat', icon: MessageSquare },
 ];
 
-export default function PilotShell({ children, title = 'ReZilient Pilot', subtitle, activeView = 'client' }) {
+const counselorTabs = [
+  { label: 'Home', to: '/', icon: Home },
+  { label: 'S.E.E.', to: '/SEESuperAgent', icon: ClipboardList },
+  { label: 'Clients', to: '/PilotClientIntake', icon: UserRound },
+  { label: 'Risk', to: '/CounselorPortal', icon: ShieldAlert },
+  { label: 'Dashboard', to: '/FacilityPilotDashboard', icon: LayoutDashboard },
+  { label: 'Chat', to: '/CounselorMessaging', icon: MessageSquare },
+];
+
+export default function PilotShell({ children, title = 'ReZilient', subtitle, activeView = 'client' }) {
   const location = useLocation();
+  const tabs = activeView === 'counselor' ? counselorTabs : clientTabs;
 
   return (
     <div className="min-h-screen bg-transparent text-white pb-28">
@@ -22,12 +32,12 @@ export default function PilotShell({ children, title = 'ReZilient Pilot', subtit
           <div className="flex items-center gap-3">
             <ReZilientLogo className="h-12 w-12" />
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-blue-200/70 font-bold">ReZilient</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-blue-200/70 font-bold">Help. Hope. Healing.</p>
               <h1 className="text-2xl font-semibold tracking-tight font-sans">{title}</h1>
               {subtitle && <p className="text-sm text-slate-300 mt-1">{subtitle}</p>}
             </div>
           </div>
-          <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
+          <Link to="/RoleSelect" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition" aria-label="Switch role">
             <Smartphone className="w-5 h-5" />
           </Link>
         </div>
@@ -37,7 +47,7 @@ export default function PilotShell({ children, title = 'ReZilient Pilot', subtit
 
       <nav className="fixed bottom-0 left-0 right-0 z-40 px-3 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 bg-[#07101f]/85 backdrop-blur-2xl border-t border-white/10">
         <div className="max-w-lg mx-auto flex gap-1 overflow-x-auto rounded-[28px] bg-white/8 border border-white/10 p-1.5 shadow-2xl">
-          {tabs.filter((tab) => !tab.counselorOnly || activeView === 'counselor').map(({ label, to, icon: Icon }) => {
+          {tabs.map(({ label, to, icon: Icon }) => {
             const active = location.pathname === to || (to === '/' && location.pathname === '/');
             return (
               <Link key={to} to={to} className={`min-h-[58px] min-w-[66px] flex-1 rounded-3xl flex flex-col items-center justify-center gap-1 text-[10px] font-bold transition active:scale-95 ${active ? 'bg-white text-slate-950 shadow-lg' : 'text-slate-300'}`}>

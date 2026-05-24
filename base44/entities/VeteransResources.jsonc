@@ -1,0 +1,54 @@
+{
+  "name": "VeteransResources",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "benefits",
+        "VA help",
+        "community",
+        "military mentorship",
+        "housing",
+        "employment",
+        "mental health",
+        "education"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "distance_miles": {
+      "type": "number"
+    },
+    "eligibility_notes": {
+      "type": "string"
+    },
+    "verified": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}
