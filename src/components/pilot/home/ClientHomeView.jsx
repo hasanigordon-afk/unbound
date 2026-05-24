@@ -21,8 +21,14 @@ export default function ClientHomeView() {
         <p className="mt-3 text-sm font-bold leading-relaxed text-slate-300">ReZilient keeps recovery, accountability, structure, resources, wellness, and community organized without duplicate screens.</p>
       </section>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {summaries.map((item) => <HomeSummaryCard key={item.title} {...item} />)}
+      <div className="-mx-4 overflow-x-auto px-4 pb-3 no-scrollbar">
+        <div className="flex snap-x snap-mandatory gap-4">
+          {summaries.map((item) => (
+            <div key={item.title} className="min-w-[82%] snap-start sm:min-w-[420px] lg:min-w-[360px]">
+              <HomeSummaryCard {...item} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
