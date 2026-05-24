@@ -16,16 +16,46 @@ export default function AddToHomeScreen() {
     setAppLink(window.location.origin);
   }, []);
 
+  const resetCopyStatus = () => {
+    window.setTimeout(() => setCopyStatus('Copy link'), 1800);
+  };
+
+  const copyWithFallback = (text) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.setAttribute('readonly', '');
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textArea);
+
+    if (!copied) {
+      throw new Error('Copy command was blocked');
+    }
+  };
+
   const copyLink = async () => {
     if (!appLink) return;
 
     try {
-      await navigator.clipboard.writeText(appLink);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(appLink);
+      } else {
+        copyWithFallback(appLink);
+      }
       setCopyStatus('Copied');
-      window.setTimeout(() => setCopyStatus('Copy link'), 1800);
     } catch {
-      setCopyStatus('Copy failed');
-      window.setTimeout(() => setCopyStatus('Copy link'), 1800);
+      try {
+        copyWithFallback(appLink);
+        setCopyStatus('Copied');
+      } catch {
+        setCopyStatus('Select link above');
+      }
+    } finally {
+      resetCopyStatus();
     }
   };
 
