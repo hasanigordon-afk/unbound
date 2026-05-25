@@ -1,0 +1,31 @@
+{
+  "name": "SavedLocalResource",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "resource_id": {
+      "type": "string"
+    },
+    "resource_name": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "resource_id",
+    "resource_name"
+  ]
+}
