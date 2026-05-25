@@ -1,0 +1,45 @@
+{
+  "name": "RiskScores",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "score_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "urgent"
+      ],
+      "default": "low"
+    },
+    "engagement_score": {
+      "type": "number"
+    },
+    "consistency_score": {
+      "type": "number"
+    },
+    "risk_indicators": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "user_id",
+    "score_date"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "name": "Users",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "client",
+        "counselor",
+        "sponsor",
+        "mentor",
+        "probation_officer",
+        "family_supporter",
+        "facility_admin",
+        "veteran",
+        "returning_citizen",
+        "person_seeking_help"
+      ]
+    },
+    "facility_id": {
+      "type": "string"
+    },
+    "support_circle_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    },
+    "profile_visibility": {
+      "type": "string",
+      "enum": [
+        "private",
+        "support_circle",
+        "facility"
+      ],
+      "default": "private"
+    }
+  },
+  "required": [
+    "email"
+  ]
+}

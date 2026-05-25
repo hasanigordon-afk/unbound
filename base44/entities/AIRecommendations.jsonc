@@ -1,0 +1,48 @@
+{
+  "name": "AIRecommendations",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "SEE",
+        "AskAI",
+        "risk_engine",
+        "resource_map"
+      ],
+      "default": "SEE"
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "recommendation": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "suggested",
+        "accepted",
+        "dismissed",
+        "completed"
+      ],
+      "default": "suggested"
+    }
+  },
+  "required": [
+    "user_id",
+    "recommendation"
+  ]
+}

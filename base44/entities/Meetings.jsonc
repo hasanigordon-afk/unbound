@@ -1,0 +1,36 @@
+{
+  "name": "Meetings",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "meeting_type": {
+      "type": "string"
+    },
+    "day": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "virtual_link": {
+      "type": "string"
+    },
+    "distance": {
+      "type": "string"
+    },
+    "saved_by": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

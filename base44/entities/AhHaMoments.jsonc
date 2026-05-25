@@ -1,0 +1,56 @@
+{
+  "name": "AhHaMoments",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "media_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "audio",
+        "video"
+      ],
+      "default": "text"
+    },
+    "body": {
+      "type": "string"
+    },
+    "media_url": {
+      "type": "string"
+    },
+    "anonymous": {
+      "type": "boolean",
+      "default": false
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "private",
+        "first_name",
+        "anonymous_public"
+      ],
+      "default": "private"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "draft"
+    },
+    "supportive_reactions": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "user_id"
+  ]
+}

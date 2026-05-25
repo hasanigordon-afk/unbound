@@ -1,0 +1,31 @@
+{
+  "name": "Facilities",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "facility_type": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "admin_user_id": {
+      "type": "string"
+    },
+    "active_clients": {
+      "type": "number",
+      "default": 0
+    },
+    "discharge_readiness_score": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}
