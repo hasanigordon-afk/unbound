@@ -7,9 +7,9 @@ const sections = [
     eyebrow: 'Today',
     title: "Today's Focus",
     items: [
-      { title: 'Daily Itinerary', description: 'Appointments, reminders, meetings, and transportation for today.', icon: CalendarDays, to: '/JourneyRoadmap', accent: 'blue' },
+      { title: 'Daily Itinerary', description: 'Appointments, reminders, meetings, and transportation for today.', icon: CalendarDays, to: '/Profile#roadmap', accent: 'blue' },
       { title: 'Recovery Check-In', description: 'Quick mood, craving, and support check-in when you need it.', icon: HeartPulse, to: '/WellnessCenter', accent: 'green' },
-      { title: 'Top Priority', description: 'Keep the one thing that matters most today in front of you.', icon: Target, to: '/MyMissionBoard', accent: 'gold' },
+      { title: 'Top Priority', description: 'Keep the one thing that matters most today in front of you.', icon: Target, to: '/Profile#goals', accent: 'gold' },
     ],
   },
   {
@@ -17,8 +17,8 @@ const sections = [
     title: 'Continue Journey',
     items: [
       { title: 'Profile', description: 'Start with your personal recovery profile and preferences.', icon: UserRound, to: '/Profile', accent: 'gold' },
-      { title: 'Progress', description: 'Review streaks, recovery score, milestones, and weekly movement.', icon: Trophy, to: '/Progress', accent: 'green' },
-      { title: 'Roadmap', description: 'Continue your next steps without adding another bottom tab.', icon: CheckCircle2, to: '/Journey', accent: 'violet' },
+      { title: 'Progress', description: 'Review streaks, recovery score, milestones, and weekly movement.', icon: Trophy, to: '/Profile#progress', accent: 'green' },
+      { title: 'Roadmap', description: 'Continue your next steps inside your Profile hub.', icon: CheckCircle2, to: '/Profile#roadmap', accent: 'violet' },
     ],
   },
   {

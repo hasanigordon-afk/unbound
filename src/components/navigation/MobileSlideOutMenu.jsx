@@ -6,6 +6,7 @@ import {
   Briefcase,
   CalendarDays,
   Car,
+  CheckCircle2,
   ChevronDown,
   ClipboardList,
   Clock,
@@ -33,8 +34,8 @@ import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
 const menuGroups = [
   { title: 'Home', icon: Home, to: '/', items: [] },
-  { title: 'My Journey', icon: UserRound, to: '/Journey', items: [
-    ['Profile', '/Profile', UserRound], ['Progress', '/Progress', Trophy], ['Goals', '/MyMissionBoard', Target], ['Roadmap', '/JourneyRoadmap', CalendarDays],
+  { title: 'Profile', icon: UserRound, to: '/Profile', items: [
+    ['Overview', '/Profile#overview', UserRound], ['My Progress', '/Profile#progress', Trophy], ['Recovery Score', '/Profile#score', CheckCircle2], ['Goals', '/Profile#goals', Target], ['Roadmap', '/Profile#roadmap', CalendarDays], ['Achievements', '/Profile#achievements', Trophy], ['Journal', '/Profile#journal', NotebookPen], ['Timeline', '/Profile#timeline', Clock], ['Support Circle', '/Profile#support', Users], ['Settings', '/Profile#settings', Lock],
   ]},
   { title: 'Daily Structure', icon: CalendarDays, to: '/JourneyRoadmap', items: [
     ['Today’s Itinerary', '/JourneyRoadmap', Clock], ['Calendar', '/JourneyRoadmap', CalendarDays], ['Reminders', '/JourneyRoadmap', Bell], ['Transportation Help', '/JourneyRoadmap', Car],
@@ -52,16 +53,14 @@ const menuGroups = [
     ['Ah Ha Moments', '/Community', Sparkles], ['How’d You Do It?', '/Community', MessageCircle], ['Peer Groups', '/Community', Users], ['Encouragement Feed', '/Community', Trophy],
   ]},
   { title: 'Support', icon: Bot, to: '/WellnessCenter', items: [
-    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/JourneyRoadmap', ClipboardList], ['Shared Progress', '/Journey', Trophy], ['Messages', '/Community', MessageCircle],
+    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/Profile#roadmap', ClipboardList], ['Shared Progress', '/Profile#progress', Trophy], ['Messages', '/Community', MessageCircle],
   ]},
-  { title: 'Profile', icon: UserRound, to: '/Profile', items: [
-    ['Personal Goals', '/MyMissionBoard', Target], ['Emergency Contacts', '/MySafetyPlan', LifeBuoy], ['Preferences', '/NotificationSettings', Bell], ['Privacy Settings', '/PrivacySettings', Lock],
-  ]},
+
 ];
 
 export default function MobileSlideOutMenu() {
   const [open, setOpen] = useState(false);
-  const [expanded, setExpanded] = useState({ 'My Journey': true });
+  const [expanded, setExpanded] = useState({ Profile: true });
   const location = useLocation();
 
   const activeGroup = useMemo(() => menuGroups.find((group) => group.to === location.pathname || group.items.some(([, to]) => to === location.pathname)), [location.pathname]);
