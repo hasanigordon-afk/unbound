@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bot, Home, LifeBuoy, MapPinned, MessageSquare, Settings, Smartphone, Target, Trophy, UserRound } from 'lucide-react';
+import { CalendarDays, Home, MapPinned, MessageSquare, Smartphone, UserRound } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import MobileSlideOutMenu from '@/components/navigation/MobileSlideOutMenu';
 
 const tabs = [
   { label: 'Home', to: '/', icon: Home },
-  { label: 'Roadmap', to: '/JourneyRoadmap', icon: MapPinned },
-  { label: 'Progress', to: '/Progress', icon: Trophy },
+  { label: 'Daily', to: '/JourneyRoadmap', icon: CalendarDays },
   { label: 'Resources', to: '/ResourceHub', icon: MapPinned },
-  { label: 'AI', to: '/AICompanion', icon: Bot },
+  { label: 'Community', to: '/Community', icon: MessageSquare },
+  { label: 'Profile', to: '/Profile', icon: UserRound },
 ];
 
 export default function PilotShell({ children, title = 'ReZilient', subtitle }) {

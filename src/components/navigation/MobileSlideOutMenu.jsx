@@ -61,7 +61,7 @@ const menuGroups = [
 
 export default function MobileSlideOutMenu() {
   const [open, setOpen] = useState(false);
-  const [expanded, setExpanded] = useState({ 'Daily Structure': true });
+  const [expanded, setExpanded] = useState({ 'Daily Structure': true, 'Recovery Support': true });
   const location = useLocation();
 
   const activeGroup = useMemo(() => menuGroups.find((group) => group.to === location.pathname || group.items.some(([, to]) => to === location.pathname)), [location.pathname]);
