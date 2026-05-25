@@ -46,13 +46,13 @@ const menuGroups = [
     ['Shelters', '/ResourceHub', Shield], ['Food Pantries', '/ResourceHub', Utensils], ['Rehab / IOP', '/ResourceHub', HeartPulse], ['Jobs & Staffing', '/ResourceHub', Briefcase], ['Transportation', '/ResourceHub', Car], ['Veterans Resources', '/ResourceHub', Users],
   ]},
   { title: 'Mental Wellness', icon: Moon, to: '/WellnessCenter', items: [
-    ['Meditation', '/WellnessCenter', Sparkles], ['Breathing', '/WellnessCenter', Wind], ['Binaural Beats', '/WellnessCenter', HeartPulse], ['Journaling', '/WellnessCenter', NotebookPen],
+    ['Meditation', '/WellnessCenter', Sparkles], ['Breathing Tools', '/WellnessCenter', Wind], ['Binaural Beats', '/WellnessCenter', HeartPulse], ['Journaling', '/WellnessCenter', NotebookPen],
   ]},
   { title: 'Community', icon: MessageCircle, to: '/Community', items: [
     ['Ah Ha Moments', '/Community', Sparkles], ['How’d You Do It?', '/Community', MessageCircle], ['Peer Groups', '/Community', Users], ['Encouragement Feed', '/Community', Trophy],
   ]},
-  { title: 'Counselor Connection', icon: Bot, to: '/AICompanion', items: [
-    ['My Aftercare Plan', '/AftercarePlanView', ClipboardList], ['Shared Progress', '/Progress', Trophy], ['Messages', '/AICompanion', MessageCircle], ['Appointments', '/JourneyRoadmap', CalendarDays],
+  { title: 'Support', icon: Bot, to: '/WellnessCenter', items: [
+    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/JourneyRoadmap', ClipboardList], ['Shared Progress', '/Journey', Trophy], ['Messages', '/Community', MessageCircle],
   ]},
   { title: 'Profile', icon: UserRound, to: '/Profile', items: [
     ['Personal Goals', '/MyMissionBoard', Target], ['Emergency Contacts', '/MySafetyPlan', LifeBuoy], ['Preferences', '/NotificationSettings', Bell], ['Privacy Settings', '/PrivacySettings', Lock],

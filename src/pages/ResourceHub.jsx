@@ -1,9 +1,9 @@
 import React from 'react';
 import { Briefcase, Car, HeartPulse, Home, MapPinned, Shield, Users, Utensils } from 'lucide-react';
-import SectionHubPage from '@/components/pilot/SectionHubPage';
+import WorkingSectionHub from '@/components/pilot/WorkingSectionHub';
 
 export default function ResourceHub() {
-  return <SectionHubPage title="Resource Hub" subtitle="Local assistance and practical support in one place." primaryAction={{ title: 'Nearby Resources', description: 'Food, transportation, housing, shelters, staffing agencies, veteran support, community help, and recovery resources.' }} sections={[
+  return <WorkingSectionHub title="Resource Hub" subtitle="Local assistance and practical support in one place." primaryAction={{ title: 'Nearby Resources', description: 'Food, transportation, housing, shelters, staffing agencies, veteran support, community help, and recovery resources.' }} sections={[
     { title: 'Food resources', icon: Utensils, description: 'Food pantries and meal support.', items: ['Nearby', 'Open now', 'Saved'] },
     { title: 'Transportation', icon: Car, description: 'Rides, bus routes, and appointment transportation.', items: ['Routes', 'Rides', 'Planning'] },
     { title: 'Housing', icon: Home, description: 'Housing resources and stability supports.', items: ['Sober living', 'Applications', 'Support'] },

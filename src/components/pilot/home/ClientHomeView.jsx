@@ -27,7 +27,7 @@ const sections = [
     items: [
       { title: 'Calm Reset', description: 'Breathing, meditation, music, and quick grounding tools.', icon: LifeBuoy, to: '/WellnessCenter', accent: 'rose' },
       { title: 'Craving Support', description: 'Use a quick support path before the moment gets bigger.', icon: Shield, to: '/WellnessCenter', accent: 'blue' },
-      { title: 'AI Support', description: 'Ask for help organizing next steps, resources, or structure.', icon: Sparkles, to: '/AICompanion', accent: 'violet' },
+      { title: 'AI Support', description: 'Ask for help organizing next steps, resources, or structure.', icon: Sparkles, to: '/WellnessCenter', accent: 'violet' },
     ],
   },
   {

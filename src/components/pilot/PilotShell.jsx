@@ -9,7 +9,7 @@ const tabs = [
   { label: 'Journey', to: '/Journey', icon: Route },
   { label: 'Resources', to: '/ResourceHub', icon: MapPinned },
   { label: 'Community', to: '/Community', icon: MessageSquare },
-  { label: 'Support', to: '/AICompanion', icon: HeartHandshake },
+  { label: 'Support', to: '/WellnessCenter', icon: HeartHandshake },
 ];
 
 export default function PilotShell({ children, title = 'ReZilient', subtitle }) {
