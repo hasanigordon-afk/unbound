@@ -3,7 +3,7 @@ import { Bookmark, ExternalLink, MapPinned, Phone } from 'lucide-react';
 import { openStatus } from './resourceUtils';
 
 export default function ResourceCard({ resource, saved, onSave }) {
-  const status = openStatus(resource.hours);
+  const status = openStatus(resource.hours_json || resource.hours);
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resource.address)}`;
 
   return (

@@ -47,9 +47,9 @@ export default function ResourceHub() {
     if (activeFilters.includes('Open Now')) list = list.filter((resource) => openStatus(resource.hours).open);
     if (activeFilters.includes('Saved')) list = list.filter((resource) => saved.some((item) => item.resource_id === resource.id));
     if (activeFilters.includes('Transportation Available')) list = list.filter((resource) => resource.transportation_available);
-    if (activeFilters.includes('Medicaid Accepted')) list = list.filter((resource) => resource.medicaid_accepted);
-    if (activeFilters.includes('Veterans')) list = list.filter((resource) => resource.veterans);
-    if (activeFilters.includes('Free Services')) list = list.filter((resource) => resource.free_services);
+    if (activeFilters.includes('Medicaid Accepted')) list = list.filter((resource) => resource.accepts_medicaid || resource.medicaid_accepted);
+    if (activeFilters.includes('Veterans')) list = list.filter((resource) => resource.veteran_support || resource.veterans);
+    if (activeFilters.includes('Free Services')) list = list.filter((resource) => resource.free_service ?? resource.free_services);
     if (activeFilters.includes('Highest Rated')) list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     else list.sort((a, b) => a.distance - b.distance);
     return list;

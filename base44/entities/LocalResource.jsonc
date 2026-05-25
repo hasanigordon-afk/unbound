@@ -20,23 +20,38 @@
     "zip": {
       "type": "string"
     },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
     "phone": {
       "type": "string"
     },
     "website": {
       "type": "string"
     },
-    "hours_text": {
-      "type": "string"
-    },
-    "hours": {
+    "hours_json": {
       "type": "object"
     },
-    "latitude": {
-      "type": "number"
+    "accepts_medicaid": {
+      "type": "boolean",
+      "default": false
     },
-    "longitude": {
-      "type": "number"
+    "veteran_support": {
+      "type": "boolean",
+      "default": false
+    },
+    "free_service": {
+      "type": "boolean",
+      "default": true
+    },
+    "notes": {
+      "type": "string"
+    },
+    "hours_text": {
+      "type": "string"
     },
     "rating": {
       "type": "number",
@@ -45,21 +60,6 @@
     "transportation_available": {
       "type": "boolean",
       "default": false
-    },
-    "medicaid_accepted": {
-      "type": "boolean",
-      "default": false
-    },
-    "veterans": {
-      "type": "boolean",
-      "default": false
-    },
-    "free_services": {
-      "type": "boolean",
-      "default": true
-    },
-    "notes": {
-      "type": "string"
     }
   },
   "required": [
