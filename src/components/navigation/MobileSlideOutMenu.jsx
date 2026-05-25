@@ -33,14 +33,14 @@ import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
 const menuGroups = [
   { title: 'Home', icon: Home, to: '/', items: [] },
+  { title: 'My Journey', icon: UserRound, to: '/Journey', items: [
+    ['Profile', '/Profile', UserRound], ['Progress', '/Progress', Trophy], ['Goals', '/MyMissionBoard', Target], ['Roadmap', '/JourneyRoadmap', CalendarDays],
+  ]},
   { title: 'Daily Structure', icon: CalendarDays, to: '/JourneyRoadmap', items: [
     ['Today’s Itinerary', '/JourneyRoadmap', Clock], ['Calendar', '/JourneyRoadmap', CalendarDays], ['Reminders', '/JourneyRoadmap', Bell], ['Transportation Help', '/JourneyRoadmap', Car],
   ]},
   { title: 'Recovery Support', icon: LifeBuoy, to: '/JourneyRoadmap', items: [
     ['Daily Check-In', '/WellnessCenter', HeartPulse], ['Meeting Tracker', '/JourneyRoadmap', Users], ['Sponsor / Mentor Contact', '/Community', UserRound], ['Craving Log', '/WellnessCenter', Shield], ['Relapse Prevention Plan', '/WellnessCenter', FileHeart],
-  ]},
-  { title: 'My Progress', icon: Trophy, to: '/Progress', items: [
-    ['Streaks', '/Progress', Sparkles], ['Goals', '/MyMissionBoard', Target], ['Recovery Score', '/Progress', Trophy], ['Weekly Reports', '/Progress', ClipboardList],
   ]},
   { title: 'Resources', icon: MapPinned, to: '/ResourceHub', items: [
     ['Shelters', '/ResourceHub', Shield], ['Food Pantries', '/ResourceHub', Utensils], ['Rehab / IOP', '/ResourceHub', HeartPulse], ['Jobs & Staffing', '/ResourceHub', Briefcase], ['Transportation', '/ResourceHub', Car], ['Veterans Resources', '/ResourceHub', Users],
@@ -61,7 +61,7 @@ const menuGroups = [
 
 export default function MobileSlideOutMenu() {
   const [open, setOpen] = useState(false);
-  const [expanded, setExpanded] = useState({ 'Daily Structure': true, 'Recovery Support': true });
+  const [expanded, setExpanded] = useState({ 'My Journey': true });
   const location = useLocation();
 
   const activeGroup = useMemo(() => menuGroups.find((group) => group.to === location.pathname || group.items.some(([, to]) => to === location.pathname)), [location.pathname]);

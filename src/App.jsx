@@ -9,6 +9,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
 
 import PilotHome from './pages/PilotHome.jsx';
+import JourneyHub from './pages/JourneyHub.jsx';
 import JourneyRoadmap from './pages/JourneyRoadmap.jsx';
 import ResourceHub from './pages/ResourceHub.jsx';
 import CommunityHub from './pages/CommunityHub.jsx';
@@ -68,6 +69,7 @@ const AuthenticatedApp = () => {
       <SubscriptionPrompt />
       <Routes>
         <Route path="/" element={<PilotHome />} />
+        <Route path="/Journey" element={<JourneyHub />} />
         <Route path="/JourneyRoadmap" element={<JourneyRoadmap />} />
         <Route path="/ResourceHub" element={<ResourceHub />} />
         <Route path="/Community" element={<CommunityHub />} />
