@@ -1,0 +1,33 @@
+{
+  "name": "InspirationReport",
+  "type": "object",
+  "properties": {
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "video",
+        "reading",
+        "ahha_story"
+      ]
+    },
+    "content_id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending_review",
+        "reviewed",
+        "dismissed"
+      ],
+      "default": "pending_review"
+    }
+  },
+  "required": [
+    "content_type",
+    "content_id"
+  ]
+}

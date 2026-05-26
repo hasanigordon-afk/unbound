@@ -1,0 +1,102 @@
+{
+  "name": "MediaItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "media_type": {
+      "type": "string",
+      "enum": [
+        "video",
+        "article",
+        "podcast",
+        "story",
+        "meditation",
+        "educational"
+      ],
+      "default": "video"
+    },
+    "category": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "youtube_video_id": {
+      "type": "string"
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "channel_name": {
+      "type": "string"
+    },
+    "duration_seconds": {
+      "type": "number"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "tone": {
+      "type": "string",
+      "enum": [
+        "positive",
+        "educational",
+        "motivational",
+        "spiritual",
+        "peer_story"
+      ],
+      "default": "positive"
+    },
+    "recovery_stage": {
+      "type": "string",
+      "enum": [
+        "early_recovery",
+        "long_term_recovery",
+        "reentry",
+        "family_support",
+        "mental_health",
+        "general"
+      ],
+      "default": "general"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "pending_review",
+        "approved",
+        "rejected",
+        "hidden"
+      ],
+      "default": "pending_review"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_positive_content": {
+      "type": "boolean",
+      "default": true
+    },
+    "helpful_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "media_type",
+    "source_url"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "SavedMedia",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "media_id": {
+      "type": "string"
+    },
+    "saved_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "media_id"
+  ]
+}

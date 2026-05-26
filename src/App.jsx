@@ -17,6 +17,8 @@ import MyMissionBoard from './pages/MyMissionBoard.jsx';
 import Progress from './pages/Progress.jsx';
 import WellnessCenter from './pages/WellnessCenter.jsx';
 import AICompanion from './pages/AICompanion.jsx';
+import TestimonialsHub from './pages/TestimonialsHub.jsx';
+import TestimonialsAdmin from './pages/TestimonialsAdmin.jsx';
 
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import AftercarePlanView from './pages/AftercarePlanView';
@@ -71,6 +73,8 @@ const AuthenticatedApp = () => {
         <Route path="/JourneyRoadmap" element={<JourneyRoadmap />} />
         <Route path="/ResourceHub" element={<ResourceHub />} />
         <Route path="/Community" element={<CommunityHub />} />
+        <Route path="/Testimonials" element={<TestimonialsHub />} />
+        <Route path="/TestimonialsAdmin" element={<TestimonialsAdmin />} />
         <Route path="/Profile" element={<Profile />} />
 
         <Route path="/MyMissionBoard" element={<MyMissionBoard />} />

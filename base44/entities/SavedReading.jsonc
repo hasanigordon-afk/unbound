@@ -1,0 +1,19 @@
+{
+  "name": "SavedReading",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "reading_id": {
+      "type": "string"
+    },
+    "saved_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "reading_id"
+  ]
+}

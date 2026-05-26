@@ -1,0 +1,87 @@
+{
+  "name": "ReadingItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "reading_time_minutes": {
+      "type": "number",
+      "default": 5
+    },
+    "tone": {
+      "type": "string",
+      "enum": [
+        "positive",
+        "educational",
+        "motivational",
+        "spiritual",
+        "peer_story"
+      ],
+      "default": "positive"
+    },
+    "recovery_stage": {
+      "type": "string",
+      "enum": [
+        "early_recovery",
+        "long_term_recovery",
+        "reentry",
+        "family_support",
+        "mental_health",
+        "general"
+      ],
+      "default": "general"
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": [
+        "pending_review",
+        "approved",
+        "rejected",
+        "hidden"
+      ],
+      "default": "pending_review"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_positive_content": {
+      "type": "boolean",
+      "default": true
+    },
+    "helpful_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "summary"
+  ]
+}
