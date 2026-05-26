@@ -1,0 +1,20 @@
+{
+  "name": "MediaItem",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "media_type": {
+      "type": "string",
+      "enum": ["video", "audio", "article", "podcast", "meditation", "music", "breathing", "binaural", "educational"]
+    },
+    "category": { "type": "string" },
+    "source_name": { "type": "string" },
+    "source_url": { "type": "string" },
+    "thumbnail_url": { "type": "string" },
+    "duration_seconds": { "type": "number" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "is_approved": { "type": "boolean", "default": false }
+  },
+  "required": ["title", "media_type", "source_name", "source_url"]
+}

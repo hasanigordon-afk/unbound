@@ -1,0 +1,14 @@
+{
+  "name": "SavedUniversalResource",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "resource_id": { "type": "string" },
+    "resource_name": { "type": "string" },
+    "resource_category": { "type": "string" },
+    "notes": { "type": "string" },
+    "saved_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["user_email", "resource_id", "saved_at"]
+}

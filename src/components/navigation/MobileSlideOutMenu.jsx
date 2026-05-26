@@ -6,7 +6,6 @@ import {
   Briefcase,
   CalendarDays,
   Car,
-  CheckCircle2,
   ChevronDown,
   ClipboardList,
   Clock,
@@ -35,25 +34,31 @@ import ReZilientLogo from '@/components/shared/ReZilientLogo';
 const menuGroups = [
   { title: 'Home', icon: Home, to: '/', items: [] },
   { title: 'Profile', icon: UserRound, to: '/Profile', items: [
-    ['Overview', '/Profile#overview', UserRound], ['My Progress', '/Profile#progress', Trophy], ['Recovery Score', '/Profile#score', CheckCircle2], ['Goals', '/Profile#goals', Target], ['Roadmap', '/Profile#roadmap', CalendarDays], ['Achievements', '/Profile#achievements', Trophy], ['Journal', '/Profile#journal', NotebookPen], ['Timeline', '/Profile#timeline', Clock], ['Support Circle', '/Profile#support', Users], ['Settings', '/Profile#settings', Lock],
+    ['Overview', '/Profile', UserRound], ['My Progress', '/', Trophy], ['Goals', '/', Target], ['Support Circle', '/', Users], ['Settings', '/PrivacySettings', Lock],
   ]},
   { title: 'Daily Structure', icon: CalendarDays, to: '/JourneyRoadmap', items: [
     ['Today’s Itinerary', '/JourneyRoadmap', Clock], ['Calendar', '/JourneyRoadmap', CalendarDays], ['Reminders', '/JourneyRoadmap', Bell], ['Transportation Help', '/JourneyRoadmap', Car],
   ]},
   { title: 'Recovery Support', icon: LifeBuoy, to: '/JourneyRoadmap', items: [
-    ['Daily Check-In', '/WellnessCenter', HeartPulse], ['Meeting Tracker', '/JourneyRoadmap', Users], ['Sponsor / Mentor Contact', '/Community', UserRound], ['Craving Log', '/WellnessCenter', Shield], ['Relapse Prevention Plan', '/WellnessCenter', FileHeart],
+    ['Daily Check-In', '/', HeartPulse], ['Meeting Tracker', '/Community', Users], ['Sponsor / Mentor Contact', '/Community', UserRound], ['Craving Log', '/', Shield], ['Relapse Prevention Plan', '/Wellness', FileHeart],
   ]},
-  { title: 'Resources', icon: MapPinned, to: '/ResourceHub', items: [
-    ['Shelters', '/ResourceHub', Shield], ['Food Pantries', '/ResourceHub', Utensils], ['Rehab / IOP', '/ResourceHub', HeartPulse], ['Jobs & Staffing', '/ResourceHub', Briefcase], ['Transportation', '/ResourceHub', Car], ['Veterans Resources', '/ResourceHub', Users],
+  { title: 'Resources', icon: MapPinned, to: '/Resources', items: [
+    ['Shelters', '/Resources', Shield], ['Food Pantries', '/Resources', Utensils], ['Rehab / IOP', '/Resources', HeartPulse], ['Jobs & Staffing', '/Resources', Briefcase], ['Transportation', '/Resources', Car], ['Veterans Resources', '/Resources', Users],
   ]},
-  { title: 'Mental Wellness', icon: Moon, to: '/WellnessCenter', items: [
-    ['Meditation', '/WellnessCenter', Sparkles], ['Breathing Tools', '/WellnessCenter', Wind], ['Binaural Beats', '/WellnessCenter', HeartPulse], ['Journaling', '/WellnessCenter', NotebookPen],
+  { title: 'Wellness', icon: Moon, to: '/Wellness', items: [
+    ['Meditation', '/Wellness', Sparkles], ['Breathing Tools', '/Wellness', Wind], ['Binaural Beats', '/Wellness', HeartPulse], ['Journaling', '/Wellness', NotebookPen],
+  ]},
+  { title: 'Media', icon: Sparkles, to: '/Media', items: [
+    ['Videos', '/Media', Sparkles], ['Audio', '/Media', HeartPulse], ['Articles', '/Media', NotebookPen],
+  ]},
+  { title: 'AhHa Stories', icon: Sparkles, to: '/AhHaStories', items: [
+    ['Read stories', '/AhHaStories', Sparkles], ['Submit story', '/AhHaStories', NotebookPen],
   ]},
   { title: 'Community', icon: MessageCircle, to: '/Community', items: [
     ['Ah Ha Moments', '/Community', Sparkles], ['How’d You Do It?', '/Community', MessageCircle], ['Peer Groups', '/Community', Users], ['Encouragement Feed', '/Community', Trophy],
   ]},
-  { title: 'Support', icon: Bot, to: '/WellnessCenter', items: [
-    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/Profile#roadmap', ClipboardList], ['Shared Progress', '/Profile#progress', Trophy], ['Messages', '/Community', MessageCircle],
+  { title: 'Admin Data', icon: Bot, to: '/AdminData', items: [
+    ['Imports', '/AdminData', ClipboardList], ['Connector status', '/AdminData', Trophy], ['Moderation', '/AhHaStories', MessageCircle],
   ]},
 
 ];

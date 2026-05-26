@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HeartHandshake, Home, MapPinned, MessageSquare, Smartphone, UserRound } from 'lucide-react';
+import { BookOpenText, Film, HeartHandshake, MapPinned, MessageSquare, Smartphone, UserRound } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import MobileSlideOutMenu from '@/components/navigation/MobileSlideOutMenu';
 
 const tabs = [
-  { label: 'Home', to: '/', icon: Home },
-  { label: 'Profile', to: '/Profile', icon: UserRound },
-  { label: 'Resources', to: '/ResourceHub', icon: MapPinned },
+  { label: 'Resources', to: '/Resources', icon: MapPinned },
+  { label: 'Wellness', to: '/Wellness', icon: HeartHandshake },
+  { label: 'Media', to: '/Media', icon: Film },
+  { label: 'AhHa Stories', to: '/AhHaStories', icon: BookOpenText },
   { label: 'Community', to: '/Community', icon: MessageSquare },
-  { label: 'Support', to: '/WellnessCenter', icon: HeartHandshake },
 ];
 
 export default function PilotShell({ children, title = 'ReZilient', subtitle }) {
@@ -28,9 +28,14 @@ export default function PilotShell({ children, title = 'ReZilient', subtitle }) 
               {subtitle && <p className="text-sm text-slate-300 mt-1">{subtitle}</p>}
             </div>
           </div>
-          <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
-            <Smartphone className="w-5 h-5" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/Profile" aria-label="Open profile" className="h-12 w-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
+              <UserRound className="w-5 h-5" />
+            </Link>
+            <Link to="/AddToHomeScreen" aria-label="View ReZilient on my device" className="h-12 w-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
+              <Smartphone className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -39,7 +44,7 @@ export default function PilotShell({ children, title = 'ReZilient', subtitle }) 
       <nav className="fixed bottom-0 left-0 right-0 z-40 px-3 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 bg-[#07101f]/85 backdrop-blur-2xl border-t border-white/10">
         <div className="max-w-md mx-auto grid grid-cols-5 gap-1 rounded-[28px] bg-white/8 border border-white/10 p-1.5 shadow-2xl">
           {tabs.map(({ label, to, icon: Icon }) => {
-            const active = location.pathname === to || (to === '/' && location.pathname === '/');
+            const active = location.pathname === to || (to === '/Resources' && location.pathname === '/ResourceHub') || (to === '/Wellness' && location.pathname === '/WellnessCenter');
             return (
               <Link key={to} to={to} className={`min-h-[58px] rounded-3xl flex flex-col items-center justify-center gap-1 text-[10px] font-bold transition active:scale-95 ${active ? 'bg-white text-slate-950 shadow-lg' : 'text-slate-300'}`}>
                 <Icon className="w-5 h-5" />

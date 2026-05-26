@@ -18,6 +18,21 @@
       ],
       "description": "Program type"
     },
+    "source_name": {
+      "type": "string",
+      "description": "Meeting feed or import source"
+    },
+    "meeting_type": {
+      "type": "string",
+      "enum": [
+        "AA",
+        "NA",
+        "SMART",
+        "CelebrateRecovery",
+        "Other"
+      ],
+      "description": "Canonical meeting type"
+    },
     "meeting_format": {
       "type": "string",
       "enum": [
@@ -28,6 +43,10 @@
       ],
       "default": "unspecified",
       "description": "Open (anyone can attend), closed (members only), or hybrid"
+    },
+    "format": {
+      "type": "string",
+      "description": "Human-readable format from source feed"
     },
     "in_person": {
       "type": "boolean",
@@ -70,9 +89,38 @@
       "type": "string",
       "description": "End time (HH:MM, 24h)"
     },
+    "timezone": {
+      "type": "string",
+      "description": "Meeting timezone"
+    },
     "url": {
       "type": "string",
       "description": "Online meeting URL"
+    },
+    "online_url": {
+      "type": "string",
+      "description": "Online meeting URL alias"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone access or contact"
+    },
+    "accessibility_notes": {
+      "type": "string",
+      "description": "Accessibility notes when supplied by source"
+    },
+    "language": {
+      "type": "string",
+      "description": "Meeting language"
+    },
+    "source_url": {
+      "type": "string",
+      "description": "Source feed URL"
+    },
+    "last_synced_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last sync timestamp"
     },
     "notes": {
       "type": "string",

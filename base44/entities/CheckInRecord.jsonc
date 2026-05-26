@@ -1,0 +1,18 @@
+{
+  "name": "CheckInRecord",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "check_in_type": {
+      "type": "string",
+      "enum": ["mood", "craving", "meeting", "medication", "wellness", "task", "custom"]
+    },
+    "mood_score": { "type": "number" },
+    "craving_score": { "type": "number" },
+    "notes": { "type": "string" },
+    "meeting_attended": { "type": "boolean", "default": false },
+    "completed_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["user_email", "check_in_type", "completed_at"]
+}

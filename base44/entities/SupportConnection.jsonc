@@ -1,0 +1,26 @@
+{
+  "name": "SupportConnection",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "support_user_id": { "type": "string" },
+    "name": { "type": "string" },
+    "role": {
+      "type": "string",
+      "enum": ["counselor", "sponsor", "peer_mentor", "family", "friend", "probation", "case_manager", "emergency_contact"]
+    },
+    "phone": { "type": "string" },
+    "email": { "type": "string" },
+    "organization": { "type": "string" },
+    "relationship_status": {
+      "type": "string",
+      "enum": ["active", "invited", "pending", "inactive"],
+      "default": "active"
+    },
+    "can_view_progress": { "type": "boolean", "default": false },
+    "can_receive_alerts": { "type": "boolean", "default": false },
+    "permission_scope_json": { "type": "object" }
+  },
+  "required": ["user_email", "name", "role", "relationship_status"]
+}

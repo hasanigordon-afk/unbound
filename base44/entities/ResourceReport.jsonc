@@ -6,9 +6,31 @@
       "type": "string",
       "description": "Reported resource ID"
     },
+    "user_email": {
+      "type": "string",
+      "description": "Reporter email when available"
+    },
     "reason": {
       "type": "string",
       "description": "Reason for report"
+    },
+    "details": {
+      "type": "string",
+      "description": "Optional extra details"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "reviewing",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "open"
+    },
+    "reported_at": {
+      "type": "string",
+      "format": "date-time"
     }
   },
   "required": [

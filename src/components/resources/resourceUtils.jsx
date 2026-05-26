@@ -1,10 +1,8 @@
-export const categories = [
-  'Food Resources', 'Shelters', 'Sober Living', 'Recovery Programs', 'IOP', 'Detox', 'Transportation', 'Jobs / Staffing Agencies', 'Veteran Services', 'Churches', 'Legal Help', 'Financial Assistance', 'Community Outreach'
-];
+export const categories = ['Treatment & Recovery', 'Meetings & Peer Support', 'Basic Needs', 'Reentry & Stability', 'Employment & Education', 'Veterans', 'Wellness'];
 
-export const filters = ['Nearby', 'Open Now', 'Saved', 'Highest Rated', 'Transportation Available', 'Medicaid Accepted', 'Veterans', 'Free Services'];
+export const filters = ['Near Me', 'Open Now', 'Saved', 'Free / Low Cost', 'Medicaid Accepted', 'Veteran Focused', 'Reentry Focused', 'Crisis / Emergency', 'Virtual Available'];
 
-export const defaultLocation = { latitude: 40.4976, longitude: -74.4885, label: 'Somerset, NJ' };
+export const defaultLocation = null;
 
 export function distanceMiles(a, b) {
   if (!a?.latitude || !b?.latitude) return 0;
@@ -19,17 +17,20 @@ export function distanceMiles(a, b) {
 }
 
 export function openStatus(hours = {}) {
+  if (!hours || typeof hours !== 'object' || !Object.values(hours).some((day) => day?.open && day?.close)) {
+    return { verified: false, open: null, label: 'Hours not verified' };
+  }
   const now = new Date();
   const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][now.getDay()];
   const today = hours?.[day];
-  if (!today?.open || !today?.close) return { open: false, label: 'Closed today' };
+  if (!today?.open || !today?.close) return { verified: true, open: false, label: 'Closed today' };
   const current = now.getHours() * 60 + now.getMinutes();
   const [oh, om] = today.open.split(':').map(Number);
   const [ch, cm] = today.close.split(':').map(Number);
   const start = oh * 60 + om;
   const end = ch * 60 + cm;
   const open = current >= start && current <= end;
-  return { open, label: open ? `Open until ${formatTime(today.close)}` : 'Closed' };
+  return { verified: true, open, label: open ? `Open until ${formatTime(today.close)}` : 'Closed' };
 }
 
 export function formatTime(time) {

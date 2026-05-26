@@ -1,0 +1,22 @@
+{
+  "name": "ResourceSyncLog",
+  "type": "object",
+  "properties": {
+    "connector_name": { "type": "string" },
+    "source_name": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["not_configured", "success", "partial", "failed"],
+      "default": "not_configured"
+    },
+    "message": { "type": "string" },
+    "records_seen": { "type": "number", "default": 0 },
+    "records_inserted": { "type": "number", "default": 0 },
+    "records_updated": { "type": "number", "default": 0 },
+    "duplicates_skipped": { "type": "number", "default": 0 },
+    "errors_json": { "type": "array", "items": { "type": "string" } },
+    "last_synced_at": { "type": "string", "format": "date-time" },
+    "required_env_vars": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["connector_name", "source_name", "status", "message"]
+}

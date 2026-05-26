@@ -1,0 +1,37 @@
+{
+  "name": "RecoveryTask",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "assigned_by_user_id": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["recovery", "appointment", "meeting", "wellness", "employment", "legal", "transportation", "personal", "counselor_assigned"],
+      "default": "personal"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "urgent"],
+      "default": "medium"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "completed", "missed", "skipped"],
+      "default": "pending"
+    },
+    "due_date": { "type": "string", "format": "date" },
+    "due_time": { "type": "string" },
+    "recurrence_rule": { "type": "string" },
+    "reminder_enabled": { "type": "boolean", "default": false },
+    "reminder_time": { "type": "string" },
+    "source": {
+      "type": "string",
+      "enum": ["user_created", "counselor_assigned", "aftercare_plan", "ai_generated", "imported"],
+      "default": "user_created"
+    }
+  },
+  "required": ["user_email", "title", "due_date", "status"]
+}

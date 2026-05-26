@@ -17,6 +17,9 @@ import MyMissionBoard from './pages/MyMissionBoard.jsx';
 import Progress from './pages/Progress.jsx';
 import WellnessCenter from './pages/WellnessCenter.jsx';
 import AICompanion from './pages/AICompanion.jsx';
+import Media from './pages/Media.jsx';
+import AhHaStories from './pages/AhHaStories.jsx';
+import ResourceImport from './pages/ResourceImport.jsx';
 
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import AftercarePlanView from './pages/AftercarePlanView';
@@ -69,13 +72,19 @@ const AuthenticatedApp = () => {
       <Routes>
         <Route path="/" element={<PilotHome />} />
         <Route path="/JourneyRoadmap" element={<JourneyRoadmap />} />
+        <Route path="/Resources" element={<ResourceHub />} />
         <Route path="/ResourceHub" element={<ResourceHub />} />
         <Route path="/Community" element={<CommunityHub />} />
         <Route path="/Profile" element={<Profile />} />
 
         <Route path="/MyMissionBoard" element={<MyMissionBoard />} />
         <Route path="/Progress" element={<Progress />} />
+        <Route path="/Wellness" element={<WellnessCenter />} />
         <Route path="/WellnessCenter" element={<WellnessCenter />} />
+        <Route path="/Media" element={<Media />} />
+        <Route path="/AhHaStories" element={<AhHaStories />} />
+        <Route path="/AdminData" element={<ResourceImport />} />
+        <Route path="/ResourceImport" element={<ResourceImport />} />
         <Route path="/AICompanion" element={<AICompanion />} />
 
         <Route path="/AddToHomeScreen" element={<AddToHomeScreen />} />

@@ -1,0 +1,29 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "auth_user_id": { "type": "string" },
+    "first_name": { "type": "string" },
+    "display_name": { "type": "string" },
+    "avatar_url": { "type": "string" },
+    "email": { "type": "string" },
+    "phone": { "type": "string" },
+    "role": {
+      "type": "string",
+      "enum": ["client", "counselor", "sponsor", "admin", "facility_staff"],
+      "default": "client"
+    },
+    "recovery_start_date": { "type": "string", "format": "date" },
+    "location_city": { "type": "string" },
+    "location_state": { "type": "string" },
+    "zip_code": { "type": "string" },
+    "privacy_settings_json": { "type": "object" },
+    "community_visibility": {
+      "type": "string",
+      "enum": ["private", "first_name_only", "visible"],
+      "default": "private"
+    },
+    "emergency_contact_id": { "type": "string" }
+  },
+  "required": ["email", "role"]
+}
