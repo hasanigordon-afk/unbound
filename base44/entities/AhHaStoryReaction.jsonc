@@ -1,0 +1,21 @@
+{
+  "name": "AhHaStoryReaction",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string"
+    },
+    "reaction_type": {
+      "type": "string",
+      "enum": [
+        "heart",
+        "support"
+      ],
+      "default": "heart"
+    }
+  },
+  "required": [
+    "story_id",
+    "reaction_type"
+  ]
+}

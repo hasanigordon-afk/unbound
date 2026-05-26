@@ -4,7 +4,7 @@ import PilotShell from '@/components/pilot/PilotShell';
 import InspirationRow from '@/components/inspiration/InspirationRow';
 import VideoPlayerModal from '@/components/inspiration/VideoPlayerModal';
 import ReadingModal from '@/components/inspiration/ReadingModal';
-import { BookOpen, Film, Heart, Search, Send, Sparkles } from 'lucide-react';
+import { Heart, HeartHandshake, Search, Send, Sparkles } from 'lucide-react';
 
 const tabs = ['Testimonials', 'Watch', 'Read', 'AhHa Stories', 'Saved Inspiration'];
 const filters = ['Watch', 'Read', 'User Stories', 'Help', 'Hope', 'Healing', 'Early Recovery', 'Long-Term Recovery', 'Reentry', 'Veterans', 'Family', 'Mental Strength'];
@@ -15,6 +15,7 @@ export default function TestimonialsHub() {
   const [videos, setVideos] = useState([]);
   const [readings, setReadings] = useState([]);
   const [stories, setStories] = useState([]);
+  const [storyReactions, setStoryReactions] = useState([]);
   const [savedMedia, setSavedMedia] = useState([]);
   const [savedReading, setSavedReading] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -22,22 +23,33 @@ export default function TestimonialsHub() {
   const [storyText, setStoryText] = useState('');
   const [storyTitle, setStoryTitle] = useState('');
 
+  const loadStoryReactions = async () => {
+    const rows = await base44.entities.AhHaStoryReaction.list('-created_date', 300);
+    setStoryReactions(rows);
+  };
+
   const load = async () => {
-    const [mediaRows, readingRows, storyRows, savedMediaRows, savedReadingRows] = await Promise.all([
+    const [mediaRows, readingRows, storyRows, savedMediaRows, savedReadingRows, reactionRows] = await Promise.all([
       base44.entities.MediaItem.filter({ moderation_status: 'approved', is_positive_content: true }, '-updated_date', 100),
       base44.entities.ReadingItem.filter({ moderation_status: 'approved', is_positive_content: true }, '-updated_date', 100),
       base44.entities.AhHaInspirationStory.filter({ moderation_status: 'approved', is_positive_content: true }, '-updated_date', 50),
       base44.entities.SavedMedia.list('-created_date', 100),
       base44.entities.SavedReading.list('-created_date', 100),
+      base44.entities.AhHaStoryReaction.list('-created_date', 300),
     ]);
     setVideos(mediaRows.filter((item) => item.media_type === 'video'));
     setReadings(readingRows);
     setStories(storyRows);
     setSavedMedia(savedMediaRows);
     setSavedReading(savedReadingRows);
+    setStoryReactions(reactionRows);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const unsubscribe = base44.entities.AhHaStoryReaction.subscribe(loadStoryReactions);
+    return unsubscribe;
+  }, []);
 
   const searchText = query.toLowerCase();
   const filteredVideos = useMemo(() => videos.filter((item) => `${item.title} ${item.description} ${item.category} ${item.tags?.join(' ')}`.toLowerCase().includes(searchText)), [videos, searchText]);
@@ -60,6 +72,12 @@ export default function TestimonialsHub() {
     await base44.entities.AhHaInspirationStory.create({ title: storyTitle, story: storyText, category: 'Hope', moderation_status: 'pending_review', privacy: 'anonymous', is_positive_content: true });
     setStoryTitle(''); setStoryText(''); alert('Your AhHa Story was submitted for review.');
   };
+
+  const reactToStory = async (story, reactionType) => {
+    await base44.entities.AhHaStoryReaction.create({ story_id: story.id, reaction_type: reactionType });
+  };
+
+  const getStoryReactionCount = (storyId, reactionType) => storyReactions.filter((reaction) => reaction.story_id === storyId && reaction.reaction_type === reactionType).length;
 
   const savedVideoItems = videos.filter((v) => savedMedia.some((s) => s.media_id === v.id));
   const savedReadingItems = readings.filter((r) => savedReading.some((s) => s.reading_id === r.id));
@@ -95,7 +113,23 @@ export default function TestimonialsHub() {
 
         {activeTab === 'AhHa Stories' && <section className="space-y-4 rounded-[34px] border border-white/12 bg-white/10 p-5">
           <div className="flex items-center gap-3"><Sparkles className="h-6 w-6 text-amber-200" /><h2 className="font-sans text-2xl font-black text-white">AhHa Moments From the Community</h2></div>
-          <div className="grid gap-3">{stories.length ? stories.map((story) => <article key={story.id} className="rounded-3xl border border-white/10 bg-white/10 p-4"><h3 className="font-bold text-white">{story.title}</h3><p className="mt-2 text-sm font-bold text-slate-300">{story.story}</p><span className="mt-3 inline-block rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-black text-emerald-100">{story.category}</span></article>) : <p className="text-sm font-bold text-slate-300">No approved AhHa Stories yet. Submit a positive story for review.</p>}</div>
+          <div className="grid gap-3">
+            {stories.length ? stories.map((story) => (
+              <article key={story.id} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+                <h3 className="font-bold text-white">{story.title}</h3>
+                <p className="mt-2 text-sm font-bold text-slate-300">{story.story}</p>
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-black text-emerald-100">{story.category}</span>
+                  <button onClick={() => reactToStory(story, 'heart')} className="inline-flex min-h-0 items-center gap-1 rounded-full border border-rose-300/20 bg-rose-400/10 px-3 py-2 text-xs font-black text-rose-100 active:scale-95">
+                    <Heart className="h-4 w-4" /> {getStoryReactionCount(story.id, 'heart')}
+                  </button>
+                  <button onClick={() => reactToStory(story, 'support')} className="inline-flex min-h-0 items-center gap-1 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-2 text-xs font-black text-blue-100 active:scale-95">
+                    <HeartHandshake className="h-4 w-4" /> {getStoryReactionCount(story.id, 'support')}
+                  </button>
+                </div>
+              </article>
+            )) : <p className="text-sm font-bold text-slate-300">No approved AhHa Stories yet. Submit a positive story for review.</p>}
+          </div>
           <div className="rounded-3xl border border-white/10 bg-white/10 p-4"><h3 className="font-sans text-xl font-black text-white">Submit your AhHa Story</h3><input value={storyTitle} onChange={(e) => setStoryTitle(e.target.value)} placeholder="Story title" className="mt-3 w-full" /><textarea value={storyText} onChange={(e) => setStoryText(e.target.value)} placeholder="Share a hopeful moment, lesson, or win..." className="mt-3 min-h-[120px] w-full" /><button onClick={submitStory} className="btn-primary mt-3 inline-flex items-center gap-2"><Send className="h-4 w-4" /> Submit for review</button></div>
         </section>}
 
