@@ -56,7 +56,7 @@ export default function Media() {
         ) : (
           <section className="rounded-[30px] border border-amber-200/25 bg-amber-300/10 p-6 text-center text-amber-100">
             <h3 className="font-sans text-2xl font-black">No approved media connected yet</h3>
-            <p className="mt-2 text-sm font-bold">Add real MediaItem records through Admin Data Management. Placeholder media is hidden until real records exist.</p>
+            <p className="mt-2 text-sm font-bold">Add real media records through Admin Data Management. Placeholder content stays hidden until approved records exist.</p>
           </section>
         )}
       </div>

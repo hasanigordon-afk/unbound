@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpenText, Film, HeartHandshake, MapPinned, MessageSquare, Smartphone, UserRound } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
@@ -14,6 +14,10 @@ const tabs = [
 
 export default function PilotShell({ children, title = 'ReZilient', subtitle }) {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-transparent text-white pb-28">
