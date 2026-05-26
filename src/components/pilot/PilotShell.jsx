@@ -20,8 +20,8 @@ export default function PilotShell({ children, title = 'ReZilient', subtitle }) 
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-transparent text-white pb-28">
-      <header className="sticky top-0 z-30 px-4 pt-[calc(14px+env(safe-area-inset-top))] pb-3 backdrop-blur-2xl bg-[#07101f]/80 border-b border-white/10">
+    <div className="min-h-screen bg-transparent text-white">
+      <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-[calc(14px+env(safe-area-inset-top))] pb-3 backdrop-blur-2xl bg-[#07101f]/92 border-b border-white/10">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <MobileSlideOutMenu />
@@ -43,7 +43,7 @@ export default function PilotShell({ children, title = 'ReZilient', subtitle }) 
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-5">{children}</main>
+      <main className="max-w-5xl mx-auto px-4 pt-[calc(104px+env(safe-area-inset-top))] pb-[calc(150px+env(safe-area-inset-bottom))]">{children}</main>
 
       <nav className="fixed bottom-0 left-0 right-0 z-40 px-3 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 bg-[#07101f]/85 backdrop-blur-2xl border-t border-white/10">
         <div className="max-w-md mx-auto grid grid-cols-5 gap-1 rounded-[28px] bg-white/8 border border-white/10 p-1.5 shadow-2xl">
