@@ -37,6 +37,7 @@ export async function listEntity(entityName, fallback = []) {
     if (!entity?.list) return fallback;
     return asArray(await entity.list());
   } catch (error) {
+    if (error?.response?.status === 404 || /404/.test(error.message || '')) return fallback;
     throw new Error(`${entityName} list failed: ${error.message}`);
   }
 }
@@ -47,6 +48,7 @@ export async function filterEntity(entityName, filter, fallback = []) {
     if (!entity?.filter) return fallback;
     return asArray(await entity.filter(filter));
   } catch (error) {
+    if (error?.response?.status === 404 || /404/.test(error.message || '')) return fallback;
     throw new Error(`${entityName} filter failed: ${error.message}`);
   }
 }
