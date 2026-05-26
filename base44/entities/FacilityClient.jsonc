@@ -1,0 +1,23 @@
+{
+  "name": "FacilityClient",
+  "type": "object",
+  "properties": {
+    "facility_id": { "type": "string" },
+    "client_user_id": { "type": "string" },
+    "client_email": { "type": "string" },
+    "counselor_user_id": { "type": "string" },
+    "counselor_email": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["active", "discharged", "inactive"],
+      "default": "active"
+    },
+    "consent_status": {
+      "type": "string",
+      "enum": ["not_requested", "pending", "granted", "revoked"],
+      "default": "not_requested"
+    },
+    "consent_scope_json": { "type": "object" }
+  },
+  "required": ["facility_id", "client_email", "status", "consent_status"]
+}

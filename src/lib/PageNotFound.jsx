@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "@/pages/utils";
 
 export default function PageNotFound() {
   return (
@@ -18,7 +17,7 @@ export default function PageNotFound() {
         The page you're looking for doesn't exist or has been moved.
       </p>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-        <Link to={createPageUrl("Home")} style={{ textDecoration: "none" }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           <button style={{
             padding: "13px 28px", borderRadius: 12, border: "none",
             background: "linear-gradient(135deg,#3ECFBF,#2CB8AE)",

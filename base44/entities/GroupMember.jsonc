@@ -1,0 +1,16 @@
+{
+  "name": "GroupMember",
+  "type": "object",
+  "properties": {
+    "group_id": { "type": "string" },
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "role": {
+      "type": "string",
+      "enum": ["member", "moderator", "admin"],
+      "default": "member"
+    },
+    "joined_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["group_id", "user_email", "role", "joined_at"]
+}

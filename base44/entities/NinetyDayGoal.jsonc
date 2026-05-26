@@ -1,0 +1,25 @@
+{
+  "name": "NinetyDayGoal",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "phase": {
+      "type": "string",
+      "enum": ["stabilize", "build_routine", "strengthen_support", "independence_growth"]
+    },
+    "start_date": { "type": "string", "format": "date" },
+    "target_date": { "type": "string", "format": "date" },
+    "progress_percent": { "type": "number", "default": 0 },
+    "status": {
+      "type": "string",
+      "enum": ["active", "completed", "paused", "archived"],
+      "default": "active"
+    },
+    "assigned_by_user_id": { "type": "string" },
+    "milestones_json": { "type": "array", "items": { "type": "object" } }
+  },
+  "required": ["user_email", "title", "phase", "status"]
+}

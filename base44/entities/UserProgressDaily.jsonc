@@ -1,0 +1,17 @@
+{
+  "name": "UserProgressDaily",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "date": { "type": "string", "format": "date" },
+    "check_ins_completed": { "type": "number", "default": 0 },
+    "tasks_completed": { "type": "number", "default": 0 },
+    "meetings_attended": { "type": "number", "default": 0 },
+    "wellness_minutes": { "type": "number", "default": 0 },
+    "journal_entries": { "type": "number", "default": 0 },
+    "streak_count": { "type": "number", "default": 0 },
+    "progress_score": { "type": "number", "default": 0 }
+  },
+  "required": ["user_email", "date"]
+}

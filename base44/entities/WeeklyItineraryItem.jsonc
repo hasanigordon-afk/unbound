@@ -1,0 +1,25 @@
+{
+  "name": "WeeklyItineraryItem",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "item_type": {
+      "type": "string",
+      "enum": ["appointment", "meeting", "task", "ride", "reminder", "court", "probation", "wellness", "employment"]
+    },
+    "start_datetime": { "type": "string", "format": "date-time" },
+    "end_datetime": { "type": "string", "format": "date-time" },
+    "location_name": { "type": "string" },
+    "address": { "type": "string" },
+    "resource_id": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["scheduled", "completed", "missed", "canceled"],
+      "default": "scheduled"
+    }
+  },
+  "required": ["user_email", "title", "item_type", "start_datetime", "status"]
+}

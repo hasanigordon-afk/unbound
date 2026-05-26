@@ -20,6 +20,14 @@ Any change pushed to the repo will also be reflected in the Base44 Builder.
 ```
 VITE_BASE44_APP_ID=your_app_id
 VITE_BASE44_APP_BASE_URL=your_backend_url
+SAMHSA_API_KEY=approved_findtreatment_api_key
+TWO_ONE_ONE_API_KEY=authorized_211_api_key
+HUD_API_KEY=approved_hud_api_key
+VA_API_KEY=approved_va_api_key
+CAREERONESTOP_USER_ID=career_one_stop_user_id
+CAREERONESTOP_API_KEY=career_one_stop_api_key
+MAPS_API_KEY=maps_or_geocoding_api_key
+PUBLIC_APP_BASE_URL=https://your-public-app-url
 
 e.g.
 VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6

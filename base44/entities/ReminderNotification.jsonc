@@ -1,0 +1,20 @@
+{
+  "name": "ReminderNotification",
+  "type": "object",
+  "properties": {
+    "user_id": { "type": "string" },
+    "user_email": { "type": "string" },
+    "title": { "type": "string" },
+    "body": { "type": "string" },
+    "reminder_type": { "type": "string" },
+    "scheduled_for": { "type": "string", "format": "date-time" },
+    "related_entity_type": { "type": "string" },
+    "related_entity_id": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "sent", "dismissed", "failed"],
+      "default": "pending"
+    }
+  },
+  "required": ["user_email", "title", "scheduled_for", "status"]
+}
