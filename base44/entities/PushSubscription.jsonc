@@ -1,0 +1,38 @@
+{
+  "name": "PushSubscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "ios",
+        "android",
+        "web"
+      ]
+    },
+    "endpoint": {
+      "type": "string"
+    },
+    "token": {
+      "type": "string"
+    },
+    "keys": {
+      "type": "object"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "last_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email",
+    "platform"
+  ]
+}

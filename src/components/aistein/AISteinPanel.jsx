@@ -1,4 +1,4 @@
-// AI Stein — expanded panel: search, mic, chips, response
+// ReZilient AI — expanded panel: search, mic, chips, response
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, Send, Mic, MicOff, Sparkles, ArrowRight, Phone } from "lucide-react";
@@ -104,7 +104,7 @@ export default function AISteinPanel({ open, onClose }) {
             <Sparkles style={{ width: 18, height: 18 }} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 15, fontWeight: 700, color: AIS.text, fontFamily: "'Lora', serif", lineHeight: 1.15 }}>AI Stein</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: AIS.text, fontFamily: "'Lora', serif", lineHeight: 1.15 }}>ReZilient AI</p>
             <p style={{ fontSize: 11, color: AIS.dim, marginTop: 2 }}>{TAGLINE}</p>
           </div>
           <button onClick={onClose} aria-label="Close"
@@ -270,7 +270,7 @@ export default function AISteinPanel({ open, onClose }) {
             fontSize: 10, color: AIS.dim, textAlign: "center",
             marginTop: 18, lineHeight: 1.5, fontStyle: "italic",
           }}>
-            AI Stein offers guidance only — not medical, clinical, or legal advice. In a crisis, call 911 or 988.
+            ReZilient AI offers guidance only — not medical, clinical, or legal advice. In a crisis, call 911 or 988.
           </p>
         </div>
       </div>

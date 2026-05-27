@@ -1,0 +1,84 @@
+{
+  "name": "Roadmap",
+  "type": "object",
+  "properties": {
+    "owner_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "owner_type": {
+      "type": "string",
+      "enum": [
+        "participant",
+        "client"
+      ],
+      "default": "participant"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "days_1_14_stabilization",
+        "days_15_30_structure",
+        "days_31_60_rebuild",
+        "days_61_90_growth",
+        "six_months",
+        "one_year",
+        "five_year_vision"
+      ]
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "completed",
+        "paused"
+      ],
+      "default": "active"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "see",
+        "builder",
+        "ai",
+        "manual"
+      ],
+      "default": "manual"
+    },
+    "unlocked_goal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "unlocked_task_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "title",
+    "phase"
+  ]
+}

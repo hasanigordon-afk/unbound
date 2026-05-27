@@ -1,0 +1,49 @@
+{
+  "name": "RecoveryScore",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "score_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "overall_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Moderate",
+        "High"
+      ],
+      "default": "Low"
+    },
+    "components": {
+      "type": "object",
+      "description": "Component scores for check-ins, meetings, habits, goals, journal, support activity, and tasks"
+    },
+    "trend": {
+      "type": "string",
+      "enum": [
+        "up",
+        "steady",
+        "down"
+      ],
+      "default": "steady"
+    },
+    "source_version": {
+      "type": "string",
+      "default": "rezilient-v1"
+    }
+  },
+  "required": [
+    "user_email",
+    "score_date",
+    "overall_score"
+  ]
+}

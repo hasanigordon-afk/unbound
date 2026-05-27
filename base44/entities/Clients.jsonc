@@ -18,6 +18,18 @@
     "email": {
       "type": "string"
     },
+    "user_id": {
+      "type": "string",
+      "description": "Linked app user id when the client has an account"
+    },
+    "participant_email": {
+      "type": "string",
+      "description": "Canonical participant email used by check-ins, tasks, goals, and support circle records"
+    },
+    "facility_id": {
+      "type": "string",
+      "description": "Facility.id relationship"
+    },
     "emergency_contact_name": {
       "type": "string"
     },
@@ -33,6 +45,10 @@
     },
     "counselor_id": {
       "type": "string"
+    },
+    "assigned_counselor_email": {
+      "type": "string",
+      "description": "Counselor user email relationship"
     },
     "housing_status": {
       "type": "string"

@@ -1,0 +1,42 @@
+{
+  "name": "SupportCircle",
+  "type": "object",
+  "properties": {
+    "owner_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "default": "My Support Circle"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "private",
+        "care_team",
+        "family_support"
+      ],
+      "default": "private"
+    },
+    "last_activity_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "archived"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "owner_email",
+    "name"
+  ]
+}

@@ -1,4 +1,4 @@
-// AI Stein — draggable floating bubble (snaps to nearest corner)
+// ReZilient AI — draggable floating bubble (snaps to nearest corner)
 import React, { useEffect, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { AIS } from "./aiSteinConfig";
@@ -115,7 +115,7 @@ export default function AISteinBubble({ onOpen }) {
       onTouchStart={onPointerDown}
       onTouchMove={onPointerMove}
       onTouchEnd={onPointerUp}
-      aria-label="Open AI Stein"
+      aria-label="Open ReZilient AI"
       style={{
         position: "fixed",
         left: pos.x, top: pos.y,

@@ -1,8 +1,8 @@
-// AI Stein — brain module: calls LLM with structured system prompt + context
+// ReZilient AI — brain module: calls LLM with structured system prompt + context
 import { base44 } from "@/api/base44Client";
 import { detectIntent, detectCrisis, searchPages } from "./aiSteinConfig";
 
-const SYSTEM_PROMPT = `You are AI Stein, a calm, grounded companion inside the Ah Ha recovery app.
+const SYSTEM_PROMPT = `You are ReZilient AI, a calm, grounded companion inside the ReZilient recovery, reentry, aftercare, accountability, and life rebuilding app.
 
 IDENTITY: You are a guide and navigator — not a therapist, not a doctor, not a cheerleader.
 
@@ -25,7 +25,7 @@ const RESPONSE_SCHEMA = {
   type: "object",
   properties: {
     message:  { type: "string", description: "Short, human reply shown to the user" },
-    route:    { type: "string", description: "Optional in-app route like /Meetings or /DailyCheckIn. Empty string if none." },
+    route:    { type: "string", description: "Optional in-app route like /ResourceHub or /DailyCheckIn. Empty string if none." },
     steps:    { type: "array", items: { type: "string" }, description: "Optional 1–3 short action steps" },
     crisis:   { type: "boolean", description: "True if user language indicates crisis" },
   },
@@ -39,9 +39,9 @@ export async function askAIStein({ query, user, context = {} }) {
   // Short-circuit: crisis → skip LLM, return safe hardcoded response fast
   if (isCrisis) {
     return {
-      message: "What you're feeling matters. You don't have to carry it alone right now. Please reach out — call or text 988 anytime, or open your Inner Circle to reach someone you trust.",
+      message: "What you're feeling matters. You don't have to carry it alone right now. Please reach out — call or text 988 anytime, or open your support circle to reach someone you trust.",
       route: "/Lifeline",
-      steps: ["Call or text 988", "Open Inner Circle", "Take three slow breaths"],
+      steps: ["Call or text 988", "Open your support circle", "Take three slow breaths"],
       crisis: true,
       intent: "support",
     };
@@ -69,7 +69,7 @@ ${pageMatches.map(p => `- ${p.route}  (${p.name})`).join("\n") || "- /  (Home)"}
 USER MESSAGE:
 ${query}
 
-Respond as AI Stein. Be brief. If the user wants a resource or tool that matches one of the routes above, set "route" to that path.`;
+Respond as ReZilient AI. Be brief. If the user wants a resource or tool that matches one of the routes above, set "route" to that path.`;
 
   try {
     const res = await base44.integrations.Core.InvokeLLM({

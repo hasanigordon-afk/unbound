@@ -17,8 +17,22 @@ import MyMissionBoard from './pages/MyMissionBoard.jsx';
 import Progress from './pages/Progress.jsx';
 import WellnessCenter from './pages/WellnessCenter.jsx';
 import AICompanion from './pages/AICompanion.jsx';
-import TestimonialsHub from './pages/TestimonialsHub.jsx';
-import TestimonialsAdmin from './pages/TestimonialsAdmin.jsx';
+import AhHaMomentsHub from './pages/TestimonialsHub.jsx';
+import AhHaMomentsAdmin from './pages/TestimonialsAdmin.jsx';
+import Onboarding from './pages/Onboarding.jsx';
+import DailyCheckIn from './pages/DailyCheckIn.jsx';
+import FacilityPilotDashboard from './pages/FacilityPilotDashboard.jsx';
+import PilotClientIntake from './pages/PilotClientIntake.jsx';
+import PilotTreatmentPlan from './pages/PilotTreatmentPlan.jsx';
+import PilotFeedback from './pages/PilotFeedback.jsx';
+import SEESuperAgent from './pages/SEESuperAgent.jsx';
+import CounselorDashboard from './pages/CounselorDashboard.jsx';
+import CounselorMessaging from './pages/CounselorMessaging.jsx';
+import PositiveProgressHub from './pages/PositiveProgressHub.jsx';
+import CravingControlCenter from './pages/CravingControlCenter.jsx';
+import Lifeline from './pages/Lifeline.jsx';
+import SuperAgentChat from './pages/SuperAgentChat.jsx';
+import AhHaCommunity from './pages/AhHaCommunity.jsx';
 
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import AftercarePlanView from './pages/AftercarePlanView';
@@ -70,17 +84,40 @@ const AuthenticatedApp = () => {
       <SubscriptionPrompt />
       <Routes>
         <Route path="/" element={<PilotHome />} />
+        <Route path="/Home" element={<Navigate to="/" replace />} />
+        <Route path="/Onboarding" element={<Onboarding />} />
         <Route path="/JourneyRoadmap" element={<JourneyRoadmap />} />
         <Route path="/ResourceHub" element={<ResourceHub />} />
         <Route path="/Community" element={<CommunityHub />} />
-        <Route path="/Testimonials" element={<TestimonialsHub />} />
-        <Route path="/TestimonialsAdmin" element={<TestimonialsAdmin />} />
+        <Route path="/AhHaMoments" element={<AhHaMomentsHub />} />
+        <Route path="/Testimonials" element={<Navigate to="/AhHaMoments" replace />} />
+        <Route path="/AhHaMomentsAdmin" element={<AhHaMomentsAdmin />} />
+        <Route path="/TestimonialsAdmin" element={<Navigate to="/AhHaMomentsAdmin" replace />} />
+        <Route path="/AhHaCommunity" element={<AhHaCommunity />} />
         <Route path="/Profile" element={<Profile />} />
 
         <Route path="/MyMissionBoard" element={<MyMissionBoard />} />
         <Route path="/Progress" element={<Progress />} />
         <Route path="/WellnessCenter" element={<WellnessCenter />} />
         <Route path="/AICompanion" element={<AICompanion />} />
+        <Route path="/AskReZilientAI" element={<AICompanion />} />
+        <Route path="/DailyCheckIn" element={<DailyCheckIn />} />
+        <Route path="/SEESuperAgent" element={<SEESuperAgent />} />
+        <Route path="/FacilityPilotDashboard" element={<FacilityPilotDashboard />} />
+        <Route path="/PilotClientIntake" element={<PilotClientIntake />} />
+        <Route path="/PilotTreatmentPlan" element={<PilotTreatmentPlan />} />
+        <Route path="/PilotFeedback" element={<PilotFeedback />} />
+        <Route path="/CounselorDashboard" element={<CounselorDashboard />} />
+        <Route path="/CounselorMessaging" element={<CounselorMessaging />} />
+        <Route path="/PositiveProgressHub" element={<PositiveProgressHub />} />
+        <Route path="/CravingControlCenter" element={<CravingControlCenter />} />
+        <Route path="/Lifeline" element={<Lifeline />} />
+        <Route path="/SuperAgentChat" element={<SuperAgentChat />} />
+        <Route path="/Meetings" element={<Navigate to="/ResourceHub?category=Recovery%20Programs" replace />} />
+        <Route path="/Journal" element={<Navigate to="/DailyCheckIn" replace />} />
+        <Route path="/ForwardPlan" element={<Navigate to="/JourneyRoadmap" replace />} />
+        <Route path="/MentalReset" element={<Navigate to="/WellnessCenter" replace />} />
+        <Route path="/InnerCircle" element={<Navigate to="/Profile#support" replace />} />
 
         <Route path="/AddToHomeScreen" element={<AddToHomeScreen />} />
         <Route path="/AftercarePlanView" element={<AftercarePlanView />} />

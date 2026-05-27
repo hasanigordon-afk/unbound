@@ -7,16 +7,21 @@ import { ChevronRight, Loader2, Check, Phone, MessageSquare } from "lucide-react
 import RecoveryFocusPicker from "@/components/onboarding/RecoveryFocusPicker";
 import LocationStep from "@/components/onboarding/LocationStep";
 import { CATEGORY_BY_VALUE, isCrisisCategory } from "@/lib/recoveryCategories";
-import AhHaLogo from "@/components/shared/AhHaLogo";
+import ReZilientLogo from "@/components/shared/ReZilientLogo";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
 const REASONS = [
-  { value: "recovery",     label: "Recovery",     emoji: "🌱", stage: "early_recovery_15_90" },
-  { value: "reentry",      label: "Reentry",      emoji: "🔑", stage: "trying_to_stop" },
-  { value: "veteran",      label: "Veteran",      emoji: "🇺🇸", stage: "recovery_3_12_months" },
-  { value: "need_support", label: "Need Support", emoji: "🆘", stage: "trying_to_stop" },
-  { value: "supporter",    label: "Supporter",    emoji: "🤝", stage: "recovery_3_12_months" },
+  { value: "client", label: "Client", emoji: "🌱", stage: "early_recovery_15_90", memberRole: "client" },
+  { value: "counselor", label: "Counselor", emoji: "🧭", stage: "recovery_3_12_months", memberRole: "counselor" },
+  { value: "sponsor", label: "Sponsor", emoji: "🤝", stage: "recovery_3_12_months", memberRole: "sponsor" },
+  { value: "mentor", label: "Mentor", emoji: "🌟", stage: "recovery_3_12_months", memberRole: "mentor" },
+  { value: "probation_officer", label: "Probation Officer", emoji: "⚖️", stage: "trying_to_stop", memberRole: "probation_officer" },
+  { value: "veteran", label: "Veteran", emoji: "🇺🇸", stage: "recovery_3_12_months", memberRole: "veteran" },
+  { value: "family_support", label: "Family Support", emoji: "💙", stage: "recovery_3_12_months", memberRole: "family_support" },
+  { value: "facility_admin", label: "Facility Admin", emoji: "🏥", stage: "recovery_3_12_months", memberRole: "facility_admin" },
+  { value: "returning_citizen", label: "Returning Citizen", emoji: "🔑", stage: "trying_to_stop", memberRole: "returning_citizen" },
+  { value: "person_seeking_help", label: "Person Seeking Help", emoji: "🆘", stage: "trying_to_stop", memberRole: "person_seeking_help" },
 ];
 
 const NEEDS = [
@@ -70,26 +75,31 @@ const NEED_HREFS = {
 };
 
 const NEXT_STEP = {
-  recovery:     { label: "Complete your first check-in",       href: "DailyCheckIn",                emoji: "✅" },
-  reentry:      { label: "Find housing and benefits near you", href: "HelpHub",                     emoji: "🏠" },
-  veteran:      { label: "Open your Veteran Support Hub",      href: "VeteranSupportHub",           emoji: "🇺🇸" },
-  need_support: { label: "Find help near you right now",       href: "HelpHub",                     emoji: "🆘" },
-  supporter:    { label: "Build a support circle",             href: "ClientConnectionsPage",       emoji: "🤝" },
+  client: { label: "Complete your first check-in", href: "DailyCheckIn", emoji: "✅" },
+  counselor: { label: "Open the S.E.E. planner", href: "SEESuperAgent", emoji: "🧭" },
+  sponsor: { label: "Build a support circle", href: "Profile#support", emoji: "🤝" },
+  mentor: { label: "Review community encouragement", href: "AhHaMoments", emoji: "🌟" },
+  probation_officer: { label: "Open compliance and client overview", href: "FacilityPilotDashboard", emoji: "⚖️" },
+  veteran: { label: "Find veteran support nearby", href: "ResourceHub?category=Veteran%20Services", emoji: "🇺🇸" },
+  family_support: { label: "Build a support circle", href: "Profile#support", emoji: "💙" },
+  facility_admin: { label: "Open facility dashboard", href: "FacilityPilotDashboard", emoji: "🏥" },
+  returning_citizen: { label: "Find housing and benefits near you", href: "ResourceHub", emoji: "🏠" },
+  person_seeking_help: { label: "Find help near you right now", href: "ResourceHub", emoji: "🆘" },
 };
 
 // ─── Styles ────────────────────────────────────────────────────────────────
 // Ah Ha brand palette — warm cream + amber
 
-const BG     = "#F7FAFC";
-const CARD   = "#FFFFFF";
-const CARD_B = "1px solid #E5EEF1";
-const SEL    = "rgba(46,125,122,0.10)";
-const SEL_B  = "2px solid #2E7D7A";
-const DEF_B  = "2px solid #E5EEF1";
-const ACCENT = "#2E7D7A";
-const TEXT       = "#1F2933";
-const TEXT_MUTED = "#4A5763";
-const TEXT_DIM   = "#6B7280";
+const BG     = "#070A14";
+const CARD   = "rgba(255,255,255,0.08)";
+const CARD_B = "1px solid rgba(255,255,255,0.14)";
+const SEL    = "rgba(240,183,83,0.16)";
+const SEL_B  = "2px solid rgba(240,183,83,0.72)";
+const DEF_B  = "2px solid rgba(255,255,255,0.12)";
+const ACCENT = "#F0B753";
+const TEXT       = "#EAF0FF";
+const TEXT_MUTED = "#A8B3CF";
+const TEXT_DIM   = "#6B7891";
 
 // ─── Shared sub-components ────────────────────────────────────────────────
 
@@ -223,7 +233,8 @@ export default function Onboarding() {
       await base44.entities.MemberProfile.create({
         track: "both",
         stage: reason?.stage || "trying_to_stop",
-        goals: [data.reason, `persona:${data.reason}`],
+        role: reason?.memberRole || "client",
+        goals: [data.reason, `role:${data.reason}`, "top_5_mission_board", "support_network", "life_priorities"],
         support_needs: data.needs,
         challenges: [data.feeling],
         who_to_talk_to: WHO_MAP[data.support] || "both_best_match",
@@ -234,6 +245,10 @@ export default function Onboarding() {
         location_lng: data.location_lng,
         onboarding_complete: true,
       });
+
+      if (user?.id && reason?.memberRole) {
+        try { await base44.entities.User.update(user.id, { role: reason.memberRole }); } catch {}
+      }
 
       // Persist primary recovery focus (Batch B)
       if (data.focus && user?.email) {
@@ -251,7 +266,7 @@ export default function Onboarding() {
 
   const isUrgent = FEELINGS.find(f => f.value === data.feeling)?.urgent;
   const topNeeds = data.needs.slice(0, 3);
-  const nextStep = NEXT_STEP[data.reason] || NEXT_STEP.recovery;
+  const nextStep = NEXT_STEP[data.reason] || NEXT_STEP.client;
 
   const canNext = () => {
     if (step === 2) return !!data.reason;
@@ -277,7 +292,7 @@ export default function Onboarding() {
           <div style={{ textAlign: "center", marginBottom: 10 }}>
             <img
               src="https://media.base44.com/images/public/698cbbdc830161c35d66ad0e/9002882b9_ChatGPTImageApr26202609_00_06PM.png"
-              alt="Ah Ha"
+              alt="ReZilient"
               style={{
                 width: "min(180px, 26vh)",
                 height: "min(180px, 26vh)",
@@ -286,7 +301,7 @@ export default function Onboarding() {
                 margin: "0 auto 6px",
               }}
             />
-            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 22, fontWeight: 600, lineHeight: 1.2, marginBottom: 6 }}>You showed up. That's not small — that's everything.</h1>
+            <h1 style={{ fontFamily: "'Lora', Georgia, serif", color: TEXT, fontSize: 22, fontWeight: 600, lineHeight: 1.2, marginBottom: 6 }}>Built For Life's Biggest Comebacks</h1>
             <p style={{ color: TEXT_MUTED, fontSize: 13, fontWeight: 500, lineHeight: 1.4, marginBottom: 4 }}>Help. Hope. Healing.</p>
             <p style={{ color: TEXT_DIM, fontSize: 12, lineHeight: 1.5, maxWidth: 340, margin: "0 auto" }}>
               Whether you're leaving treatment, coming home, trying to stay sober, or just need somewhere to start — this is built for you.
@@ -460,7 +475,7 @@ export default function Onboarding() {
     <div style={{ minHeight: "100vh", background: BG, display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <div style={{ padding: "32px 24px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <AhHaLogo size={32} />
+        <ReZilientLogo className="h-10 w-10" />
         {step > 2 && (
           <button
             onClick={() => {
@@ -481,8 +496,8 @@ export default function Onboarding() {
           {step === 2 && (
             <>
               <Heading
-                title="How should ReZilient personalize your support?"
-                sub="Pick the path that best fits why you are here today. This does not create a separate app — it adapts your experience."
+                title="Choose your role."
+                sub="Dashboards, permissions, tasks, and navigation adapt to the role you choose."
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {REASONS.map(r => (

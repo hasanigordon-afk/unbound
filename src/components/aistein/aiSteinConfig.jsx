@@ -1,4 +1,4 @@
-// AI Stein — shared config, palette, routes, quick actions, crisis detection
+// ReZilient AI — shared config, palette, routes, quick actions, crisis detection
 export const AIS = {
   bg:        "#FDFAF6",
   surface:   "#FFFFFF",
@@ -12,48 +12,46 @@ export const AIS = {
   red:       "#C9534F",
 };
 
-export const TAGLINE = "Helping you think clearly when it matters most.";
+export const TAGLINE = "Helping you find the next right step.";
 
 // Quick action chips — map to concrete routes
 export const QUICK_ACTIONS = [
-  { key: "meetings",   label: "Meetings",   emoji: "🗓️", route: "/Meetings" },
-  { key: "food",       label: "Food",       emoji: "🥫", route: "/VeteransDashboard" },
-  { key: "shelter",    label: "Shelter",    emoji: "🏠", route: "/NJHousingSearch" },
-  { key: "jobs",       label: "Jobs",       emoji: "💼", route: "/EmploymentOpportunities" },
-  { key: "veterans",   label: "Veterans",   emoji: "🎖️", route: "/VeteranMode" },
-  { key: "plan",       label: "My Plan",    emoji: "🧭", route: "/ForwardPlan" },
-  { key: "journal",    label: "Journal",    emoji: "📓", route: "/Journal" },
+  { key: "meetings",   label: "Meetings",   emoji: "🗓️", route: "/ResourceHub?category=Recovery%20Programs" },
+  { key: "food",       label: "Food",       emoji: "🥫", route: "/ResourceHub?category=Food%20Resources" },
+  { key: "shelter",    label: "Shelter",    emoji: "🏠", route: "/ResourceHub?category=Shelters" },
+  { key: "jobs",       label: "Jobs",       emoji: "💼", route: "/ResourceHub?category=Jobs%20%2F%20Staffing%20Agencies" },
+  { key: "veterans",   label: "Veterans",   emoji: "🎖️", route: "/ResourceHub?category=Veteran%20Services" },
+  { key: "plan",       label: "My Plan",    emoji: "🧭", route: "/JourneyRoadmap" },
+  { key: "journal",    label: "Journal",    emoji: "📓", route: "/DailyCheckIn" },
   { key: "checkin",    label: "Check-In",   emoji: "✅", route: "/DailyCheckIn" },
-  { key: "motivation", label: "Motivation", emoji: "🔥", route: "/HopeHub" },
+  { key: "motivation", label: "Motivation", emoji: "🔥", route: "/AhHaMoments" },
 ];
 
 // Searchable app surface — keyword → route
 export const PAGE_INDEX = [
   { name: "Home",                 route: "/",                     keywords: ["home", "dashboard", "main"] },
   { name: "Daily Check-In",       route: "/DailyCheckIn",          keywords: ["check in", "checkin", "mood", "today", "daily"] },
-  { name: "Journal",              route: "/Journal",               keywords: ["journal", "write", "reflect", "thoughts"] },
-  { name: "My Foundation",        route: "/MyFoundation",          keywords: ["foundation", "home base", "my day"] },
-  { name: "Inner Circle",         route: "/InnerCircle",           keywords: ["support", "contacts", "people", "call someone", "inner circle"] },
+  { name: "Journal",              route: "/DailyCheckIn",          keywords: ["journal", "write", "reflect", "thoughts"] },
+  { name: "Mission Board",        route: "/MyMissionBoard",        keywords: ["foundation", "home base", "my day", "mission", "top 5"] },
+  { name: "Support Circle",       route: "/Profile#support",       keywords: ["support", "contacts", "people", "call someone", "inner circle", "support circle"] },
   { name: "Lifeline",             route: "/Lifeline",              keywords: ["crisis", "lifeline", "emergency", "hotline", "988"] },
-  { name: "Meetings",             route: "/Meetings",              keywords: ["meeting", "aa", "na", "groups"] },
-  { name: "Recovery Map",         route: "/RecoveryMapFinder",     keywords: ["map", "find meeting", "nearby", "location"] },
-  { name: "Housing",              route: "/NJHousingSearch",       keywords: ["housing", "shelter", "homeless", "place to stay"] },
-  { name: "Jobs",                 route: "/EmploymentOpportunities", keywords: ["job", "work", "employment", "career"] },
-  { name: "Benefits",             route: "/BenefitsAssistance",    keywords: ["benefits", "snap", "medicaid", "assistance"] },
-  { name: "Veteran Mode",         route: "/VeteranMode",           keywords: ["veteran", "vet", "military", "service"] },
-  { name: "Veterans Dashboard",   route: "/VeteransDashboard",     keywords: ["veterans dashboard", "va", "veteran resources"] },
-  { name: "Mental Reset",         route: "/MentalReset",           keywords: ["reset", "calm", "breathing", "meditation", "anxious"] },
-  { name: "Mind Body Recovery",   route: "/MindBodyRecovery",      keywords: ["fitness", "workout", "body", "nutrition", "fasting", "health"] },
-  { name: "90-Day Reset",         route: "/NinetyDayReset",        keywords: ["90 day", "reset program", "sober"] },
-  { name: "Forward Plan",         route: "/ForwardPlan",           keywords: ["plan", "goals", "my plan", "future"] },
-  { name: "Goals",                route: "/GoalBoard",             keywords: ["goal", "goal board", "targets"] },
+  { name: "Meetings",             route: "/ResourceHub?category=Recovery%20Programs", keywords: ["meeting", "aa", "na", "groups"] },
+  { name: "Recovery Map",         route: "/ResourceHub",           keywords: ["map", "find meeting", "nearby", "location"] },
+  { name: "Housing",              route: "/ResourceHub?category=Shelters", keywords: ["housing", "shelter", "homeless", "place to stay"] },
+  { name: "Jobs",                 route: "/ResourceHub?category=Jobs%20%2F%20Staffing%20Agencies", keywords: ["job", "work", "employment", "career"] },
+  { name: "Benefits",             route: "/ResourceHub?category=Financial%20Assistance", keywords: ["benefits", "snap", "medicaid", "assistance"] },
+  { name: "Veteran Resources",    route: "/ResourceHub?category=Veteran%20Services", keywords: ["veteran", "vet", "military", "service", "va"] },
+  { name: "Mental Reset",         route: "/WellnessCenter",        keywords: ["reset", "calm", "breathing", "meditation", "anxious"] },
+  { name: "Mind Body Recovery",   route: "/CravingControlCenter",  keywords: ["fitness", "workout", "body", "nutrition", "fasting", "health"] },
+  { name: "90-Day Roadmap",       route: "/JourneyRoadmap",        keywords: ["90 day", "reset program", "sober"] },
+  { name: "Forward Plan",         route: "/JourneyRoadmap",        keywords: ["plan", "goals", "my plan", "future", "roadmap"] },
+  { name: "Goals",                route: "/MyMissionBoard",        keywords: ["goal", "goal board", "targets"] },
   { name: "Safety Plan",          route: "/MySafetyPlan",          keywords: ["safety plan", "safety", "safe"] },
-  { name: "Hope Hub",             route: "/HopeHub",               keywords: ["hope", "motivation", "stories", "inspiration"] },
-  { name: "Help Hub",             route: "/HelpHub",               keywords: ["help", "resources", "support"] },
-  { name: "Healing Hub",          route: "/HealingHub",            keywords: ["healing", "recover", "therapy"] },
-  { name: "Ah Ha Moments",        route: "/AhHaCommunity",         keywords: ["ah ha", "stories", "community", "moments"] },
-  { name: "Truth About Recovery", route: "/TruthAboutRecovery",    keywords: ["truth", "articles", "learn", "facts"] },
-  { name: "Donate",               route: "/Donate",                keywords: ["donate", "support mission", "give"] },
+  { name: "Hope",                 route: "/AhHaMoments",           keywords: ["hope", "motivation", "inspiration"] },
+  { name: "Help",                 route: "/ResourceHub",           keywords: ["help", "resources", "support"] },
+  { name: "Healing",              route: "/WellnessCenter",        keywords: ["healing", "recover", "therapy"] },
+  { name: "Ah Ha Moments",        route: "/AhHaMoments",           keywords: ["ah ha", "community", "moments"] },
+  { name: "S.E.E. Planner",       route: "/SEESuperAgent",         keywords: ["see", "planner", "counselor", "aftercare", "calendar"] },
   { name: "Notification Settings", route: "/NotificationSettings", keywords: ["notifications", "settings", "alerts"] },
   { name: "Profile",              route: "/Profile",               keywords: ["profile", "account", "me"] },
 ];

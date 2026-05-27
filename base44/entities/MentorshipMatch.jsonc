@@ -1,0 +1,51 @@
+{
+  "name": "MentorshipMatch",
+  "type": "object",
+  "properties": {
+    "mentee_email": {
+      "type": "string"
+    },
+    "mentor_email": {
+      "type": "string"
+    },
+    "mentor_profile_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "requested",
+        "accepted",
+        "declined",
+        "active",
+        "ended"
+      ],
+      "default": "requested"
+    },
+    "requested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "match_notes": {
+      "type": "string"
+    },
+    "communication_mode": {
+      "type": "string",
+      "enum": [
+        "chat",
+        "voice",
+        "video",
+        "in_person"
+      ],
+      "default": "chat"
+    },
+    "last_interaction_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "mentee_email",
+    "status"
+  ]
+}

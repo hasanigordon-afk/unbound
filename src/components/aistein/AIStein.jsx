@@ -1,10 +1,10 @@
-// AI Stein — global mount: renders bubble + panel across all pages
+// ReZilient AI — global mount: renders bubble + panel across all pages
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import AISteinBubble from "./AISteinBubble";
 import AISteinPanel from "./AISteinPanel";
 
-// Routes where AI Stein should NOT appear (splash/onboarding/auth)
+// Routes where ReZilient AI should NOT appear (splash/onboarding/auth)
 const HIDE_ON = ["/splash", "/Splash", "/AhHaOnboarding", "/VeteranMode"];
 
 export default function AIStein() {
