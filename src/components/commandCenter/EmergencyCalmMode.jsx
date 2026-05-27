@@ -28,7 +28,7 @@ export default function EmergencyCalmMode() {
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="fixed right-4 bottom-24 z-[70] btn-primary min-h-0 py-3 px-5 shadow-[var(--glow)] active:scale-100">Need a reset?</button>
+      <button onClick={() => setOpen(true)} className="fixed right-4 bottom-24 z-[70] min-h-0 rounded-full border border-amber-100/25 bg-[linear-gradient(145deg,rgba(245,188,90,.96),rgba(180,117,28,.96))] px-5 py-3 text-sm font-black text-slate-950 shadow-[0_0_34px_rgba(245,188,90,.34),0_18px_50px_rgba(0,0,0,.40)] active:scale-95">Emergency Calm</button>
       {open && (
         <div className="fixed inset-0 z-[90] bg-black/55 backdrop-blur-xl flex items-center justify-center p-4">
           <section className="card-glow max-w-2xl w-full p-6 md:p-8 text-center relative">
