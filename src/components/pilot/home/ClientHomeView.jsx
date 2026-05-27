@@ -18,6 +18,7 @@ import {
   Target,
   Trophy,
   Users,
+  X,
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
@@ -71,6 +72,7 @@ export default function ClientHomeView() {
   const [moduleStates, setModuleStates] = useState([]);
   const [activities, setActivities] = useState([]);
   const [activeRole, setActiveRole] = useState('client');
+  const [calmOpen, setCalmOpen] = useState(false);
   const [calendarSyncing, setCalendarSyncing] = useState(false);
   const [calendarSyncMessage, setCalendarSyncMessage] = useState('');
   const activeRoleData = roles.find((role) => role.id === activeRole) || roles[0];
@@ -244,6 +246,30 @@ export default function ClientHomeView() {
       </section>
 
       {sections.map((section) => <HomeCarouselSection key={section.title} {...section} moduleKey={moduleKey} moduleStates={stateByKey} activityCounts={activityCounts} onTrack={trackModuleAction} onTogglePin={togglePin} />)}
+      <button type="button" onClick={() => setCalmOpen(true)} className="fixed left-4 bottom-24 z-[85] min-h-0 rounded-full border border-amber-100/25 bg-[linear-gradient(145deg,rgba(245,188,90,.96),rgba(180,117,28,.96))] px-5 py-3 text-sm font-black text-slate-950 shadow-[0_0_34px_rgba(245,188,90,.34),0_18px_50px_rgba(0,0,0,.40)] active:scale-95">
+        Emergency Calm
+      </button>
+      {calmOpen && (
+        <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/60 p-4 backdrop-blur-2xl">
+          <section className="relative w-full max-w-xl rounded-[36px] border border-amber-100/18 bg-[linear-gradient(145deg,rgba(245,188,90,.16),rgba(6,10,24,.94)_44%,rgba(0,0,0,.96))] p-6 text-center shadow-[0_30px_100px_rgba(0,0,0,.62)]">
+            <button type="button" onClick={() => setCalmOpen(false)} className="absolute right-4 top-4 min-h-0 rounded-full bg-white/10 p-3 text-white">
+              <X className="h-5 w-5" />
+            </button>
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[24px] bg-amber-200/14 text-amber-100 shadow-[0_0_28px_rgba(245,188,90,.25)]">
+              <LifeBuoy className="h-7 w-7" />
+            </div>
+            <h3 className="mt-5 font-sans text-3xl font-black text-white">You are safe in this minute.</h3>
+            <p className="mx-auto mt-3 max-w-md text-sm font-bold leading-relaxed text-slate-300">Breathe in for four, hold for four, out for six. Text Marcus, step into light, and return to the next right action.</p>
+            <div className="mx-auto my-7 flex h-40 w-40 items-center justify-center rounded-full border border-amber-100/20 bg-white/8 shadow-[0_0_60px_rgba(245,188,90,.20)]">
+              <span className="text-xs font-black uppercase tracking-[0.24em] text-amber-100">Breathe</span>
+            </div>
+            <div className="grid gap-3 text-left text-sm font-bold text-slate-300 sm:grid-cols-2">
+              <div className="rounded-2xl bg-white/8 p-4">Ground: name 5 things you see, 4 you feel, 3 you hear.</div>
+              <div className="rounded-2xl bg-white/8 p-4">Connect: call sponsor, counselor, mentor, or emergency services if safety is at risk.</div>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }
