@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
 import { readLocalList, writeLocalList } from './PrototypeStore';
+import { getActionSeed } from '@/data/pilotDemoData';
 
 const storageKeys = {
   'Daily Check-In': 'rez_daily_checkins',
   Journaling: 'rez_journal_entries',
+  Journal: 'rez_journal_entries',
   Goals: 'rez_goals',
+  'Top 5 Non-Negotiables': 'rez_goals',
   'Daily reminders': 'rez_reminders',
   Meetings: 'rez_meetings',
   'Aftercare Plan': 'rez_aftercare_plans',
   'Resource Save': 'rez_saved_resources',
+  'Support Circle': 'rez_support_circle',
+  'Ah Ha Moments': 'rez_ah_ha_moments',
+  Roadmap: 'rez_roadmap',
+  "Today's Roadmap": 'rez_roadmap',
+  Tasks: 'rez_tasks',
+  Calendar: 'rez_calendar_events',
 };
 
 export default function ActionPanel({ action, onBack }) {
   const key = storageKeys[action?.title] || `rez_${action?.title?.toLowerCase().replaceAll(' ', '_')}`;
   const [text, setText] = useState('');
-  const [saved, setSaved] = useState(readLocalList(key, action?.sample ? [action.sample] : []));
+  const [saved, setSaved] = useState(readLocalList(key, getActionSeed(action)));
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
 

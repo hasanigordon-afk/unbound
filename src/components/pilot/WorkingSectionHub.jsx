@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PilotShell from './PilotShell';
 import ActionPanel from './ActionPanel';
 import WellnessToolPanel from './WellnessToolPanel';
+import { getSectionDemoItems } from '@/data/pilotDemoData';
 
 const actionMap = {
   'Breathing': 'Breathing Tools',
@@ -67,6 +68,15 @@ export default function WorkingSectionHub({ title, subtitle, sections, primaryAc
                       </div>
                     </button>
                     <p className="mt-4 text-sm font-bold leading-relaxed text-slate-300">{section.description}</p>
+                    {(section.demoItems || getSectionDemoItems(section.title)).length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        {(section.demoItems || getSectionDemoItems(section.title)).slice(0, 3).map((item) => (
+                          <div key={item} className="rounded-2xl border border-white/10 bg-white/8 px-3 py-2 text-xs font-black text-slate-100">
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     {section.items?.length > 0 && (
                       <>
                         <button onClick={() => setExpanded((prev) => ({ ...prev, [section.title]: !prev[section.title] }))} className="btn-ghost mt-4 min-h-0 px-4 py-2 text-xs">

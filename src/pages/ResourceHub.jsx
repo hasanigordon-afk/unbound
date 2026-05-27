@@ -6,6 +6,7 @@ import ResourceFilters from '@/components/resources/ResourceFilters';
 import ResourceCard from '@/components/resources/ResourceCard';
 import ResourceMapView from '@/components/resources/ResourceMapView';
 import { defaultLocation, distanceMiles, openStatus } from '@/components/resources/resourceUtils';
+import { demoResources, demoSavedResources } from '@/data/pilotDemoData';
 
 export default function ResourceHub() {
   const [location, setLocation] = useState(() => JSON.parse(localStorage.getItem('resourceLocation') || 'null'));
@@ -17,12 +18,23 @@ export default function ResourceHub() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser);
-    base44.entities.LocalResource.list().then(setResources);
+    base44.auth.me().then(setUser).catch(() => {
+      setUser(null);
+      setSaved(demoSavedResources);
+    });
+    base44.entities.LocalResource.list()
+      .then((rows) => setResources(rows?.length ? rows : demoResources))
+      .catch(() => setResources(demoResources));
   }, []);
 
   useEffect(() => {
-    if (user?.email) base44.entities.SavedLocalResource.filter({ user_email: user.email }).then(setSaved);
+    if (user?.email) {
+      base44.entities.SavedLocalResource.filter({ user_email: user.email })
+        .then((rows) => setSaved(rows?.length ? rows : demoSavedResources))
+        .catch(() => setSaved(demoSavedResources));
+    } else {
+      setSaved(demoSavedResources);
+    }
   }, [user]);
 
   const setSearchLocation = (nextLocation) => {

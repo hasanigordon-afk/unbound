@@ -2,6 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, CheckCircle2, HeartPulse, LifeBuoy, MapPinned, MessageCircle, Shield, Sparkles, Target, Trophy, UserRound, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
+import { demoHomeModuleActivities, demoHomeModuleStates } from '@/data/pilotDemoData';
+
+const mergeByModuleKey = (demoRows, backendRows = []) => {
+  const rowsByKey = new Map(demoRows.map((row) => [row.module_key, row]));
+  backendRows.forEach((row) => rowsByKey.set(row.module_key, row));
+  return Array.from(rowsByKey.values());
+};
 
 const sections = [
   {
@@ -49,12 +56,17 @@ export default function ClientHomeView() {
   const [calendarSyncMessage, setCalendarSyncMessage] = useState('');
 
   const loadBackend = async () => {
-    const [stateRows, activityRows] = await Promise.all([
-      base44.entities.HomeModuleState.list('-updated_date', 200),
-      base44.entities.HomeModuleActivity.list('-created_date', 100),
-    ]);
-    setModuleStates(stateRows);
-    setActivities(activityRows);
+    try {
+      const [stateRows, activityRows] = await Promise.all([
+        base44.entities.HomeModuleState.list('-updated_date', 200),
+        base44.entities.HomeModuleActivity.list('-created_date', 100),
+      ]);
+      setModuleStates(mergeByModuleKey(demoHomeModuleStates, stateRows));
+      setActivities([...(activityRows || []), ...demoHomeModuleActivities]);
+    } catch {
+      setModuleStates(demoHomeModuleStates);
+      setActivities(demoHomeModuleActivities);
+    }
   };
 
   useEffect(() => {

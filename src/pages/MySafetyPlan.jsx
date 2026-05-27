@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, ChevronLeft, CheckCircle, Plus, Trash2, Phone, Edit3, Shield } from "lucide-react";
+import { AlertTriangle, Plus, Trash2, Phone, Edit3, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { WizardProgressBar, TagInput } from "@/components/safetyplan/WizardStep";
 import CrisisAlertButton from "@/components/safetyplan/CrisisAlertButton";
+import { demoSafetyPlan } from "@/data/pilotDemoData";
 
 // ── Suggestions ───────────────────────────────────────────────────────────
 const TRIGGER_SUGGESTIONS = [
@@ -312,14 +313,14 @@ export default function MySafetyPlan() {
 
   const { data: plans = [], isLoading } = useQuery({
     queryKey: ["safety-plan", user?.email],
-    queryFn: () => base44.entities.SafetyPlan.filter({ owner_email: user.email }),
+    queryFn: () => base44.entities.SafetyPlan.filter({ owner_email: user.email }).catch(() => []),
     enabled: !!user,
   });
 
   const existingPlan = plans[0] || null;
 
   const [draft, setDraft] = useState(null);
-  const activePlan = draft || existingPlan || { owner_email: user?.email || "", warning_signs: [], coping_strategies: [], safe_environments: [], reasons_to_live: [], support_contacts: [], crisis_message: "", professional_contacts: [] };
+  const activePlan = draft || existingPlan || demoSafetyPlan;
 
   const saveMutation = useMutation({
     mutationFn: async (data) => {
@@ -394,7 +395,7 @@ export default function MySafetyPlan() {
   }
 
   // ── View mode ──
-  const plan = existingPlan;
+  const plan = existingPlan || (!isLoading ? demoSafetyPlan : null);
   const contactsWithPhone = plan?.support_contacts?.filter(c => c.phone) || [];
 
   return (

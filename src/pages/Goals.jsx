@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Plus, Target, CheckCircle2, Circle, Pause, Loader2 } from "lucide-react";
+import { Plus, Target, CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CreateGoalDialog from "../components/goals/CreateGoalDialog";
 import GoalCard from "../components/goals/GoalCard";
+import { demoGoals } from "@/data/pilotDemoData";
 
 export default function Goals() {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -19,19 +20,19 @@ export default function Goals() {
 
   const { data: goals = [], isLoading } = useQuery({
     queryKey: ["goals", user?.email],
-    queryFn: () => base44.entities.Goal.filter({ created_by: user.email }),
+    queryFn: () => base44.entities.Goal.filter({ created_by: user.email }).catch(() => []),
     enabled: !!user,
   });
 
   // Demo/fallback: show all goals when user has none or is not logged in
   const { data: allGoals = [] } = useQuery({
     queryKey: ["all-goals-demo"],
-    queryFn: () => base44.entities.Goal.list("-created_date", 12),
+    queryFn: () => base44.entities.Goal.list("-created_date", 12).catch(() => []),
     enabled: !isLoading && goals.length === 0,
   });
 
-  const displayGoals = goals.length > 0 ? goals : allGoals;
-  const isDemoMode = goals.length === 0 && allGoals.length > 0;
+  const displayGoals = goals.length > 0 ? goals : allGoals.length > 0 ? allGoals : demoGoals;
+  const isDemoMode = goals.length === 0 && displayGoals.length > 0;
   const filteredGoals = displayGoals.filter(g => filter === "all" || g.status === filter);
 
   if (isLoading) {
