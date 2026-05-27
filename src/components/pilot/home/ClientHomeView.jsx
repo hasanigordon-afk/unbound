@@ -45,6 +45,8 @@ const moduleKey = (sectionTitle, itemTitle) => `${sectionTitle}:${itemTitle}`.to
 export default function ClientHomeView() {
   const [moduleStates, setModuleStates] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [calendarSyncing, setCalendarSyncing] = useState(false);
+  const [calendarSyncMessage, setCalendarSyncMessage] = useState('');
 
   const loadBackend = async () => {
     const [stateRows, activityRows] = await Promise.all([
@@ -96,8 +98,41 @@ export default function ClientHomeView() {
     await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: pinned ? 'pinned' : 'unpinned', created_at_text: new Date().toLocaleString() });
   };
 
+  const syncCalendar = async () => {
+    setCalendarSyncing(true);
+    const response = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
+    if (response.data.personalConnected === false) {
+      const url = await base44.connectors.connectAppUser('6a10000a555f71fe414b9434');
+      const popup = window.open(url, '_blank');
+      const timer = setInterval(async () => {
+        if (!popup || popup.closed) {
+          clearInterval(timer);
+          const retry = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
+          setCalendarSyncMessage(`${retry.data.personalCreated || 0} recovery events synced to your calendar.`);
+          setCalendarSyncing(false);
+        }
+      }, 500);
+      return;
+    }
+    setCalendarSyncMessage(`${response.data.personalCreated || 0} recovery events synced to your calendar.`);
+    setCalendarSyncing(false);
+  };
+
   return (
     <div className="space-y-5">
+      <section className="rounded-[30px] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-200/70">Calendar Sync</p>
+            <h3 className="mt-1 font-sans text-2xl font-black text-white">Never miss a check-in or meeting</h3>
+            <p className="mt-2 text-sm font-bold text-slate-300">Sync recovery tasks, appointments, and group meetings directly to your personal Google Calendar.</p>
+            {calendarSyncMessage && <p className="mt-2 text-sm font-black text-emerald-200">{calendarSyncMessage}</p>}
+          </div>
+          <button onClick={syncCalendar} disabled={calendarSyncing} className="btn-primary shrink-0 disabled:opacity-60">
+            {calendarSyncing ? 'Syncing...' : 'Sync My Calendar'}
+          </button>
+        </div>
+      </section>
       {sections.map((section) => <HomeCarouselSection key={section.title} {...section} moduleKey={moduleKey} moduleStates={stateByKey} activityCounts={activityCounts} onTrack={trackModuleAction} onTogglePin={togglePin} />)}
     </div>
   );

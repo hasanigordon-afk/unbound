@@ -46,17 +46,32 @@ function nextDateForSchedule(schedule = '', time = '') {
   return date;
 }
 
+function nextDateForDay(dayOfWeek, time = '09:00') {
+  const now = new Date();
+  const date = new Date(now);
+  const target = Number(dayOfWeek ?? now.getDay());
+  const diff = (target - date.getDay() + 7) % 7 || 7;
+  date.setDate(date.getDate() + diff);
+  const parsedTime = parseTime(time);
+  date.setHours(parsedTime.hour, parsedTime.minute, 0, 0);
+  return date;
+}
+
 function buildEvent(item, clientName, type) {
-  const start = nextDateForSchedule(item.schedule_text || item.due_text || item.target || '', item.time_text || item.due_text || '');
-  const end = new Date(start.getTime() + 60 * 60 * 1000);
-  const isWeekly = String(item.recurrence || item.frequency || item.schedule_text || '').toLowerCase().includes('weekly') || /every|monday|tuesday|wednesday|thursday|friday|saturday|sunday/i.test(item.schedule_text || '');
+  const explicitDate = item.date || item.due_date;
+  const start = explicitDate ? new Date(`${explicitDate}T${item.start_time || item.due_time || item.preferred_time || '09:00'}`) : item.day_of_week !== undefined ? nextDateForDay(item.day_of_week, item.start_time || item.preferred_time || '09:00') : nextDateForSchedule(item.schedule_text || item.due_text || item.target || '', item.time_text || item.due_text || item.due_time || item.preferred_time || '');
+  const minutes = Number(item.estimated_minutes || 60);
+  const end = item.end_time && explicitDate ? new Date(`${explicitDate}T${item.end_time}`) : new Date(start.getTime() + minutes * 60 * 1000);
+  const title = item.title || item.task_title || item.meeting_title || item.event_title || 'Recovery check-in';
+  const isWeekly = String(item.recurrence || item.frequency || item.schedule_text || '').toLowerCase().includes('weekly') || item.day_of_week !== undefined || /every|monday|tuesday|wednesday|thursday|friday|saturday|sunday/i.test(item.schedule_text || '');
 
   return {
-    summary: `ReZilient: ${item.title}`,
-    description: `S.E.E. Super Agent ${type} for ${clientName}. ${item.category || item.frequency || item.due_text || ''}`.trim(),
+    summary: `ReZilient: ${title}`,
+    description: `Recovery ${type} for ${clientName}. ${item.category || item.task_category || item.meeting_program_type || item.notes || ''}`.trim(),
+    location: item.location || item.location_text || item.address || '',
     start: { dateTime: start.toISOString() },
     end: { dateTime: end.toISOString() },
-    reminders: { useDefault: true },
+    reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: 30 }, { method: 'email', minutes: 60 }] },
     ...(isWeekly ? { recurrence: ['RRULE:FREQ=WEEKLY;COUNT=12'] } : {}),
   };
 }
@@ -86,15 +101,22 @@ Deno.serve(async (req) => {
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const payload = await req.json();
-    const clientName = payload.clientName || 'Client';
-    const calendarEvents = Array.isArray(payload.calendarEvents) ? payload.calendarEvents : [];
-    const tasks = Array.isArray(payload.tasks) ? payload.tasks : [];
+    const clientName = payload.clientName || user.full_name || 'Client';
     const syncPersonal = payload.syncPersonal !== false;
-    const syncShared = payload.syncShared !== false;
+    const syncShared = payload.syncShared === true;
+
+    const [calendarEvents, dailyTasks, recoveryTasks, plannedMeetings] = await Promise.all([
+      Array.isArray(payload.calendarEvents) ? Promise.resolve(payload.calendarEvents) : base44.entities.CalendarEvents.list('-updated_date', 50),
+      Array.isArray(payload.tasks) ? Promise.resolve(payload.tasks) : base44.entities.DailyTasks.list('-updated_date', 50),
+      base44.entities.RecoveryPathTask.filter({ user_email: user.email, is_active: true }, 'sort_order', 50),
+      base44.entities.PlannedMeeting.filter({ participant_email: user.email }, 'day_of_week', 50),
+    ]);
 
     const googleEvents = [
-      ...calendarEvents.map((item) => buildEvent(item, clientName, 'appointment')),
-      ...tasks.map((item) => buildEvent(item, clientName, 'scheduled task')),
+      ...calendarEvents.filter((item) => item.status !== 'cancelled').map((item) => buildEvent(item, clientName, 'appointment')),
+      ...dailyTasks.filter((item) => !item.completed).map((item) => buildEvent(item, clientName, 'task')),
+      ...recoveryTasks.map((item) => ({ ...buildEvent({ ...item, day_of_week: item.days_of_week?.[0] }, clientName, 'recovery task'), recurrence: item.recurrence === 'daily' ? ['RRULE:FREQ=DAILY;COUNT=30'] : ['RRULE:FREQ=WEEKLY;COUNT=12'] })),
+      ...plannedMeetings.map((item) => buildEvent(item, clientName, 'group meeting')),
     ];
 
     let sharedCreated = 0;
