@@ -3,8 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Plus, Eye, Edit2, Trash2, RefreshCw, Share2,
-  Loader2, Sparkles, ChevronRight, AlertTriangle, Heart, MessageCircle,
+  ArrowLeft, Plus, Eye, Edit2, Trash2, RefreshCw,
+  Loader2, Sparkles, Heart, MessageCircle,
 } from "lucide-react";
 import { demoAhHaMoments } from "@/data/pilotDemoData";
 

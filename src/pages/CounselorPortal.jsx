@@ -2,12 +2,11 @@ import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Users, TrendingUp, AlertTriangle, Download, Search, MessageSquare, Bell,
-  ChevronRight, Activity, Calendar, Target, Shield, Clock, CheckCircle2,
-  Loader2, BarChart3, Phone, Filter, ArrowUpRight, User, XCircle, RefreshCw
+  Users, AlertTriangle, Search, MessageSquare, Bell,
+  ChevronRight, Activity, Calendar, CheckCircle2,
+  Loader2, BarChart3, ArrowUpRight
 } from "lucide-react";
 import MessagingPanel from "../components/counselor/MessagingPanel";
-import LifelineEventsTab from "../components/counselor/LifelineEventsTab";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import {

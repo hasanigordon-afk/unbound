@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Plus, Target, CheckCircle2, Circle, Pause, Loader2 } from "lucide-react";
+import { Plus, Target, CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CreateGoalDialog from "../components/goals/CreateGoalDialog";
 import GoalCard from "../components/goals/GoalCard";

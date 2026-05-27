@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, ChevronLeft, CheckCircle, Plus, Trash2, Phone, Edit3, Shield } from "lucide-react";
+import { AlertTriangle, Plus, Trash2, Phone, Edit3, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { WizardProgressBar, TagInput } from "@/components/safetyplan/WizardStep";
 import CrisisAlertButton from "@/components/safetyplan/CrisisAlertButton";

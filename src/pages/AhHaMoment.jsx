@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Filter, Star, ArrowRight, Loader2, BookOpen, Heart } from "lucide-react";
+import { Search, Star, ArrowRight, Loader2 } from "lucide-react";
 import { demoAhHaMoments } from "@/data/pilotDemoData";
 
 // ── Constants ──────────────────────────────────────────────────────────────
