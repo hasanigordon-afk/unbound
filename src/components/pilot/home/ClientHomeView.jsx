@@ -4,6 +4,12 @@ import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
 import { demoHomeModuleActivities, demoHomeModuleStates } from '@/data/pilotDemoData';
 
+const mergeByModuleKey = (demoRows, backendRows = []) => {
+  const rowsByKey = new Map(demoRows.map((row) => [row.module_key, row]));
+  backendRows.forEach((row) => rowsByKey.set(row.module_key, row));
+  return Array.from(rowsByKey.values());
+};
+
 const sections = [
   {
     eyebrow: 'Today',
@@ -55,8 +61,8 @@ export default function ClientHomeView() {
         base44.entities.HomeModuleState.list('-updated_date', 200),
         base44.entities.HomeModuleActivity.list('-created_date', 100),
       ]);
-      setModuleStates(stateRows?.length ? stateRows : demoHomeModuleStates);
-      setActivities(activityRows?.length ? activityRows : demoHomeModuleActivities);
+      setModuleStates(mergeByModuleKey(demoHomeModuleStates, stateRows));
+      setActivities([...(activityRows || []), ...demoHomeModuleActivities]);
     } catch {
       setModuleStates(demoHomeModuleStates);
       setActivities(demoHomeModuleActivities);

@@ -393,15 +393,19 @@ export const demoPhaseCompletions = [
 ];
 
 export const demoHomeModuleStates = [
+  { id: 'demo-home-itinerary', module_key: 'today-s-focus-daily-itinerary', section_title: 'Today\'s Focus', module_title: 'Daily Itinerary', status: 'in_progress', pinned: false, open_count: 5, last_opened_at: isoDateTime(0, 7, 45) },
+  { id: 'demo-home-checkin', module_key: 'today-s-focus-recovery-check-in', section_title: 'Today\'s Focus', module_title: 'Recovery Check-In', status: 'completed', pinned: true, open_count: 9, last_opened_at: isoDateTime(0, 8, 15) },
+  { id: 'demo-home-priority', module_key: 'today-s-focus-top-priority', section_title: 'Today\'s Focus', module_title: 'Top Priority', status: 'in_progress', pinned: true, open_count: 7, last_opened_at: isoDateTime(0, 8, 30) },
   { id: 'demo-home-roadmap', module_key: 'your-comeback-mission-roadmap', section_title: 'Your Comeback Mission', module_title: 'Roadmap', status: 'in_progress', pinned: true, open_count: 6, last_opened_at: isoDateTime(0, 8, 45) },
-  { id: 'demo-home-checkin', module_key: 'today-recovery-check-in', section_title: 'Today', module_title: 'Recovery Check-In', status: 'completed', pinned: true, open_count: 9, last_opened_at: isoDateTime(0, 8, 15) },
-  { id: 'demo-home-resources', module_key: 'support-system-find-help-nearby', section_title: 'Support System', module_title: 'Find Help Nearby', status: 'in_progress', pinned: false, open_count: 4, last_opened_at: isoDateTime(-1, 15, 0) },
+  { id: 'demo-home-progress', module_key: 'your-comeback-mission-progress', section_title: 'Your Comeback Mission', module_title: 'Progress', status: 'in_progress', pinned: false, open_count: 4, last_opened_at: isoDateTime(-1, 18, 20) },
+  { id: 'demo-home-resources', module_key: 'recovery-tools-nearby-resources-find-help-nearby', section_title: 'Recovery Tools + Nearby Resources', module_title: 'Find Help Nearby', status: 'in_progress', pinned: false, open_count: 4, last_opened_at: isoDateTime(-1, 15, 0) },
 ];
 
 export const demoHomeModuleActivities = [
-  { id: 'demo-home-activity-1', module_key: 'today-recovery-check-in', section_title: 'Today', module_title: 'Recovery Check-In', action_type: 'completed', created_at_text: 'Today, 8:15 AM' },
+  { id: 'demo-home-activity-1', module_key: 'today-s-focus-recovery-check-in', section_title: 'Today\'s Focus', module_title: 'Recovery Check-In', action_type: 'completed', created_at_text: 'Today, 8:15 AM' },
   { id: 'demo-home-activity-2', module_key: 'your-comeback-mission-roadmap', section_title: 'Your Comeback Mission', module_title: 'Roadmap', action_type: 'opened', created_at_text: 'Today, 8:45 AM' },
-  { id: 'demo-home-activity-3', module_key: 'support-system-find-help-nearby', section_title: 'Support System', module_title: 'Find Help Nearby', action_type: 'pinned', created_at_text: 'Yesterday, 3:00 PM' },
+  { id: 'demo-home-activity-3', module_key: 'recovery-tools-nearby-resources-find-help-nearby', section_title: 'Recovery Tools + Nearby Resources', module_title: 'Find Help Nearby', action_type: 'pinned', created_at_text: 'Yesterday, 3:00 PM' },
+  { id: 'demo-home-activity-4', module_key: 'today-s-focus-top-priority', section_title: 'Today\'s Focus', module_title: 'Top Priority', action_type: 'opened', created_at_text: 'Today, 8:30 AM' },
 ];
 
 export const demoLocalLists = {
@@ -429,6 +433,11 @@ export const demoLocalLists = {
   rez_roadmap: [
     { title: `${demoRoadmapProgress.roadmapCompletion}% roadmap complete`, date: '30/60/90 plan' },
     { title: `${demoRoadmapProgress.checkInsThisWeek} check-ins and ${demoRoadmapProgress.meetingsThisWeek} meetings this week`, date: 'Weekly progress' },
+  ],
+  rez_progress: [
+    { title: `${demoRoadmapProgress.streakDays}-day structure streak`, date: 'Current streak' },
+    { title: `${demoRoadmapProgress.tasksCompleted} roadmap tasks completed`, date: 'Roadmap progress' },
+    { title: `${demoRoadmapProgress.score} recovery score`, date: 'Weekly snapshot' },
   ],
 };
 
@@ -469,6 +478,8 @@ export const getActionSeed = (action = {}) => {
     'Resource Save': 'rez_saved_resources',
     'Support Circle': 'rez_support_circle',
     'Ah Ha Moments': 'rez_ah_ha_moments',
+    'My Progress': 'rez_progress',
+    'Recovery Score': 'rez_progress',
     Roadmap: 'rez_roadmap',
     'Today\'s Roadmap': 'rez_roadmap',
     Tasks: 'rez_tasks',
