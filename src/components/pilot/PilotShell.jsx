@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HeartHandshake, Home, MapPinned, MessageSquare, Smartphone, UserRound } from 'lucide-react';
+import { HeartHandshake, Home, MapPinned, MessageSquare, Presentation, Smartphone, UserRound } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import MobileSlideOutMenu from '@/components/navigation/MobileSlideOutMenu';
 
@@ -28,9 +28,15 @@ export default function PilotShell({ children, title = 'ReZilient', subtitle }) 
               {subtitle && <p className="text-sm text-slate-300 mt-1">{subtitle}</p>}
             </div>
           </div>
-          <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
-            <Smartphone className="w-5 h-5" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/PilotDemo" className="hidden items-center gap-2 rounded-2xl border border-emerald-200/20 bg-emerald-300/12 px-4 py-3 text-sm font-black text-emerald-100 active:scale-95 transition sm:flex">
+              <Presentation className="w-4 h-4" />
+              Demo
+            </Link>
+            <Link to="/AddToHomeScreen" className="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center active:scale-95 transition">
+              <Smartphone className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </header>
 

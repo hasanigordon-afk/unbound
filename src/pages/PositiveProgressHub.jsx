@@ -3,6 +3,7 @@ import PilotShell from '@/components/pilot/PilotShell';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import { base44 } from '@/api/base44Client';
 import { Award, CheckCircle2, HeartHandshake, MessageCircle, Plus, Send, ShieldCheck, Sparkles, Star, Trophy, UsersRound } from 'lucide-react';
+import { demoClients, demoMessages, demoProgressReports } from '@/lib/rehabPilotDemoData';
 
 const today = new Date().toISOString().slice(0, 10);
 const progressTypes = [
@@ -40,20 +41,67 @@ export default function PositiveProgressHub() {
   const [postForm, setPostForm] = useState(emptyPost);
 
   const loadData = async () => {
-    const me = await base44.auth.me();
-    setUser(me);
-    const [progressRows, permissionRows, achievementRows, conversationRows, postRows] = await Promise.all([
-      base44.entities.PositiveProgress.list('-completed_date', 100),
-      base44.entities.ProgressSharePermission.list('-created_date', 50),
-      base44.entities.AchievementVault.list('-earned_date', 100),
-      base44.entities.SupportConversation.list('-created_date', 100),
-      base44.entities.CommunityEncouragementPost.list('-created_date', 100),
-    ]);
-    setProgress(progressRows || []);
-    setPermissions(permissionRows || []);
-    setAchievements(achievementRows || []);
-    setConversations(conversationRows || []);
-    setPosts((postRows || []).filter((post) => post.moderation_status === 'approved'));
+    try {
+      const me = await base44.auth.me();
+      setUser(me);
+      const [progressRows, permissionRows, achievementRows, conversationRows, postRows] = await Promise.all([
+        base44.entities.PositiveProgress.list('-completed_date', 100),
+        base44.entities.ProgressSharePermission.list('-created_date', 50),
+        base44.entities.AchievementVault.list('-earned_date', 100),
+        base44.entities.SupportConversation.list('-created_date', 100),
+        base44.entities.CommunityEncouragementPost.list('-created_date', 100),
+      ]);
+      if (progressRows?.length || achievementRows?.length || conversationRows?.length) {
+        setProgress(progressRows || []);
+        setPermissions(permissionRows || []);
+        setAchievements(achievementRows || []);
+        setConversations(conversationRows || []);
+        setPosts((postRows || []).filter((post) => post.moderation_status === 'approved'));
+        return;
+      }
+    } catch {
+      // Demo mode can run without a signed-in Base44 user.
+    }
+
+    setUser({ email: demoClients[0].email, full_name: demoClients[0].display_name });
+    setProgress(demoProgressReports.map((report, index) => ({
+      id: `demo-progress-${index}`,
+      title: `${report.client} ${report.week}`,
+      category: 'achievement',
+      completed_date: today,
+      count: report.checkins + report.meetings + report.appointments,
+      notes: report.report_summary,
+      share_with_supporters: true,
+    })));
+    setPermissions(demoProgressReports.map((report, index) => ({
+      id: `demo-permission-${index}`,
+      viewer_name: `${report.client} approved supporter`,
+      viewer_role: 'family',
+      status: 'approved',
+    })));
+    setAchievements(demoProgressReports.map((report, index) => ({
+      id: `demo-achievement-${index}`,
+      title: `${report.goal_completion}% weekly goal completion`,
+      description: report.report_summary,
+      badge_type: 'goal',
+      earned_date: today,
+      shared: true,
+    })));
+    setConversations(demoMessages.map((message) => ({
+      ...message,
+      participant_name: message.sender,
+      participant_role: message.role.toLowerCase(),
+      encouragement_reaction: message.privacy_label,
+      thread_type: 'direct',
+    })));
+    setPosts(demoMessages.map((message) => ({
+      ...message,
+      post_type: 'encouragement',
+      display_name: message.sender,
+      moderation_status: 'approved',
+      reaction_proud: 2,
+      reaction_keep_going: 1,
+    })));
   };
 
   useEffect(() => { loadData(); }, []);
@@ -72,10 +120,22 @@ export default function PositiveProgressHub() {
 
   const saveProgress = async () => {
     if (!progressForm.title.trim()) return;
-    const saved = await base44.entities.PositiveProgress.create({ ...progressForm, user_email: user?.email });
+    const payload = { ...progressForm, user_email: user?.email };
+    let saved;
+    try {
+      saved = await base44.entities.PositiveProgress.create(payload);
+    } catch {
+      saved = { ...payload, id: `demo-progress-${Date.now()}` };
+    }
     setProgress((prev) => [saved, ...prev]);
     if (['appointment', 'goal', 'meeting', 'meditation', 'community', 'job'].includes(progressForm.category)) {
-      const badge = await base44.entities.AchievementVault.create({ user_email: user?.email, title: progressForm.title, description: 'A positive step forward was added to your Achievement Vault.', badge_type: progressForm.category === 'job' ? 'job' : progressForm.category, earned_date: progressForm.completed_date, shared: true });
+      const badgePayload = { user_email: user?.email, title: progressForm.title, description: 'A positive step forward was added to your Achievement Vault.', badge_type: progressForm.category === 'job' ? 'job' : progressForm.category, earned_date: progressForm.completed_date, shared: true };
+      let badge;
+      try {
+        badge = await base44.entities.AchievementVault.create(badgePayload);
+      } catch {
+        badge = { ...badgePayload, id: `demo-badge-${Date.now()}` };
+      }
       setAchievements((prev) => [badge, ...prev]);
     }
     setProgressForm(emptyProgress);
@@ -83,21 +143,39 @@ export default function PositiveProgressHub() {
 
   const savePermission = async () => {
     if (!permissionForm.viewer_name.trim() || !permissionForm.viewer_email.trim()) return;
-    const saved = await base44.entities.ProgressSharePermission.create({ ...permissionForm, user_email: user?.email });
+    const payload = { ...permissionForm, user_email: user?.email };
+    let saved;
+    try {
+      saved = await base44.entities.ProgressSharePermission.create(payload);
+    } catch {
+      saved = { ...payload, id: `demo-permission-${Date.now()}` };
+    }
     setPermissions((prev) => [saved, ...prev]);
     setPermissionForm(emptyPermission);
   };
 
   const sendSupportMessage = async () => {
     if (!messageForm.message.trim()) return;
-    const saved = await base44.entities.SupportConversation.create({ ...messageForm, user_email: user?.email, read: false });
+    const payload = { ...messageForm, user_email: user?.email, read: false };
+    let saved;
+    try {
+      saved = await base44.entities.SupportConversation.create(payload);
+    } catch {
+      saved = { ...payload, id: `demo-conversation-${Date.now()}` };
+    }
     setConversations((prev) => [saved, ...prev]);
     setMessageForm({ participant_name: '', participant_role: 'counselor', message: '', encouragement_reaction: 'Proud of you', thread_type: 'direct' });
   };
 
   const createPost = async () => {
     if (!postForm.message.trim()) return;
-    const saved = await base44.entities.CommunityEncouragementPost.create({ ...postForm, user_email: user?.email, moderation_status: 'approved' });
+    const payload = { ...postForm, user_email: user?.email, moderation_status: 'approved' };
+    let saved;
+    try {
+      saved = await base44.entities.CommunityEncouragementPost.create(payload);
+    } catch {
+      saved = { ...payload, id: `demo-post-${Date.now()}` };
+    }
     setPosts((prev) => [saved, ...prev]);
     setPostForm(emptyPost);
   };
@@ -105,7 +183,11 @@ export default function PositiveProgressHub() {
   const reactToPost = async (post, reaction) => {
     const field = { 'Proud of you': 'reaction_proud', 'Keep going': 'reaction_keep_going', 'Big win': 'reaction_big_win', Respect: 'reaction_respect', Inspired: 'reaction_inspired' }[reaction];
     const next = { ...post, [field]: (post[field] || 0) + 1 };
-    await base44.entities.CommunityEncouragementPost.update(post.id, { [field]: next[field] });
+    try {
+      await base44.entities.CommunityEncouragementPost.update(post.id, { [field]: next[field] });
+    } catch {
+      // Local demo posts are not persisted.
+    }
     setPosts((prev) => prev.map((item) => item.id === post.id ? next : item));
   };
 

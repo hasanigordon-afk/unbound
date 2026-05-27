@@ -19,6 +19,12 @@ import WellnessCenter from './pages/WellnessCenter.jsx';
 import AICompanion from './pages/AICompanion.jsx';
 import TestimonialsHub from './pages/TestimonialsHub.jsx';
 import TestimonialsAdmin from './pages/TestimonialsAdmin.jsx';
+import PilotDemo from './pages/PilotDemo.jsx';
+import FacilityPilotDashboard from './pages/FacilityPilotDashboard.jsx';
+import PilotClientIntake from './pages/PilotClientIntake.jsx';
+import PilotTreatmentPlan from './pages/PilotTreatmentPlan.jsx';
+import ParticipantMessages from './pages/ParticipantMessages.jsx';
+import PositiveProgressHub from './pages/PositiveProgressHub.jsx';
 
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import AftercarePlanView from './pages/AftercarePlanView';
@@ -60,7 +66,7 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
     if (authError.type === 'auth_required') {
       const path = window.location.pathname.toLowerCase();
-      const publicPaths = ['/resiliant', '/about'];
+      const publicPaths = ['/resiliant', '/about', '/pilotdemo', '/facilitypilotdashboard', '/pilotclientintake', '/pilottreatmentplan', '/participantmessages', '/aftercareplanview', '/positiveprogresshub'];
       if (!publicPaths.includes(path)) return <Navigate to="/Resiliant" replace />;
     }
   }
@@ -76,6 +82,12 @@ const AuthenticatedApp = () => {
         <Route path="/Testimonials" element={<TestimonialsHub />} />
         <Route path="/TestimonialsAdmin" element={<TestimonialsAdmin />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/PilotDemo" element={<PilotDemo />} />
+        <Route path="/FacilityPilotDashboard" element={<FacilityPilotDashboard />} />
+        <Route path="/PilotClientIntake" element={<PilotClientIntake />} />
+        <Route path="/PilotTreatmentPlan" element={<PilotTreatmentPlan />} />
+        <Route path="/ParticipantMessages" element={<ParticipantMessages />} />
+        <Route path="/PositiveProgressHub" element={<PositiveProgressHub />} />
 
         <Route path="/MyMissionBoard" element={<MyMissionBoard />} />
         <Route path="/Progress" element={<Progress />} />

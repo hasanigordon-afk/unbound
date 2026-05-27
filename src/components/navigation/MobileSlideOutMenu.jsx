@@ -20,6 +20,7 @@ import {
   MessageCircle,
   Moon,
   NotebookPen,
+  Presentation,
   Shield,
   Sparkles,
   Target,
@@ -34,6 +35,9 @@ import ReZilientLogo from '@/components/shared/ReZilientLogo';
 
 const menuGroups = [
   { title: 'Home', icon: Home, to: '/', items: [] },
+  { title: 'Pilot Demo', icon: Presentation, to: '/PilotDemo', items: [
+    ['Counselor Dashboard', '/FacilityPilotDashboard', ClipboardList], ['Client Intake', '/PilotClientIntake', UserRound], ['Aftercare Example', '/AftercarePlanView', FileHeart], ['Privacy-Safe Messages', '/ParticipantMessages', MessageCircle],
+  ]},
   { title: 'Profile', icon: UserRound, to: '/Profile', items: [
     ['Overview', '/Profile#overview', UserRound], ['My Progress', '/Profile#progress', Trophy], ['Recovery Score', '/Profile#score', CheckCircle2], ['Goals', '/Profile#goals', Target], ['Roadmap', '/Profile#roadmap', CalendarDays], ['Achievements', '/Profile#achievements', Trophy], ['Journal', '/Profile#journal', NotebookPen], ['Timeline', '/Profile#timeline', Clock], ['Support Circle', '/Profile#support', Users], ['Settings', '/Profile#settings', Lock],
   ]},
@@ -53,7 +57,7 @@ const menuGroups = [
     ['Ah Ha Moments', '/Community', Sparkles], ['How’d You Do It?', '/Community', MessageCircle], ['Peer Groups', '/Community', Users], ['Encouragement Feed', '/Community', Trophy],
   ]},
   { title: 'Support', icon: Bot, to: '/WellnessCenter', items: [
-    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/Profile#roadmap', ClipboardList], ['Shared Progress', '/Profile#progress', Trophy], ['Messages', '/Community', MessageCircle],
+    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/AftercarePlanView', ClipboardList], ['Shared Progress', '/PositiveProgressHub', Trophy], ['Messages', '/ParticipantMessages', MessageCircle],
   ]},
 
 ];

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { UserRound, ShieldCheck } from 'lucide-react';
 import PilotShell from '@/components/pilot/PilotShell';
+import { demoClients, demoFacility } from '@/lib/rehabPilotDemoData';
 
 const initial = { full_name: '', email: '', phone: '', recovery_focus: '', housing_status: '', primary_support: '', urgent_needs: '', preferred_checkin_time: '' };
 
@@ -12,7 +13,11 @@ export default function PilotClientIntake() {
 
   const save = async (e) => {
     e.preventDefault();
-    await base44.entities.PilotClientIntake.create(form);
+    try {
+      await base44.entities.PilotClientIntake.create(form);
+    } catch {
+      // Presentation demo can confirm the intake flow without a live backend.
+    }
     setForm(initial);
     setSaved(true);
   };
@@ -24,9 +29,12 @@ export default function PilotClientIntake() {
           <div className="w-12 h-12 rounded-2xl bg-blue-400/15 flex items-center justify-center"><UserRound className="w-6 h-6" /></div>
           <div>
             <h2 className="text-xl font-bold font-sans">Basic support profile</h2>
-            <p className="text-sm text-slate-300">Client App intake. Counselors can review saved submissions.</p>
+            <p className="text-sm text-slate-300">Client App intake for {demoFacility.facility_name}. Counselors can review saved submissions.</p>
           </div>
         </div>
+        <button type="button" onClick={() => setForm(demoClients[0])} className="min-h-0 rounded-full border border-emerald-200/20 bg-emerald-300/12 px-4 py-2 text-sm font-black text-emerald-100">
+          Load demo client
+        </button>
         <div className="grid md:grid-cols-2 gap-3">
           <input required value={form.full_name} onChange={(e) => update('full_name', e.target.value)} placeholder="Full name" className="w-full min-h-[56px]" />
           <input required type="email" value={form.email} onChange={(e) => update('email', e.target.value)} placeholder="Email" className="w-full min-h-[56px]" />

@@ -4,8 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft, CheckCircle2, Circle, ChevronDown, ChevronUp,
-  Shield, AlertTriangle, Printer, Edit3, Download, Loader2
+  Shield, Edit3, Loader2
 } from "lucide-react";
+import { demoAftercarePlans } from "@/lib/rehabPilotDemoData";
 
 const C = {
   teal:    "#2DD4BF",
@@ -34,6 +35,20 @@ const SECTION_CONFIG = [
   { key: "accountability_team", label: "👥 Accountability Team",            color: C.indigo,  phase: "90day" },
   { key: "support_resources",   label: "🌐 Support Resources",              color: C.emerald, phase: "90day" },
 ];
+
+const demoPlan = demoAftercarePlans[0];
+const demoCompletedTasks = [
+  "Call Maya Rivera within 24 hours of discharge.",
+  "Attend IOP intake at Harbor Recovery Step-Down.",
+  "Complete daily ReZilient check-in by 9 AM.",
+  "Confirm transportation for the first three appointments.",
+].map((title, index) => ({
+  id: `demo-task-${index}`,
+  plan_id: demoPlan.id,
+  title,
+  category_key: SECTION_CONFIG.find((section) => demoPlan.generated_plan_json[section.key]?.includes(title))?.key,
+  completion_status: "complete",
+}));
 
 function PlanSection({ sectionKey, label, color, items, tasks, onToggleTask, planId, userEmail }) {
   const [open, setOpen] = useState(true);
@@ -95,6 +110,7 @@ export default function AftercarePlanView() {
   const qc = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const planId = urlParams.get("planId");
+  const [demoTasks, setDemoTasks] = useState(demoCompletedTasks);
 
   const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
 
@@ -104,14 +120,17 @@ export default function AftercarePlanView() {
     enabled: !!user?.email,
   });
 
-  const { data: tasks = [] } = useQuery({
+  const { data: savedTasks = [] } = useQuery({
     queryKey: ["aftercare-builder-tasks", planId],
     queryFn: () => base44.entities.AftercareBuilderTask.filter({ plan_id: planId }),
     enabled: !!planId,
   });
 
-  const plan = planId ? plans.find(p => p.id === planId) : plans[0];
+  const savedPlan = planId ? plans.find(p => p.id === planId) : plans[0];
+  const plan = savedPlan || demoPlan;
+  const isDemoPlan = !savedPlan;
   const generated = plan?.generated_plan_json;
+  const tasks = isDemoPlan ? demoTasks : savedTasks;
 
   const toggleTask = useMutation({
     mutationFn: async ({ sectionKey, item, task, currentlyDone }) => {
@@ -134,6 +153,18 @@ export default function AftercarePlanView() {
   });
 
   const handleToggle = (sectionKey, item, task, done) => {
+    if (isDemoPlan) {
+      setDemoTasks((prev) => {
+        if (task) {
+          return prev.map((existing) => existing.id === task.id ? { ...existing, completion_status: done ? "pending" : "complete" } : existing);
+        }
+        return [
+          ...prev,
+          { id: `demo-task-${Date.now()}`, plan_id: demoPlan.id, title: item, category_key: sectionKey, completion_status: "complete" },
+        ];
+      });
+      return;
+    }
     toggleTask.mutate({ sectionKey, item, task, currentlyDone: done });
   };
 
@@ -186,7 +217,7 @@ export default function AftercarePlanView() {
               marginBottom: 14 }}>
               <Shield style={{ color: C.amber, width: 12, height: 12 }} />
               <p style={{ fontSize: 10, fontWeight: 800, color: C.amber, textTransform: "uppercase", letterSpacing: ".08em" }}>
-                Sample Plan – Requires Counselor Review
+                {isDemoPlan ? "Demo Plan - Synthetic Data" : "Sample Plan - Requires Counselor Review"}
               </p>
             </div>
 
@@ -272,13 +303,13 @@ export default function AftercarePlanView() {
                 {plan.status?.replace("_", " ")}
               </p>
             </div>
-            <button onClick={() => navigate("/AftercarePlanBuilder")} style={{
+            <button onClick={() => navigate(isDemoPlan ? "/PilotDemo" : "/AftercarePlanBuilder")} style={{
               width: "100%", padding: "13px", borderRadius: 13, border: "none", cursor: "pointer",
               background: `linear-gradient(135deg,${C.indigo},${C.purple})`,
               color: "#fff", fontWeight: 800, fontSize: 14,
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             }}>
-              <Edit3 style={{ width: 15, height: 15 }} /> Build a New Plan
+              <Edit3 style={{ width: 15, height: 15 }} /> {isDemoPlan ? "Open Pilot Demo" : "Build a New Plan"}
             </button>
           </div>
 

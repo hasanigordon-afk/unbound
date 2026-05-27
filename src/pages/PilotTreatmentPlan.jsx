@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { ClipboardList, Save } from 'lucide-react';
 import PilotShell from '@/components/pilot/PilotShell';
+import { demoAftercarePlans, demoClients } from '@/lib/rehabPilotDemoData';
 
 const initial = { client_name: '', client_email: '', discharge_date: '', diagnosis_summary: '', treatment_goals: '', medications: '', relapse_triggers: '', required_aftercare_tasks: '', counselor_notes: '' };
 
@@ -13,13 +14,33 @@ export default function PilotTreatmentPlan() {
 
   const savePlan = async (e) => {
     e.preventDefault();
-    await base44.entities.PilotTreatmentPlan.create({
-      ...form,
-      required_aftercare_tasks: form.required_aftercare_tasks.split('\n').map((item) => item.trim()).filter(Boolean),
-      status: 'draft',
-    });
+    try {
+      await base44.entities.PilotTreatmentPlan.create({
+        ...form,
+        required_aftercare_tasks: form.required_aftercare_tasks.split('\n').map((item) => item.trim()).filter(Boolean),
+        status: 'draft',
+      });
+    } catch {
+      // Presentation demo can confirm the workflow without persisting to Base44.
+    }
     setSaved(true);
     setForm(initial);
+  };
+
+  const loadDemoPlan = () => {
+    const client = demoClients[0];
+    const plan = demoAftercarePlans[0].generated_plan_json;
+    setForm({
+      client_name: client.full_name,
+      client_email: client.email,
+      discharge_date: demoAftercarePlans[0].discharge_date,
+      diagnosis_summary: plan.participant_snapshot,
+      treatment_goals: plan.goals_30day.join('\n'),
+      medications: 'Demo MAT follow-up and medication list review required.',
+      relapse_triggers: plan.trigger_prevention.join('\n'),
+      required_aftercare_tasks: [...plan.immediate_72h, ...plan.week1_actions].join('\n'),
+      counselor_notes: plan.counselor_review_note,
+    });
   };
 
   return (
@@ -32,6 +53,9 @@ export default function PilotTreatmentPlan() {
             <p className="text-sm text-slate-300">Keep this brief and clinically useful.</p>
           </div>
         </div>
+        <button type="button" onClick={loadDemoPlan} className="min-h-0 rounded-full border border-emerald-200/20 bg-emerald-300/12 px-4 py-2 text-sm font-black text-emerald-100">
+          Load demo treatment plan
+        </button>
 
         <div className="grid md:grid-cols-2 gap-3">
           <input required value={form.client_name} onChange={(e) => update('client_name', e.target.value)} placeholder="Client name" className="w-full min-h-[56px]" />
