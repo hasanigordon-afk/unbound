@@ -9,15 +9,20 @@ export const ROLES = {
   COUNSELOR:    "counselor",
   STAFF:        "staff",
   PARTICIPANT:  "user",        // default Base44 role for participants
-  PROBATION:    "probation",
-  FAMILY:       "family",
+  PROBATION:    "probation_officer",
+  FAMILY:       "family_support",
   MENTOR:       "mentor",
+  SPONSOR:      "sponsor",
+  VETERAN:      "veteran",
+  FACILITY_ADMIN: "facility_admin",
+  RETURNING_CITIZEN: "returning_citizen",
+  SEEKING_HELP: "person_seeking_help",
   CLIENT:       "client",      // Dual Portal: client (personal recovery)
   SUPPORT_USER: "support_user",// Dual Portal: support person (sponsor, coach, etc.)
 };
 
 // ── Role Groups ───────────────────────────────────────────────────────────────
-export const STAFF_ROLES    = [ROLES.ADMIN, ROLES.COUNSELOR, ROLES.STAFF];
+export const STAFF_ROLES    = [ROLES.ADMIN, ROLES.COUNSELOR, ROLES.STAFF, ROLES.FACILITY_ADMIN, ROLES.PROBATION];
 export const CLINICAL_ROLES = [ROLES.ADMIN, ROLES.COUNSELOR];
 export const ALL_ROLES      = Object.values(ROLES);
 
@@ -31,7 +36,7 @@ export const PERMISSIONS = {
   CREATE_ALERTS:          STAFF_ROLES,
 
   // Facility management
-  MANAGE_FACILITY:        [ROLES.ADMIN],
+  MANAGE_FACILITY:        [ROLES.ADMIN, ROLES.FACILITY_ADMIN],
   VIEW_FACILITY_REPORTS:  STAFF_ROLES,
   MANAGE_STAFF:           [ROLES.ADMIN],
 
@@ -62,15 +67,15 @@ export function isCounselor(user) {
 }
 
 export function isParticipant(user) {
-  return user?.role === ROLES.PARTICIPANT || user?.role === ROLES.CLIENT || !user?.role;
+  return [ROLES.PARTICIPANT, ROLES.CLIENT, ROLES.VETERAN, ROLES.RETURNING_CITIZEN, ROLES.SEEKING_HELP].includes(user?.role) || !user?.role;
 }
 
 export function isSupportUser(user) {
-  return user?.role === ROLES.SUPPORT_USER;
+  return [ROLES.SUPPORT_USER, ROLES.SPONSOR, ROLES.MENTOR, ROLES.FAMILY].includes(user?.role);
 }
 
 export function isClientRole(user) {
-  return user?.role === ROLES.CLIENT || user?.role === ROLES.PARTICIPANT || !user?.role;
+  return [ROLES.CLIENT, ROLES.PARTICIPANT, ROLES.VETERAN, ROLES.RETURNING_CITIZEN, ROLES.SEEKING_HELP].includes(user?.role) || !user?.role;
 }
 
 export function hasPermission(user, permission) {
@@ -86,11 +91,14 @@ export function getDefaultPage(user) {
       return "StaffDashboard";
     case ROLES.COUNSELOR:
     case ROLES.STAFF:
-      return "CounselorPortal";
+    case ROLES.FACILITY_ADMIN:
+      return "FacilityPilotDashboard";
     case ROLES.PROBATION:
-      return "ProbationDashboard";
+      return "FacilityPilotDashboard";
     case ROLES.FAMILY:
-      return "FamilyView";
+    case ROLES.SPONSOR:
+    case ROLES.MENTOR:
+      return "Community";
     case ROLES.SUPPORT_USER:
       return "SupportUserDashboard";
     default:

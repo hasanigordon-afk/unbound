@@ -1,4 +1,4 @@
-// AI Stein — Web Speech API voice input hook (no extra deps)
+// ReZilient AI — Web Speech API voice input hook (no extra deps)
 import { useEffect, useRef, useState } from "react";
 
 export function useVoiceInput({ onResult }) {

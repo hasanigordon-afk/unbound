@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import PilotShell from '@/components/pilot/PilotShell';
 import { Check, EyeOff, Search, Star, X } from 'lucide-react';
 
-const queries = ['recovery story addiction hope', 'sobriety story transformation', 'inspirational recovery story', 'addiction recovery success story', 'life after addiction recovery story', 'sober motivation', 'recovery is possible story', 'second chance recovery story', 'mental health recovery story hope', 'reentry success story', 'veteran recovery story hope', 'overcoming addiction inspirational story', 'AA recovery speaker hope', 'NA recovery speaker hope', 'sober living success story'];
+const queries = ['recovery hope grounding', 'sobriety transformation', 'inspirational recovery', 'life after addiction recovery', 'sober motivation', 'recovery is possible', 'second chance reentry', 'mental health recovery hope', 'reentry support', 'veteran recovery hope', 'overcoming addiction inspiration', 'AA recovery speaker hope', 'NA recovery speaker hope', 'sober living support'];
 
 export default function TestimonialsAdmin() {
   const [query, setQuery] = useState(queries[0]);
@@ -30,7 +30,7 @@ export default function TestimonialsAdmin() {
   const addReading = async () => { await base44.entities.ReadingItem.create({ ...reading, media_type: 'article', tone: 'positive', moderation_status: 'pending_review', is_positive_content: true, tags: ['hope', 'recovery'] }); setReading({ title: '', summary: '', source_name: '', source_url: '', category: 'Hope & Healing', reading_time_minutes: 5 }); await load(); };
 
   return (
-    <PilotShell title="Testimonials Admin" subtitle="Curate positive recovery videos, readings, and AhHa Stories.">
+    <PilotShell title="Ah Ha Moments Admin" subtitle="Curate positive recovery videos, readings, and Ah Ha Moments.">
       <div className="space-y-6">
         <section className="rounded-[34px] border border-white/12 bg-white/10 p-5">
           <h2 className="font-sans text-2xl font-black text-white">YouTube discovery</h2>

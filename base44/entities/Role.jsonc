@@ -1,0 +1,48 @@
+{
+  "name": "Role",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "enum": [
+        "client",
+        "counselor",
+        "sponsor",
+        "mentor",
+        "probation_officer",
+        "veteran",
+        "family_support",
+        "facility_admin",
+        "returning_citizen",
+        "person_seeking_help"
+      ]
+    },
+    "label": {
+      "type": "string"
+    },
+    "dashboard_type": {
+      "type": "string",
+      "enum": [
+        "client",
+        "support",
+        "staff",
+        "admin"
+      ],
+      "default": "client"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "label"
+  ]
+}

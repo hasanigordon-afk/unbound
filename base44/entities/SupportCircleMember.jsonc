@@ -1,0 +1,67 @@
+{
+  "name": "SupportCircleMember",
+  "type": "object",
+  "properties": {
+    "circle_id": {
+      "type": "string"
+    },
+    "owner_email": {
+      "type": "string"
+    },
+    "contact_email": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "counselor",
+        "sponsor",
+        "mentor",
+        "family",
+        "friend",
+        "probation_officer",
+        "peer"
+      ]
+    },
+    "phone": {
+      "type": "string"
+    },
+    "last_interaction_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "support_activity_count": {
+      "type": "number",
+      "default": 0
+    },
+    "encouragement_count": {
+      "type": "number",
+      "default": 0
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "invited",
+        "active",
+        "paused",
+        "removed"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "owner_email",
+    "name",
+    "role"
+  ]
+}

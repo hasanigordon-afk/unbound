@@ -8,10 +8,16 @@
     "reaction_type": {
       "type": "string",
       "enum": [
-        "heart",
-        "support"
+        "Inspired",
+        "Respect",
+        "Powerful",
+        "Needed This",
+        "Proud Of You"
       ],
-      "default": "heart"
+      "default": "Inspired"
+    },
+    "user_email": {
+      "type": "string"
     }
   },
   "required": [

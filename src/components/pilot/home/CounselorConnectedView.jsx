@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ClipboardList, FileText, MessageCircle, Route, Sparkles, TrendingUp, Users } from 'lucide-react';
+import { ClipboardList, MessageCircle, Route, Sparkles, TrendingUp, Users } from 'lucide-react';
 import HomeSectionHeader from './HomeSectionHeader';
 
 const modules = [

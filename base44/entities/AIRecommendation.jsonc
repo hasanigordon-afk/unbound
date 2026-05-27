@@ -1,0 +1,66 @@
+{
+  "name": "AIRecommendation",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "recommendation_type": {
+      "type": "string",
+      "enum": [
+        "resource",
+        "meeting",
+        "task",
+        "goal",
+        "support_contact",
+        "transportation",
+        "calm_tool",
+        "risk_review"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "target_entity_type": {
+      "type": "string"
+    },
+    "target_entity_id": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "dismissed"
+      ],
+      "default": "pending"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "recoveryCoach",
+        "superAgent",
+        "see",
+        "riskEngine",
+        "manual"
+      ],
+      "default": "see"
+    }
+  },
+  "required": [
+    "title",
+    "recommendation_type"
+  ]
+}

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PilotShell from '@/components/pilot/PilotShell';
 import ResourceLocationPrompt from '@/components/resources/ResourceLocationPrompt';
@@ -6,8 +7,10 @@ import ResourceFilters from '@/components/resources/ResourceFilters';
 import ResourceCard from '@/components/resources/ResourceCard';
 import ResourceMapView from '@/components/resources/ResourceMapView';
 import { defaultLocation, distanceMiles, openStatus } from '@/components/resources/resourceUtils';
+import { pilotResources } from '@/lib/pilotSeedData';
 
 export default function ResourceHub() {
+  const routeLocation = useLocation();
   const [location, setLocation] = useState(() => JSON.parse(localStorage.getItem('resourceLocation') || 'null'));
   const [resources, setResources] = useState([]);
   const [saved, setSaved] = useState([]);
@@ -15,11 +18,17 @@ export default function ResourceHub() {
   const [activeFilters, setActiveFilters] = useState(['Nearby']);
   const [view, setView] = useState('list');
   const [user, setUser] = useState(null);
+  const [seedMessage, setSeedMessage] = useState('');
 
   useEffect(() => {
-    base44.auth.me().then(setUser);
-    base44.entities.LocalResource.list().then(setResources);
+    base44.auth.me().then(setUser).catch(() => setUser(null));
+    base44.entities.LocalResource.list().then((rows) => setResources(rows.length ? rows : pilotResources)).catch(() => setResources(pilotResources));
   }, []);
+
+  useEffect(() => {
+    const requestedCategory = new URLSearchParams(routeLocation.search).get('category');
+    if (requestedCategory) setCategory(requestedCategory);
+  }, [routeLocation.search]);
 
   useEffect(() => {
     if (user?.email) base44.entities.SavedLocalResource.filter({ user_email: user.email }).then(setSaved);
@@ -38,6 +47,18 @@ export default function ResourceHub() {
     if (!user?.email || saved.some((item) => item.resource_id === resource.id)) return;
     const created = await base44.entities.SavedLocalResource.create({ user_email: user.email, resource_id: resource.id, resource_name: resource.name, category: resource.category, address: resource.address, phone: resource.phone, website: resource.website });
     setSaved((current) => [...current, created]);
+  };
+
+  const seedBackend = async () => {
+    try {
+      setSeedMessage('Syncing pilot resources...');
+      const response = await base44.functions.invoke('seedPilotData', {});
+      setSeedMessage(`Pilot catalog synced: ${response.data?.summary?.resources || 0} new resources added.`);
+      const rows = await base44.entities.LocalResource.list();
+      setResources(rows.length ? rows : pilotResources);
+    } catch {
+      setSeedMessage('Pilot catalog is available locally; sign in as staff to sync backend collections.');
+    }
   };
 
   const displayedResources = useMemo(() => {
@@ -65,8 +86,12 @@ export default function ResourceHub() {
             <div>
               <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-200/80">Survival companion</p>
               <h2 className="mt-2 font-sans text-3xl font-black text-white">Resources near {location?.label || defaultLocation.label}</h2>
+              {seedMessage && <p className="mt-2 text-sm font-black text-emerald-100">{seedMessage}</p>}
             </div>
-            <button onClick={() => setLocation(null)} className="rounded-full border border-white/12 bg-white/10 px-4 py-2 text-xs font-black text-white">Change location</button>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={seedBackend} className="rounded-full border border-amber-200/25 bg-amber-300/10 px-4 py-2 text-xs font-black text-amber-100">Sync pilot data</button>
+              <button onClick={() => setLocation(null)} className="rounded-full border border-white/12 bg-white/10 px-4 py-2 text-xs font-black text-white">Change location</button>
+            </div>
           </div>
           <div className="mt-5"><ResourceFilters category={category} setCategory={setCategory} activeFilters={activeFilters} toggleFilter={toggleFilter} /></div>
           <div className="mt-5 grid grid-cols-2 rounded-3xl border border-white/12 bg-white/10 p-1">
@@ -76,10 +101,9 @@ export default function ResourceHub() {
         </section>
 
         {displayedResources.length === 0 ? (
-          <section className="rounded-[30px] border border-white/12 bg-white/10 p-6 text-center shadow-xl backdrop-blur-2xl">
-            <h3 className="font-sans text-2xl font-black text-white">No nearby resources found</h3>
-            <p className="mt-2 text-sm font-bold text-slate-300">Try searching Somerset, New Brunswick, Edison, Plainfield, or Newark.</p>
-          </section>
+          <div className="grid gap-4">
+            {pilotResources.slice(0, 3).map((resource) => <ResourceCard key={resource.id} resource={{ ...resource, distance: distanceMiles(location || defaultLocation, resource) }} saved={saved.some((item) => item.resource_id === resource.id)} onSave={saveResource} />)}
+          </div>
         ) : view === 'map' ? (
           <ResourceMapView resources={displayedResources} />
         ) : (

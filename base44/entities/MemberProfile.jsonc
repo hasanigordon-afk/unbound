@@ -140,10 +140,18 @@
       "type": "string",
       "enum": [
         "member",
+        "client",
         "peer_mentor",
         "counselor",
+        "sponsor",
+        "mentor",
+        "probation_officer",
+        "veteran",
+        "family_support",
         "hybrid",
         "facility_admin",
+        "returning_citizen",
+        "person_seeking_help",
         "platform_admin"
       ],
       "default": "member"

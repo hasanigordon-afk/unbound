@@ -41,7 +41,7 @@ const menuGroups = [
     ['Today’s Itinerary', '/JourneyRoadmap', Clock], ['Calendar', '/JourneyRoadmap', CalendarDays], ['Reminders', '/JourneyRoadmap', Bell], ['Transportation Help', '/JourneyRoadmap', Car],
   ]},
   { title: 'Recovery Support', icon: LifeBuoy, to: '/JourneyRoadmap', items: [
-    ['Daily Check-In', '/WellnessCenter', HeartPulse], ['Meeting Tracker', '/JourneyRoadmap', Users], ['Sponsor / Mentor Contact', '/Community', UserRound], ['Craving Log', '/WellnessCenter', Shield], ['Relapse Prevention Plan', '/WellnessCenter', FileHeart],
+    ['Daily Check-In', '/DailyCheckIn', HeartPulse], ['Meeting Tracker', '/ResourceHub?category=Recovery%20Programs', Users], ['Sponsor / Mentor Contact', '/Profile#support', UserRound], ['Craving Log', '/CravingControlCenter', Shield], ['Relapse Prevention Plan', '/CravingControlCenter', FileHeart],
   ]},
   { title: 'Resources', icon: MapPinned, to: '/ResourceHub', items: [
     ['Shelters', '/ResourceHub', Shield], ['Food Pantries', '/ResourceHub', Utensils], ['Rehab / IOP', '/ResourceHub', HeartPulse], ['Jobs & Staffing', '/ResourceHub', Briefcase], ['Transportation', '/ResourceHub', Car], ['Veterans Resources', '/ResourceHub', Users],
@@ -50,10 +50,10 @@ const menuGroups = [
     ['Meditation', '/WellnessCenter', Sparkles], ['Breathing Tools', '/WellnessCenter', Wind], ['Binaural Beats', '/WellnessCenter', HeartPulse], ['Journaling', '/WellnessCenter', NotebookPen],
   ]},
   { title: 'Community', icon: MessageCircle, to: '/Community', items: [
-    ['Ah Ha Moments', '/Community', Sparkles], ['How’d You Do It?', '/Community', MessageCircle], ['Peer Groups', '/Community', Users], ['Encouragement Feed', '/Community', Trophy],
+    ['Ah Ha Moments', '/AhHaMoments', Sparkles], ['Support Circle', '/Profile#support', MessageCircle], ['Peer Groups', '/AhHaCommunity', Users], ['Encouragement Feed', '/PositiveProgressHub', Trophy],
   ]},
   { title: 'Support', icon: Bot, to: '/WellnessCenter', items: [
-    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/Profile#roadmap', ClipboardList], ['Shared Progress', '/Profile#progress', Trophy], ['Messages', '/Community', MessageCircle],
+    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/JourneyRoadmap', ClipboardList], ['Shared Progress', '/Progress', Trophy], ['Messages', '/CounselorMessaging', MessageCircle],
   ]},
 
 ];
