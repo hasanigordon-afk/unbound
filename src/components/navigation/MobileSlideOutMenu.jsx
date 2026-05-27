@@ -53,7 +53,7 @@ const menuGroups = [
     ['Ah Ha Moments', '/Community', Sparkles], ['How’d You Do It?', '/Community', MessageCircle], ['Peer Groups', '/Community', Users], ['Encouragement Feed', '/Community', Trophy],
   ]},
   { title: 'Support', icon: Bot, to: '/WellnessCenter', items: [
-    ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/Profile#roadmap', ClipboardList], ['Shared Progress', '/Profile#progress', Trophy], ['Messages', '/Community', MessageCircle],
+    ['S.E.E. AI Workflow', '/SEESuperAgent', Sparkles], ['Wellness Center', '/WellnessCenter', HeartPulse], ['My Aftercare Plan', '/Profile#roadmap', ClipboardList], ['Shared Progress', '/Profile#progress', Trophy], ['Messages', '/Community', MessageCircle],
   ]},
 
 ];

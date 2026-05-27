@@ -6,11 +6,10 @@ import { createPageUrl } from "./utils";
 import {
   Users, AlertTriangle, BarChart2, Settings, MessageCircle,
   CalendarDays, Shield, FileText, TrendingUp, Home, ChevronRight,
-  Bell, Activity, BookOpen,
+  Bell, Activity, BookOpen, Sparkles,
 } from "lucide-react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import { PageLoader } from "@/components/shared/LoadingSpinner";
-import EmptyState from "@/components/shared/EmptyState";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -28,6 +27,7 @@ const C = {
 
 // ── Counselor nav cards ───────────────────────────────────────────────────────
 const COUNSELOR_TOOLS = [
+  { icon: Sparkles,     label: "S.E.E. AI Workflow", sub: "Notes into plans, tasks & alerts", href: "SEESuperAgent",      color: C.teal   },
   { icon: Users,        label: "My Caseload",        sub: "Participants assigned to me", href: "CounselorPortal",      color: C.blue   },
   { icon: Activity,     label: "Aftercare Monitor",  sub: "Engagement & risk tracking", href: "AftercareMonitoring",  color: C.teal   },
   { icon: CalendarDays, label: "Sessions",           sub: "Schedule & telehealth",      href: "TelehealthHub",        color: C.indigo },

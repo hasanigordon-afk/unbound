@@ -45,6 +45,7 @@ import RecoveryHub from './pages/RecoveryHub';
 import ResourceHub from './pages/ResourceHub';
 import RoleSelect from './pages/RoleSelect';
 import SavedResources from './pages/SavedResources';
+import SEESuperAgent from './pages/SEESuperAgent';
 import Splash from './pages/Splash';
 import SupportChat from './pages/SupportChat';
 import TelehealthHub from './pages/TelehealthHub';
@@ -100,6 +101,7 @@ export const PAGES = {
     "ResourceHub": ResourceHub,
     "RoleSelect": RoleSelect,
     "SavedResources": SavedResources,
+    "SEESuperAgent": SEESuperAgent,
     "Splash": Splash,
     "SupportChat": SupportChat,
     "TelehealthHub": TelehealthHub,

@@ -60,6 +60,27 @@
       },
       "default": []
     },
+    "extracted_reminders": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "extracted_check_ins": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
     "extracted_risk_factors": {
       "type": "array",
       "items": {
@@ -68,6 +89,13 @@
       "default": []
     },
     "extracted_goals": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "weekly_itinerary": {
       "type": "array",
       "items": {
         "type": "object"

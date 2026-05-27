@@ -19,6 +19,7 @@ import WellnessCenter from './pages/WellnessCenter.jsx';
 import AICompanion from './pages/AICompanion.jsx';
 import TestimonialsHub from './pages/TestimonialsHub.jsx';
 import TestimonialsAdmin from './pages/TestimonialsAdmin.jsx';
+import SEESuperAgent from './pages/SEESuperAgent.jsx';
 
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import AftercarePlanView from './pages/AftercarePlanView';
@@ -81,6 +82,8 @@ const AuthenticatedApp = () => {
         <Route path="/Progress" element={<Progress />} />
         <Route path="/WellnessCenter" element={<WellnessCenter />} />
         <Route path="/AICompanion" element={<AICompanion />} />
+        <Route path="/SEESuperAgent" element={<SEESuperAgent />} />
+        <Route path="/SEE" element={<SEESuperAgent />} />
 
         <Route path="/AddToHomeScreen" element={<AddToHomeScreen />} />
         <Route path="/AftercarePlanView" element={<AftercarePlanView />} />
