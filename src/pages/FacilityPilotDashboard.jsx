@@ -5,6 +5,7 @@ import { Activity, AlertTriangle, CheckCircle2, Clock3, ClipboardList, Eye, Mail
 import PilotShell from '@/components/pilot/PilotShell';
 import { demoClients, demoCounselorAccounts, demoFacility, demoProgressReports } from '@/lib/rehabPilotDemoData';
 import { appParams } from '@/lib/app-params';
+import { hasBase44AppId } from '@/lib/demoRoutes';
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -16,7 +17,7 @@ export default function FacilityPilotDashboard() {
   useEffect(() => {
     const load = async () => {
       try {
-        if (!appParams.appId) throw new Error('Demo mode');
+        if (!hasBase44AppId(appParams.appId)) throw new Error('Demo mode');
         const [clients, checkins, goals, resources, savedIntakes] = await Promise.all([
           base44.entities.ParticipantProfile.list('-updated_date', 200),
           base44.entities.DailyCheckIn.list('-created_date', 300),

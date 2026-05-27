@@ -7,12 +7,13 @@ import CounselorMessages from "../components/participant/CounselorMessages";
 import PatientAppointments from "@/components/calendar/PatientAppointments";
 import { demoClients, demoMessages } from "@/lib/rehabPilotDemoData";
 import { appParams } from "@/lib/app-params";
+import { hasBase44AppId } from "@/lib/demoRoutes";
 
 export default function ParticipantMessages() {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
-    enabled: !!appParams.appId,
+    enabled: hasBase44AppId(appParams.appId),
   });
 
   const { data: profile } = useQuery({

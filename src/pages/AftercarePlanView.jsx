@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { demoAftercarePlans } from "@/lib/rehabPilotDemoData";
 import { appParams } from "@/lib/app-params";
+import { hasBase44AppId } from "@/lib/demoRoutes";
 
 const C = {
   teal:    "#2DD4BF",
@@ -113,7 +114,7 @@ export default function AftercarePlanView() {
   const planId = urlParams.get("planId");
   const [demoTasks, setDemoTasks] = useState(demoCompletedTasks);
 
-  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me(), enabled: !!appParams.appId });
+  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me(), enabled: hasBase44AppId(appParams.appId) });
 
   const { data: plans = [], isLoading: planLoading } = useQuery({
     queryKey: ["aftercare-builder-plan", planId],

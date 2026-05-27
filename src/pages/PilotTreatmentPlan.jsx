@@ -4,6 +4,7 @@ import { ClipboardList, Save } from 'lucide-react';
 import PilotShell from '@/components/pilot/PilotShell';
 import { demoAftercarePlans, demoClients } from '@/lib/rehabPilotDemoData';
 import { appParams } from '@/lib/app-params';
+import { hasBase44AppId } from '@/lib/demoRoutes';
 
 const initial = { client_name: '', client_email: '', discharge_date: '', diagnosis_summary: '', treatment_goals: '', medications: '', relapse_triggers: '', required_aftercare_tasks: '', counselor_notes: '' };
 
@@ -16,7 +17,7 @@ export default function PilotTreatmentPlan() {
   const savePlan = async (e) => {
     e.preventDefault();
     try {
-      if (!appParams.appId) throw new Error('Demo mode');
+      if (!hasBase44AppId(appParams.appId)) throw new Error('Demo mode');
       await base44.entities.PilotTreatmentPlan.create({
         ...form,
         required_aftercare_tasks: form.required_aftercare_tasks.split('\n').map((item) => item.trim()).filter(Boolean),

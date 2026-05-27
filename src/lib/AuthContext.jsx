@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { appParams } from '@/lib/app-params';
 import { createAxiosClient } from '@base44/sdk/dist/utils/axios-client';
-import { isPublicDemoPath } from '@/lib/demoRoutes';
+import { hasBase44AppId, isPublicDemoPath } from '@/lib/demoRoutes';
 
 const AuthContext = createContext();
 
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
 
-      if (!appParams.appId && isPublicDemoPath(window.location.pathname)) {
+      if (!hasBase44AppId(appParams.appId) && isPublicDemoPath(window.location.pathname)) {
         setIsLoadingPublicSettings(false);
         setIsLoadingAuth(false);
         setIsAuthenticated(false);
