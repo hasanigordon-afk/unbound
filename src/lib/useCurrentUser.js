@@ -5,11 +5,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { isStaff, isAdmin, isCounselor, isParticipant, hasPermission, isSupportUser, isClientRole } from "@/lib/roles";
+import { appParams } from "@/lib/app-params";
+import { hasBase44AppId } from "@/lib/demoRoutes";
 
 export function useCurrentUser() {
+  const canQueryUser = hasBase44AppId(appParams.appId);
   const { data: user, isLoading, error, refetch } = useQuery({
     queryKey: ["current-user"],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => canQueryUser ? base44.auth.me() : null,
+    enabled: canQueryUser,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
   });

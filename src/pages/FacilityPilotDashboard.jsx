@@ -1,33 +1,62 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Activity, AlertTriangle, CheckCircle2, Clock3, ClipboardList, Eye, Mail, Phone, Target, UsersRound } from 'lucide-react';
 import PilotShell from '@/components/pilot/PilotShell';
+import { demoClients, demoCounselorAccounts, demoFacility, demoProgressReports } from '@/lib/rehabPilotDemoData';
+import { appParams } from '@/lib/app-params';
+import { hasBase44AppId } from '@/lib/demoRoutes';
 
 const today = new Date().toISOString().slice(0, 10);
 
 export default function FacilityPilotDashboard() {
   const [stats, setStats] = useState(null);
   const [intakes, setIntakes] = useState([]);
+  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      const [clients, checkins, goals, resources, savedIntakes] = await Promise.all([
-        base44.entities.ParticipantProfile.list('-updated_date', 200),
-        base44.entities.DailyCheckIn.list('-created_date', 300),
-        base44.entities.TopFiveNonNegotiable.list('-updated_date', 300),
-        base44.entities.SavedResource.list('-created_date', 300),
-        base44.entities.PilotClientIntake.list('-created_date', 50),
-      ]);
+      try {
+        if (!hasBase44AppId(appParams.appId)) throw new Error('Demo mode');
+        const [clients, checkins, goals, resources, savedIntakes] = await Promise.all([
+          base44.entities.ParticipantProfile.list('-updated_date', 200),
+          base44.entities.DailyCheckIn.list('-created_date', 300),
+          base44.entities.TopFiveNonNegotiable.list('-updated_date', 300),
+          base44.entities.SavedResource.list('-created_date', 300),
+          base44.entities.PilotClientIntake.list('-created_date', 50),
+        ]);
 
-      const completedToday = checkins.filter((item) => (item.checkin_date || item.created_date || '').slice(0, 10) === today).length;
-      const uniqueCheckinUsers = new Set(checkins.map((item) => item.user_email || item.created_by).filter(Boolean));
-      const missed = Math.max(0, clients.length - uniqueCheckinUsers.size);
-      const goalsCompleted = goals.filter((goal) => Number(goal.progress || 0) >= 100).length;
-      const followUp = checkins.filter((item) => Number(item.craving_level || item.mood_rating || 0) >= 7).length + missed;
-      const latest = [...checkins, ...goals, ...resources].sort((a, b) => new Date(b.updated_date || b.created_date) - new Date(a.updated_date || a.created_date))[0];
+        const completedToday = checkins.filter((item) => (item.checkin_date || item.created_date || '').slice(0, 10) === today).length;
+        const uniqueCheckinUsers = new Set(checkins.map((item) => item.user_email || item.created_by).filter(Boolean));
+        const missed = Math.max(0, clients.length - uniqueCheckinUsers.size);
+        const goalsCompleted = goals.filter((goal) => Number(goal.progress || 0) >= 100).length;
+        const followUp = checkins.filter((item) => Number(item.craving_level || item.mood_rating || 0) >= 7).length + missed;
+        const latest = [...checkins, ...goals, ...resources].sort((a, b) => new Date(b.updated_date || b.created_date) - new Date(a.updated_date || a.created_date))[0];
 
-      setIntakes(savedIntakes.slice(0, 6));
-      setStats({ clients: clients.length, intakes: savedIntakes.length, completedToday, missed, goalsCompleted, resourcesViewed: resources.length, followUp, latest: latest?.updated_date || latest?.created_date });
+        if (clients.length || savedIntakes.length || checkins.length) {
+          setIntakes(savedIntakes.slice(0, 6));
+          setStats({ clients: clients.length, intakes: savedIntakes.length, completedToday, missed, goalsCompleted, resourcesViewed: resources.length, followUp, latest: latest?.updated_date || latest?.created_date });
+          return;
+        }
+      } catch {
+        // Demo mode intentionally works without live facility data.
+      }
+
+      setIsDemo(true);
+      const checkins = demoProgressReports.reduce((sum, report) => sum + report.checkins, 0);
+      const goalsCompleted = demoProgressReports.filter((report) => report.goal_completion >= 80).length;
+      const followUp = demoClients.filter((client) => client.risk !== 'low').length;
+      setIntakes(demoClients);
+      setStats({
+        clients: demoFacility.active_clients,
+        intakes: demoClients.length,
+        completedToday: checkins,
+        missed: 1,
+        goalsCompleted,
+        resourcesViewed: 24,
+        followUp,
+        latest: new Date().toISOString(),
+      });
     };
     load();
   }, []);
@@ -44,6 +73,13 @@ export default function FacilityPilotDashboard() {
 
   return (
     <PilotShell title="Counselor View" subtitle="Saved client intakes, treatment planning, and facility-level follow-up in one place.">
+      {isDemo && (
+        <section className="mb-5 rounded-[28px] border border-emerald-200/20 bg-emerald-300/12 p-4 text-sm font-bold text-emerald-50">
+          Demo mode - showing synthetic Harbor Recovery Center data for a privacy-safe rehab facility pilot.
+          <Link to="/PilotDemo" className="ml-2 underline">Open presentation deck</Link>
+        </section>
+      )}
+
       <section className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         {cards.map(({ label, value, icon: Icon, tone }) => (
           <div key={label} className="rounded-[28px] bg-white/10 border border-white/12 p-4 backdrop-blur-2xl shadow-xl">
@@ -61,6 +97,25 @@ export default function FacilityPilotDashboard() {
             <h2 className="text-lg font-bold font-sans">Last activity</h2>
             <p className="text-sm text-slate-300">{stats?.latest ? new Date(stats.latest).toLocaleString() : 'No activity recorded yet'}</p>
           </div>
+        </div>
+      </section>
+
+      <section className="rounded-[30px] bg-white/10 border border-white/12 p-5 mt-5 backdrop-blur-2xl">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-400/15 text-emerald-100 flex items-center justify-center"><UsersRound className="w-6 h-6" /></div>
+          <div>
+            <h2 className="text-lg font-bold font-sans">Demo counselor accounts</h2>
+            <p className="text-sm text-slate-300">Role-specific accounts for the facility pilot walkthrough.</p>
+          </div>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          {demoCounselorAccounts.map((account) => (
+            <div key={account.email} className="rounded-3xl border border-white/10 bg-white/8 p-4">
+              <p className="font-black font-sans text-white">{account.name}</p>
+              <p className="text-xs text-emerald-100 font-black uppercase tracking-wider mt-1">{account.role}</p>
+              <p className="text-sm text-slate-300 mt-2">{account.email}</p>
+            </div>
+          ))}
         </div>
       </section>
 

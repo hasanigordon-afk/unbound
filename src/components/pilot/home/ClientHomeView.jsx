@@ -1,7 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { CalendarDays, CheckCircle2, HeartPulse, LifeBuoy, MapPinned, MessageCircle, Shield, Sparkles, Target, Trophy, UserRound, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { CalendarDays, CheckCircle2, ClipboardList, HeartPulse, LifeBuoy, MapPinned, MessageCircle, Presentation, Shield, Sparkles, Target, Trophy, UserRound, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
+import { demoClients, demoFacility } from '@/lib/rehabPilotDemoData';
+import { appParams } from '@/lib/app-params';
+import { hasBase44AppId } from '@/lib/demoRoutes';
 
 const sections = [
   {
@@ -18,9 +22,9 @@ const sections = [
     title: 'Your Comeback Mission',
     items: [
       { title: 'Profile', description: 'Start with your personal recovery profile and preferences.', icon: UserRound, to: '/Profile', accent: 'gold' },
-      { title: 'Progress', description: 'Review streaks, recovery score, milestones, and weekly movement.', icon: Trophy, to: '/Profile#progress', accent: 'green' },
+      { title: 'Progress', description: 'Review streaks, recovery score, milestones, and weekly movement.', icon: Trophy, to: '/PositiveProgressHub', accent: 'green' },
       { title: 'Roadmap', description: 'Continue your next steps inside your Profile hub.', icon: CheckCircle2, to: '/Profile#roadmap', accent: 'violet' },
-      { title: 'Encouragement Feed', description: 'See real support, wins, and messages from the community.', icon: MessageCircle, to: '/Community', accent: 'rose' },
+      { title: 'Messages', description: 'Connect with your counselor using privacy-safe support threads.', icon: MessageCircle, to: '/ParticipantMessages', accent: 'rose' },
       { title: 'Peer Groups', description: 'Connect with people walking a similar path.', icon: Users, to: '/Community', accent: 'violet' },
       { title: 'Wins', description: 'Celebrate small steps that prove momentum is happening.', icon: Trophy, to: '/Community', accent: 'gold' },
     ],
@@ -35,6 +39,7 @@ const sections = [
       { title: 'Transportation', description: 'Plan rides and reduce missed appointments.', icon: CalendarDays, to: '/JourneyRoadmap', accent: 'gold' },
       { title: 'Recovery Services', description: 'Find local recovery support and structured care options.', icon: HeartPulse, to: '/ResourceHub', accent: 'green' },
       { title: 'AI Support', description: 'Ask for help organizing next steps, resources, or structure.', icon: Sparkles, to: '/WellnessCenter', accent: 'violet' },
+      { title: 'Aftercare Plan', description: 'Review the counselor-approved plan for your first 30/60/90 days.', icon: ClipboardList, to: '/AftercarePlanView', accent: 'green' },
     ],
   },
 
@@ -49,18 +54,31 @@ export default function ClientHomeView() {
   const [calendarSyncMessage, setCalendarSyncMessage] = useState('');
 
   const loadBackend = async () => {
-    const [stateRows, activityRows] = await Promise.all([
-      base44.entities.HomeModuleState.list('-updated_date', 200),
-      base44.entities.HomeModuleActivity.list('-created_date', 100),
-    ]);
-    setModuleStates(stateRows);
-    setActivities(activityRows);
+    try {
+      if (!hasBase44AppId(appParams.appId)) throw new Error('Demo mode');
+      const [stateRows, activityRows] = await Promise.all([
+        base44.entities.HomeModuleState.list('-updated_date', 200),
+        base44.entities.HomeModuleActivity.list('-created_date', 100),
+      ]);
+      setModuleStates(stateRows);
+      setActivities(activityRows);
+    } catch {
+      setModuleStates([]);
+      setActivities([]);
+    }
   };
 
   useEffect(() => {
     loadBackend();
-    const unsubscribeStates = base44.entities.HomeModuleState.subscribe(loadBackend);
-    const unsubscribeActivities = base44.entities.HomeModuleActivity.subscribe(loadBackend);
+    let unsubscribeStates = () => {};
+    let unsubscribeActivities = () => {};
+    try {
+      if (!hasBase44AppId(appParams.appId)) throw new Error('Demo mode');
+      unsubscribeStates = base44.entities.HomeModuleState.subscribe(loadBackend);
+      unsubscribeActivities = base44.entities.HomeModuleActivity.subscribe(loadBackend);
+    } catch {
+      // Demo mode can run without live Base44 subscriptions.
+    }
     return () => {
       unsubscribeStates();
       unsubscribeActivities();
@@ -100,26 +118,43 @@ export default function ClientHomeView() {
 
   const syncCalendar = async () => {
     setCalendarSyncing(true);
-    const response = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
-    if (response.data.personalConnected === false) {
-      const url = await base44.connectors.connectAppUser('6a10000a555f71fe414b9434');
-      const popup = window.open(url, '_blank');
-      const timer = setInterval(async () => {
-        if (!popup || popup.closed) {
-          clearInterval(timer);
-          const retry = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
-          setCalendarSyncMessage(`${retry.data.personalCreated || 0} recovery events synced to your calendar.`);
-          setCalendarSyncing(false);
-        }
-      }, 500);
-      return;
+    try {
+      if (!hasBase44AppId(appParams.appId)) throw new Error('Demo mode');
+      const response = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
+      if (response.data.personalConnected === false) {
+        const url = await base44.connectors.connectAppUser('6a10000a555f71fe414b9434');
+        const popup = window.open(url, '_blank');
+        const timer = setInterval(async () => {
+          if (!popup || popup.closed) {
+            clearInterval(timer);
+            const retry = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
+            setCalendarSyncMessage(`${retry.data.personalCreated || 0} recovery events synced to your calendar.`);
+            setCalendarSyncing(false);
+          }
+        }, 500);
+        return;
+      }
+      setCalendarSyncMessage(`${response.data.personalCreated || 0} recovery events synced to your calendar.`);
+    } catch {
+      setCalendarSyncMessage('Demo mode shows calendar sync without connecting a live account.');
     }
-    setCalendarSyncMessage(`${response.data.personalCreated || 0} recovery events synced to your calendar.`);
     setCalendarSyncing(false);
   };
 
   return (
     <div className="space-y-5">
+      <section className="rounded-[30px] border border-emerald-200/20 bg-gradient-to-br from-emerald-300/15 via-blue-400/10 to-white/8 p-5 shadow-2xl backdrop-blur-2xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-100">Pilot Demo</p>
+            <h3 className="mt-1 font-sans text-2xl font-black text-white">{demoFacility.facility_name} discharge cohort</h3>
+            <p className="mt-2 text-sm font-bold text-slate-300">{demoClients.length} synthetic client profiles, counselor-ready aftercare examples, privacy-safe messages, and onboarding steps.</p>
+          </div>
+          <Link to="/PilotDemo" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-3xl bg-white px-5 py-4 text-sm font-black text-slate-950 active:scale-95">
+            <Presentation className="h-4 w-4" /> Open demo mode
+          </Link>
+        </div>
+      </section>
       <section className="rounded-[30px] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
