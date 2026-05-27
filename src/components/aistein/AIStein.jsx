@@ -16,7 +16,7 @@ export default function AIStein() {
   return (
     <>
       {!open && <AISteinBubble onOpen={() => setOpen(true)} />}
-      <AISteinPanel open={open} onClose={() => setOpen(false)} />
+      {open && <AISteinPanel open={open} onClose={() => setOpen(false)} />}
     </>
   );
 }
