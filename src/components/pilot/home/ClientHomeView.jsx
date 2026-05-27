@@ -246,13 +246,18 @@ export default function ClientHomeView() {
       </section>
 
       {sections.map((section) => <HomeCarouselSection key={section.title} {...section} moduleKey={moduleKey} moduleStates={stateByKey} activityCounts={activityCounts} onTrack={trackModuleAction} onTogglePin={togglePin} />)}
-      <button type="button" onClick={() => setCalmOpen(true)} className="fixed left-4 bottom-24 z-[85] min-h-0 rounded-full border border-amber-100/25 bg-[linear-gradient(145deg,rgba(245,188,90,.96),rgba(180,117,28,.96))] px-5 py-3 text-sm font-black text-slate-950 shadow-[0_0_34px_rgba(245,188,90,.34),0_18px_50px_rgba(0,0,0,.40)] active:scale-95">
+      <button
+        type="button"
+        onClick={() => setCalmOpen(true)}
+        className="min-h-0 rounded-full border border-amber-100/25 bg-[linear-gradient(145deg,rgba(245,188,90,.96),rgba(180,117,28,.96))] px-5 py-3 text-sm font-black text-slate-950 shadow-[0_0_34px_rgba(245,188,90,.34),0_18px_50px_rgba(0,0,0,.40)] active:scale-95"
+        style={{ position: 'fixed', left: 16, bottom: 96, zIndex: 85 }}
+      >
         Emergency Calm
       </button>
       {calmOpen && (
         <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/60 p-4 backdrop-blur-2xl">
           <section className="relative w-full max-w-xl rounded-[36px] border border-amber-100/18 bg-[linear-gradient(145deg,rgba(245,188,90,.16),rgba(6,10,24,.94)_44%,rgba(0,0,0,.96))] p-6 text-center shadow-[0_30px_100px_rgba(0,0,0,.62)]">
-            <button type="button" onClick={() => setCalmOpen(false)} className="absolute right-4 top-4 min-h-0 rounded-full bg-white/10 p-3 text-white">
+            <button type="button" onClick={() => setCalmOpen(false)} className="min-h-0 rounded-full bg-white/10 p-3 text-white" style={{ position: 'absolute', right: 16, top: 16 }}>
               <X className="h-5 w-5" />
             </button>
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[24px] bg-amber-200/14 text-amber-100 shadow-[0_0_28px_rgba(245,188,90,.25)]">
