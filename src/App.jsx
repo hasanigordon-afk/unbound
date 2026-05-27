@@ -7,8 +7,12 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
+import { RoleRoute } from '@/components/auth/ProtectedRoute';
+import { getDashboardPathForRole, resolveRoleForUser, ROLES } from '@/lib/roles';
 
 import PilotHome from './pages/PilotHome.jsx';
+import RoleDashboard from './pages/RoleDashboard.jsx';
+import RoleSelect from './pages/RoleSelect.jsx';
 import JourneyRoadmap from './pages/JourneyRoadmap.jsx';
 import ResourceHub from './pages/ResourceHub.jsx';
 import CommunityHub from './pages/CommunityHub.jsx';
@@ -35,6 +39,14 @@ import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 import Phase4PolishLayer from '@/components/shared/Phase4PolishLayer';
 import EmergencyCalmMode from '@/components/commandCenter/EmergencyCalmMode';
 import AIStein from '@/components/aistein/AIStein';
+
+const RoleLanding = () => {
+  const { user, isAuthenticated } = useAuth();
+  if (isAuthenticated && user) {
+    return <Navigate to={getDashboardPathForRole(resolveRoleForUser(user))} replace />;
+  }
+  return <PilotHome />;
+};
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
@@ -69,7 +81,23 @@ const AuthenticatedApp = () => {
     <>
       <SubscriptionPrompt />
       <Routes>
-        <Route path="/" element={<PilotHome />} />
+        <Route path="/" element={<RoleLanding />} />
+        <Route path="/Home" element={<PilotHome />} />
+        <Route path="/RoleSelect" element={<RoleSelect />} />
+        <Route path="/Dashboard" element={<RoleDashboard />} />
+        <Route path="/ClientDashboard" element={<RoleRoute roles={[ROLES.CLIENT]}><RoleDashboard forcedRole={ROLES.CLIENT} /></RoleRoute>} />
+        <Route path="/CounselorDashboard" element={<RoleRoute roles={[ROLES.COUNSELOR]}><RoleDashboard forcedRole={ROLES.COUNSELOR} /></RoleRoute>} />
+        <Route path="/ProfessionalPortal" element={<Navigate to="/CounselorDashboard" replace />} />
+        <Route path="/SponsorDashboard" element={<RoleRoute roles={[ROLES.SPONSOR]}><RoleDashboard forcedRole={ROLES.SPONSOR} /></RoleRoute>} />
+        <Route path="/SupportUserDashboard" element={<Navigate to="/SponsorDashboard" replace />} />
+        <Route path="/MentorDashboard" element={<RoleRoute roles={[ROLES.MENTOR]}><RoleDashboard forcedRole={ROLES.MENTOR} /></RoleRoute>} />
+        <Route path="/ProbationDashboard" element={<RoleRoute roles={[ROLES.PROBATION_OFFICER]}><RoleDashboard forcedRole={ROLES.PROBATION_OFFICER} /></RoleRoute>} />
+        <Route path="/ProbationOfficerDashboard" element={<Navigate to="/ProbationDashboard" replace />} />
+        <Route path="/VeteransDashboard" element={<RoleRoute roles={[ROLES.VETERAN]}><RoleDashboard forcedRole={ROLES.VETERAN} /></RoleRoute>} />
+        <Route path="/FamilySupportDashboard" element={<RoleRoute roles={[ROLES.FAMILY_SUPPORT]}><RoleDashboard forcedRole={ROLES.FAMILY_SUPPORT} /></RoleRoute>} />
+        <Route path="/FacilityAdminDashboard" element={<RoleRoute roles={[ROLES.FACILITY_ADMIN]}><RoleDashboard forcedRole={ROLES.FACILITY_ADMIN} /></RoleRoute>} />
+        <Route path="/FacilityDashboard" element={<Navigate to="/FacilityAdminDashboard" replace />} />
+        <Route path="/StaffDashboard" element={<Navigate to="/FacilityAdminDashboard" replace />} />
         <Route path="/JourneyRoadmap" element={<JourneyRoadmap />} />
         <Route path="/ResourceHub" element={<ResourceHub />} />
         <Route path="/Community" element={<CommunityHub />} />

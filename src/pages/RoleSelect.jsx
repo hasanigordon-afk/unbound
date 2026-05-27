@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { createPageUrl } from "./utils";
 import { Loader2 } from "lucide-react";
 import AhHaLogo from "@/components/shared/AhHaLogo";
+import { getDashboardPathForRole, normalizeRole, ROLES } from "@/lib/roles";
 
 // Ah Ha brand palette
 const C = {
@@ -18,23 +18,35 @@ const C = {
   dim:    "#9B8E83",
 };
 
-const CLIENT_OPTION = {
-  id: "client",
-  label: "I'm here for myself",
-  sub: "Check in daily, find help near you, message your support team, and track your progress.",
-  emoji: "🙋",
-  color: C.amber,
-  bg: "rgba(184,130,58,0.08)",
-  page: "Home",
-};
+const PRIMARY_OPTIONS = [
+  {
+    id: ROLES.CLIENT,
+    label: "Client",
+    sub: "Check in daily, find help near you, message your support team, and track your progress.",
+    emoji: "🙋",
+    color: C.amber,
+    bg: "rgba(184,130,58,0.08)",
+  },
+  {
+    id: ROLES.VETERAN,
+    label: "Veteran",
+    sub: "Use veteran-specific goals, resource priorities, and service-aware support.",
+    emoji: "🎖️",
+    color: C.indigo,
+    bg: "rgba(123,143,168,0.10)",
+  },
+];
+
+const SUPPORT_OPTIONS = [
+  { id: ROLES.SPONSOR, label: "Sponsor", sub: "Support sponsees through accepted client connections." },
+  { id: ROLES.MENTOR, label: "Mentor", sub: "Manage mentee matches, conversations, and availability." },
+  { id: ROLES.FAMILY_SUPPORT, label: "Family Support", sub: "View consent-approved family updates and encouragement tools." },
+];
 
 const PROFESSIONAL_OPTIONS = [
-  { id: "counselor",        label: "Counselor",          sub: "Monitor clients, send messages, track progress." },
-  { id: "probation_officer",label: "Probation Officer",  sub: "Supervision check-ins, compliance, case notes." },
-  { id: "sponsor",          label: "Sponsor",            sub: "Support your sponsee, stay connected." },
-  { id: "recovery_coach",   label: "Recovery Coach",     sub: "Coach clients through goals and stability." },
-  { id: "case_manager",     label: "Case Manager",       sub: "Track plans, resources, and client needs." },
-  { id: "facility_admin",   label: "Facility Admin",     sub: "Manage staff accounts and program overview." },
+  { id: ROLES.COUNSELOR, label: "Counselor", sub: "Monitor assigned clients, notes, alerts, and progress." },
+  { id: ROLES.PROBATION_OFFICER, label: "Probation Officer", sub: "Supervision check-ins, compliance, appointments, and case notes." },
+  { id: ROLES.FACILITY_ADMIN, label: "Facility Admin", sub: "Manage staff accounts, facility reports, and program overview." },
 ];
 
 export default function RoleSelect() {
@@ -49,17 +61,37 @@ export default function RoleSelect() {
         const user = await base44.auth.me();
         if (!user) { setChecking(false); return; }
 
-        const [counselorProfiles, memberProfiles] = await Promise.all([
+        if (user.role && ![ROLES.PARTICIPANT, ROLES.PARTICIPANT_ALT].includes(user.role)) {
+          navigate(getDashboardPathForRole(normalizeRole(user.role)), { replace: true });
+          return;
+        }
+
+        const [counselorProfiles, memberProfiles, mentorProfiles, veteranProfiles, familyContacts] = await Promise.all([
           base44.entities.CounselorProfile.filter({ counselor_email: user.email }),
           base44.entities.MemberProfile.filter({ created_by: user.email }),
+          base44.entities.MentorProfile.filter({ created_by: user.email }),
+          base44.entities.VeteranProfile.filter({ user_email: user.email }),
+          base44.entities.FamilyContact.filter({ contact_email: user.email, is_active: true }),
         ]);
 
         if (counselorProfiles.length > 0) {
-          navigate(createPageUrl("ProfessionalPortal"), { replace: true });
+          navigate(getDashboardPathForRole(ROLES.COUNSELOR), { replace: true });
+          return;
+        }
+        if (mentorProfiles.length > 0) {
+          navigate(getDashboardPathForRole(ROLES.MENTOR), { replace: true });
+          return;
+        }
+        if (veteranProfiles.length > 0) {
+          navigate(getDashboardPathForRole(ROLES.VETERAN), { replace: true });
+          return;
+        }
+        if (familyContacts.length > 0) {
+          navigate(getDashboardPathForRole(ROLES.FAMILY_SUPPORT), { replace: true });
           return;
         }
         if (memberProfiles.length > 0 && memberProfiles[0]?.onboarding_complete) {
-          navigate(createPageUrl("Home"), { replace: true });
+          navigate(getDashboardPathForRole(ROLES.CLIENT), { replace: true });
           return;
         }
       } catch {
@@ -69,21 +101,10 @@ export default function RoleSelect() {
     })();
   }, [navigate]);
 
-  const handleClient = async () => {
-    sessionStorage.setItem("unbound_role", "client");
-    try { await base44.auth.updateMe({ role: "client" }); } catch {}
-    navigate(createPageUrl("Home"));
-  };
-
-  const handleSupportUser = async () => {
-    sessionStorage.setItem("unbound_role", "support_user");
-    try { await base44.auth.updateMe({ role: "support_user" }); } catch {}
-    navigate("/SupportUserDashboard");
-  };
-
-  const handleProfessional = (roleId) => {
+  const handleRole = async (roleId) => {
     sessionStorage.setItem("unbound_role", roleId);
-    navigate(createPageUrl("ProfessionalPortal"));
+    try { await base44.auth.updateMe({ role: roleId }); } catch {}
+    navigate(getDashboardPathForRole(roleId));
   };
 
   if (checking) {
@@ -107,39 +128,46 @@ export default function RoleSelect() {
           <p style={{ fontSize: 14, color: C.muted }}>Pick the option that fits you.</p>
         </div>
 
-        {/* Client option */}
-        <button onClick={handleClient}
-          style={{
-            width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
-            background: CLIENT_OPTION.bg, border: `1.5px solid ${CLIENT_OPTION.color}`,
-            cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
-          }}>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: CLIENT_OPTION.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <span style={{ fontSize: 22 }}>{CLIENT_OPTION.emoji}</span>
-          </div>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, fontSize: 16, color: C.text, marginBottom: 4 }}>{CLIENT_OPTION.label}</p>
-            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>{CLIENT_OPTION.sub}</p>
-          </div>
-          <span style={{ fontSize: 20, color: CLIENT_OPTION.color, alignSelf: "center" }}>›</span>
-        </button>
+        {PRIMARY_OPTIONS.map((opt) => (
+          <button key={opt.id} onClick={() => handleRole(opt.id)}
+            style={{
+              width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
+              background: opt.bg, border: `1.5px solid ${opt.color}`,
+              cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
+            }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: opt.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ fontSize: 22 }}>{opt.emoji}</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 700, fontSize: 16, color: C.text, marginBottom: 4 }}>{opt.label}</p>
+              <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>{opt.sub}</p>
+            </div>
+            <span style={{ fontSize: 20, color: opt.color, alignSelf: "center" }}>›</span>
+          </button>
+        ))}
 
-        {/* Support User option */}
-        <button onClick={handleSupportUser}
-          style={{
-            width: "100%", textAlign: "left", padding: "20px", borderRadius: 16,
-            background: "rgba(122,158,126,0.08)", border: `1.5px solid ${C.green}`,
-            cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 12,
-          }}>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: C.green, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <span style={{ fontSize: 22 }}>🤝</span>
+        {/* Support section */}
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", marginBottom: 12 }}>
+          <div style={{ padding: "16px 20px", borderBottom: `1px solid ${C.border}` }}>
+            <p style={{ fontWeight: 700, fontSize: 15, color: C.text }}>Support roles</p>
+            <p style={{ fontSize: 12, color: C.muted }}>Consent-based dashboards for non-clinical supporters.</p>
           </div>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, fontSize: 16, color: C.text, marginBottom: 4 }}>I'm a Support Person</p>
-            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>Sponsor, coach, counselor, or family member. View client progress with their consent.</p>
-          </div>
-          <span style={{ fontSize: 20, color: C.green, alignSelf: "center" }}>›</span>
-        </button>
+          {SUPPORT_OPTIONS.map((opt, i) => (
+            <button key={opt.id} onClick={() => handleRole(opt.id)}
+              style={{
+                width: "100%", textAlign: "left", padding: "14px 20px",
+                background: "none", border: "none", cursor: "pointer",
+                borderTop: i > 0 ? `1px solid ${C.border}` : "none",
+                display: "flex", alignItems: "center", gap: 12,
+              }}>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontWeight: 600, fontSize: 14, color: C.text, marginBottom: 2 }}>{opt.label}</p>
+                <p style={{ fontSize: 12, color: C.muted }}>{opt.sub}</p>
+              </div>
+              <span style={{ color: C.dim, fontSize: 16 }}>›</span>
+            </button>
+          ))}
+        </div>
 
         {/* Professional / Facility section */}
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden" }}>
@@ -162,7 +190,7 @@ export default function RoleSelect() {
           {showProfessionalExpanded && (
             <div style={{ borderTop: `1px solid ${C.border}` }}>
               {PROFESSIONAL_OPTIONS.map((opt, i) => (
-                <button key={opt.id} onClick={() => handleProfessional(opt.id)}
+                <button key={opt.id} onClick={() => handleRole(opt.id)}
                   style={{
                     width: "100%", textAlign: "left", padding: "14px 20px",
                     background: "none", border: "none", cursor: "pointer",

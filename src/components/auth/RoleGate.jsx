@@ -17,23 +17,23 @@
  */
 import React from "react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
-import { STAFF_ROLES } from "@/lib/roles";
+import { STAFF_ROLES, normalizeRole, ROLES } from "@/lib/roles";
 
 export default function RoleGate({ children, fallback = null, roles, staff, admin, participant, counselor }) {
   const { user, isLoading } = useCurrentUser();
 
   if (isLoading) return null;
 
-  const role = user?.role || "user";
+  const role = normalizeRole(user?.role);
 
   // Explicit role list
-  if (roles && !roles.includes(role)) return fallback;
+  if (roles && !roles.map(normalizeRole).includes(role)) return fallback;
 
   // Convenience flags
-  if (staff && !STAFF_ROLES.includes(role)) return fallback;
-  if (admin && role !== "admin") return fallback;
-  if (counselor && !["admin", "counselor"].includes(role)) return fallback;
-  if (participant && STAFF_ROLES.includes(role)) return fallback;
+  if (staff && !STAFF_ROLES.map(normalizeRole).includes(role)) return fallback;
+  if (admin && role !== ROLES.FACILITY_ADMIN) return fallback;
+  if (counselor && ![ROLES.FACILITY_ADMIN, ROLES.COUNSELOR].includes(role)) return fallback;
+  if (participant && role !== ROLES.CLIENT) return fallback;
 
   return children;
 }
