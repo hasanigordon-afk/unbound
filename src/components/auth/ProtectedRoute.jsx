@@ -2,10 +2,9 @@
  * ProtectedRoute — wraps pages that require a minimum role level.
  * Redirects unauthorized users to the appropriate page.
  */
-import React from "react";
 import { Navigate } from "react-router-dom";
 import { useCurrentUser } from "@/lib/useCurrentUser";
-import { STAFF_ROLES, ADMIN_ONLY_PAGES } from "@/lib/roles";
+import { STAFF_ROLES, getDashboardPathForRole, normalizeRole } from "@/lib/roles";
 
 export function StaffRoute({ children }) {
   const { user, isLoading } = useCurrentUser();
@@ -50,6 +49,25 @@ export function AuthRoute({ children }) {
     });
     return <LoadingScreen />;
   }
+  return children;
+}
+
+export function RoleRoute({ children, roles }) {
+  const { user, role, isLoading } = useCurrentUser();
+
+  if (isLoading) return <LoadingScreen />;
+  if (!user) {
+    import("@/api/base44Client").then(({ base44 }) => {
+      base44.auth.redirectToLogin(window.location.href);
+    });
+    return <LoadingScreen />;
+  }
+
+  const allowedRoles = roles.map(normalizeRole);
+  if (!allowedRoles.includes(role)) {
+    return <Navigate to={getDashboardPathForRole(role)} replace />;
+  }
+
   return children;
 }
 

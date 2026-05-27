@@ -8,9 +8,18 @@
         "admin",
         "user",
         "participant",
+        "client",
         "counselor",
         "sponsor",
-        "probation_officer"
+        "mentor",
+        "probation_officer",
+        "veteran",
+        "family_support",
+        "facility_admin",
+        "staff",
+        "probation",
+        "family",
+        "support_user"
       ],
       "default": "user",
       "description": "User role in the system"

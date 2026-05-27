@@ -4,7 +4,7 @@
  */
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { isStaff, isAdmin, isCounselor, isParticipant, hasPermission, isSupportUser, isClientRole } from "@/lib/roles";
+import { isStaff, isAdmin, isCounselor, isParticipant, hasPermission, isSupportUser, isClientRole, resolveRoleForUser } from "@/lib/roles";
 
 export function useCurrentUser() {
   const { data: user, isLoading, error, refetch } = useQuery({
@@ -13,6 +13,8 @@ export function useCurrentUser() {
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
   });
+
+  const role = resolveRoleForUser(user);
 
   return {
     user,
@@ -30,6 +32,7 @@ export function useCurrentUser() {
     can: (permission) => hasPermission(user, permission),
     // Auth state
     isAuthenticated: !!user,
-    role: user?.role || "user",
+    role,
+    rawRole: user?.role || "user",
   };
 }

@@ -5,96 +5,174 @@
 
 // ── Role Definitions ─────────────────────────────────────────────────────────
 export const ROLES = {
-  ADMIN:        "admin",
-  COUNSELOR:    "counselor",
-  STAFF:        "staff",
-  PARTICIPANT:  "user",        // default Base44 role for participants
-  PROBATION:    "probation",
-  FAMILY:       "family",
-  MENTOR:       "mentor",
-  CLIENT:       "client",      // Dual Portal: client (personal recovery)
-  SUPPORT_USER: "support_user",// Dual Portal: support person (sponsor, coach, etc.)
+  ADMIN:             "admin",
+  CLIENT:            "client",
+  COUNSELOR:         "counselor",
+  SPONSOR:           "sponsor",
+  MENTOR:            "mentor",
+  PROBATION_OFFICER: "probation_officer",
+  VETERAN:           "veteran",
+  FAMILY_SUPPORT:    "family_support",
+  FACILITY_ADMIN:    "facility_admin",
+
+  // Legacy aliases retained for existing pages and stored users.
+  STAFF:             "staff",
+  PARTICIPANT:       "user",
+  PARTICIPANT_ALT:   "participant",
+  PROBATION:         "probation",
+  FAMILY:            "family",
+  SUPPORT_USER:      "support_user",
 };
 
+export const ROLE_ALIASES = {
+  [ROLES.PARTICIPANT]: ROLES.CLIENT,
+  [ROLES.PARTICIPANT_ALT]: ROLES.CLIENT,
+  [ROLES.SUPPORT_USER]: ROLES.SPONSOR,
+  [ROLES.FAMILY]: ROLES.FAMILY_SUPPORT,
+  [ROLES.PROBATION]: ROLES.PROBATION_OFFICER,
+  [ROLES.STAFF]: ROLES.COUNSELOR,
+  [ROLES.ADMIN]: ROLES.FACILITY_ADMIN,
+};
+
+export const DASHBOARD_ROLES = [
+  ROLES.CLIENT,
+  ROLES.COUNSELOR,
+  ROLES.SPONSOR,
+  ROLES.MENTOR,
+  ROLES.PROBATION_OFFICER,
+  ROLES.VETERAN,
+  ROLES.FAMILY_SUPPORT,
+  ROLES.FACILITY_ADMIN,
+];
+
 // ── Role Groups ───────────────────────────────────────────────────────────────
-export const STAFF_ROLES    = [ROLES.ADMIN, ROLES.COUNSELOR, ROLES.STAFF];
-export const CLINICAL_ROLES = [ROLES.ADMIN, ROLES.COUNSELOR];
-export const ALL_ROLES      = Object.values(ROLES);
+export const STAFF_ROLES = [
+  ROLES.ADMIN,
+  ROLES.COUNSELOR,
+  ROLES.FACILITY_ADMIN,
+  ROLES.PROBATION_OFFICER,
+  ROLES.STAFF,
+];
+export const CLINICAL_ROLES = [ROLES.ADMIN, ROLES.COUNSELOR, ROLES.FACILITY_ADMIN];
+export const SUPPORT_ROLES = [ROLES.SPONSOR, ROLES.MENTOR, ROLES.FAMILY_SUPPORT, ROLES.SUPPORT_USER, ROLES.FAMILY];
+export const ALL_ROLES = Object.values(ROLES);
 
 // ── Permission Map ────────────────────────────────────────────────────────────
 export const PERMISSIONS = {
   // Participant data
-  VIEW_OWN_DATA:          ALL_ROLES,
-  VIEW_ALL_PARTICIPANTS:  STAFF_ROLES,
-  EDIT_PARTICIPANT:       CLINICAL_ROLES,
-  VIEW_PARTICIPANT_NOTES: CLINICAL_ROLES,
-  CREATE_ALERTS:          STAFF_ROLES,
+  VIEW_OWN_DATA:          [ROLES.CLIENT, ROLES.VETERAN],
+  VIEW_ASSIGNED_CLIENTS:  [ROLES.COUNSELOR, ROLES.SPONSOR, ROLES.MENTOR, ROLES.PROBATION_OFFICER, ROLES.FAMILY_SUPPORT, ROLES.FACILITY_ADMIN],
+  VIEW_ALL_PARTICIPANTS:  [ROLES.FACILITY_ADMIN, ROLES.ADMIN],
+  EDIT_PARTICIPANT:       [ROLES.COUNSELOR, ROLES.FACILITY_ADMIN],
+  VIEW_PARTICIPANT_NOTES: [ROLES.COUNSELOR, ROLES.PROBATION_OFFICER, ROLES.FACILITY_ADMIN],
+  CREATE_ALERTS:          [ROLES.COUNSELOR, ROLES.PROBATION_OFFICER, ROLES.FACILITY_ADMIN],
 
   // Facility management
-  MANAGE_FACILITY:        [ROLES.ADMIN],
-  VIEW_FACILITY_REPORTS:  STAFF_ROLES,
-  MANAGE_STAFF:           [ROLES.ADMIN],
+  MANAGE_FACILITY:        [ROLES.FACILITY_ADMIN, ROLES.ADMIN],
+  VIEW_FACILITY_REPORTS:  [ROLES.COUNSELOR, ROLES.PROBATION_OFFICER, ROLES.FACILITY_ADMIN, ROLES.ADMIN],
+  MANAGE_STAFF:           [ROLES.FACILITY_ADMIN, ROLES.ADMIN],
 
   // Content
-  MODERATE_CONTENT:       [ROLES.ADMIN, ROLES.COUNSELOR],
-  PUBLISH_ARTICLES:       [ROLES.ADMIN],
+  MODERATE_CONTENT:       [ROLES.COUNSELOR, ROLES.FACILITY_ADMIN, ROLES.ADMIN],
+  PUBLISH_ARTICLES:       [ROLES.FACILITY_ADMIN, ROLES.ADMIN],
 
   // Discharge plans
-  CREATE_DISCHARGE_PLAN:  CLINICAL_ROLES,
-  VIEW_DISCHARGE_PLAN:    [...CLINICAL_ROLES, ROLES.PARTICIPANT],
+  CREATE_DISCHARGE_PLAN:  [ROLES.COUNSELOR, ROLES.FACILITY_ADMIN],
+  VIEW_DISCHARGE_PLAN:    [ROLES.CLIENT, ROLES.COUNSELOR, ROLES.PROBATION_OFFICER, ROLES.FACILITY_ADMIN, ROLES.VETERAN],
 
   // Messaging
-  MESSAGE_PARTICIPANTS:   STAFF_ROLES,
-  MESSAGE_STAFF:          ALL_ROLES,
+  MESSAGE_PARTICIPANTS:   [ROLES.COUNSELOR, ROLES.SPONSOR, ROLES.MENTOR, ROLES.PROBATION_OFFICER, ROLES.FACILITY_ADMIN],
+  MESSAGE_STAFF:          DASHBOARD_ROLES,
+  SEND_ENCOURAGEMENT:     [ROLES.SPONSOR, ROLES.MENTOR, ROLES.FAMILY_SUPPORT],
+  VIEW_COMPLIANCE:        [ROLES.PROBATION_OFFICER, ROLES.FACILITY_ADMIN],
+  VIEW_FAMILY_SUMMARY:    [ROLES.FAMILY_SUPPORT],
+  MANAGE_MENTOR_MATCHES:  [ROLES.MENTOR, ROLES.FACILITY_ADMIN],
+  VIEW_VETERAN_RESOURCES: [ROLES.VETERAN],
 };
 
 // ── Role Helpers ──────────────────────────────────────────────────────────────
+export function normalizeRole(role) {
+  return ROLE_ALIASES[role] || role || ROLES.CLIENT;
+}
+
+export function resolveRoleForUser(user) {
+  return normalizeRole(user?.role);
+}
+
 export function isStaff(user) {
-  return STAFF_ROLES.includes(user?.role);
+  return STAFF_ROLES.includes(user?.role) || STAFF_ROLES.includes(resolveRoleForUser(user));
 }
 
 export function isAdmin(user) {
-  return user?.role === ROLES.ADMIN;
+  return user?.role === ROLES.ADMIN || resolveRoleForUser(user) === ROLES.FACILITY_ADMIN;
 }
 
 export function isCounselor(user) {
-  return user?.role === ROLES.COUNSELOR || user?.role === ROLES.ADMIN;
+  const role = resolveRoleForUser(user);
+  return role === ROLES.COUNSELOR || role === ROLES.FACILITY_ADMIN;
 }
 
 export function isParticipant(user) {
-  return user?.role === ROLES.PARTICIPANT || user?.role === ROLES.CLIENT || !user?.role;
+  return resolveRoleForUser(user) === ROLES.CLIENT;
 }
 
 export function isSupportUser(user) {
-  return user?.role === ROLES.SUPPORT_USER;
+  return SUPPORT_ROLES.includes(user?.role) || SUPPORT_ROLES.includes(resolveRoleForUser(user));
 }
 
 export function isClientRole(user) {
-  return user?.role === ROLES.CLIENT || user?.role === ROLES.PARTICIPANT || !user?.role;
+  return resolveRoleForUser(user) === ROLES.CLIENT;
 }
 
 export function hasPermission(user, permission) {
   const allowed = PERMISSIONS[permission];
   if (!allowed) return false;
-  return allowed.includes(user?.role) || allowed.includes("*");
+  const role = resolveRoleForUser(user);
+  return allowed.includes(role) || allowed.includes(user?.role) || allowed.includes("*");
 }
 
 // ── Default Landing Pages per Role ───────────────────────────────────────────
 export function getDefaultPage(user) {
-  switch (user?.role) {
-    case ROLES.ADMIN:
+  switch (resolveRoleForUser(user)) {
+    case ROLES.FACILITY_ADMIN:
       return "StaffDashboard";
     case ROLES.COUNSELOR:
-    case ROLES.STAFF:
       return "CounselorPortal";
-    case ROLES.PROBATION:
+    case ROLES.SPONSOR:
+      return "SponsorDashboard";
+    case ROLES.MENTOR:
+      return "MentorDashboard";
+    case ROLES.PROBATION_OFFICER:
       return "ProbationDashboard";
-    case ROLES.FAMILY:
-      return "FamilyView";
-    case ROLES.SUPPORT_USER:
-      return "SupportUserDashboard";
+    case ROLES.VETERAN:
+      return "VeteransDashboard";
+    case ROLES.FAMILY_SUPPORT:
+      return "FamilySupportDashboard";
+    case ROLES.CLIENT:
     default:
-      return "Home";
+      return "ClientDashboard";
+  }
+}
+
+export function getDashboardPathForRole(role) {
+  switch (normalizeRole(role)) {
+    case ROLES.COUNSELOR:
+      return "/CounselorDashboard";
+    case ROLES.SPONSOR:
+      return "/SponsorDashboard";
+    case ROLES.MENTOR:
+      return "/MentorDashboard";
+    case ROLES.PROBATION_OFFICER:
+      return "/ProbationDashboard";
+    case ROLES.VETERAN:
+      return "/VeteransDashboard";
+    case ROLES.FAMILY_SUPPORT:
+      return "/FamilySupportDashboard";
+    case ROLES.FACILITY_ADMIN:
+      return "/FacilityAdminDashboard";
+    case ROLES.CLIENT:
+    default:
+      return "/ClientDashboard";
   }
 }
 
