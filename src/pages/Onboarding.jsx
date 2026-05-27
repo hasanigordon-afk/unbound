@@ -3,10 +3,10 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { ChevronRight, Loader2, Check, Phone, MessageSquare } from "lucide-react";
+import { ChevronRight, Loader2, Check } from "lucide-react";
 import RecoveryFocusPicker from "@/components/onboarding/RecoveryFocusPicker";
 import LocationStep from "@/components/onboarding/LocationStep";
-import { CATEGORY_BY_VALUE, isCrisisCategory } from "@/lib/recoveryCategories";
+import { isCrisisCategory } from "@/lib/recoveryCategories";
 import ReZilientLogo from "@/components/shared/ReZilientLogo";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
