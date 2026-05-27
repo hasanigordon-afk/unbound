@@ -1,0 +1,34 @@
+{
+  "name": "HomeModuleActivity",
+  "type": "object",
+  "properties": {
+    "module_key": {
+      "type": "string"
+    },
+    "section_title": {
+      "type": "string"
+    },
+    "module_title": {
+      "type": "string"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "opened",
+        "pinned",
+        "unpinned",
+        "started",
+        "completed"
+      ],
+      "default": "opened"
+    },
+    "created_at_text": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "module_key",
+    "module_title",
+    "action_type"
+  ]
+}

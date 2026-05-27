@@ -1,0 +1,40 @@
+{
+  "name": "HomeModuleState",
+  "type": "object",
+  "properties": {
+    "module_key": {
+      "type": "string"
+    },
+    "section_title": {
+      "type": "string"
+    },
+    "module_title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "completed"
+      ],
+      "default": "not_started"
+    },
+    "pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_opened_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "open_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "module_key",
+    "module_title"
+  ]
+}
