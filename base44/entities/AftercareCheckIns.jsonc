@@ -1,0 +1,46 @@
+{
+  "name": "AftercareCheckIns",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "cadence": {
+      "type": "string"
+    },
+    "scheduled_time": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "escalation_rule": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string",
+      "default": "client"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
