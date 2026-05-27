@@ -11,6 +11,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MyPlanTab from "@/components/meetings/MyPlanTab";
 import AttendanceLog from "@/components/meetings/AttendanceLog";
 import ProbationCalendar from "@/components/meetings/ProbationCalendar";
+import { demoMeetings } from "@/data/pilotDemoData";
 
 // Fix leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -44,8 +45,9 @@ export default function Meetings() {
 
   const { data: meetings = [] } = useQuery({
     queryKey: ["meetings"],
-    queryFn: () => base44.entities.Meeting.filter({ is_active: true }),
+    queryFn: () => base44.entities.Meeting.filter({ is_active: true }).catch(() => []),
   });
+  const meetingRows = meetings.length > 0 ? meetings : demoMeetings;
 
   const { data: favorites = [] } = useQuery({
     queryKey: ["meeting-favorites", user?.email],
@@ -93,7 +95,7 @@ export default function Meetings() {
     return attendance.some(a => a.meeting_id === id && a.attended_at === today);
   };
 
-  const filtered = meetings.filter(m => {
+  const filtered = meetingRows.filter(m => {
     const typeMatch = filterType === "all" || m.program_type === filterType;
     const formatMatch = filterFormat === "all" || (filterFormat === "online" ? !m.in_person : m.in_person);
     const dayMatch = filterDay === "all" || m.day_of_week === parseInt(filterDay);
@@ -212,13 +214,13 @@ export default function Meetings() {
 
       {activeTab === "plan" && (
         <div className="px-5 py-5">
-          <MyPlanTab user={user} meetings={meetings} />
+          <MyPlanTab user={user} meetings={meetingRows} />
         </div>
       )}
 
       {activeTab === "attendance" && (
         <div className="px-5 py-5">
-          <AttendanceLog user={user} meetings={meetings} />
+          <AttendanceLog user={user} meetings={meetingRows} />
         </div>
       )}
 

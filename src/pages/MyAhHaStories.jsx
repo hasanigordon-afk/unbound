@@ -6,6 +6,7 @@ import {
   ArrowLeft, Plus, Eye, Edit2, Trash2, RefreshCw, Share2,
   Loader2, Sparkles, ChevronRight, AlertTriangle, Heart, MessageCircle,
 } from "lucide-react";
+import { demoAhHaMoments } from "@/data/pilotDemoData";
 
 /* ── Constants ────────────────────────────────────────────────────────────── */
 const TABS = [
@@ -263,9 +264,16 @@ export default function MyAhHaStories() {
 
   const { data: stories = [], isLoading } = useQuery({
     queryKey: ["my-ahha-stories", user?.email],
-    queryFn: () => base44.entities.AhHaMoment.filter({ user_email: user.email }, "-created_date", 100),
+    queryFn: async () => {
+      try {
+        return await base44.entities.AhHaMoment.filter({ user_email: user.email }, "-created_date", 100);
+      } catch {
+        return [];
+      }
+    },
     enabled: !!user?.email,
   });
+  const storyRows = stories.length > 0 ? stories : demoAhHaMoments;
 
   const deleteMutation = useMutation({
     mutationFn: (id) => base44.entities.AhHaMoment.delete(id),
@@ -278,17 +286,17 @@ export default function MyAhHaStories() {
   });
 
   const filtered = useMemo(() => {
-    if (activeTab === "all") return stories;
-    return stories.filter(s => s.status === activeTab);
-  }, [stories, activeTab]);
+    if (activeTab === "all") return storyRows;
+    return storyRows.filter(s => s.status === activeTab);
+  }, [storyRows, activeTab]);
 
   const stats = useMemo(() => ({
-    total:    stories.length,
-    drafts:   stories.filter(s => s.status === "draft").length,
-    pending:  stories.filter(s => s.status === "pending_review").length,
-    approved: stories.filter(s => s.status === "approved").length,
-    reactions: stories.reduce((sum, s) => sum + (s.reaction_count || 0), 0),
-  }), [stories]);
+    total:    storyRows.length,
+    drafts:   storyRows.filter(s => s.status === "draft").length,
+    pending:  storyRows.filter(s => s.status === "pending_review").length,
+    approved: storyRows.filter(s => s.status === "approved").length,
+    reactions: storyRows.reduce((sum, s) => sum + (s.reaction_count || 0), 0),
+  }), [storyRows]);
 
   const handleEdit = (story) => {
     navigate(`/SubmitAhHa?edit=${story.id}`);

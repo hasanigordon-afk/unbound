@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Activity, AlertTriangle, CheckCircle2, Clock3, ClipboardList, Eye, Mail, Phone, Target, UsersRound } from 'lucide-react';
 import PilotShell from '@/components/pilot/PilotShell';
+import { demoCheckIns, demoCounselorClients, demoGoals, demoPilotIntakes, demoSavedResources } from '@/data/pilotDemoData';
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -11,18 +12,23 @@ export default function FacilityPilotDashboard() {
 
   useEffect(() => {
     const load = async () => {
-      const [clients, checkins, goals, resources, savedIntakes] = await Promise.all([
+      const [clientsResult, checkinsResult, goalsResult, resourcesResult, intakesResult] = await Promise.allSettled([
         base44.entities.ParticipantProfile.list('-updated_date', 200),
         base44.entities.DailyCheckIn.list('-created_date', 300),
         base44.entities.TopFiveNonNegotiable.list('-updated_date', 300),
         base44.entities.SavedResource.list('-created_date', 300),
         base44.entities.PilotClientIntake.list('-created_date', 50),
       ]);
+      const clients = clientsResult.value?.length ? clientsResult.value : demoCounselorClients;
+      const checkins = checkinsResult.value?.length ? checkinsResult.value : demoCheckIns;
+      const goals = goalsResult.value?.length ? goalsResult.value : demoGoals;
+      const resources = resourcesResult.value?.length ? resourcesResult.value : demoSavedResources;
+      const savedIntakes = intakesResult.value?.length ? intakesResult.value : demoPilotIntakes;
 
-      const completedToday = checkins.filter((item) => (item.checkin_date || item.created_date || '').slice(0, 10) === today).length;
+      const completedToday = checkins.filter((item) => (item.check_in_date || item.checkin_date || item.created_date || '').slice(0, 10) === today).length;
       const uniqueCheckinUsers = new Set(checkins.map((item) => item.user_email || item.created_by).filter(Boolean));
       const missed = Math.max(0, clients.length - uniqueCheckinUsers.size);
-      const goalsCompleted = goals.filter((goal) => Number(goal.progress || 0) >= 100).length;
+      const goalsCompleted = goals.filter((goal) => Number(goal.progress || goal.progress_percentage || 0) >= 100).length;
       const followUp = checkins.filter((item) => Number(item.craving_level || item.mood_rating || 0) >= 7).length + missed;
       const latest = [...checkins, ...goals, ...resources].sort((a, b) => new Date(b.updated_date || b.created_date) - new Date(a.updated_date || a.created_date))[0];
 

@@ -8,10 +8,13 @@ import CounselorMessagePanel from "@/components/messaging/CounselorMessagePanel"
 import ClientView from "@/components/shared/ClientView";
 import RelapseRiskPanel from "@/components/risk/RelapseRiskPanel";
 import ChannelModerationPanel from "@/components/channels/ChannelModerationPanel";
-
-// Demo fallback data for shared/preview mode
-const DEMO_FACILITY = { id: "69b4c0a624652291a34b228b", facility_name: "Integrity Recovery Center", city: "Newark", state: "NJ" };
-const DEMO_COUNSELOR_EMAIL = "counselor.rivera@integrityrc.org";
+import {
+  DEMO_COUNSELOR_EMAIL,
+  demoCounselorCheckIns,
+  demoCounselorClients,
+  demoEngagementAlerts,
+  demoFacility,
+} from "@/data/pilotDemoData";
 
 export default function CounselorDashboard() {
   const navigate = useNavigate();
@@ -32,52 +35,60 @@ export default function CounselorDashboard() {
   });
 
   // Facility: use linked facility OR demo fallback
-  const facilityId = counselorProfile?.facility_id || (!user ? DEMO_FACILITY.id : null);
+  const facilityId = counselorProfile?.facility_id || (!user ? demoFacility.id : null);
 
   const { data: facilityData } = useQuery({
     queryKey: ["facility-obj", facilityId],
     queryFn: async () => {
-      const list = await base44.entities.Facility.list();
-      return list.find(f => f.id === facilityId) || DEMO_FACILITY;
+      try {
+        const list = await base44.entities.Facility.list();
+        return list.find(f => f.id === facilityId) || demoFacility;
+      } catch {
+        return demoFacility;
+      }
     },
     enabled: !!facilityId,
   });
 
-  const facility = facilityData || (!user ? DEMO_FACILITY : null);
+  const facility = facilityData || (!user ? demoFacility : null);
 
   // Participants — load by facility OR all for demo
   const { data: participants = [], isLoading: participantsLoading } = useQuery({
     queryKey: ["facility-participants", facility?.id],
     queryFn: () =>
       facility?.id
-        ? base44.entities.ParticipantProfile.filter({ facility_id: facility.id })
-        : base44.entities.ParticipantProfile.list("-created_date", 20),
+        ? base44.entities.ParticipantProfile.filter({ facility_id: facility.id }).catch(() => [])
+        : base44.entities.ParticipantProfile.list("-created_date", 20).catch(() => []),
     enabled: !!facility,
   });
 
   const { data: allCheckIns = [] } = useQuery({
     queryKey: ["facility-checkins-brief", facility?.id],
-    queryFn: () => base44.entities.DailyCheckIn.list("-check_in_date", 500),
-    enabled: participants.length > 0,
+    queryFn: () => base44.entities.DailyCheckIn.list("-check_in_date", 500).catch(() => []),
+    enabled: !!facility,
   });
 
   const { data: alerts = [] } = useQuery({
     queryKey: ["facility-alerts", facility?.id],
-    queryFn: () => base44.entities.EngagementAlert.filter({ status: "active" }),
+    queryFn: () => base44.entities.EngagementAlert.filter({ status: "active" }).catch(() => []),
     enabled: !!facility,
   });
 
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
+  const participantRows = participants.length > 0 ? participants : demoCounselorClients;
+  const checkInRows = allCheckIns.length > 0 ? allCheckIns : demoCounselorCheckIns;
+  const alertRows = alerts.length > 0 ? alerts : demoEngagementAlerts;
+
   const getMetrics = (email) => {
-    const pCheckins = allCheckIns.filter((c) => c.participant_email === email);
+    const pCheckins = checkInRows.filter((c) => c.participant_email === email);
     const recent = pCheckins.filter((c) => new Date(c.check_in_date) >= sevenDaysAgo);
     const compliance = Math.round((recent.length / 7) * 100);
     const sorted = [...pCheckins].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
     const lastCheckIn = sorted[0]?.check_in_date || null;
     const daysSince = lastCheckIn ? Math.floor((new Date() - new Date(lastCheckIn)) / 86400000) : 999;
-    const hasAlert = alerts.some(a => a.participant_email === email);
+    const hasAlert = alertRows.some(a => a.participant_email === email);
     const risk = hasAlert || compliance < 40 || daysSince >= 3 ? "high" : compliance < 70 ? "medium" : "low";
     return { compliance, lastCheckIn, daysSince, risk };
   };
@@ -141,12 +152,12 @@ export default function CounselorDashboard() {
         </div>
 
         {/* Summary stats */}
-        {participants.length > 0 && (
+        {participantRows.length > 0 && (
           <div className="grid grid-cols-3 gap-3 mt-4">
             {[
-              { label: "Caseload", value: participants.length, color: "#4A90E2" },
-              { label: "Active Alerts", value: alerts.filter(a => a.status === "active").length, color: "#EF4444" },
-              { label: "High Risk", value: participants.filter(p => getMetrics(p.participant_email).risk === "high").length, color: "#F59E0B" },
+              { label: "Caseload", value: participantRows.length, color: "#4A90E2" },
+              { label: "Active Alerts", value: alertRows.filter(a => a.status === "active").length, color: "#EF4444" },
+              { label: "High Risk", value: participantRows.filter(p => getMetrics(p.participant_email).risk === "high").length, color: "#F59E0B" },
             ].map(s => (
               <div key={s.label} style={{ background: "#F7F7F8", border: "1px solid #E5E7EB", borderRadius: 10, padding: "10px 12px", textAlign: "center" }}>
                 <p style={{ fontSize: 24, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</p>
@@ -180,17 +191,17 @@ export default function CounselorDashboard() {
         {activeTab === "patients" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <p className="text-xs uppercase tracking-wide font-semibold" style={{ color: "#8E8E93" }}>
-              {participants.length} Assigned Patient{participants.length !== 1 ? "s" : ""}
+              {participantRows.length} Assigned Patient{participantRows.length !== 1 ? "s" : ""}
             </p>
 
-            {participantsLoading && (
+            {participantsLoading && participants.length > 0 && (
               <div className="text-center py-10" style={{ color: "#8E8E93" }}>
                 <Loader2 className="w-6 h-6 mx-auto animate-spin mb-2 opacity-40" />
                 <p className="text-sm">Loading patients…</p>
               </div>
             )}
 
-            {!participantsLoading && participants.length === 0 && (
+            {!participantsLoading && participantRows.length === 0 && (
               <div className="text-center py-16 rounded-xl" style={{ background: "#FFF", border: "1px solid #E5E7EB", color: "#8E8E93" }}>
                 <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm font-medium">No patients assigned yet.</p>
@@ -198,9 +209,9 @@ export default function CounselorDashboard() {
               </div>
             )}
 
-            {participants.map((p) => {
+            {participantRows.map((p) => {
               const m = getMetrics(p.participant_email);
-              const hasActiveAlert = alerts.some(a => a.participant_email === p.participant_email && a.status === "active");
+              const hasActiveAlert = alertRows.some(a => a.participant_email === p.participant_email && a.status === "active");
               return (
                 <div key={p.id} style={{ background: "#FFF", border: `1px solid ${m.risk === "high" ? "#FCA5A5" : "#D1D1D6"}`, borderLeft: `4px solid ${m.risk === "high" ? "#EF4444" : m.risk === "medium" ? "#F59E0B" : "#22C55E"}`, borderRadius: "8px", padding: "18px 20px" }}>
                   <div className="flex items-start justify-between gap-4">
@@ -273,7 +284,7 @@ export default function CounselorDashboard() {
             <CounselorMessagePanel
               counselorEmail={counselorEmail}
               facilityId={facility?.id}
-              participants={participants}
+              participants={participantRows}
               initialPatient={selectedPatient}
               channel="counselor_patient"
             />

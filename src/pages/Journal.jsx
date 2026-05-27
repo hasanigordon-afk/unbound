@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import moment from "moment";
+import { demoJournalEntries } from "@/data/pilotDemoData";
 
 const TAGS = ["craving", "gratitude", "trigger", "win", "relapse", "reflection"];
 const MOOD_LABELS = { 1: "😔", 2: "😕", 3: "😐", 4: "🙂", 5: "😊" };
@@ -40,9 +41,10 @@ export default function Journal() {
 
   const { data: entries = [] } = useQuery({
     queryKey: ["journal-entries", user?.email],
-    queryFn: () => base44.entities.JournalEntry.filter({ created_by: user.email }, '-created_date', 50),
+    queryFn: () => base44.entities.JournalEntry.filter({ created_by: user.email }, '-created_date', 50).catch(() => []),
     enabled: !!user,
   });
+  const entryRows = entries.length > 0 ? entries : demoJournalEntries;
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.JournalEntry.create({
@@ -75,7 +77,7 @@ export default function Journal() {
     }));
   };
 
-  const filtered = entries.filter(e => {
+  const filtered = entryRows.filter(e => {
     const matchesSearch = !searchQuery || e.content?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesTag = filterTag === "all" || (e.tags || []).includes(filterTag);
     return matchesSearch && matchesTag;
@@ -87,7 +89,7 @@ export default function Journal() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1>Journal</h1>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Private reflections · {entries.length} entries</p>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Private reflections · {entryRows.length} entries</p>
           </div>
           <Button onClick={() => setShowForm(!showForm)} className="btn-primary">
             {showForm ? "Cancel" : "+ New Entry"}

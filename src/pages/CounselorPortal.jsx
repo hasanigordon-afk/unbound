@@ -10,6 +10,14 @@ import MessagingPanel from "../components/counselor/MessagingPanel";
 import LifelineEventsTab from "../components/counselor/LifelineEventsTab";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
+import {
+  demoCounselorCheckIns,
+  demoCounselorClients,
+  demoEngagementAlerts,
+  demoFacility,
+  demoForwardPlans,
+  demoPhaseCompletions,
+} from "@/data/pilotDemoData";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
 const C = {
@@ -176,67 +184,59 @@ export default function CounselorPortal() {
     },
     enabled: !!counselorProfile?.facility_id,
   });
+  const effectiveFacility = facility || (!user ? demoFacility : null);
 
   const { data: participants = [], isLoading: participantsLoading } = useQuery({
-    queryKey: ["facility-participants", facility?.id],
-    queryFn: () => base44.entities.ParticipantProfile.filter({ facility_id: facility.id }),
-    enabled: !!facility?.id,
+    queryKey: ["facility-participants", effectiveFacility?.id],
+    queryFn: () => base44.entities.ParticipantProfile.filter({ facility_id: effectiveFacility.id }).catch(() => []),
+    enabled: !!effectiveFacility?.id,
   });
 
   const { data: allCheckIns = [] } = useQuery({
-    queryKey: ["facility-checkins", facility?.id],
-    queryFn: async () => {
-      const all = await base44.entities.DailyCheckIn.list("-check_in_date", 500);
-      const emails = participants.map(p => p.participant_email);
-      return all.filter(c => emails.includes(c.participant_email));
-    },
-    enabled: !!facility?.id && participants.length > 0,
+    queryKey: ["facility-checkins", effectiveFacility?.id],
+    queryFn: () => base44.entities.DailyCheckIn.list("-check_in_date", 500).catch(() => []),
+    enabled: !!effectiveFacility?.id,
   });
 
   const { data: alerts = [] } = useQuery({
-    queryKey: ["facility-alerts", facility?.id],
-    queryFn: async () => {
-      const all = await base44.entities.EngagementAlert.filter({ status: "active" });
-      const emails = participants.map(p => p.participant_email);
-      return all.filter(a => emails.includes(a.participant_email));
-    },
-    enabled: !!facility?.id && participants.length > 0,
+    queryKey: ["facility-alerts", effectiveFacility?.id],
+    queryFn: () => base44.entities.EngagementAlert.filter({ status: "active" }).catch(() => []),
+    enabled: !!effectiveFacility?.id,
   });
 
   const { data: phaseCompletions = [] } = useQuery({
-    queryKey: ["all-phase-completions", facility?.id],
-    queryFn: async () => {
-      const all = await base44.entities.PhaseCompletion.list();
-      const emails = participants.map(p => p.participant_email);
-      return all.filter(c => emails.includes(c.participant_email));
-    },
-    enabled: !!facility?.id && participants.length > 0,
+    queryKey: ["all-phase-completions", effectiveFacility?.id],
+    queryFn: () => base44.entities.PhaseCompletion.list().catch(() => []),
+    enabled: !!effectiveFacility?.id,
   });
 
   const { data: forwardPlans = [] } = useQuery({
-    queryKey: ["all-forward-plans", facility?.id],
-    queryFn: async () => {
-      const all = await base44.entities.ForwardPlan.list();
-      const emails = participants.map(p => p.participant_email);
-      return all.filter(p => emails.includes(p.participant_email));
-    },
-    enabled: !!facility?.id && participants.length > 0,
+    queryKey: ["all-forward-plans", effectiveFacility?.id],
+    queryFn: () => base44.entities.ForwardPlan.list().catch(() => []),
+    enabled: !!effectiveFacility?.id,
   });
+
+  const participantRows = participants.length > 0 ? participants : demoCounselorClients;
+  const participantEmails = participantRows.map(p => p.participant_email);
+  const checkInRows = allCheckIns.length > 0 ? allCheckIns.filter(c => participantEmails.includes(c.participant_email)) : demoCounselorCheckIns;
+  const alertRows = alerts.length > 0 ? alerts.filter(a => participantEmails.includes(a.participant_email)) : demoEngagementAlerts;
+  const phaseCompletionRows = phaseCompletions.length > 0 ? phaseCompletions.filter(c => participantEmails.includes(c.participant_email)) : demoPhaseCompletions;
+  const forwardPlanRows = forwardPlans.length > 0 ? forwardPlans.filter(p => participantEmails.includes(p.participant_email)) : demoForwardPlans;
 
   // ── Computed metrics ───────────────────────────────────────────
   const participantsWithMetrics = useMemo(() => {
-    return participants.map(p => {
+    return participantRows.map(p => {
       const email = p.participant_email;
-      const checkIns = allCheckIns.filter(c => c.participant_email === email);
+      const checkIns = checkInRows.filter(c => c.participant_email === email);
       const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       const last7 = checkIns.filter(c => new Date(c.check_in_date) >= sevenDaysAgo);
       const lastCI = checkIns.sort((a,b) => new Date(b.check_in_date) - new Date(a.check_in_date))[0];
       const engagement = Math.round((last7.length / 7) * 100);
-      const hasAlert = alerts.some(a => a.participant_email === email);
+      const hasAlert = alertRows.some(a => a.participant_email === email);
       const risk = (hasAlert || engagement < 40) ? "high" : engagement < 70 ? "medium" : "low";
-      const completions = phaseCompletions.filter(c => c.participant_email === email);
+      const completions = phaseCompletionRows.filter(c => c.participant_email === email);
       const phase = ["Phase 1","Phase 2","Phase 3","Complete"][Math.min(completions.length, 3)];
-      const plan = forwardPlans.find(fp => fp.participant_email === email);
+      const plan = forwardPlanRows.find(fp => fp.participant_email === email);
       return {
         ...p,
         engagement,
@@ -246,7 +246,7 @@ export default function CounselorPortal() {
         forwardPlan: plan ? { completion: plan.overall_completion_percentage || 0, hasGoals: !!(plan.housing_goal || plan.employment_goal) } : { completion: 0, hasGoals: false },
       };
     });
-  }, [participants, allCheckIns, alerts, phaseCompletions, forwardPlans]);
+  }, [participantRows, checkInRows, alertRows, phaseCompletionRows, forwardPlanRows]);
 
   const filteredParticipants = useMemo(() => {
     return participantsWithMetrics.filter(p => {
@@ -257,15 +257,15 @@ export default function CounselorPortal() {
   }, [participantsWithMetrics, searchQuery, riskFilter]);
 
   // ── Summary stats ──────────────────────────────────────────────
-  const totalActive = participants.length;
+  const totalActive = participantRows.length;
   const highRiskCount = participantsWithMetrics.filter(p => p.risk === "high").length;
   const avgEngagement = totalActive > 0
     ? Math.round(participantsWithMetrics.reduce((s, p) => s + p.engagement, 0) / totalActive) : 0;
-  const checkedInToday = allCheckIns.filter(c => c.check_in_date === new Date().toISOString().split("T")[0]).length;
-  const activeAlerts = alerts.length;
+  const checkedInToday = checkInRows.filter(c => c.check_in_date === new Date().toISOString().split("T")[0]).length;
+  const activeAlerts = alertRows.length;
 
   const exportReport = () => {
-    const report = { facility: facility?.name, generated: new Date().toISOString(), totalActive, avgEngagement, highRiskCount, activeAlerts,
+    const report = { facility: effectiveFacility?.name, generated: new Date().toISOString(), totalActive, avgEngagement, highRiskCount, activeAlerts,
       participants: filteredParticipants.map(p => ({ email: p.participant_email, engagement: p.engagement, lastCheckIn: p.lastCheckIn, phase: p.phase, risk: p.risk })) };
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -289,7 +289,7 @@ export default function CounselorPortal() {
           <div>
             <p style={{ fontSize: 11, fontWeight: 700, color: "rgba(62,207,191,0.8)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>UNBOUND · Staff Portal</p>
             <h1 style={{ fontSize: 20, fontWeight: 800, color: "#fff", lineHeight: 1.2 }}>
-              {facility?.name || "Counselor Dashboard"}
+              {effectiveFacility?.name || "Counselor Dashboard"}
             </h1>
             {user && <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{user.full_name} · {user.email}</p>}
           </div>
@@ -435,7 +435,7 @@ export default function CounselorPortal() {
               <p style={{ fontSize: 13, color: C.muted, marginLeft: "auto" }}>{filteredParticipants.length} of {totalActive}</p>
             </div>
 
-            {participantsLoading ? (
+            {participantsLoading && participants.length > 0 ? (
               <div style={{ textAlign: "center", padding: "60px 0" }}>
                 <Loader2 style={{ width: 28, height: 28, color: C.blue, margin: "0 auto 12px", display: "block" }} className="animate-spin" />
                 <p style={{ fontSize: 14, color: C.muted }}>Loading client data…</p>
@@ -465,13 +465,13 @@ export default function CounselorPortal() {
         {/* ── ALERTS TAB ───────────────────────────────────────── */}
         {activeTab === "alerts" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {alerts.length === 0 ? (
+            {alertRows.length === 0 ? (
               <div style={{ textAlign: "center", padding: "80px 0", background: C.white, borderRadius: 16, border: `1px solid ${C.border}` }}>
                 <p style={{ fontSize: 40, marginBottom: 12 }}>✅</p>
                 <p style={{ fontSize: 18, fontWeight: 800, color: C.navy, marginBottom: 6 }}>All Clear</p>
                 <p style={{ fontSize: 14, color: C.muted }}>No active alerts right now. Your caseload is stable.</p>
               </div>
-            ) : alerts.map(alert => (
+            ) : alertRows.map(alert => (
               <div key={alert.id} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 14, padding: "18px 20px",
                 borderLeft: `4px solid ${C.red}` }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
@@ -542,7 +542,7 @@ export default function CounselorPortal() {
         <MessagingPanel
           participant={messagingTab || selectedParticipant}
           counselorEmail={user?.email}
-          facilityId={facility?.id}
+          facilityId={effectiveFacility?.id}
           onClose={() => { setMessagingTab(null); setSelectedParticipant(null); }}
         />
       )}

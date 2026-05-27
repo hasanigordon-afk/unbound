@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, CheckCircle2, HeartPulse, LifeBuoy, MapPinned, MessageCircle, Shield, Sparkles, Target, Trophy, UserRound, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
+import { demoHomeModuleActivities, demoHomeModuleStates } from '@/data/pilotDemoData';
 
 const sections = [
   {
@@ -49,12 +50,17 @@ export default function ClientHomeView() {
   const [calendarSyncMessage, setCalendarSyncMessage] = useState('');
 
   const loadBackend = async () => {
-    const [stateRows, activityRows] = await Promise.all([
-      base44.entities.HomeModuleState.list('-updated_date', 200),
-      base44.entities.HomeModuleActivity.list('-created_date', 100),
-    ]);
-    setModuleStates(stateRows);
-    setActivities(activityRows);
+    try {
+      const [stateRows, activityRows] = await Promise.all([
+        base44.entities.HomeModuleState.list('-updated_date', 200),
+        base44.entities.HomeModuleActivity.list('-created_date', 100),
+      ]);
+      setModuleStates(stateRows?.length ? stateRows : demoHomeModuleStates);
+      setActivities(activityRows?.length ? activityRows : demoHomeModuleActivities);
+    } catch {
+      setModuleStates(demoHomeModuleStates);
+      setActivities(demoHomeModuleActivities);
+    }
   };
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Flame, CheckCircle2, Loader2, RotateCcw, Users, Phone, CalendarPlus, ArrowRight } from "lucide-react";
 import { markTrigger, TRIGGERS } from "@/lib/subscriptionEngine";
+import { demoCheckIns } from "@/data/pilotDemoData";
 
 const C = {
   amber:   "#2E7D7A",
@@ -78,22 +79,23 @@ export default function DailyCheckIn() {
 
   const { data: checkIns = [] } = useQuery({
     queryKey: ["daily-checkins", user?.email],
-    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 60),
+    queryFn: () => base44.entities.DailyCheckIn.filter({ participant_email: user.email }, "-check_in_date", 60).catch(() => []),
     enabled: !!user?.email,
   });
+  const checkInRows = checkIns.length > 0 ? checkIns : demoCheckIns;
 
   const streak = useMemo(() => {
-    const sorted = [...checkIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+    const sorted = [...checkInRows].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
     let n = 0, cur = new Date(); cur.setHours(0, 0, 0, 0);
     for (const c of sorted) {
       const d = new Date(c.check_in_date); d.setHours(0, 0, 0, 0);
       if (Math.round((cur - d) / 86400000) <= 1) { n++; cur = d; } else break;
     }
     return n;
-  }, [checkIns]);
+  }, [checkInRows]);
 
   const today = new Date().toISOString().split("T")[0];
-  const alreadyDone = checkIns.some(c => c.check_in_date === today);
+  const alreadyDone = checkInRows.some(c => c.check_in_date === today);
 
   const submitMutation = useMutation({
     mutationFn: () => base44.entities.DailyCheckIn.create({

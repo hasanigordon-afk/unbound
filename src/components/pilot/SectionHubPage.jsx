@@ -1,5 +1,6 @@
 import React from 'react';
 import PilotShell from './PilotShell';
+import { getSectionDemoItems } from '@/data/pilotDemoData';
 
 export default function SectionHubPage({ title, subtitle, sections, primaryAction }) {
   return (
@@ -24,6 +25,15 @@ export default function SectionHubPage({ title, subtitle, sections, primaryActio
                   <h3 className="font-sans text-xl font-black text-white">{section.title}</h3>
                 </div>
                 <p className="text-sm font-bold leading-relaxed text-slate-300">{section.description}</p>
+                {(section.demoItems || getSectionDemoItems(section.title)).length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    {(section.demoItems || getSectionDemoItems(section.title)).slice(0, 3).map((item) => (
+                      <div key={item} className="rounded-2xl border border-white/10 bg-white/8 px-3 py-2 text-xs font-black text-slate-100">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {section.items?.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {section.items.map((item) => <span key={item} className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-black text-slate-200">{item}</span>)}

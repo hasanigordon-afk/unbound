@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Filter, Star, ArrowRight, Loader2, BookOpen, Heart } from "lucide-react";
+import { demoAhHaMoments } from "@/data/pilotDemoData";
 
 // ── Constants ──────────────────────────────────────────────────────────────
 const C = {
@@ -98,14 +99,21 @@ export default function AhHaMoment() {
 
   const { data: stories = [], isLoading } = useQuery({
     queryKey: ["ahha-moments"],
-    queryFn: () => base44.entities.AhHaMoment.filter({ status: "approved" }, "-created_date", 50),
+    queryFn: async () => {
+      try {
+        return await base44.entities.AhHaMoment.filter({ status: "approved" }, "-created_date", 50);
+      } catch {
+        return [];
+      }
+    },
     staleTime: 30_000,
   });
 
-  const featured = useMemo(() => stories.filter(s => s.is_featured).slice(0, 3), [stories]);
+  const storyRows = stories.length > 0 ? stories : demoAhHaMoments;
+  const featured = useMemo(() => storyRows.filter(s => s.is_featured).slice(0, 3), [storyRows]);
 
   const filtered = useMemo(() => {
-    let list = stories;
+    let list = storyRows;
     if (activeCategory !== "all") list = list.filter(s => s.category === activeCategory);
     if (showFeaturedOnly) list = list.filter(s => s.is_featured);
     if (search.trim()) {
@@ -117,7 +125,7 @@ export default function AhHaMoment() {
       );
     }
     return list;
-  }, [stories, activeCategory, showFeaturedOnly, search]);
+  }, [storyRows, activeCategory, showFeaturedOnly, search]);
 
   return (
     <div style={{ background: "#F7F3EE", minHeight: "100vh", paddingBottom: 110 }}>
@@ -235,14 +243,14 @@ export default function AhHaMoment() {
                 border: "1px solid #E8E2D9", borderRadius: 16 }}>
                 <p style={{ fontSize: 32, marginBottom: 12 }}>🌱</p>
                 <p style={{ fontSize: 16, fontWeight: 600, color: "#1C1410", marginBottom: 8, fontFamily: "'Lora', serif" }}>
-                  {stories.length === 0 ? "Be the first to share." : "No stories match your search."}
+                  {storyRows.length === 0 ? "Be the first to share." : "No stories match your search."}
                 </p>
                 <p style={{ fontSize: 13, color: "#9B8E83", marginBottom: 20, lineHeight: 1.6 }}>
-                  {stories.length === 0
+                  {storyRows.length === 0
                     ? "Your moment could be the one that helps someone take their first step."
                     : "Try a different category or search term."}
                 </p>
-                {stories.length === 0 && (
+                {storyRows.length === 0 && (
                   <button onClick={() => navigate("/SubmitAhHa")} style={{
                     padding: "13px 28px", borderRadius: 12, border: "none", cursor: "pointer",
                     background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 14, minHeight: 44,
