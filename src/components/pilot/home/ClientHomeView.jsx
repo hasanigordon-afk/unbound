@@ -192,13 +192,13 @@ export default function ClientHomeView() {
       </section>
 
       <section className="rounded-[30px] border border-white/12 bg-white/8 p-2 shadow-2xl backdrop-blur-2xl">
-        <div className="no-scrollbar flex gap-2 overflow-x-auto">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
           {roles.map((role) => (
             <button
               key={role.id}
               type="button"
               onClick={() => setActiveRole(role.id)}
-              className={`min-h-0 shrink-0 rounded-[24px] px-4 py-3 text-left transition active:scale-95 ${activeRole === role.id ? 'bg-amber-200 text-slate-950 shadow-[0_0_30px_rgba(245,188,90,.28)]' : 'bg-white/8 text-slate-300'}`}
+              className={`min-h-0 rounded-[24px] px-4 py-3 text-left transition active:scale-95 ${activeRole === role.id ? 'bg-amber-200 text-slate-950 shadow-[0_0_30px_rgba(245,188,90,.28)]' : 'bg-white/8 text-slate-300'}`}
             >
               <span className="block text-sm font-black">{role.label}</span>
               <span className="block text-[11px] font-bold uppercase tracking-[0.14em] opacity-75">{role.signal}</span>
