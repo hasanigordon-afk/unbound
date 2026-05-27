@@ -14,6 +14,17 @@ const tabs = ['SCAN', 'ENGINEER', 'EXECUTE', 'Saved Plans', 'Client Profiles', '
 const disclaimer = 'This plan is a support and organization tool. It does not replace professional medical, clinical, legal, or emergency guidance.';
 const planSections = SEE_PLAN_SECTIONS;
 const demoClient = { id: 'preview-client', full_name: 'Marcus Johnson', status: 'active' };
+const executionLabels = {
+  calendarEvents: 'Calendar',
+  reminders: 'Reminders',
+  dailyTasks: 'Tasks',
+  transportationNeeds: 'Transport',
+  goals: 'Goals',
+  checkIns: 'Check-ins',
+  riskFlags: 'Risks',
+  weeklyItems: 'Weekly items',
+  missingItems: 'Missing',
+};
 
 export default function SEESuperAgent() {
   const [activeTab, setActiveTab] = useState('SCAN');
@@ -289,7 +300,7 @@ export default function SEESuperAgent() {
         {!canExecute && <p className="mb-4 rounded-2xl bg-amber-300/15 p-4 text-sm font-bold text-amber-100">Plan cannot be executed until required fields are completed or overridden by counselor.</p>}
         <label className="mb-4 flex items-center gap-3 rounded-2xl bg-white/8 p-3 text-sm"><input type="checkbox" checked={overrideExecute} onChange={(e) => setOverrideExecute(e.target.checked)} /> Counselor override for emergency contact requirement</label>
         <button onClick={executePlan} disabled={loading} className="btn-primary w-full">Execute Plan</button>
-        {executeSummary && <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-5">{Object.entries(executeSummary).map(([key, value]) => <div key={key} className="rounded-2xl bg-white/8 p-3 text-center"><p className="text-2xl font-black">{value}</p><p className="text-xs text-slate-300">{key}</p></div>)}</div>}
+        {executeSummary && <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{Object.entries(executeSummary).map(([key, value]) => <div key={key} className="min-w-0 rounded-2xl bg-white/8 p-3 text-center"><p className="text-2xl font-black">{value}</p><p className="truncate text-[11px] font-bold text-slate-300">{executionLabels[key] || key}</p></div>)}</div>}
       </SEEDataCard>
       <div className="grid gap-2 md:grid-cols-4"><button onClick={executePlan} className="btn-ghost">Create Calendar Events</button><button onClick={executePlan} className="btn-ghost">Create Reminders</button><button onClick={() => setMessage('Client view records are live after execution.')} className="btn-ghost">Send to Client View</button><button onClick={exportSummary} className="btn-ghost">Export Summary</button></div>
     </div>
