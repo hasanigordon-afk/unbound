@@ -15,7 +15,6 @@
  *     ...
  *   </RoleGate>
  */
-import React from "react";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import { STAFF_ROLES, normalizeRole, ROLES } from "@/lib/roles";
 

@@ -2,7 +2,6 @@
  * ProtectedRoute — wraps pages that require a minimum role level.
  * Redirects unauthorized users to the appropriate page.
  */
-import React from "react";
 import { Navigate } from "react-router-dom";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import { STAFF_ROLES, getDashboardPathForRole, normalizeRole } from "@/lib/roles";
