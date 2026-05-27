@@ -23,21 +23,15 @@ const sections = [
     ],
   },
   {
-    eyebrow: 'Tools',
-    title: 'Recovery Tools',
+    eyebrow: 'Support System',
+    title: 'Recovery Tools + Nearby Resources',
     items: [
       { title: 'Calm Reset', description: 'Breathing, meditation, music, and quick grounding tools.', icon: LifeBuoy, to: '/WellnessCenter', accent: 'rose' },
       { title: 'Craving Support', description: 'Use a quick support path before the moment gets bigger.', icon: Shield, to: '/WellnessCenter', accent: 'blue' },
-      { title: 'AI Support', description: 'Ask for help organizing next steps, resources, or structure.', icon: Sparkles, to: '/WellnessCenter', accent: 'violet' },
-    ],
-  },
-  {
-    eyebrow: 'Nearby',
-    title: 'Nearby Resources',
-    items: [
-      { title: 'Find Help', description: 'Shelter, food, rehab, jobs, transportation, and practical support.', icon: MapPinned, to: '/ResourceHub', accent: 'blue' },
+      { title: 'Find Help Nearby', description: 'Shelter, food, rehab, jobs, transportation, and practical support.', icon: MapPinned, to: '/ResourceHub', accent: 'blue' },
       { title: 'Transportation', description: 'Plan rides and reduce missed appointments.', icon: CalendarDays, to: '/JourneyRoadmap', accent: 'gold' },
       { title: 'Recovery Services', description: 'Find local recovery support and structured care options.', icon: HeartPulse, to: '/ResourceHub', accent: 'green' },
+      { title: 'AI Support', description: 'Ask for help organizing next steps, resources, or structure.', icon: Sparkles, to: '/WellnessCenter', accent: 'violet' },
     ],
   },
   {
