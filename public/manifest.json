@@ -1,0 +1,10 @@
+{
+  "name": "ReZilient",
+  "short_name": "ReZilient",
+  "description": "Recovery, aftercare, and support demo experience.",
+  "start_url": "/PilotDemo",
+  "display": "standalone",
+  "background_color": "#07101f",
+  "theme_color": "#07101f",
+  "icons": []
+}

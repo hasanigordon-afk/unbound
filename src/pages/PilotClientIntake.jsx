@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { UserRound, ShieldCheck } from 'lucide-react';
 import PilotShell from '@/components/pilot/PilotShell';
 import { demoClients, demoFacility } from '@/lib/rehabPilotDemoData';
+import { appParams } from '@/lib/app-params';
 
 const initial = { full_name: '', email: '', phone: '', recovery_focus: '', housing_status: '', primary_support: '', urgent_needs: '', preferred_checkin_time: '' };
 
@@ -14,6 +15,7 @@ export default function PilotClientIntake() {
   const save = async (e) => {
     e.preventDefault();
     try {
+      if (!appParams.appId) throw new Error('Demo mode');
       await base44.entities.PilotClientIntake.create(form);
     } catch {
       // Presentation demo can confirm the intake flow without a live backend.

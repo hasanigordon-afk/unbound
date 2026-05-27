@@ -6,11 +6,13 @@ import { ArrowLeft } from "lucide-react";
 import CounselorMessages from "../components/participant/CounselorMessages";
 import PatientAppointments from "@/components/calendar/PatientAppointments";
 import { demoClients, demoMessages } from "@/lib/rehabPilotDemoData";
+import { appParams } from "@/lib/app-params";
 
 export default function ParticipantMessages() {
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
+    enabled: !!appParams.appId,
   });
 
   const { data: profile } = useQuery({

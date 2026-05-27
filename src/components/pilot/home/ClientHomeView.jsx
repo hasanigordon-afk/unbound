@@ -4,6 +4,7 @@ import { CalendarDays, CheckCircle2, ClipboardList, HeartPulse, LifeBuoy, MapPin
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
 import { demoClients, demoFacility } from '@/lib/rehabPilotDemoData';
+import { appParams } from '@/lib/app-params';
 
 const sections = [
   {
@@ -53,6 +54,7 @@ export default function ClientHomeView() {
 
   const loadBackend = async () => {
     try {
+      if (!appParams.appId) throw new Error('Demo mode');
       const [stateRows, activityRows] = await Promise.all([
         base44.entities.HomeModuleState.list('-updated_date', 200),
         base44.entities.HomeModuleActivity.list('-created_date', 100),
@@ -70,6 +72,7 @@ export default function ClientHomeView() {
     let unsubscribeStates = () => {};
     let unsubscribeActivities = () => {};
     try {
+      if (!appParams.appId) throw new Error('Demo mode');
       unsubscribeStates = base44.entities.HomeModuleState.subscribe(loadBackend);
       unsubscribeActivities = base44.entities.HomeModuleActivity.subscribe(loadBackend);
     } catch {
@@ -115,6 +118,7 @@ export default function ClientHomeView() {
   const syncCalendar = async () => {
     setCalendarSyncing(true);
     try {
+      if (!appParams.appId) throw new Error('Demo mode');
       const response = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
       if (response.data.personalConnected === false) {
         const url = await base44.connectors.connectAppUser('6a10000a555f71fe414b9434');

@@ -4,6 +4,7 @@ import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import { base44 } from '@/api/base44Client';
 import { Award, CheckCircle2, HeartHandshake, MessageCircle, Plus, Send, ShieldCheck, Sparkles, Star, Trophy, UsersRound } from 'lucide-react';
 import { demoClients, demoMessages, demoProgressReports } from '@/lib/rehabPilotDemoData';
+import { appParams } from '@/lib/app-params';
 
 const today = new Date().toISOString().slice(0, 10);
 const progressTypes = [
@@ -42,6 +43,7 @@ export default function PositiveProgressHub() {
 
   const loadData = async () => {
     try {
+      if (!appParams.appId) throw new Error('Demo mode');
       const me = await base44.auth.me();
       setUser(me);
       const [progressRows, permissionRows, achievementRows, conversationRows, postRows] = await Promise.all([

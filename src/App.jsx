@@ -2,9 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClientInstance } from '@/lib/query-client';
 import NavigationTracker from '@/lib/NavigationTracker';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import { isPublicDemoPath, publicDemoPaths } from '@/lib/demoRoutes';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
 
@@ -44,6 +45,8 @@ import AIStein from '@/components/aistein/AIStein';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
+  const location = useLocation();
+  const onPublicDemoPath = isPublicDemoPath(location.pathname);
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
@@ -66,14 +69,14 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
     if (authError.type === 'auth_required') {
       const path = window.location.pathname.toLowerCase();
-      const publicPaths = ['/resiliant', '/about', '/pilotdemo', '/facilitypilotdashboard', '/pilotclientintake', '/pilottreatmentplan', '/participantmessages', '/aftercareplanview', '/positiveprogresshub'];
+      const publicPaths = ['/resiliant', '/about', ...publicDemoPaths];
       if (!publicPaths.includes(path)) return <Navigate to="/Resiliant" replace />;
     }
   }
 
   return (
     <>
-      <SubscriptionPrompt />
+      {!onPublicDemoPath && <SubscriptionPrompt />}
       <Routes>
         <Route path="/" element={<PilotHome />} />
         <Route path="/JourneyRoadmap" element={<JourneyRoadmap />} />
