@@ -1,17 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarDays, CheckCircle2, HeartPulse, LifeBuoy, MapPinned, MessageCircle, PlayCircle, ShieldCheck, Target, UserPlus, Users } from 'lucide-react';
+import { CalendarDays, CheckCircle2, HeartPulse, MapPinned, MessageCircle, PlayCircle, ShieldCheck, Target, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
+const list = (data, key) => Array.isArray(data?.[key]) ? data[key] : [];
+
 const pillarConfig = [
-  { key: 'recovery_structure', title: 'Recovery Structure', icon: CalendarDays, to: '/JourneyRoadmap', cta: 'View Today', action: 'Add Task', actionType: 'task', empty: 'Create your first recovery task.', getItems: (d) => [...d.calendarEvents.slice(0, 1), ...d.dailyTasks.slice(0, 2)].map((x) => x.title || x.task_title || x.event_title) },
-  { key: 'wellness', title: 'Wellness & Mental Health', icon: HeartPulse, to: '/WellnessCenter', cta: 'Check In', action: 'Start Breathing', actionType: 'wellness', empty: 'Start with a 5-minute calm reset.', getItems: (d) => d.wellnessSessions.slice(0, 3).map((x) => x.title || x.session_type) },
-  { key: 'resources', title: 'Resources & Reentry Support', icon: MapPinned, to: '/ResourceHub', cta: 'Find Resources', action: 'Saved Resources', actionTo: '/ResourceHub', empty: 'Find and save nearby support.', getItems: (d) => d.savedResources.slice(0, 3).map((x) => x.resource_name || x.category) },
-  { key: 'accountability', title: 'Accountability', icon: ShieldCheck, to: '/DailyCheckIn', cta: 'Daily Check-In', action: 'Log Meeting', actionType: 'meeting', empty: 'Log a check-in or planned meeting.', getItems: (d) => d.checkIns.slice(0, 2).map((x) => x.mood || 'Daily check-in') },
-  { key: 'community', title: 'Community & Stories', icon: MessageCircle, to: '/AhHaMoments', cta: 'Read Stories', action: 'Share AhHa Moment', actionTo: '/AhHaCommunity', empty: 'Read recovery stories or share a win.', getItems: (d) => [...d.ahhaStories.slice(0, 2), ...d.communityPosts.slice(0, 1)].map((x) => x.title || x.content) },
-  { key: 'goals', title: 'Goals & Progress', icon: Target, to: '/Progress', cta: 'View Goals', action: 'Add Goal', actionType: 'goal', empty: 'Add your first 30/60/90 day goal.', getItems: (d) => d.goals.slice(0, 3).map((x) => `${x.title} · ${x.progress_percentage || 0}%`) },
-  { key: 'support_system', title: 'Support System', icon: Users, to: '/Profile#support', cta: 'Contact Support', action: 'Add Contact', actionType: 'contact', empty: 'Add a sponsor, counselor, mentor, or trusted contact.', getItems: (d) => d.supportContacts.slice(0, 3).map((x) => `${x.name}${x.relationship ? ` · ${x.relationship}` : ''}`) },
-  { key: 'media', title: 'Media & Motivation', icon: PlayCircle, to: '/AhHaMoments', cta: 'Watch', action: 'Read', actionTo: '/AhHaMoments', empty: 'Open a motivational video or reading.', getItems: (d) => d.mediaItems.slice(0, 3).map((x) => x.title) },
+  { key: 'recovery_structure', title: 'Recovery Structure', icon: CalendarDays, to: '/JourneyRoadmap', cta: 'View Today', action: 'Add Task', actionType: 'task', empty: 'Create your first recovery task.', getItems: (d) => [...list(d, 'calendarEvents').slice(0, 1), ...list(d, 'dailyTasks').slice(0, 2)].map((x) => x.title || x.task_title || x.event_title) },
+  { key: 'wellness', title: 'Wellness & Mental Health', icon: HeartPulse, to: '/WellnessCenter', cta: 'Check In', action: 'Start Breathing', actionType: 'wellness', empty: 'Start with a 5-minute calm reset.', getItems: (d) => list(d, 'wellnessSessions').slice(0, 3).map((x) => x.title || x.session_type) },
+  { key: 'resources', title: 'Resources & Reentry Support', icon: MapPinned, to: '/ResourceHub', cta: 'Find Resources', action: 'Saved Resources', actionTo: '/ResourceHub', empty: 'Find and save nearby support.', getItems: (d) => list(d, 'savedResources').slice(0, 3).map((x) => x.resource_name || x.category) },
+  { key: 'accountability', title: 'Accountability', icon: ShieldCheck, to: '/DailyCheckIn', cta: 'Daily Check-In', action: 'Log Meeting', actionType: 'meeting', empty: 'Log a check-in or planned meeting.', getItems: (d) => list(d, 'checkIns').slice(0, 2).map((x) => x.mood || 'Daily check-in') },
+  { key: 'community', title: 'Community & Stories', icon: MessageCircle, to: '/AhHaMoments', cta: 'Read Stories', action: 'Share AhHa Moment', actionTo: '/AhHaCommunity', empty: 'Read recovery stories or share a win.', getItems: (d) => [...list(d, 'ahhaStories').slice(0, 2), ...list(d, 'communityPosts').slice(0, 1)].map((x) => x.title || x.content) },
+  { key: 'goals', title: 'Goals & Progress', icon: Target, to: '/Progress', cta: 'View Goals', action: 'Add Goal', actionType: 'goal', empty: 'Add your first 30/60/90 day goal.', getItems: (d) => list(d, 'goals').slice(0, 3).map((x) => `${x.title} · ${x.progress_percentage || 0}%`) },
+  { key: 'support_system', title: 'Support System', icon: Users, to: '/Profile#support', cta: 'Contact Support', action: 'Add Contact', actionType: 'contact', empty: 'Add a sponsor, counselor, mentor, or trusted contact.', getItems: (d) => list(d, 'supportContacts').slice(0, 3).map((x) => `${x.name}${x.relationship ? ` · ${x.relationship}` : ''}`) },
+  { key: 'media', title: 'Media & Motivation', icon: PlayCircle, to: '/AhHaMoments', cta: 'Watch', action: 'Read', actionTo: '/AhHaMoments', empty: 'Open a motivational video or reading.', getItems: (d) => list(d, 'mediaItems').slice(0, 3).map((x) => x.title) },
 ];
 
 const emptyData = {
@@ -62,7 +64,7 @@ export default function LiveCorePillarsGrid({ data, user, loading, error, onRefr
       <div className="grid gap-4 md:grid-cols-2">
         {pillarConfig.map((pillar) => {
           const Icon = pillar.icon;
-          const items = pillar.getItems(safeData).filter(Boolean);
+          const items = (pillar.getItems(safeData) || []).filter(Boolean);
           const progress = progressByKey[pillar.key]?.progress_percentage || Math.min(100, items.length * 28);
           return (
             <Link key={pillar.key} to={pillar.to} className="group rounded-[32px] border border-white/12 bg-white/10 p-5 shadow-xl backdrop-blur-2xl transition active:scale-[.98] hover:bg-white/14">
