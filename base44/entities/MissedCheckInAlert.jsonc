@@ -1,0 +1,45 @@
+{
+  "name": "MissedCheckInAlert",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "source_entity": {
+      "type": "string",
+      "enum": [
+        "DailyTasks",
+        "WeeklyTask",
+        "PlannedMeeting"
+      ]
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "sent",
+        "dismissed",
+        "completed"
+      ],
+      "default": "sent"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "source_entity",
+    "source_id",
+    "title",
+    "message"
+  ]
+}
