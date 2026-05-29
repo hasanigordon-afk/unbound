@@ -1,0 +1,34 @@
+{
+  "name": "RecoveryReminderLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "reminder_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "item_count": {
+      "type": "number",
+      "default": 0
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delivery_type": {
+      "type": "string",
+      "enum": [
+        "in_app",
+        "email",
+        "in_app_and_email"
+      ],
+      "default": "in_app_and_email"
+    }
+  },
+  "required": [
+    "user_email",
+    "reminder_date"
+  ]
+}
