@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { base44 } from "@/api/base44Client";
 import { Heart, Sparkles, X } from "lucide-react";
 import {
   getOrCreatePref, subscribeUser, dismissPrompt,
   hasAnyTrigger, wasPromptShownThisSession, markPromptShownThisSession,
 } from "@/lib/subscriptionEngine";
 import PersonalizationSheet from "./PersonalizationSheet";
+import { useAuth } from "@/lib/AuthContext";
 
 const HEADLINES = [
   "Stay Connected to Your Recovery",
@@ -14,6 +14,7 @@ const HEADLINES = [
 ];
 
 export default function SubscriptionPrompt() {
+  const { user: authUser, isAuthenticated, isLoadingAuth } = useAuth();
   const [visible, setVisible] = useState(false);
   const [user, setUser] = useState(null);
   const [pref, setPref] = useState(null);
@@ -25,7 +26,8 @@ export default function SubscriptionPrompt() {
     let mounted = true;
     (async () => {
       try {
-        const me = await base44.auth.me();
+        if (isLoadingAuth || !isAuthenticated || !authUser?.email) return;
+        const me = authUser;
         if (!mounted) return;
         setUser(me);
 
@@ -61,7 +63,7 @@ export default function SubscriptionPrompt() {
       } catch { /* not authed */ }
     })();
     return () => { mounted = false; };
-  }, []);
+  }, [authUser, isAuthenticated, isLoadingAuth]);
 
   const handleSubscribe = async () => {
     setLoading(true);

@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
 import LiveCorePillarsGrid from './LiveCorePillarsGrid';
 import { pilotItinerary, pilotMissionItems } from '@/lib/pilotSeedData';
+import { useAuth } from '@/lib/AuthContext';
 
 const sections = [
   {
@@ -46,6 +47,7 @@ const sections = [
 const moduleKey = (sectionTitle, itemTitle) => `${sectionTitle}:${itemTitle}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const roadmapPhases = ['Days 1-14 Stabilization', 'Days 15-30 Structure', 'Days 31-60 Rebuild', 'Days 61-90 Growth', '6 Months', '1 Year', '5 Year Vision'];
 export default function ClientHomeView() {
+  const { user: authUser } = useAuth();
   const [moduleStates, setModuleStates] = useState([]);
   const [activities, setActivities] = useState([]);
   const [missionItems, setMissionItems] = useState([]);
@@ -62,7 +64,7 @@ export default function ClientHomeView() {
   const loadBackend = async () => {
     setLoadingPillars(true);
     const [userResult, stateResult, activityResult, missionResult, checkInResult, calendarResult, taskResult, wellnessResult, savedResourceResult, goalResult, supportResult, postResult, storyResult, mediaResult, progressResult] = await Promise.allSettled([
-      base44.auth.me(),
+      Promise.resolve(authUser),
       base44.entities.HomeModuleState.list('-updated_date', 200),
       base44.entities.HomeModuleActivity.list('-created_date', 100),
       base44.entities.TopFiveNonNegotiable.list('sort_order', 5),
