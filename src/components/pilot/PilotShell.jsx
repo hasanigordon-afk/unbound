@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HeartHandshake, Home, MapPinned, MessageSquare, Smartphone, UserRound } from 'lucide-react';
+import { BookOpen, HeartPulse, Home, MapPinned, MessageSquare, Smartphone } from 'lucide-react';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import MobileSlideOutMenu from '@/components/navigation/MobileSlideOutMenu';
 
 const tabs = [
   { label: 'Home', to: '/', icon: Home },
-  { label: 'Profile', to: '/Profile', icon: UserRound },
   { label: 'Resources', to: '/ResourceHub', icon: MapPinned },
+  { label: 'Wellness', to: '/WellnessCenter', icon: HeartPulse },
+  { label: 'AhHa Stories', to: '/AhHaMoments', icon: BookOpen },
   { label: 'Community', to: '/Community', icon: MessageSquare },
-  { label: 'Support', to: '/WellnessCenter', icon: HeartHandshake },
 ];
 
 export default function PilotShell({ children, title = 'ReZilient', subtitle }) {

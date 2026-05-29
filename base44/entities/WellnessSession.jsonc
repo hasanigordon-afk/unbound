@@ -1,0 +1,48 @@
+{
+  "name": "WellnessSession",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "session_type": {
+      "type": "string",
+      "enum": [
+        "breathing",
+        "meditation",
+        "grounding",
+        "journaling",
+        "movement",
+        "calm_reset"
+      ],
+      "default": "breathing"
+    },
+    "title": {
+      "type": "string"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "default": 5
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "mood_before": {
+      "type": "string"
+    },
+    "mood_after": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CalendarDays, CheckCircle2, Flame, HeartPulse, LifeBuoy, MapPinned, MessageCircle, Route, Shield, Sparkles, Target, Trophy, UserRound, Users } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
+import LiveCorePillarsGrid from './LiveCorePillarsGrid';
 import { pilotItinerary, pilotMissionItems } from '@/lib/pilotSeedData';
 
 const sections = [
@@ -44,13 +45,6 @@ const sections = [
 
 const moduleKey = (sectionTitle, itemTitle) => `${sectionTitle}:${itemTitle}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const roadmapPhases = ['Days 1-14 Stabilization', 'Days 15-30 Structure', 'Days 31-60 Rebuild', 'Days 61-90 Growth', '6 Months', '1 Year', '5 Year Vision'];
-const pillars = [
-  { title: 'Recovery', to: '/DailyCheckIn', detail: 'Check-ins, cravings, meetings, journal, calm resets.' },
-  { title: 'Reentry', to: '/ResourceHub', detail: 'Housing, food, transportation, legal, benefits, work.' },
-  { title: 'Community', to: '/AhHaMoments', detail: 'Ah Ha Moments, support circle, encouragement, mentors.' },
-  { title: 'Growth', to: '/MyMissionBoard', detail: 'Mission board, goals, habits, milestones, long-view vision.' },
-];
-
 export default function ClientHomeView() {
   const [moduleStates, setModuleStates] = useState([]);
   const [activities, setActivities] = useState([]);
@@ -58,11 +52,16 @@ export default function ClientHomeView() {
   const [checkIns, setCheckIns] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [pillarData, setPillarData] = useState({ pillarProgress: [], dailyTasks: [], calendarEvents: [], wellnessSessions: [], savedResources: [], goals: [], supportContacts: [], communityPosts: [], ahhaStories: [], mediaItems: [] });
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loadingPillars, setLoadingPillars] = useState(true);
+  const [pillarError, setPillarError] = useState(false);
   const [calendarSyncing, setCalendarSyncing] = useState(false);
   const [calendarSyncMessage, setCalendarSyncMessage] = useState('');
 
   const loadBackend = async () => {
-    const [userResult, stateResult, activityResult, missionResult, checkInResult, calendarResult, taskResult] = await Promise.allSettled([
+    setLoadingPillars(true);
+    const [userResult, stateResult, activityResult, missionResult, checkInResult, calendarResult, taskResult, wellnessResult, savedResourceResult, goalResult, supportResult, postResult, storyResult, mediaResult, progressResult] = await Promise.allSettled([
       base44.auth.me(),
       base44.entities.HomeModuleState.list('-updated_date', 200),
       base44.entities.HomeModuleActivity.list('-created_date', 100),
@@ -70,16 +69,40 @@ export default function ClientHomeView() {
       base44.entities.DailyCheckIn.list('-check_in_date', 30),
       base44.entities.CalendarEvents.list('date', 12),
       base44.entities.DailyTasks.list('-created_date', 12),
+      base44.entities.WellnessSession.list('-created_date', 12),
+      base44.entities.SavedLocalResource.list('-created_date', 12),
+      base44.entities.Goal.list('-updated_date', 12),
+      base44.entities.SupportContact.list('-updated_date', 12),
+      base44.entities.CommunityPost.list('-created_date', 12),
+      base44.entities.AhHaInspirationStory.list('-created_date', 12),
+      base44.entities.MediaItem.list('-created_date', 12),
+      base44.entities.PillarProgress.list('-updated_date', 50),
     ]);
     const user = userResult.status === 'fulfilled' ? userResult.value : null;
     const ownedMission = missionResult.status === 'fulfilled' ? missionResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [];
     const ownedCheckIns = checkInResult.status === 'fulfilled' ? checkInResult.value.filter((item) => !item.participant_email || item.participant_email === user?.email) : [];
+    const hasCoreError = [stateResult, activityResult, calendarResult, taskResult, wellnessResult, savedResourceResult, goalResult, supportResult, postResult, storyResult, mediaResult, progressResult].some((result) => result.status === 'rejected');
+    setCurrentUser(user);
     setModuleStates(stateResult.status === 'fulfilled' ? stateResult.value : []);
     setActivities(activityResult.status === 'fulfilled' ? activityResult.value : []);
     setMissionItems(ownedMission);
     setCheckIns(ownedCheckIns);
     setCalendarEvents(calendarResult.status === 'fulfilled' ? calendarResult.value : []);
     setTasks(taskResult.status === 'fulfilled' ? taskResult.value : []);
+    setPillarData({
+      pillarProgress: progressResult.status === 'fulfilled' ? progressResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [],
+      dailyTasks: taskResult.status === 'fulfilled' ? taskResult.value : [],
+      calendarEvents: calendarResult.status === 'fulfilled' ? calendarResult.value : [],
+      wellnessSessions: wellnessResult.status === 'fulfilled' ? wellnessResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [],
+      savedResources: savedResourceResult.status === 'fulfilled' ? savedResourceResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [],
+      goals: goalResult.status === 'fulfilled' ? goalResult.value.filter((item) => !item.participant_email || item.participant_email === user?.email) : [],
+      supportContacts: supportResult.status === 'fulfilled' ? supportResult.value : [],
+      communityPosts: postResult.status === 'fulfilled' ? postResult.value.filter((item) => item.moderation_status !== 'flagged') : [],
+      ahhaStories: storyResult.status === 'fulfilled' ? storyResult.value.filter((item) => item.moderation_status === 'approved' || !item.moderation_status) : [],
+      mediaItems: mediaResult.status === 'fulfilled' ? mediaResult.value.filter((item) => item.moderation_status === 'approved' || !item.moderation_status) : [],
+    });
+    setPillarError(hasCoreError);
+    setLoadingPillars(false);
   };
 
   useEffect(() => {
@@ -264,15 +287,7 @@ export default function ClientHomeView() {
           <p className="mt-2 text-sm font-bold text-slate-300">Context-aware guidance points you to live app actions, not a dead chat.</p>
         </Link>
       </section>
-      <section className="grid gap-4 md:grid-cols-4">
-        {pillars.map((pillar) => (
-          <Link key={pillar.title} to={pillar.to} className="rounded-[30px] border border-white/12 bg-white/10 p-5 shadow-xl backdrop-blur-2xl">
-            <p className="text-xs font-black uppercase tracking-[0.20em] text-blue-200/70">Core Pillar</p>
-            <h3 className="mt-2 font-sans text-xl font-black text-white">{pillar.title}</h3>
-            <p className="mt-2 text-xs font-bold text-slate-300">{pillar.detail}</p>
-          </Link>
-        ))}
-      </section>
+      <LiveCorePillarsGrid data={pillarData} user={currentUser} loading={loadingPillars} error={pillarError} onRefresh={loadBackend} />
       {sections.map((section) => <HomeCarouselSection key={section.title} {...section} moduleKey={moduleKey} moduleStates={stateByKey} activityCounts={activityCounts} onTrack={trackModuleAction} onTogglePin={togglePin} />)}
     </div>
   );

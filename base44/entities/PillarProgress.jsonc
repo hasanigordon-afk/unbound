@@ -1,0 +1,40 @@
+{
+  "name": "PillarProgress",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "pillar_key": {
+      "type": "string"
+    },
+    "pillar_title": {
+      "type": "string"
+    },
+    "progress_percentage": {
+      "type": "number",
+      "default": 0
+    },
+    "last_action": {
+      "type": "string"
+    },
+    "last_action_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "active",
+        "completed"
+      ],
+      "default": "not_started"
+    }
+  },
+  "required": [
+    "pillar_key",
+    "pillar_title"
+  ]
+}
