@@ -52,7 +52,7 @@ export default function ClientHomeView() {
   const [checkIns, setCheckIns] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [pillarData, setPillarData] = useState({ pillarProgress: [], dailyTasks: [], calendarEvents: [], wellnessSessions: [], savedResources: [], goals: [], supportContacts: [], communityPosts: [], ahhaStories: [], mediaItems: [] });
+  const [pillarData, setPillarData] = useState({ pillarProgress: [], dailyTasks: [], calendarEvents: [], wellnessSessions: [], savedResources: [], goals: [], supportContacts: [], communityPosts: [], ahhaStories: [], mediaItems: [], checkIns: [] });
   const [currentUser, setCurrentUser] = useState(null);
   const [loadingPillars, setLoadingPillars] = useState(true);
   const [pillarError, setPillarError] = useState(false);
@@ -100,6 +100,7 @@ export default function ClientHomeView() {
       communityPosts: postResult.status === 'fulfilled' ? postResult.value.filter((item) => item.moderation_status !== 'flagged') : [],
       ahhaStories: storyResult.status === 'fulfilled' ? storyResult.value.filter((item) => item.moderation_status === 'approved' || !item.moderation_status) : [],
       mediaItems: mediaResult.status === 'fulfilled' ? mediaResult.value.filter((item) => item.moderation_status === 'approved' || !item.moderation_status) : [],
+      checkIns: ownedCheckIns,
     });
     setPillarError(hasCoreError);
     setLoadingPillars(false);

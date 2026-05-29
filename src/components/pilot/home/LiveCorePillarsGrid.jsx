@@ -14,9 +14,24 @@ const pillarConfig = [
   { key: 'media', title: 'Media & Motivation', icon: PlayCircle, to: '/AhHaMoments', cta: 'Watch', action: 'Read', actionTo: '/AhHaMoments', empty: 'Open a motivational video or reading.', getItems: (d) => d.mediaItems.slice(0, 3).map((x) => x.title) },
 ];
 
+const emptyData = {
+  pillarProgress: [],
+  dailyTasks: [],
+  calendarEvents: [],
+  wellnessSessions: [],
+  savedResources: [],
+  goals: [],
+  supportContacts: [],
+  communityPosts: [],
+  ahhaStories: [],
+  mediaItems: [],
+  checkIns: [],
+};
+
 export default function LiveCorePillarsGrid({ data, user, loading, error, onRefresh }) {
   const [workingKey, setWorkingKey] = useState('');
-  const progressByKey = useMemo(() => Object.fromEntries((data.pillarProgress || []).map((row) => [row.pillar_key, row])), [data.pillarProgress]);
+  const safeData = { ...emptyData, ...(data || {}) };
+  const progressByKey = useMemo(() => Object.fromEntries((safeData.pillarProgress || []).map((row) => [row.pillar_key, row])), [safeData.pillarProgress]);
 
   const recordAction = async (pillar) => {
     setWorkingKey(pillar.key);
@@ -47,7 +62,7 @@ export default function LiveCorePillarsGrid({ data, user, loading, error, onRefr
       <div className="grid gap-4 md:grid-cols-2">
         {pillarConfig.map((pillar) => {
           const Icon = pillar.icon;
-          const items = pillar.getItems(data).filter(Boolean);
+          const items = pillar.getItems(safeData).filter(Boolean);
           const progress = progressByKey[pillar.key]?.progress_percentage || Math.min(100, items.length * 28);
           return (
             <Link key={pillar.key} to={pillar.to} className="group rounded-[32px] border border-white/12 bg-white/10 p-5 shadow-xl backdrop-blur-2xl transition active:scale-[.98] hover:bg-white/14">
