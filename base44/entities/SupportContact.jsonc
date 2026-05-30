@@ -2,9 +2,13 @@
   "name": "SupportContact",
   "type": "object",
   "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
+    },
     "name": {
       "type": "string",
-      "description": "Contact name"
+      "description": "Contact or helpline name"
     },
     "relationship": {
       "type": "string",
@@ -14,9 +18,10 @@
         "friend",
         "counselor",
         "peer",
+        "helpline",
         "other"
       ],
-      "description": "Relationship to user"
+      "description": "Relationship or contact type"
     },
     "phone": {
       "type": "string",
@@ -35,6 +40,24 @@
       ],
       "default": "call",
       "description": "Preferred contact channel"
+    },
+    "contact_type": {
+      "type": "string",
+      "enum": [
+        "personal_contact",
+        "local_helpline",
+        "crisis_helpline"
+      ],
+      "default": "personal_contact",
+      "description": "Emergency support contact category"
+    },
+    "location": {
+      "type": "string",
+      "description": "City, county, or area served"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Helpful notes for when to call this contact"
     },
     "is_primary": {
       "type": "boolean",
