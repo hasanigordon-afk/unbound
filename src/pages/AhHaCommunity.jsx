@@ -129,7 +129,7 @@ function ReportModal({ onClose, onSubmit }) {
 }
 
 /* ── Full Story View ──────────────────────────────────────────────────────── */
-function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, onReport, onBack }) {
+function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, onShare, onReport, onBack }) {
   const [showReport, setShowReport] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -227,6 +227,14 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
             {userSaved ? "Saved" : "Save"}
           </button>
 
+          <button onClick={() => onShare(story)} style={{
+            display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 20,
+            border: "1px solid var(--border)", background: "var(--card)",
+            cursor: "pointer", fontSize: 12, fontWeight: 700, color: "var(--text-muted)",
+          }}>
+            <Share2 style={{ width: 13, height: 13 }} /> Share
+          </button>
+
           <button onClick={() => setShowReport(true)} style={{
             display: "flex", alignItems: "center", gap: 5, padding: "8px 14px", borderRadius: 20,
             border: "1px solid var(--border)", background: "var(--card)",
@@ -286,7 +294,7 @@ function StoryDetail({ story, user, userReactions, userSaved, onReact, onSave, o
 }
 
 /* ── Story Card ───────────────────────────────────────────────────────────── */
-function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, onReport }) {
+function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, onShare, onReport }) {
   const [showReport, setShowReport] = useState(false);
   const preview = story.story_preview || (story.turning_point || "").slice(0, 180);
   const tags = story.ai_tags || [];
@@ -363,6 +371,13 @@ function StoryCard({ story, userReactions, userSaved, onRead, onReact, onSave, o
               <Bookmark style={{ width: 14, height: 14 }} />
             </button>
 
+            <button onClick={() => onShare(story)} style={{
+              padding: "8px 10px", borderRadius: 20, border: "1px solid var(--border)",
+              background: "var(--card)", cursor: "pointer", color: "var(--text-muted)",
+            }}>
+              <Share2 style={{ width: 14, height: 14 }} />
+            </button>
+
             <button onClick={() => setShowReport(true)} style={{
               padding: "8px 10px", borderRadius: 20, border: "1px solid var(--border)",
               background: "var(--card)", cursor: "pointer", color: "var(--text-muted)",
@@ -435,12 +450,23 @@ export default function AhHaCommunity() {
       if (savedIds.has(story.id)) {
         const rec = mySaved.find(s => s.story_id === story.id);
         if (rec) await base44.entities.AhHaSavedStory.delete(rec.id);
+        await base44.entities.AhHaStory.update(story.id, { saves_count: Math.max(0, (story.saves_count || 0) - 1) });
       } else {
         await base44.entities.AhHaSavedStory.create({ story_id: story.id, user_email: user.email });
+        await base44.entities.AhHaStory.update(story.id, { saves_count: (story.saves_count || 0) + 1 });
       }
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["ahha-my-saved"] }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["ahha-my-saved"] }); qc.invalidateQueries({ queryKey: ["ahha-community"] }); },
   });
+
+  const shareStory = async (story) => {
+    const url = `${window.location.origin}/AhHaCommunity`;
+    const text = story.story_preview || story.turning_point || 'Read this Ah Ha Moment';
+    if (navigator.share) await navigator.share({ title: story.title, text, url });
+    else await navigator.clipboard.writeText(url);
+    await base44.entities.AhHaStory.update(story.id, { shares_count: (story.shares_count || 0) + 1 });
+    qc.invalidateQueries({ queryKey: ["ahha-community"] });
+  };
 
   const reportMutation = useMutation({
     mutationFn: ({ story, reason, details }) =>
@@ -480,6 +506,7 @@ export default function AhHaCommunity() {
           userSaved={savedIds.has(selectedStory.id)}
           onReact={(s, t) => reactMutation.mutate({ story: s, type: t })}
           onSave={(s) => saveMutation.mutate(s)}
+          onShare={shareStory}
           onReport={(s, r, d) => reportMutation.mutate({ story: s, reason: r, details: d })}
           onBack={() => setSelectedStory(null)}
         />
@@ -581,6 +608,7 @@ export default function AhHaCommunity() {
                 onRead={setSelectedStory}
                 onReact={(s, t) => reactMutation.mutate({ story: s, type: t })}
                 onSave={saveMutation.mutate}
+                onShare={shareStory}
                 onReport={(s, r, d) => reportMutation.mutate({ story: s, reason: r, details: d })}
               />
             ))

@@ -18,11 +18,15 @@
         "pinned",
         "unpinned",
         "started",
-        "completed"
+        "completed",
+        "saved"
       ],
       "default": "opened"
     },
     "created_at_text": {
+      "type": "string"
+    },
+    "note": {
       "type": "string"
     }
   },

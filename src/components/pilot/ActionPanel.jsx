@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 import { readLocalList, writeLocalList } from './PrototypeStore';
 
 const storageKeys = {
@@ -19,17 +20,33 @@ export default function ActionPanel({ action, onBack }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
 
-  const save = () => {
+  const loadSaved = async () => {
+    const rows = await base44.entities.HomeModuleActivity.filter({ module_key: key }, '-created_date', 50);
+    if (rows.length) setSaved(rows.map((row) => ({ title: row.note || row.module_title, date: row.created_at_text || row.created_date })));
+  };
+
+  useEffect(() => {
+    loadSaved();
+  }, [key]);
+
+  const save = async () => {
     setLoading(true);
-    setTimeout(() => {
-      const next = [{ title: text || action?.defaultText || action?.title, date: new Date().toLocaleString() }, ...saved];
-      setSaved(next);
-      writeLocalList(key, next);
-      setText('');
-      setLoading(false);
-      setSuccess('Saved successfully');
-      setTimeout(() => setSuccess(''), 1800);
-    }, 450);
+    const item = { title: text || action?.defaultText || action?.title, date: new Date().toLocaleString() };
+    await base44.entities.HomeModuleActivity.create({
+      module_key: key,
+      section_title: action?.type || 'Profile hub',
+      module_title: action?.title,
+      action_type: 'saved',
+      created_at_text: item.date,
+      note: item.title,
+    });
+    const next = [item, ...saved];
+    setSaved(next);
+    writeLocalList(key, next);
+    setText('');
+    setLoading(false);
+    setSuccess('Saved successfully');
+    setTimeout(() => setSuccess(''), 1800);
   };
 
   return (

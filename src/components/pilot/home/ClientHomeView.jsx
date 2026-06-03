@@ -189,11 +189,11 @@ export default function ClientHomeView() {
               <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-200/70">Weekly Itinerary</p>
               <h3 className="mt-1 font-sans text-2xl font-black text-white">Today has a shape</h3>
             </div>
-            <Link to="/JourneyRoadmap" className="btn-ghost min-h-0 px-4 py-2 text-xs">Open roadmap</Link>
+            <Link to="/JourneyRoadmap" onClick={() => trackModuleAction('Weekly Itinerary', { title: 'Open roadmap' })} className="btn-ghost min-h-0 px-4 py-2 text-xs">Open roadmap</Link>
           </div>
           <div className="mt-4 grid gap-3">
             {itinerary.map((item) => (
-              <Link key={`${item.time}-${item.title}`} to={item.route} className="rounded-3xl border border-white/10 bg-white/8 p-4 transition hover:bg-white/12">
+              <Link key={`${item.time}-${item.title}`} to={item.route} onClick={() => trackModuleAction('Weekly Itinerary', { title: item.title })} className="rounded-3xl border border-white/10 bg-white/8 p-4 transition hover:bg-white/12">
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-amber-100">{item.time}</p>
                 <h4 className="mt-1 font-sans text-lg font-black text-white">{item.title}</h4>
                 <p className="mt-1 text-sm font-bold text-slate-300">{item.detail}</p>
@@ -212,12 +212,12 @@ export default function ClientHomeView() {
             <div className="h-full rounded-full bg-gradient-to-r from-emerald-300 via-blue-300 to-amber-200" style={{ width: `${recoveryScore}%` }} />
           </div>
           <div className="mt-5 grid grid-cols-2 gap-3">
-            <Link to="/DailyCheckIn" className="rounded-3xl bg-white/8 p-4">
+            <Link to="/DailyCheckIn" onClick={() => trackModuleAction('Recovery Score', { title: 'Daily streak' })} className="rounded-3xl bg-white/8 p-4">
               <Flame className="h-5 w-5 text-amber-200" />
               <p className="mt-2 text-2xl font-black text-white">{streak}</p>
               <p className="text-xs font-bold text-slate-300">Daily streak</p>
             </Link>
-            <Link to="/DailyCheckIn" className="rounded-3xl bg-white/8 p-4">
+            <Link to="/DailyCheckIn" onClick={() => trackModuleAction('Recovery Score', { title: "Today's focus" })} className="rounded-3xl bg-white/8 p-4">
               <Target className="h-5 w-5 text-blue-200" />
               <p className="mt-2 text-sm font-black text-white">Today's focus</p>
               <p className="text-xs font-bold text-slate-300">{dailyTask}</p>
@@ -232,11 +232,11 @@ export default function ClientHomeView() {
             <p className="text-xs font-black uppercase tracking-[0.22em] text-amber-200/80">Top 5 Mission Board</p>
             <h3 className="mt-1 font-sans text-2xl font-black text-white">The five things that protect your comeback</h3>
           </div>
-          <Link to="/MyMissionBoard" className="btn-ghost min-h-0 px-4 py-2 text-xs">Edit mission</Link>
+          <Link to="/MyMissionBoard" onClick={() => trackModuleAction('Top 5 Mission Board', { title: 'Edit mission' })} className="btn-ghost min-h-0 px-4 py-2 text-xs">Edit mission</Link>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-5">
           {missionBoard.slice(0, 5).map((item, index) => (
-            <Link key={item.title} to="/MyMissionBoard" className="rounded-3xl border border-white/10 bg-white/8 p-4">
+            <Link key={item.title} to="/MyMissionBoard" onClick={() => trackModuleAction('Top 5 Mission Board', { title: item.title })} className="rounded-3xl border border-white/10 bg-white/8 p-4">
               <p className="text-xs font-black text-amber-100">0{index + 1}</p>
               <h4 className="mt-2 font-sans text-base font-black text-white">{item.title}</h4>
               <p className="mt-2 text-xs font-bold text-slate-300">{item.why}</p>
@@ -256,7 +256,7 @@ export default function ClientHomeView() {
         </div>
         <div className="no-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2">
           {roadmapPhases.map((phase, index) => (
-            <Link key={phase} to="/JourneyRoadmap" className="min-w-[220px] rounded-3xl border border-white/10 bg-white/8 p-4">
+            <Link key={phase} to="/JourneyRoadmap" onClick={() => trackModuleAction('My Roadmap', { title: phase })} className="min-w-[220px] rounded-3xl border border-white/10 bg-white/8 p-4">
               <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">Phase {index + 1}</p>
               <h4 className="mt-2 font-sans text-lg font-black text-white">{phase}</h4>
               <p className="mt-2 text-xs font-bold text-slate-300">{index < 3 ? 'Unlocked tasks, goals, reminders, and support actions.' : 'Long-view planning opens as consistency grows.'}</p>
@@ -279,12 +279,12 @@ export default function ClientHomeView() {
         </div>
       </section>
       <section className="grid gap-4 md:grid-cols-2">
-        <Link to="/AhHaMoments" className="rounded-[30px] border border-white/12 bg-white/10 p-5 shadow-xl backdrop-blur-2xl">
+        <Link to="/AhHaMoments" onClick={() => trackModuleAction('Support Circle Activity', { title: 'Encouragement is active' })} className="rounded-[30px] border border-white/12 bg-white/10 p-5 shadow-xl backdrop-blur-2xl">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-rose-200/80">Support Circle Activity</p>
           <h3 className="mt-2 font-sans text-2xl font-black text-white">Encouragement is active</h3>
           <p className="mt-2 text-sm font-bold text-slate-300">Ah Ha Moments, mentor encouragement, family support, and peer wins stay one tap away.</p>
         </Link>
-        <Link to="/AskReZilientAI" className="rounded-[30px] border border-amber-200/18 bg-amber-300/10 p-5 shadow-xl backdrop-blur-2xl">
+        <Link to="/AskReZilientAI" onClick={() => trackModuleAction('Ask ReZilient AI', { title: 'AI Support' })} className="rounded-[30px] border border-amber-200/18 bg-amber-300/10 p-5 shadow-xl backdrop-blur-2xl">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-amber-100">Ask ReZilient AI</p>
           <h3 className="mt-2 font-sans text-2xl font-black text-white">Find housing, meetings, food, calm, work, or transportation.</h3>
           <p className="mt-2 text-sm font-bold text-slate-300">Context-aware guidance points you to live app actions, not a dead chat.</p>
