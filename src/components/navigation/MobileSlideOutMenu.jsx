@@ -35,7 +35,7 @@ import ReZilientLogo from '@/components/shared/ReZilientLogo';
 const menuGroups = [
   { title: 'Home', icon: Home, to: '/', items: [] },
   { title: 'Profile', icon: UserRound, to: '/Profile', items: [
-    ['Overview', '/Profile#overview', UserRound], ['My Progress', '/Profile#progress', Trophy], ['Recovery Score', '/Profile#score', CheckCircle2], ['Goals', '/Profile#goals', Target], ['Roadmap', '/Profile#roadmap', CalendarDays], ['Achievements', '/Profile#achievements', Trophy], ['Journal', '/Profile#journal', NotebookPen], ['Timeline', '/Profile#timeline', Clock], ['Support Circle', '/Profile#support', Users], ['Settings', '/Profile#settings', Lock],
+    ['Overview', '/Profile#overview', UserRound], ['My Progress', '/Profile#progress', Trophy], ['Recovery Score', '/Profile#score', CheckCircle2], ['Goals', '/Profile#goals', Target], ['Roadmap', '/Profile#roadmap', CalendarDays], ['Achievements', '/Profile#achievements', Trophy], ['Journal', '/Profile#journal', NotebookPen], ['Timeline', '/Profile#timeline', Clock], ['Support Circle', '/Profile#support', Users], ['Settings', '/Profile#settings', Lock], ['Voice reminders', '/NotificationSettings', Bell],
   ]},
   { title: 'Daily Structure', icon: CalendarDays, to: '/JourneyRoadmap', items: [
     ['Today’s Itinerary', '/JourneyRoadmap', Clock], ['Calendar', '/JourneyRoadmap', CalendarDays], ['Reminders', '/JourneyRoadmap', Bell], ['Transportation Help', '/JourneyRoadmap', Car],

@@ -1,4 +1,5 @@
 import { base44 } from "@/api/base44Client";
+import { getStreakMilestoneLabel, getStreakMilestoneScript, STREAK_MILESTONES } from "@/lib/milestoneConfig";
 
 /**
  * 3 H's Subscription & Engagement Engine
@@ -167,21 +168,19 @@ export function pickNudge({ pref, streak, checkedInToday, avgCraving, daysSinceL
   }
 
   // ── HELP: streak milestone recognition
-  if (pref.help_enabled && [3, 7, 14, 30, 60, 90].includes(streak) && checkedInToday) {
-    const MILESTONES = {
-      3: "3 days strong",
-      7: "1 week locked in",
-      14: "2 weeks. You're building something real.",
-      30: "30 days. This is recovery.",
-      60: "60 days. You're becoming who you wanted to be.",
-      90: "90 days. Phoenix.",
-    };
+  if (pref.help_enabled && pref.milestone_reminders !== false && STREAK_MILESTONES.includes(streak) && checkedInToday) {
+    const title = getStreakMilestoneLabel(streak);
+    const spoken = getStreakMilestoneScript(streak);
     return {
       stream: "help",
-      title: MILESTONES[streak],
+      title,
       body: "You didn't quit today. That matters.",
       cta: "See Progress",
-      href: "/MyFoundation",
+      href: "/Progress",
+      eventType: "streak_milestone",
+      eventKey: `streak:${streak}:${new Date().toISOString().slice(0, 10)}`,
+      speakableText: `${title}. ${spoken}`,
+      isMilestone: true,
     };
   }
 

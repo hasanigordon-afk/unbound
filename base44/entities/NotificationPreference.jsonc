@@ -118,6 +118,31 @@
       "type": "string",
       "format": "date-time",
       "description": "Last time we showed an in-app nudge \u2014 used for frequency throttling"
+    },
+    "spoken_reminders_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable spoken encouragement for milestones and wins"
+    },
+    "voice_gender": {
+      "type": "string",
+      "enum": [
+        "female",
+        "male",
+        "system"
+      ],
+      "default": "female",
+      "description": "Preferred voice for spoken reminders"
+    },
+    "auto_play_milestones": {
+      "type": "boolean",
+      "default": true,
+      "description": "Automatically speak when streak milestones are reached"
+    },
+    "spoken_goal_celebrations": {
+      "type": "boolean",
+      "default": true,
+      "description": "Speak encouraging words when goals and achievements are completed"
     }
   },
   "required": [

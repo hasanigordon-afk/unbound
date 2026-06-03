@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Bell, Check, Loader2, Heart } from "lucide-react";
+import { ArrowLeft, Bell, Check, Loader2, Heart, Volume2 } from "lucide-react";
+import useSpokenReminders from "@/hooks/useSpokenReminders";
+import { isSpeechSupported } from "@/lib/spokenReminders";
 
 const H_STREAMS = [
   {
@@ -39,6 +41,14 @@ const CATEGORIES = [
   { key: "donation_progress",     label: "Donation progress",          desc: "Fundraising milestones" },
   { key: "events_partners",       label: "Events & partners",          desc: "Recovery events and partner news" },
 ];
+
+const VOICE_OPTIONS = [
+  { key: "female", label: "Female", desc: "Warm, encouraging female voice" },
+  { key: "male", label: "Male", desc: "Steady, motivating male voice" },
+  { key: "system", label: "System", desc: "Your device default voice" },
+];
+
+const PREVIEW_LINE = "You showed up today. That is recovery in action, and I am proud of you.";
 
 const FREQUENCIES = [
   { key: "light",    label: "Light",         desc: "A quiet presence — rare, gentle" },
@@ -97,6 +107,10 @@ export default function NotificationSettings() {
     app_updates: true,
     donation_progress: false,
     events_partners: false,
+    spoken_reminders_enabled: true,
+    voice_gender: "female",
+    auto_play_milestones: true,
+    spoken_goal_celebrations: true,
   });
 
   useEffect(() => {
@@ -114,6 +128,10 @@ export default function NotificationSettings() {
         app_updates: pref.app_updates ?? true,
         donation_progress: pref.donation_progress ?? false,
         events_partners: pref.events_partners ?? false,
+        spoken_reminders_enabled: pref.spoken_reminders_enabled ?? true,
+        voice_gender: pref.voice_gender ?? "female",
+        auto_play_milestones: pref.auto_play_milestones ?? true,
+        spoken_goal_celebrations: pref.spoken_goal_celebrations ?? true,
       });
     }
   }, [pref]);
@@ -136,6 +154,12 @@ export default function NotificationSettings() {
     const next = { ...form, [key]: value };
     setForm(next);
     saveMutation.mutate(next);
+  };
+
+  const { previewVoice, speaking, supported } = useSpokenReminders(user?.email);
+
+  const handlePreviewVoice = () => {
+    previewVoice(PREVIEW_LINE, form.voice_gender);
   };
 
   const handleUnsubscribe = () => {
@@ -295,6 +319,71 @@ export default function NotificationSettings() {
             <p style={{ fontSize: 11, color: "#9B8E83", textAlign: "center", marginBottom: 24, padding: "0 12px", lineHeight: 1.5 }}>
               {FREQUENCIES.find(f => f.key === form.frequency)?.desc}
             </p>
+
+            {/* ── Spoken reminders ── */}
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10, padding: "0 4px" }}>
+              Spoken encouragement
+            </p>
+            <div style={{
+              background: "#FDFAF6", border: "1px solid #E8E2D9",
+              borderRadius: 16, overflow: "hidden", marginBottom: 20,
+            }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px", borderBottom: "1px solid #E8E2D9" }}>
+                <div style={{ flex: 1, marginRight: 12 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1C1410", marginBottom: 2 }}>Spoken reminders</p>
+                  <p style={{ fontSize: 11, color: "#9B8E83", lineHeight: 1.5 }}>Hear motivating words for milestones, achievements, and goals met.</p>
+                </div>
+                <Toggle checked={form.spoken_reminders_enabled} onChange={(v) => updateField("spoken_reminders_enabled", v)} color="#7B8FA8" />
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px", borderBottom: "1px solid #E8E2D9", opacity: form.spoken_reminders_enabled ? 1 : 0.45, pointerEvents: form.spoken_reminders_enabled ? "auto" : "none" }}>
+                <div style={{ flex: 1, marginRight: 12 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1C1410", marginBottom: 2 }}>Auto-play milestones</p>
+                  <p style={{ fontSize: 11, color: "#9B8E83", lineHeight: 1.5 }}>Speak when you hit streak milestones (3, 7, 14, 30, 60, 90 days).</p>
+                </div>
+                <Toggle checked={form.auto_play_milestones} onChange={(v) => updateField("auto_play_milestones", v)} color="#7B8FA8" />
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px", borderBottom: "1px solid #E8E2D9", opacity: form.spoken_reminders_enabled ? 1 : 0.45, pointerEvents: form.spoken_reminders_enabled ? "auto" : "none" }}>
+                <div style={{ flex: 1, marginRight: 12 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1C1410", marginBottom: 2 }}>Goal & achievement voice</p>
+                  <p style={{ fontSize: 11, color: "#9B8E83", lineHeight: 1.5 }}>Speak when you log wins in Positive Progress.</p>
+                </div>
+                <Toggle checked={form.spoken_goal_celebrations} onChange={(v) => updateField("spoken_goal_celebrations", v)} color="#7B8FA8" />
+              </div>
+              <div style={{ padding: "14px 18px", opacity: form.spoken_reminders_enabled ? 1 : 0.45, pointerEvents: form.spoken_reminders_enabled ? "auto" : "none" }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: "#1C1410", marginBottom: 10 }}>Voice preference</p>
+                <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                  {VOICE_OPTIONS.map((opt) => {
+                    const sel = form.voice_gender === opt.key;
+                    return (
+                      <button key={opt.key} type="button" onClick={() => updateField("voice_gender", opt.key)} style={{
+                        flex: 1, padding: "10px 8px", borderRadius: 10,
+                        border: sel ? "1px solid #7B8FA8" : "1px solid #E8E2D9",
+                        background: sel ? "rgba(123,143,168,0.12)" : "#fff",
+                        color: sel ? "#1C1410" : "#4A3F35",
+                        fontWeight: 700, fontSize: 12, cursor: "pointer",
+                      }}>{opt.label}</button>
+                    );
+                  })}
+                </div>
+                <p style={{ fontSize: 11, color: "#9B8E83", marginBottom: 12, lineHeight: 1.5 }}>
+                  {VOICE_OPTIONS.find((v) => v.key === form.voice_gender)?.desc}
+                </p>
+                <button type="button" onClick={handlePreviewVoice} disabled={!supported || speaking} style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "10px 14px", borderRadius: 12, border: "1px solid #E8E2D9",
+                  background: "#fff", fontSize: 12, fontWeight: 700, color: "#1C1410", cursor: "pointer",
+                  opacity: supported ? 1 : 0.5,
+                }}>
+                  <Volume2 style={{ width: 14, height: 14 }} />
+                  {speaking ? "Speaking…" : "Preview voice"}
+                </button>
+                {!isSpeechSupported() && (
+                  <p style={{ fontSize: 11, color: "#B8823A", marginTop: 10, lineHeight: 1.5 }}>
+                    Text-to-speech is not available in this browser. Use Chrome, Edge, or Safari for spoken reminders.
+                  </p>
+                )}
+              </div>
+            </div>
 
             {/* ── Categories ── */}
             <p style={{ fontSize: 10, fontWeight: 700, color: "#9B8E83", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10, padding: "0 4px" }}>
