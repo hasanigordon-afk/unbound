@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sparkles, BookOpen, Play, Music, Headphones, Wind, Heart, Sun, Menu, X, Brain } from "lucide-react";
+import { Sparkles, BookOpen, Play, Music, Headphones, Wind, Heart, Sun, Brain } from "lucide-react";
 import MeditationSection from "../components/cravingcontrol/MeditationSection.jsx";
 import JournalSection from "../components/cravingcontrol/JournalSection.jsx";
 import VideosSection from "../components/cravingcontrol/VideosSection.jsx";
@@ -8,16 +8,17 @@ import BinauralBeatsSection from "../components/cravingcontrol/BinauralBeatsSect
 import BreathingResetSection from "../components/cravingcontrol/BreathingResetSection.jsx";
 import EmergencyCalmSection from "../components/cravingcontrol/EmergencyCalmSection.jsx";
 import MotivationBoostSection from "../components/cravingcontrol/MotivationBoostSection.jsx";
+import PilotShell from "@/components/pilot/PilotShell";
 
 const NAV_ITEMS = [
-  { id: "emergency", label: "Emergency Calm", icon: Heart, color: "#DC2626", activeBg: "#FEF2F2", badge: "SOS" },
-  { id: "breathing", label: "Breathing Reset", icon: Wind, color: "#2E7D5E", activeBg: "#E8F5E9" },
-  { id: "meditation", label: "Meditation", icon: Sparkles, color: "#4F46E5", activeBg: "#EEF2FF" },
-  { id: "journal", label: "Journal", icon: BookOpen, color: "#92400E", activeBg: "#FEF3C7" },
-  { id: "videos", label: "Videos", icon: Play, color: "#1D4ED8", activeBg: "#EFF6FF" },
-  { id: "music", label: "Music", icon: Music, color: "#7C3AED", activeBg: "#F5F3FF" },
-  { id: "binaural", label: "Binaural Beats", icon: Headphones, color: "#0F766E", activeBg: "#F0FDFA" },
-  { id: "motivation", label: "Motivation Boost", icon: Sun, color: "#B45309", activeBg: "#FFFBEB" },
+  { id: "emergency", label: "Emergency Calm", icon: Heart, color: "#F87171", badge: "SOS" },
+  { id: "breathing", label: "Breathing Reset", icon: Wind, color: "#34D399" },
+  { id: "meditation", label: "Meditation", icon: Sparkles, color: "#A78BFA" },
+  { id: "journal", label: "Journal", icon: BookOpen, color: "#F0B753" },
+  { id: "videos", label: "Videos", icon: Play, color: "#5B8DEF" },
+  { id: "music", label: "Music", icon: Music, color: "#A78BFA" },
+  { id: "binaural", label: "Binaural Beats", icon: Headphones, color: "#34D399" },
+  { id: "motivation", label: "Motivation Boost", icon: Sun, color: "#F0B753" },
 ];
 
 const SECTION_MAP = {
@@ -31,133 +32,73 @@ const SECTION_MAP = {
   motivation: MotivationBoostSection,
 };
 
-function SidebarContent({ active, onSelect }) {
+function CravingNav({ active, onSelect }) {
   return (
-    <div style={{ padding: "20px 12px", display: "flex", flexDirection: "column", height: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, padding: "0 4px 18px", borderBottom: "1px solid #D4EAE1" }}>
-        <div style={{ background: "#E8F5E9", borderRadius: 10, padding: 8 }}>
-          <Brain className="w-5 h-5" style={{ color: "#2E7D5E" }} strokeWidth={1.8} />
-        </div>
-        <div>
-          <p style={{ fontWeight: 800, fontSize: 13, color: "#1A3C2E", lineHeight: 1.3 }}>Craving Control</p>
-          <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 500 }}>Center</p>
-        </div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-        {NAV_ITEMS.map(item => {
-          const Icon = item.icon;
-          const isActive = active === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onSelect(item.id)}
-              style={{
-                display: "flex", alignItems: "center", gap: 11,
-                padding: "10px 12px", borderRadius: 12, border: "none", cursor: "pointer",
-                background: isActive ? item.activeBg : "transparent",
-                width: "100%", textAlign: "left",
-              }}
-            >
-              <div style={{
-                width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-                background: isActive ? item.color : "#EDF5F0",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <Icon className="w-4 h-4" style={{ color: isActive ? "#FFF" : "#5A7A6A" }} strokeWidth={1.8} />
+    <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-2 md:grid md:grid-cols-4 md:overflow-visible">
+      {NAV_ITEMS.map((item) => {
+        const Icon = item.icon;
+        const isActive = active === item.id;
+        return (
+          <button
+            key={item.id}
+            onClick={() => onSelect(item.id)}
+            className={`min-w-[160px] rounded-3xl border p-4 text-left shadow-xl backdrop-blur-2xl active:scale-[.98] md:min-w-0 ${isActive ? "border-white/25 bg-white text-slate-950" : "border-white/12 bg-white/10 text-white"}`}
+          >
+            <div className="flex items-center gap-3">
+              <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${isActive ? "bg-slate-950/8" : "bg-white/12"}`}>
+                <Icon className="h-5 w-5" style={{ color: isActive ? item.color : "#EAF0FF" }} strokeWidth={1.8} />
               </div>
-              <span style={{ fontSize: 13, fontWeight: isActive ? 700 : 500, color: isActive ? item.color : "#3D5449", lineHeight: 1.2, flex: 1 }}>
-                {item.label}
-              </span>
-              {item.badge && !isActive && (
-                <span style={{ background: "#DC2626", color: "#FFF", fontSize: 8, fontWeight: 800, borderRadius: 5, padding: "2px 5px" }}>
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-      <div style={{ marginTop: "auto", padding: "16px 4px 0", borderTop: "1px solid #D4EAE1" }}>
-        <p style={{ fontSize: 11, color: "#9CA3AF", lineHeight: 1.5 }}>
-          🔒 This space is private and secure. Everything here is just for you.
-        </p>
-      </div>
+              <div className="min-w-0">
+                <p className="text-sm font-black leading-tight">{item.label}</p>
+                {item.badge && <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-red-300">{item.badge}</p>}
+              </div>
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
 export default function CravingControlCenter() {
   const [active, setActive] = useState("emergency");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const ActiveSection = SECTION_MAP[active];
-
-  const handleSelect = (id) => {
-    setActive(id);
-    setSidebarOpen(false);
-  };
+  const activeItem = NAV_ITEMS.find((item) => item.id === active);
+  const ActiveIcon = activeItem?.icon;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#F0F7F4" }}>
-      {/* Desktop sidebar */}
-      <aside style={{
-        width: 220, background: "#FFFFFF", borderRight: "1px solid #D4EAE1",
-        flexShrink: 0, position: "sticky", top: 0, height: "100vh", overflowY: "auto",
-        display: "none",
-      }} className="md-sidebar">
-        <SidebarContent active={active} onSelect={handleSelect} />
-      </aside>
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}>
-          <div onClick={() => setSidebarOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" }} />
-          <aside style={{
-            position: "relative", width: 260, background: "#FFF", height: "100%",
-            zIndex: 51, overflowY: "auto", boxShadow: "4px 0 24px rgba(0,0,0,0.15)",
-          }}>
-            <SidebarContent active={active} onSelect={handleSelect} />
-          </aside>
-          <button onClick={() => setSidebarOpen(false)} style={{
-            position: "absolute", top: 14, right: 14, background: "rgba(255,255,255,0.9)",
-            border: "none", borderRadius: "50%", width: 36, height: 36,
-            display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
-          }}>
-            <X className="w-4 h-4" style={{ color: "#1A3C2E" }} />
-          </button>
-        </div>
-      )}
-
-      {/* Main content */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        {/* Mobile header */}
-        <div style={{
-          background: "#FFF", borderBottom: "1px solid #D4EAE1",
-          padding: "14px 20px", display: "flex", alignItems: "center", gap: 12,
-          position: "sticky", top: 0, zIndex: 30,
-        }} className="mobile-header">
-          <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
-            <Menu className="w-5 h-5" style={{ color: "#2E7D5E" }} />
-          </button>
-          <Brain className="w-5 h-5" style={{ color: "#2E7D5E" }} strokeWidth={1.8} />
-          <p style={{ fontWeight: 800, fontSize: 15, color: "#1A3C2E" }}>Craving Control Center</p>
-          <div style={{ marginLeft: "auto" }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: NAV_ITEMS.find(n => n.id === active)?.color, background: NAV_ITEMS.find(n => n.id === active)?.activeBg, borderRadius: 8, padding: "3px 10px" }}>
-              {NAV_ITEMS.find(n => n.id === active)?.label}
-            </span>
+    <PilotShell title="Craving Control" subtitle="Crisis support, grounding, breathing, journaling, music, and motivation.">
+      <div className="space-y-5">
+        <section className="rounded-[36px] border border-red-200/20 bg-gradient-to-br from-red-400/16 via-white/10 to-blue-400/10 p-5 shadow-2xl backdrop-blur-2xl">
+          <div className="flex items-start gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-3xl border border-white/12 bg-white/12">
+              <Brain className="h-7 w-7 text-red-200" strokeWidth={1.8} />
+            </div>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-red-200/90">Craving crisis center</p>
+              <h2 className="mt-2 font-sans text-4xl font-black leading-tight text-white">One calm step at a time.</h2>
+              <p className="mt-3 text-sm font-bold leading-relaxed text-slate-300">Choose the support tool you need right now. This page now matches the rest of ReZilient while keeping every crisis tool available.</p>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <style>{`
-          @media (min-width: 768px) {
-            .md-sidebar { display: flex !important; flex-direction: column; }
-            .mobile-header { display: none !important; }
-          }
-        `}</style>
+        <CravingNav active={active} onSelect={setActive} />
 
-        <div style={{ flex: 1, overflowY: "auto" }}>
-          <ActiveSection />
-        </div>
+        <section className="rounded-[34px] border border-white/12 bg-white/10 p-2 shadow-2xl backdrop-blur-2xl md:p-4">
+          <div className="mb-3 flex items-center gap-3 px-3 pt-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/12">
+              {ActiveIcon && <ActiveIcon className="h-5 w-5" style={{ color: activeItem.color }} />}
+            </div>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-200/70">Active tool</p>
+              <h3 className="font-sans text-xl font-black text-white">{activeItem?.label}</h3>
+            </div>
+          </div>
+          <div className="overflow-hidden rounded-[28px] border border-white/10 bg-white/95 text-slate-950 shadow-xl">
+            <ActiveSection />
+          </div>
+        </section>
       </div>
-    </div>
+    </PilotShell>
   );
 }
