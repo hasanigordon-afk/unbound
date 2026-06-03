@@ -33,6 +33,7 @@ import CravingControlCenter from './pages/CravingControlCenter.jsx';
 import Lifeline from './pages/Lifeline.jsx';
 import SuperAgentChat from './pages/SuperAgentChat.jsx';
 import AhHaCommunity from './pages/AhHaCommunity.jsx';
+import SubmitAhHa from './pages/SubmitAhHa';
 
 import AddToHomeScreen from './pages/AddToHomeScreen.jsx';
 import AftercarePlanView from './pages/AftercarePlanView';
@@ -94,6 +95,7 @@ const AuthenticatedApp = () => {
         <Route path="/AhHaMomentsAdmin" element={<AhHaMomentsAdmin />} />
         <Route path="/TestimonialsAdmin" element={<Navigate to="/AhHaMomentsAdmin" replace />} />
         <Route path="/AhHaCommunity" element={<AhHaCommunity />} />
+        <Route path="/SubmitAhHa" element={<SubmitAhHa />} />
         <Route path="/Profile" element={<Profile />} />
 
         <Route path="/MyMissionBoard" element={<MyMissionBoard />} />

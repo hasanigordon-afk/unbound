@@ -31,11 +31,19 @@
     },
     "story_preview": {
       "type": "string",
-      "description": "Auto-generated excerpt for feed display (first ~200 chars of turning_point)"
+      "description": "Auto-generated excerpt for feed display"
     },
     "full_story_content": {
       "type": "string",
       "description": "Combined formatted version of all story sections"
+    },
+    "ai_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Story tags used for search and filtering"
     },
     "estimated_read_time": {
       "type": "number",

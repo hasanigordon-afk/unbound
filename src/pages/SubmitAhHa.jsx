@@ -105,6 +105,32 @@ function readTime(form) {
   return Math.max(1, Math.ceil(total / 200));
 }
 
+function parseCleanTime(value) {
+  const match = String(value || '').toLowerCase().match(/(\d+)\s*(day|days|week|weeks|month|months|year|years)/);
+  if (!match) return {};
+  const unit = match[2].endsWith('s') ? match[2] : `${match[2]}s`;
+  return { clean_time_value: Number(match[1]), clean_time_unit: unit };
+}
+
+function normalizeSubstance(value) {
+  const map = {
+    Alcohol: 'alcohol',
+    Opioids: 'opioids',
+    Stimulants: 'stimulants',
+    Benzodiazepines: 'benzodiazepines',
+    Cannabis: 'marijuana',
+    'Prescription Misuse': 'other',
+    Polysubstance: 'polysubstance',
+    'Prefer not to say': 'prefer_not_to_say',
+  };
+  return map[value];
+}
+
+function normalizeAge(value) {
+  const map = { '18–24': '18_24', '25–34': '25_34', '35–44': '35_44', '45+': '55_plus', 'Prefer not to say': 'prefer_not_to_say' };
+  return map[value];
+}
+
 function isComplete(form) {
   return (
     form.title.trim().length > 0 &&
@@ -237,20 +263,34 @@ export default function SubmitAhHa() {
   const saveMutation = useMutation({
     mutationFn: async (status) => {
       if (!user) throw new Error("Not logged in");
+      const approvalStatus = status === "pending_review" ? "pending_review" : "draft";
+      const displayNameMode = form.visibility === "first_name_review" ? "first_name" : form.visibility === "private" ? "private_only" : "anonymous";
+      const fullStory = PROMPTS.map((prompt) => `${prompt.label}: ${form[prompt.key]}`).join("\n\n");
       const payload = {
         user_email: user.email,
-        display_name: form.visibility === "first_name_review" ? (user.full_name?.split(" ")[0] || "") : "",
+        title: form.title,
+        before_moment: form.tired_of_repeating,
+        turning_point: form.what_happened,
+        emotional_shift: form.feeling_in_moment,
+        next_action: form.decision_made,
+        advice_to_others: form.message_to_others,
+        story_preview: form.what_happened.slice(0, 220),
+        full_story_content: fullStory,
+        ai_tags: form.tags,
+        estimated_read_time: readTime(form),
+        visibility_type: form.visibility || "private",
+        approval_status: approvalStatus,
         is_anonymous: form.visibility !== "first_name_review",
-        what_happened: form.what_happened,
-        feeling_in_moment: form.feeling_in_moment,
-        tired_of_repeating: form.tired_of_repeating,
-        decision_made: form.decision_made,
-        message_to_others: form.message_to_others,
-        status: status,
-        category: form.tags[0]?.toLowerCase().replace(/\s+/g, "_").replace(/\//g, "") || "wanted_my_life_back",
-        has_content_warning: false,
+        display_name_mode: displayNameMode,
+        first_name_display: form.visibility === "first_name_review" ? (user.full_name?.split(" ")[0] || "") : "",
+        comments_enabled: true,
+        location_broad: form.location,
+        substance_category: normalizeSubstance(form.substance_category),
+        age_range: normalizeAge(form.age_range),
+        submitted_at: approvalStatus === "pending_review" ? new Date().toISOString() : undefined,
+        ...parseCleanTime(form.clean_time),
       };
-      return base44.entities.AhHaMoment.create(payload);
+      return base44.entities.AhHaStory.create(payload);
     },
     onSuccess: (_, status) => {
       if (status === "pending_review" || status === "draft") {
@@ -287,11 +327,11 @@ export default function SubmitAhHa() {
           Your story could be the reason someone else keeps going.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <button onClick={() => navigate("/AhHaMoment")} style={{
+          <button onClick={() => navigate("/AhHaCommunity")} style={{
             padding: "14px 24px", borderRadius: 50, border: "none", cursor: "pointer",
             background: "#B8823A", color: "#fff", fontWeight: 700, fontSize: 15,
           }}>
-            View All Stories
+            View Community Stories
           </button>
           <button onClick={() => { setForm(EMPTY); setSubmitted(false); }} style={{
             padding: "14px 24px", borderRadius: 50, border: "1px solid #E8E2D9",

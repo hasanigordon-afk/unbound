@@ -5,16 +5,8 @@
     "client_id": {
       "type": "string"
     },
-    "user_email": {
-      "type": "string",
-      "description": "Participant owner email when the task belongs directly to a user"
-    },
     "plan_id": {
       "type": "string"
-    },
-    "roadmap_id": {
-      "type": "string",
-      "description": "Roadmap.id relationship"
     },
     "task_title": {
       "type": "string"

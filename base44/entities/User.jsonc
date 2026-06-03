@@ -8,41 +8,12 @@
         "admin",
         "user",
         "participant",
-        "client",
         "counselor",
         "sponsor",
-        "mentor",
-        "probation_officer",
-        "veteran",
-        "family_support",
-        "facility_admin",
-        "returning_citizen",
-        "person_seeking_help"
+        "probation_officer"
       ],
       "default": "user",
       "description": "User role in the system"
-    },
-    "facility_id": {
-      "type": "string",
-      "description": "Facility this user belongs to when applicable"
-    },
-    "participant_profile_id": {
-      "type": "string",
-      "description": "Linked participant or member profile id"
-    },
-    "display_name": {
-      "type": "string"
-    },
-    "phone": {
-      "type": "string"
-    },
-    "permissions": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "default": [],
-      "description": "Resolved role-based permission keys"
     }
   },
   "required": []
