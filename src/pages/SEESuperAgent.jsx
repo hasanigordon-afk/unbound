@@ -7,7 +7,7 @@ import SEEStatusBadge from '@/components/see/SEEStatusBadge';
 import SEESectionCard from '@/components/see/SEESectionCard';
 import SEEDataCard from '@/components/see/SEEDataCard';
 import SEEActivityPanel from '@/components/see/SEEActivityPanel';
-import { AlertTriangle, CalendarDays, CheckCircle2, ClipboardCheck, FileText, Gauge, ListChecks, Route, ShieldAlert, UserRound } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ClipboardCheck, FileText, Gauge, ListChecks, ShieldAlert, UserRound } from 'lucide-react';
 
 const sampleNotes = 'Marcus leaves treatment Friday. Needs IOP Monday Wednesday Friday at 1pm, NA Tuesday and Thursday nights, probation every second Wednesday, daily check-ins, job search help, bus transportation, and sponsor call 3x per week.';
 const tabs = ['SCAN', 'ENGINEER', 'EXECUTE', 'Saved Plans', 'Client Profiles', 'Missing Info Queue', 'Counselor Review', 'Risk Alerts', 'Activity Log'];
