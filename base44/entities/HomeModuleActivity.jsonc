@@ -11,6 +11,9 @@
     "module_title": {
       "type": "string"
     },
+    "user_email": {
+      "type": "string"
+    },
     "action_type": {
       "type": "string",
       "enum": [
