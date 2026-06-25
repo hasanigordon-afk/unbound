@@ -5,6 +5,12 @@
     "client_id": {
       "type": "string"
     },
+    "client_email": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
     "plan_id": {
       "type": "string"
     },

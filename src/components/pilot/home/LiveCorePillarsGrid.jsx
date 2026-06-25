@@ -36,13 +36,14 @@ export default function LiveCorePillarsGrid({ data, user, loading, error, onRefr
   const progressByKey = useMemo(() => Object.fromEntries((safeData.pillarProgress || []).map((row) => [row.pillar_key, row])), [safeData.pillarProgress]);
 
   const recordAction = async (pillar) => {
+    if (!user?.email) return;
     setWorkingKey(pillar.key);
     const existing = progressByKey[pillar.key];
     const payload = { user_email: user?.email, pillar_key: pillar.key, pillar_title: pillar.title, progress_percentage: Math.min(100, (existing?.progress_percentage || 15) + 10), status: 'active', last_action: pillar.action, last_action_at: new Date().toISOString() };
-    if (pillar.actionType === 'task') await base44.entities.DailyTasks.create({ task_title: 'Recovery structure check-in', task_category: pillar.title, due_date: new Date().toISOString().slice(0, 10), priority: 'medium' });
+    if (pillar.actionType === 'task') await base44.entities.DailyTasks.create({ user_email: user.email, task_title: 'Recovery structure check-in', task_category: pillar.title, due_date: new Date().toISOString().slice(0, 10), priority: 'medium' });
     if (pillar.actionType === 'wellness') await base44.entities.WellnessSession.create({ user_email: user?.email, title: '5-minute breathing reset', session_type: 'breathing', duration_minutes: 5, completed: false });
     if (pillar.actionType === 'goal') await base44.entities.Goal.create({ participant_email: user?.email, title: '30-day recovery goal', category: 'recovery_milestone', progress_percentage: 0, status: 'active' });
-    if (pillar.actionType === 'contact') await base44.entities.SupportContact.create({ name: 'Trusted support contact', relationship: 'peer', preferred_channel: 'call' });
+    if (pillar.actionType === 'contact') await base44.entities.SupportContact.create({ user_email: user.email, name: 'Trusted support contact', relationship: 'peer', preferred_channel: 'call' });
     if (pillar.actionType === 'meeting') await base44.entities.PlannedMeeting.create({ meeting_title: 'Recovery group meeting', day_of_week: new Date().getDay(), start_time: '18:00', participant_email: user?.email });
     if (existing) await base44.entities.PillarProgress.update(existing.id, payload); else await base44.entities.PillarProgress.create(payload);
     await onRefresh?.();

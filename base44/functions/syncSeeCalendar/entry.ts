@@ -94,6 +94,28 @@ async function createEvents(accessToken, events) {
   return created.length;
 }
 
+function mergeRowsById(results) {
+  const rows = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
+  return Array.from(new Map(rows.map((row) => [row.id || `${row.created_date}-${row.title || row.task_title}`, row])).values());
+}
+
+async function loadOwnedRows(entity, userEmail, ownerField, order, limit) {
+  return mergeRowsById(await Promise.allSettled([
+    entity.filter({ [ownerField]: userEmail }, order, limit),
+    entity.filter({ created_by: userEmail }, order, limit),
+  ]));
+}
+
+async function loadClientScopedRows(entity, userEmail, clients, order, limit) {
+  const filters = [
+    { user_email: userEmail },
+    { client_email: userEmail },
+    { created_by: userEmail },
+    ...clients.filter((client) => client?.id).map((client) => ({ client_id: client.id })),
+  ];
+  return mergeRowsById(await Promise.allSettled(filters.map((filter) => entity.filter(filter, order, limit))));
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -104,10 +126,11 @@ Deno.serve(async (req) => {
     const clientName = payload.clientName || user.full_name || 'Client';
     const syncPersonal = payload.syncPersonal !== false;
     const syncShared = payload.syncShared === true;
+    const clients = await loadOwnedRows(base44.entities.Clients, user.email, 'email', '-updated_date', 10);
 
     const [calendarEvents, dailyTasks, recoveryTasks, plannedMeetings] = await Promise.all([
-      Array.isArray(payload.calendarEvents) ? Promise.resolve(payload.calendarEvents) : base44.entities.CalendarEvents.list('-updated_date', 50),
-      Array.isArray(payload.tasks) ? Promise.resolve(payload.tasks) : base44.entities.DailyTasks.list('-updated_date', 50),
+      Array.isArray(payload.calendarEvents) ? Promise.resolve(payload.calendarEvents) : loadClientScopedRows(base44.entities.CalendarEvents, user.email, clients, '-updated_date', 50),
+      Array.isArray(payload.tasks) ? Promise.resolve(payload.tasks) : loadClientScopedRows(base44.entities.DailyTasks, user.email, clients, '-updated_date', 50),
       base44.entities.RecoveryPathTask.filter({ user_email: user.email, is_active: true }, 'sort_order', 50),
       base44.entities.PlannedMeeting.filter({ participant_email: user.email }, 'day_of_week', 50),
     ]);
