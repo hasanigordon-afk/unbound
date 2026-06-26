@@ -87,6 +87,14 @@ const NEXT_STEP = {
   person_seeking_help: { label: "Find help near you right now", href: "ResourceHub", emoji: "🆘" },
 };
 
+const MEMBER_PROFILE_ROLE_BY_REASON = {
+  sponsor: "peer_mentor",
+  mentor: "peer_mentor",
+  family_support: "hybrid",
+};
+
+const getMemberProfileRole = (reasonValue) => MEMBER_PROFILE_ROLE_BY_REASON[reasonValue] || "member";
+
 // ─── Styles ────────────────────────────────────────────────────────────────
 // Ah Ha brand palette — warm cream + amber
 
@@ -233,7 +241,7 @@ export default function Onboarding() {
       await base44.entities.MemberProfile.create({
         track: "both",
         stage: reason?.stage || "trying_to_stop",
-        role: reason?.memberRole || "client",
+        role: getMemberProfileRole(data.reason),
         goals: [data.reason, `role:${data.reason}`, "top_5_mission_board", "support_network", "life_priorities"],
         support_needs: data.needs,
         challenges: [data.feeling],
@@ -245,10 +253,6 @@ export default function Onboarding() {
         location_lng: data.location_lng,
         onboarding_complete: true,
       });
-
-      if (user?.id && reason?.memberRole) {
-        try { await base44.entities.User.update(user.id, { role: reason.memberRole }); } catch {}
-      }
 
       // Persist primary recovery focus (Batch B)
       if (data.focus && user?.email) {

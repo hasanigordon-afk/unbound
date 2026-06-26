@@ -82,19 +82,22 @@ export default function CounselorMessaging() {
   const threadList = useMemo(() => messages.slice(0, 8), [messages]);
 
   const sendMutation = useMutation({
-    mutationFn: () => base44.entities.Message.create({
-      sender_email: user?.email || "counselor@rezilient.app",
-      sender_role: "counselor",
-      receiver_email: selectedRecipient,
-      receiver_role: "patient",
-      channel: "counselor_patient",
-      message_type: form.message_type,
-      subject: form.subject,
-      body: form.body,
-      status_tag: "follow_up",
-      required_response: true,
-      is_read: false,
-    }),
+    mutationFn: () => {
+      if (!user?.email) throw new Error("Sign in as staff before sending client messages.");
+      return base44.entities.Message.create({
+        sender_email: user.email,
+        sender_role: user.role || "counselor",
+        receiver_email: selectedRecipient,
+        receiver_role: "patient",
+        channel: "counselor_patient",
+        message_type: form.message_type,
+        subject: form.subject,
+        body: form.body,
+        status_tag: "follow_up",
+        required_response: true,
+        is_read: false,
+      });
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["counselor-messages"] }),
   });
 
@@ -124,7 +127,7 @@ export default function CounselorMessaging() {
             <p className="text-xs font-black uppercase tracking-[0.22em] text-blue-200/70">Inbox</p>
             <div className="mt-4 grid gap-3">
               {threadList.map((message) => (
-                <button key={message.id} onClick={() => setSelectedRecipient(message.sender_email === (user?.email || "counselor@rezilient.app") ? message.receiver_email : message.sender_email)} className="rounded-3xl border border-white/10 bg-white/8 p-4 text-left">
+                <button key={message.id} onClick={() => setSelectedRecipient(message.sender_email === user?.email ? message.receiver_email : message.sender_email)} className="rounded-3xl border border-white/10 bg-white/8 p-4 text-left">
                   <div className="flex items-center justify-between gap-3">
                     <p className="font-black text-white">{message.subject}</p>
                     <span className="rounded-full bg-amber-300/15 px-3 py-1 text-xs font-black text-amber-100">{message.status_tag?.replace("_", " ") || message.message_type}</span>
@@ -150,10 +153,11 @@ export default function CounselorMessaging() {
               </select>
               <input value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Subject" className="w-full" />
               <textarea value={form.body} onChange={(event) => setForm({ ...form, body: event.target.value })} placeholder="Write a direct support message..." className="min-h-[150px] w-full" />
-              <button onClick={() => sendMutation.mutate()} disabled={!selectedRecipient || !form.subject || !form.body || sendMutation.isPending} className="btn-primary inline-flex w-full items-center justify-center gap-2 disabled:opacity-60">
+              <button onClick={() => sendMutation.mutate()} disabled={!user?.email || !selectedRecipient || !form.subject || !form.body || sendMutation.isPending} className="btn-primary inline-flex w-full items-center justify-center gap-2 disabled:opacity-60">
                 <Send className="h-4 w-4" /> {sendMutation.isPending ? "Sending..." : "Send message"}
               </button>
               {sendMutation.isSuccess && <p className="rounded-2xl border border-emerald-300/30 bg-emerald-400/10 p-3 text-sm font-black text-emerald-100">Message saved to the client communication thread.</p>}
+              {sendMutation.isError && <p className="rounded-2xl border border-rose-300/30 bg-rose-400/10 p-3 text-sm font-black text-rose-100">{sendMutation.error.message}</p>}
             </div>
           </div>
         </section>
