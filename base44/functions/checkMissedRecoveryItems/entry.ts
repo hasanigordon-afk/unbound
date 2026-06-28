@@ -1,10 +1,16 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 const systemEmail = 'rezilient@base44.app';
+const timeZone = 'America/New_York';
+const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-const todayDate = () => new Date().toISOString().slice(0, 10);
-const currentTime = () => new Date().toLocaleTimeString('en-US', {
-  timeZone: 'America/New_York',
+const todayDate = (date = new Date()) => date.toLocaleDateString('en-CA', { timeZone });
+const currentDayIndex = (date = new Date()) => {
+  const dayName = date.toLocaleDateString('en-US', { timeZone, weekday: 'long' });
+  return weekDays.indexOf(dayName);
+};
+const currentTime = (date = new Date()) => date.toLocaleTimeString('en-US', {
+  timeZone,
   hour12: false,
   hour: '2-digit',
   minute: '2-digit'
@@ -54,9 +60,10 @@ async function createAlertIfNeeded(base44, item) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const today = todayDate();
-    const now = currentTime();
-    const nowDay = new Date().getDay();
+    const nowInstant = new Date();
+    const today = todayDate(nowInstant);
+    const now = currentTime(nowInstant);
+    const nowDay = currentDayIndex(nowInstant);
 
     const [dailyTasks, weeklyTasks, meetings] = await Promise.all([
       base44.asServiceRole.entities.DailyTasks.filter({ due_date: today, completed: false }, '-created_date', 100),
