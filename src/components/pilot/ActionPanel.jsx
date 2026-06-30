@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
 import { readLocalList, writeLocalList } from './PrototypeStore';
 
 const storageKeys = {
@@ -14,39 +15,56 @@ const storageKeys = {
 };
 
 export default function ActionPanel({ action, onBack }) {
+  const { user } = useAuth();
   const key = storageKeys[action?.title] || `rez_${action?.title?.toLowerCase().replaceAll(' ', '_')}`;
+  const userEmail = user?.email;
   const [text, setText] = useState('');
   const [saved, setSaved] = useState(readLocalList(key, action?.sample ? [action.sample] : []));
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
 
   const loadSaved = async () => {
-    const rows = await base44.entities.HomeModuleActivity.filter({ module_key: key }, '-created_date', 50);
-    if (rows.length) setSaved(rows.map((row) => ({ title: row.note || row.module_title, date: row.created_at_text || row.created_date })));
+    if (!userEmail) {
+      setSaved(readLocalList(key, action?.sample ? [action.sample] : []));
+      return;
+    }
+    const rows = await base44.entities.HomeModuleActivity.filter({ module_key: key, user_email: userEmail }, '-created_date', 50);
+    setSaved(rows.length ? rows.map((row) => ({ title: row.note || row.module_title, date: row.created_at_text || row.created_date })) : readLocalList(key, action?.sample ? [action.sample] : []));
   };
 
   useEffect(() => {
     loadSaved();
-  }, [key]);
+  }, [key, userEmail]);
 
   const save = async () => {
     setLoading(true);
+    setError('');
     const item = { title: text || action?.defaultText || action?.title, date: new Date().toLocaleString() };
-    await base44.entities.HomeModuleActivity.create({
-      module_key: key,
-      section_title: action?.type || 'Profile hub',
-      module_title: action?.title,
-      action_type: 'saved',
-      created_at_text: item.date,
-      note: item.title,
-    });
-    const next = [item, ...saved];
-    setSaved(next);
-    writeLocalList(key, next);
-    setText('');
-    setLoading(false);
-    setSuccess('Saved successfully');
-    setTimeout(() => setSuccess(''), 1800);
+    try {
+      if (userEmail) {
+        await base44.entities.HomeModuleActivity.create({
+          module_key: key,
+          section_title: action?.type || 'Profile hub',
+          module_title: action?.title,
+          action_type: 'saved',
+          created_at_text: item.date,
+          note: item.title,
+          user_email: userEmail,
+        });
+      }
+      const next = [item, ...saved];
+      setSaved(next);
+      writeLocalList(key, next);
+      setText('');
+      setSuccess('Saved successfully');
+      setTimeout(() => setSuccess(''), 1800);
+    } catch (err) {
+      console.error('Failed to save action item', err);
+      setError('Could not save right now. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -73,6 +91,7 @@ export default function ActionPanel({ action, onBack }) {
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />} Save
       </button>
       {success && <p className="mt-3 rounded-2xl border border-emerald-300/30 bg-emerald-400/10 px-4 py-3 text-sm font-black text-emerald-100">{success}</p>}
+      {error && <p className="mt-3 rounded-2xl border border-red-300/30 bg-red-400/10 px-4 py-3 text-sm font-black text-red-100">{error}</p>}
 
       <div className="mt-5 space-y-2">
         <h3 className="font-sans text-lg font-black text-white">Saved</h3>

@@ -31,10 +31,15 @@
     "open_count": {
       "type": "number",
       "default": 0
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
     }
   },
   "required": [
     "module_key",
-    "module_title"
+    "module_title",
+    "user_email"
   ]
 }

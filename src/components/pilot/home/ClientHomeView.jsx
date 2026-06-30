@@ -48,6 +48,7 @@ const moduleKey = (sectionTitle, itemTitle) => `${sectionTitle}:${itemTitle}`.to
 const roadmapPhases = ['Days 1-14 Stabilization', 'Days 15-30 Structure', 'Days 31-60 Rebuild', 'Days 61-90 Growth', '6 Months', '1 Year', '5 Year Vision'];
 export default function ClientHomeView() {
   const { user: authUser } = useAuth();
+  const userEmail = authUser?.email;
   const [moduleStates, setModuleStates] = useState([]);
   const [activities, setActivities] = useState([]);
   const [missionItems, setMissionItems] = useState([]);
@@ -65,8 +66,8 @@ export default function ClientHomeView() {
     setLoadingPillars(true);
     const [userResult, stateResult, activityResult, missionResult, checkInResult, calendarResult, taskResult, wellnessResult, savedResourceResult, goalResult, supportResult, postResult, storyResult, mediaResult, progressResult] = await Promise.allSettled([
       Promise.resolve(authUser),
-      base44.entities.HomeModuleState.list('-updated_date', 200),
-      base44.entities.HomeModuleActivity.list('-created_date', 100),
+      userEmail ? base44.entities.HomeModuleState.filter({ user_email: userEmail }, '-updated_date', 200) : Promise.resolve([]),
+      userEmail ? base44.entities.HomeModuleActivity.filter({ user_email: userEmail }, '-created_date', 100) : Promise.resolve([]),
       base44.entities.TopFiveNonNegotiable.list('sort_order', 5),
       base44.entities.DailyCheckIn.list('-check_in_date', 30),
       base44.entities.CalendarEvents.list('date', 12),
@@ -116,7 +117,7 @@ export default function ClientHomeView() {
       unsubscribeStates();
       unsubscribeActivities();
     };
-  }, []);
+  }, [userEmail]);
 
   const stateByKey = useMemo(() => Object.fromEntries(moduleStates.map((state) => [state.module_key, state])), [moduleStates]);
   const activityCounts = useMemo(() => activities.reduce((counts, activity) => ({ ...counts, [activity.module_key]: (counts[activity.module_key] || 0) + 1 }), {}), [activities]);
@@ -127,6 +128,7 @@ export default function ClientHomeView() {
   const streak = checkIns.length || missionBoard[0]?.progress ? Math.max(3, Math.min(21, checkIns.length + 5)) : 5;
 
   const trackModuleAction = async (sectionTitle, item, actionType = 'opened') => {
+    if (!userEmail) return;
     const key = moduleKey(sectionTitle, item.title);
     const existing = stateByKey[key];
     const status = actionType === 'completed' ? 'completed' : existing?.status === 'completed' ? 'completed' : 'in_progress';
@@ -138,20 +140,22 @@ export default function ClientHomeView() {
       pinned: existing?.pinned || false,
       last_opened_at: new Date().toISOString(),
       open_count: (existing?.open_count || 0) + (actionType === 'opened' ? 1 : 0),
+      user_email: userEmail,
     };
     if (existing) await base44.entities.HomeModuleState.update(existing.id, payload);
     else await base44.entities.HomeModuleState.create(payload);
-    await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: actionType, created_at_text: new Date().toLocaleString() });
+    await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: actionType, created_at_text: new Date().toLocaleString(), user_email: userEmail });
   };
 
   const togglePin = async (sectionTitle, item) => {
+    if (!userEmail) return;
     const key = moduleKey(sectionTitle, item.title);
     const existing = stateByKey[key];
     const pinned = !existing?.pinned;
-    const payload = { module_key: key, section_title: sectionTitle, module_title: item.title, status: existing?.status || 'not_started', pinned, open_count: existing?.open_count || 0 };
+    const payload = { module_key: key, section_title: sectionTitle, module_title: item.title, status: existing?.status || 'not_started', pinned, open_count: existing?.open_count || 0, user_email: userEmail };
     if (existing) await base44.entities.HomeModuleState.update(existing.id, payload);
     else await base44.entities.HomeModuleState.create(payload);
-    await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: pinned ? 'pinned' : 'unpinned', created_at_text: new Date().toLocaleString() });
+    await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: pinned ? 'pinned' : 'unpinned', created_at_text: new Date().toLocaleString(), user_email: userEmail });
   };
 
   const syncCalendar = async () => {
