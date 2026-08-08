@@ -46,6 +46,30 @@ const sections = [
 
 const moduleKey = (sectionTitle, itemTitle) => `${sectionTitle}:${itemTitle}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const roadmapPhases = ['Days 1-14 Stabilization', 'Days 15-30 Structure', 'Days 31-60 Rebuild', 'Days 61-90 Growth', '6 Months', '1 Year', '5 Year Vision'];
+const mergeRowsById = (results) => {
+  const rows = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
+  return Array.from(new Map(rows.map((row) => [row.id || `${row.created_date}-${row.module_key}`, row])).values());
+};
+
+const loadOwnedRows = async (entity, userEmail, ownerField, order, limit) => {
+  if (!userEmail) return [];
+  return mergeRowsById(await Promise.allSettled([
+    entity.filter({ [ownerField]: userEmail }, order, limit),
+    entity.filter({ created_by: userEmail }, order, limit),
+  ]));
+};
+
+const loadClientScopedRows = async (entity, userEmail, clients, order, limit) => {
+  if (!userEmail) return [];
+  const filters = [
+    { user_email: userEmail },
+    { client_email: userEmail },
+    { created_by: userEmail },
+    ...clients.filter((client) => client?.id).map((client) => ({ client_id: client.id })),
+  ];
+  return mergeRowsById(await Promise.allSettled(filters.map((filter) => entity.filter(filter, order, limit))));
+};
+
 export default function ClientHomeView() {
   const { user: authUser } = useAuth();
   const [moduleStates, setModuleStates] = useState([]);
@@ -63,46 +87,46 @@ export default function ClientHomeView() {
 
   const loadBackend = async () => {
     setLoadingPillars(true);
+    const userEmail = authUser?.email;
+    const clientRows = await loadOwnedRows(base44.entities.Clients, userEmail, 'email', '-updated_date', 10);
     const [userResult, stateResult, activityResult, missionResult, checkInResult, calendarResult, taskResult, wellnessResult, savedResourceResult, goalResult, supportResult, postResult, storyResult, mediaResult, progressResult] = await Promise.allSettled([
       Promise.resolve(authUser),
-      base44.entities.HomeModuleState.list('-updated_date', 200),
-      base44.entities.HomeModuleActivity.list('-created_date', 100),
-      base44.entities.TopFiveNonNegotiable.list('sort_order', 5),
-      base44.entities.DailyCheckIn.list('-check_in_date', 30),
-      base44.entities.CalendarEvents.list('date', 12),
-      base44.entities.DailyTasks.list('-created_date', 12),
-      base44.entities.WellnessSession.list('-created_date', 12),
-      base44.entities.SavedLocalResource.list('-created_date', 12),
-      base44.entities.Goal.list('-updated_date', 12),
-      base44.entities.SupportContact.list('-updated_date', 12),
+      loadOwnedRows(base44.entities.HomeModuleState, userEmail, 'user_email', '-updated_date', 200),
+      loadOwnedRows(base44.entities.HomeModuleActivity, userEmail, 'user_email', '-created_date', 100),
+      loadOwnedRows(base44.entities.TopFiveNonNegotiable, userEmail, 'user_email', 'sort_order', 5),
+      loadOwnedRows(base44.entities.DailyCheckIn, userEmail, 'participant_email', '-check_in_date', 30),
+      loadClientScopedRows(base44.entities.CalendarEvents, userEmail, clientRows, 'date', 12),
+      loadClientScopedRows(base44.entities.DailyTasks, userEmail, clientRows, '-created_date', 12),
+      loadOwnedRows(base44.entities.WellnessSession, userEmail, 'user_email', '-created_date', 12),
+      loadOwnedRows(base44.entities.SavedLocalResource, userEmail, 'user_email', '-created_date', 12),
+      loadOwnedRows(base44.entities.Goal, userEmail, 'participant_email', '-updated_date', 12),
+      loadOwnedRows(base44.entities.SupportContact, userEmail, 'user_email', '-updated_date', 12),
       base44.entities.CommunityPost.list('-created_date', 12),
       base44.entities.AhHaInspirationStory.list('-created_date', 12),
       base44.entities.MediaItem.list('-created_date', 12),
-      base44.entities.PillarProgress.list('-updated_date', 50),
+      loadOwnedRows(base44.entities.PillarProgress, userEmail, 'user_email', '-updated_date', 50),
     ]);
     const user = userResult.status === 'fulfilled' ? userResult.value : null;
-    const ownedMission = missionResult.status === 'fulfilled' ? missionResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [];
-    const ownedCheckIns = checkInResult.status === 'fulfilled' ? checkInResult.value.filter((item) => !item.participant_email || item.participant_email === user?.email) : [];
     const hasCoreError = [stateResult, activityResult, calendarResult, taskResult, wellnessResult, savedResourceResult, goalResult, supportResult, postResult, storyResult, mediaResult, progressResult].some((result) => result.status === 'rejected');
     setCurrentUser(user);
     setModuleStates(stateResult.status === 'fulfilled' ? stateResult.value : []);
     setActivities(activityResult.status === 'fulfilled' ? activityResult.value : []);
-    setMissionItems(ownedMission);
-    setCheckIns(ownedCheckIns);
+    setMissionItems(missionResult.status === 'fulfilled' ? missionResult.value : []);
+    setCheckIns(checkInResult.status === 'fulfilled' ? checkInResult.value : []);
     setCalendarEvents(calendarResult.status === 'fulfilled' ? calendarResult.value : []);
     setTasks(taskResult.status === 'fulfilled' ? taskResult.value : []);
     setPillarData({
-      pillarProgress: progressResult.status === 'fulfilled' ? progressResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [],
+      pillarProgress: progressResult.status === 'fulfilled' ? progressResult.value : [],
       dailyTasks: taskResult.status === 'fulfilled' ? taskResult.value : [],
       calendarEvents: calendarResult.status === 'fulfilled' ? calendarResult.value : [],
-      wellnessSessions: wellnessResult.status === 'fulfilled' ? wellnessResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [],
-      savedResources: savedResourceResult.status === 'fulfilled' ? savedResourceResult.value.filter((item) => !item.user_email || item.user_email === user?.email) : [],
-      goals: goalResult.status === 'fulfilled' ? goalResult.value.filter((item) => !item.participant_email || item.participant_email === user?.email) : [],
+      wellnessSessions: wellnessResult.status === 'fulfilled' ? wellnessResult.value : [],
+      savedResources: savedResourceResult.status === 'fulfilled' ? savedResourceResult.value : [],
+      goals: goalResult.status === 'fulfilled' ? goalResult.value : [],
       supportContacts: supportResult.status === 'fulfilled' ? supportResult.value : [],
       communityPosts: postResult.status === 'fulfilled' ? postResult.value.filter((item) => item.moderation_status !== 'flagged') : [],
       ahhaStories: storyResult.status === 'fulfilled' ? storyResult.value.filter((item) => item.moderation_status === 'approved' || !item.moderation_status) : [],
       mediaItems: mediaResult.status === 'fulfilled' ? mediaResult.value.filter((item) => item.moderation_status === 'approved' || !item.moderation_status) : [],
-      checkIns: ownedCheckIns,
+      checkIns: checkInResult.status === 'fulfilled' ? checkInResult.value : [],
     });
     setPillarError(hasCoreError);
     setLoadingPillars(false);
@@ -116,7 +140,7 @@ export default function ClientHomeView() {
       unsubscribeStates();
       unsubscribeActivities();
     };
-  }, []);
+  }, [authUser?.email]);
 
   const stateByKey = useMemo(() => Object.fromEntries(moduleStates.map((state) => [state.module_key, state])), [moduleStates]);
   const activityCounts = useMemo(() => activities.reduce((counts, activity) => ({ ...counts, [activity.module_key]: (counts[activity.module_key] || 0) + 1 }), {}), [activities]);
@@ -127,11 +151,13 @@ export default function ClientHomeView() {
   const streak = checkIns.length || missionBoard[0]?.progress ? Math.max(3, Math.min(21, checkIns.length + 5)) : 5;
 
   const trackModuleAction = async (sectionTitle, item, actionType = 'opened') => {
+    if (!authUser?.email) return;
     const key = moduleKey(sectionTitle, item.title);
     const existing = stateByKey[key];
     const status = actionType === 'completed' ? 'completed' : existing?.status === 'completed' ? 'completed' : 'in_progress';
     const payload = {
       module_key: key,
+      user_email: authUser.email,
       section_title: sectionTitle,
       module_title: item.title,
       status,
@@ -141,29 +167,31 @@ export default function ClientHomeView() {
     };
     if (existing) await base44.entities.HomeModuleState.update(existing.id, payload);
     else await base44.entities.HomeModuleState.create(payload);
-    await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: actionType, created_at_text: new Date().toLocaleString() });
+    await base44.entities.HomeModuleActivity.create({ module_key: key, user_email: authUser.email, section_title: sectionTitle, module_title: item.title, action_type: actionType, created_at_text: new Date().toLocaleString() });
   };
 
   const togglePin = async (sectionTitle, item) => {
+    if (!authUser?.email) return;
     const key = moduleKey(sectionTitle, item.title);
     const existing = stateByKey[key];
     const pinned = !existing?.pinned;
-    const payload = { module_key: key, section_title: sectionTitle, module_title: item.title, status: existing?.status || 'not_started', pinned, open_count: existing?.open_count || 0 };
+    const payload = { module_key: key, user_email: authUser.email, section_title: sectionTitle, module_title: item.title, status: existing?.status || 'not_started', pinned, open_count: existing?.open_count || 0 };
     if (existing) await base44.entities.HomeModuleState.update(existing.id, payload);
     else await base44.entities.HomeModuleState.create(payload);
-    await base44.entities.HomeModuleActivity.create({ module_key: key, section_title: sectionTitle, module_title: item.title, action_type: pinned ? 'pinned' : 'unpinned', created_at_text: new Date().toLocaleString() });
+    await base44.entities.HomeModuleActivity.create({ module_key: key, user_email: authUser.email, section_title: sectionTitle, module_title: item.title, action_type: pinned ? 'pinned' : 'unpinned', created_at_text: new Date().toLocaleString() });
   };
 
   const syncCalendar = async () => {
     setCalendarSyncing(true);
-    const response = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
+    const syncPayload = { syncPersonal: true, syncShared: false, calendarEvents, tasks, clientName: currentUser?.full_name };
+    const response = await base44.functions.invoke('syncSeeCalendar', syncPayload);
     if (response.data.personalConnected === false) {
       const url = await base44.connectors.connectAppUser('6a10000a555f71fe414b9434');
       const popup = window.open(url, '_blank');
       const timer = setInterval(async () => {
         if (!popup || popup.closed) {
           clearInterval(timer);
-          const retry = await base44.functions.invoke('syncSeeCalendar', { syncPersonal: true, syncShared: false });
+          const retry = await base44.functions.invoke('syncSeeCalendar', syncPayload);
           setCalendarSyncMessage(`${retry.data.personalCreated || 0} recovery events synced to your calendar.`);
           setCalendarSyncing(false);
         }

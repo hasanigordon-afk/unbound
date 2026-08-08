@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
 import { readLocalList, writeLocalList } from './PrototypeStore';
 
 const storageKeys = {
@@ -13,40 +14,66 @@ const storageKeys = {
   'Resource Save': 'rez_saved_resources',
 };
 
+const mergeRowsById = (results) => {
+  const rows = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
+  return Array.from(new Map(rows.map((row) => [row.id || `${row.created_date}-${row.note}`, row])).values());
+};
+
 export default function ActionPanel({ action, onBack }) {
+  const { user: authUser } = useAuth();
   const key = storageKeys[action?.title] || `rez_${action?.title?.toLowerCase().replaceAll(' ', '_')}`;
+  const localKey = authUser?.email ? `${key}:${authUser.email}` : key;
+  const fallbackSaved = action?.sample ? [action.sample] : [];
   const [text, setText] = useState('');
-  const [saved, setSaved] = useState(readLocalList(key, action?.sample ? [action.sample] : []));
+  const [saved, setSaved] = useState(() => readLocalList(localKey, fallbackSaved));
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
 
   const loadSaved = async () => {
-    const rows = await base44.entities.HomeModuleActivity.filter({ module_key: key }, '-created_date', 50);
-    if (rows.length) setSaved(rows.map((row) => ({ title: row.note || row.module_title, date: row.created_at_text || row.created_date })));
+    const localSaved = readLocalList(localKey, fallbackSaved);
+    if (!authUser?.email) {
+      setSaved(localSaved);
+      return;
+    }
+    try {
+      const rows = mergeRowsById(await Promise.allSettled([
+        base44.entities.HomeModuleActivity.filter({ module_key: key, user_email: authUser.email, action_type: 'saved' }, '-created_date', 50),
+        base44.entities.HomeModuleActivity.filter({ module_key: key, created_by: authUser.email, action_type: 'saved' }, '-created_date', 50),
+      ]));
+      setSaved(rows.length ? rows.map((row) => ({ title: row.note || row.module_title, date: row.created_at_text || row.created_date })) : localSaved);
+    } catch {
+      setSaved(localSaved);
+    }
   };
 
   useEffect(() => {
     loadSaved();
-  }, [key]);
+  }, [key, localKey, authUser?.email]);
 
   const save = async () => {
     setLoading(true);
     const item = { title: text || action?.defaultText || action?.title, date: new Date().toLocaleString() };
-    await base44.entities.HomeModuleActivity.create({
-      module_key: key,
-      section_title: action?.type || 'Profile hub',
-      module_title: action?.title,
-      action_type: 'saved',
-      created_at_text: item.date,
-      note: item.title,
-    });
-    const next = [item, ...saved];
-    setSaved(next);
-    writeLocalList(key, next);
-    setText('');
-    setLoading(false);
-    setSuccess('Saved successfully');
-    setTimeout(() => setSuccess(''), 1800);
+    try {
+      if (authUser?.email) {
+        await base44.entities.HomeModuleActivity.create({
+          module_key: key,
+          user_email: authUser.email,
+          section_title: action?.type || 'Profile hub',
+          module_title: action?.title,
+          action_type: 'saved',
+          created_at_text: item.date,
+          note: item.title,
+        });
+      }
+      const next = [item, ...saved];
+      setSaved(next);
+      writeLocalList(localKey, next);
+      setText('');
+      setSuccess('Saved successfully');
+      setTimeout(() => setSuccess(''), 1800);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
