@@ -28,11 +28,16 @@
     },
     "note": {
       "type": "string"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Owner email"
     }
   },
   "required": [
     "module_key",
     "module_title",
-    "action_type"
+    "action_type",
+    "user_email"
   ]
 }
