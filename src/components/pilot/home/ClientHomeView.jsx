@@ -4,6 +4,8 @@ import { CalendarDays, CheckCircle2, Flame, HeartPulse, LifeBuoy, MapPinned, Mes
 import { base44 } from '@/api/base44Client';
 import HomeCarouselSection from './HomeCarouselSection';
 import LiveCorePillarsGrid from './LiveCorePillarsGrid';
+import HomeProfileHeader from './HomeProfileHeader';
+import SpokenEncouragementCard from '@/components/spoken/SpokenEncouragementCard';
 import { pilotItinerary, pilotMissionItems } from '@/lib/pilotSeedData';
 import { useAuth } from '@/lib/AuthContext';
 
@@ -124,7 +126,21 @@ export default function ClientHomeView() {
   const itinerary = calendarEvents.length ? calendarEvents.slice(0, 3).map((event) => ({ title: event.title || event.event_title, time: event.start_time || event.time_text || event.schedule_text || 'Today', route: '/JourneyRoadmap', detail: event.location || event.notes || 'Scheduled recovery support' })) : pilotItinerary;
   const dailyTask = tasks.find((task) => !task.completed)?.task_title || 'Complete your check-in and protect one support contact today.';
   const recoveryScore = Math.min(96, 62 + Math.min(checkIns.length, 14) * 2 + missionBoard.filter((item) => item.progress >= 60).length * 3);
-  const streak = checkIns.length || missionBoard[0]?.progress ? Math.max(3, Math.min(21, checkIns.length + 5)) : 5;
+  const streak = useMemo(() => {
+    const sorted = [...checkIns].sort((a, b) => new Date(b.check_in_date) - new Date(a.check_in_date));
+    let count = 0;
+    let cur = new Date();
+    cur.setHours(0, 0, 0, 0);
+    for (const entry of sorted) {
+      const d = new Date(entry.check_in_date);
+      d.setHours(0, 0, 0, 0);
+      if (Math.round((cur - d) / 86400000) <= 1) {
+        count += 1;
+        cur = d;
+      } else break;
+    }
+    return count || (missionBoard[0]?.progress ? Math.max(1, Math.min(21, checkIns.length + 5)) : 0);
+  }, [checkIns, missionBoard]);
 
   const trackModuleAction = async (sectionTitle, item, actionType = 'opened') => {
     const key = moduleKey(sectionTitle, item.title);
@@ -176,6 +192,9 @@ export default function ClientHomeView() {
 
   return (
     <div className="space-y-5">
+      <HomeProfileHeader streak={streak} />
+      {currentUser?.email && <SpokenEncouragementCard userEmail={currentUser.email} streak={streak} />}
+
       <section className="rounded-[36px] border border-amber-200/20 bg-gradient-to-br from-amber-300/16 via-white/10 to-blue-400/10 p-5 shadow-2xl backdrop-blur-2xl">
         <p className="text-xs font-black uppercase tracking-[0.24em] text-amber-100">What do I need today?</p>
         <h2 className="mt-2 font-sans text-4xl font-black text-white">Structure, support, and one next step.</h2>

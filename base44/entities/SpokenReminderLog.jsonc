@@ -1,0 +1,40 @@
+{
+  "name": "SpokenReminderLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "User who heard the spoken reminder"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "streak_milestone",
+        "goal_completed",
+        "achievement",
+        "check_in",
+        "nudge",
+        "preview"
+      ],
+      "description": "Category of spoken event"
+    },
+    "event_key": {
+      "type": "string",
+      "description": "Unique key for deduplication, e.g. streak:7 or achievement:abc123"
+    },
+    "message_text": {
+      "type": "string",
+      "description": "Spoken message content"
+    },
+    "spoken_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the reminder was spoken"
+    }
+  },
+  "required": [
+    "user_email",
+    "event_type",
+    "event_key"
+  ]
+}

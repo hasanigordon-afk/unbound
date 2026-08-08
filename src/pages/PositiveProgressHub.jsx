@@ -3,6 +3,8 @@ import PilotShell from '@/components/pilot/PilotShell';
 import ReZilientLogo from '@/components/shared/ReZilientLogo';
 import { base44 } from '@/api/base44Client';
 import { Award, CheckCircle2, HeartHandshake, MessageCircle, Plus, Send, ShieldCheck, Sparkles, Star, Trophy, UsersRound } from 'lucide-react';
+import useSpokenReminders from '@/hooks/useSpokenReminders';
+import { ACHIEVEMENT_SPOKEN, GOAL_SPOKEN } from '@/lib/milestoneConfig';
 
 const today = new Date().toISOString().slice(0, 10);
 const progressTypes = [
@@ -38,6 +40,8 @@ export default function PositiveProgressHub() {
   const [permissionForm, setPermissionForm] = useState(emptyPermission);
   const [messageForm, setMessageForm] = useState({ participant_name: '', participant_role: 'counselor', message: '', encouragement_reaction: 'Proud of you', thread_type: 'direct' });
   const [postForm, setPostForm] = useState(emptyPost);
+  const [saveMessage, setSaveMessage] = useState('');
+  const { speakEvent } = useSpokenReminders(user?.email);
 
   const loadData = async () => {
     const me = await base44.auth.me();
@@ -74,10 +78,24 @@ export default function PositiveProgressHub() {
     if (!progressForm.title.trim()) return;
     const saved = await base44.entities.PositiveProgress.create({ ...progressForm, user_email: user?.email });
     setProgress((prev) => [saved, ...prev]);
+    let vaultCreated = false;
     if (['appointment', 'goal', 'meeting', 'meditation', 'community', 'job'].includes(progressForm.category)) {
       const badge = await base44.entities.AchievementVault.create({ user_email: user?.email, title: progressForm.title, description: 'A positive step forward was added to your Achievement Vault.', badge_type: progressForm.category === 'job' ? 'job' : progressForm.category, earned_date: progressForm.completed_date, shared: true });
       setAchievements((prev) => [badge, ...prev]);
+      vaultCreated = true;
     }
+    const spokenText = vaultCreated
+      ? `${progressForm.title}. ${ACHIEVEMENT_SPOKEN.vault}`
+      : progressForm.category === 'goal' || progressForm.category === 'streak'
+        ? `${progressForm.title}. ${GOAL_SPOKEN.default}`
+        : `${progressForm.title}. ${ACHIEVEMENT_SPOKEN.default}`;
+    const spoken = await speakEvent({
+      eventType: vaultCreated ? 'achievement' : 'goal_completed',
+      eventKey: `progress:${saved.id}`,
+      text: spokenText,
+    });
+    setSaveMessage(spoken.ok ? 'Saved — encouragement spoken.' : 'Saved to your progress hub.');
+    setTimeout(() => setSaveMessage(''), 3000);
     setProgressForm(emptyProgress);
   };
 
@@ -131,6 +149,7 @@ export default function PositiveProgressHub() {
           <div className="mb-4 flex items-center gap-2"><Plus className="h-5 w-5 text-emerald-200" /><h2 className="font-sans text-2xl font-black">Add a positive progress moment</h2></div>
           <div className="grid gap-3 sm:grid-cols-2"><input placeholder="What win should be celebrated?" value={progressForm.title} onChange={(e) => setProgressForm({ ...progressForm, title: e.target.value })} /><select value={progressForm.category} onChange={(e) => setProgressForm({ ...progressForm, category: e.target.value })}>{progressTypes.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select><input type="date" value={progressForm.completed_date} onChange={(e) => setProgressForm({ ...progressForm, completed_date: e.target.value })} /><input type="number" min="1" value={progressForm.count} onChange={(e) => setProgressForm({ ...progressForm, count: e.target.value })} /><textarea placeholder="Optional encouragement note" value={progressForm.notes} onChange={(e) => setProgressForm({ ...progressForm, notes: e.target.value })} /><label className="flex items-center gap-2 rounded-2xl bg-white/8 p-3 text-sm font-bold"><input type="checkbox" checked={progressForm.share_with_supporters} onChange={(e) => setProgressForm({ ...progressForm, share_with_supporters: e.target.checked })} /> Share with approved supporters</label></div>
           <button onClick={saveProgress} className="mt-4 w-full rounded-3xl bg-white py-4 font-black text-slate-950">Save growth moment</button>
+          {saveMessage && <p className="mt-3 text-center text-sm font-bold text-emerald-200">{saveMessage}</p>}
         </SoftCard>
 
         <SoftCard>

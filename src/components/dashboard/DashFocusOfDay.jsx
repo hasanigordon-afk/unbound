@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Volume2, RefreshCw, Target } from "lucide-react";
+import { speakText, isSpeechSupported } from "@/lib/spokenReminders";
 
 const FOCUSES = [
   { focus: "Structure creates freedom.",       action: "Complete one productive action before noon." },
@@ -13,15 +14,15 @@ const FOCUSES = [
 
 export default function DashFocusOfDay() {
   const [seed, setSeed] = useState(() => new Date().getDate());
+  const [speaking, setSpeaking] = useState(false);
   const idx = seed % FOCUSES.length;
   const item = FOCUSES[idx];
 
-  const speak = () => {
-    if (!("speechSynthesis" in window)) return;
-    const u = new SpeechSynthesisUtterance(`Today's focus: ${item.focus}. ${item.action}`);
-    u.rate = 0.95; u.pitch = 1.05;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+  const speak = async () => {
+    if (!isSpeechSupported()) return;
+    setSpeaking(true);
+    await speakText(`Today's focus: ${item.focus}. ${item.action}`, { gender: 'female' });
+    setSpeaking(false);
   };
 
   return (
@@ -72,7 +73,7 @@ export default function DashFocusOfDay() {
         </div>
 
         <div style={{ display: "flex", gap: 6 }}>
-          <button onClick={speak} aria-label="Play focus" style={iconBtn()}>
+          <button onClick={speak} disabled={!isSpeechSupported() || speaking} aria-label="Play focus" style={iconBtn()}>
             <Volume2 style={{ width: 14, height: 14 }} />
           </button>
           <button onClick={() => setSeed(s => s + 1)} aria-label="Refresh focus" style={iconBtn()}>

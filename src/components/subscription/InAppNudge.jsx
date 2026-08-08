@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { X, ArrowRight } from "lucide-react";
+import { X, ArrowRight, Volume2 } from "lucide-react";
 import { pickNudge, markNudgeShown } from "@/lib/subscriptionEngine";
+import useSpokenReminders from "@/hooks/useSpokenReminders";
 
 const STREAM_STYLES = {
   help:    { color: "#7A9E7E", label: "Help",    emoji: "📍" },
@@ -48,6 +49,18 @@ export default function InAppNudge() {
     return pickNudge({ pref, streak, checkedInToday, avgCraving, daysSinceLastCheckIn });
   }, [pref, streak, checkedInToday, avgCraving, daysSinceLastCheckIn, dismissed]);
 
+  const { speakEvent, supported, speaking } = useSpokenReminders(user?.email);
+
+  // Auto-speak milestone nudges when enabled
+  useEffect(() => {
+    if (!nudge?.speakableText || !nudge?.isMilestone || !user?.email) return;
+    speakEvent({
+      eventType: nudge.eventType || 'nudge',
+      eventKey: nudge.eventKey,
+      text: nudge.speakableText,
+    }).catch(() => {});
+  }, [nudge?.eventKey, nudge?.speakableText, nudge?.isMilestone, user?.email, speakEvent]);
+
   // Mark shown (for throttling) when a nudge renders
   useEffect(() => {
     if (nudge && pref?.id) {
@@ -76,6 +89,28 @@ export default function InAppNudge() {
         <p style={{ fontSize: 11, color: "#4A3F35", lineHeight: 1.45 }}>{nudge.body}</p>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-end" }}>
+        {nudge.speakableText && supported && (
+          <button
+            type="button"
+            onClick={() => speakEvent({
+              eventType: nudge.eventType || 'nudge',
+              eventKey: `${nudge.eventKey}:replay`,
+              text: nudge.speakableText,
+              force: true,
+            })}
+            disabled={speaking}
+            aria-label="Replay spoken encouragement"
+            style={{
+              background: "rgba(255,255,255,0.85)", color: s.color,
+              padding: "6px 10px", borderRadius: 20,
+              fontSize: 11, fontWeight: 700,
+              display: "flex", alignItems: "center", gap: 4,
+              border: `1px solid ${s.color}35`, cursor: "pointer",
+            }}
+          >
+            <Volume2 style={{ width: 11, height: 11 }} /> Listen
+          </button>
+        )}
         <Link to={nudge.href} style={{ textDecoration: "none" }}>
           <div style={{
             background: s.color, color: "#fff",

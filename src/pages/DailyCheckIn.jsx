@@ -1,10 +1,12 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Flame, CheckCircle2, Loader2, RotateCcw, Users, Phone, CalendarPlus, ArrowRight } from "lucide-react";
+import { Flame, CheckCircle2, Loader2, RotateCcw, Users, Phone, CalendarPlus, ArrowRight, Volume2 } from "lucide-react";
 import { markTrigger, TRIGGERS } from "@/lib/subscriptionEngine";
+import useSpokenReminders from "@/hooks/useSpokenReminders";
+import { getStreakMilestoneScript, isStreakMilestone, CHECKIN_SPOKEN } from "@/lib/milestoneConfig";
 
 const C = {
   amber:   "#2E7D7A",
@@ -142,6 +144,26 @@ export default function DailyCheckIn() {
   const newStreak = streak + 1;
   const selectedMood = MOODS.find(m => m.value === form.mood_rating);
 
+  const { speakEvent, supported, speaking } = useSpokenReminders(user?.email);
+
+  const celebrationText = useMemo(() => {
+    if (isStreakMilestone(newStreak)) return getStreakMilestoneScript(newStreak);
+    return CHECKIN_SPOKEN.default;
+  }, [newStreak]);
+
+  useEffect(() => {
+    if (step !== 1 || !user?.email) return;
+    speakEvent({
+      eventType: isStreakMilestone(newStreak) ? 'streak_milestone' : 'check_in',
+      eventKey: isStreakMilestone(newStreak)
+        ? `streak:${newStreak}:${today}`
+        : `check_in:${today}`,
+      text: isStreakMilestone(newStreak)
+        ? `${celebrationText}`
+        : CHECKIN_SPOKEN.milestone(newStreak),
+    }).catch(() => {});
+  }, [step, user?.email, newStreak, today, celebrationText, speakEvent]);
+
   // Already done today
   if (alreadyDone && step === 0) return (
     <div style={{ background: C.bg, minHeight: "100vh", display: "flex", flexDirection: "column",
@@ -174,6 +196,27 @@ export default function DailyCheckIn() {
             <Flame style={{ color: C.amber, width: 14, height: 14 }} />
             <p style={{ fontSize: 13, fontWeight: 700, color: C.amber }}>{newStreak} day streak</p>
           </div>
+          {supported && (
+            <button
+              type="button"
+              onClick={() => speakEvent({
+                eventType: isStreakMilestone(newStreak) ? 'streak_milestone' : 'check_in',
+                eventKey: `check_in:${today}:replay`,
+                text: isStreakMilestone(newStreak) ? celebrationText : CHECKIN_SPOKEN.milestone(newStreak),
+                force: true,
+              })}
+              disabled={speaking}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                marginBottom: 16, padding: "8px 14px", borderRadius: 20,
+                border: `1px solid ${C.border}`, background: C.surface,
+                fontSize: 12, fontWeight: 700, color: C.text, cursor: "pointer",
+              }}
+            >
+              <Volume2 style={{ width: 14, height: 14 }} />
+              {speaking ? "Speaking…" : "Hear encouragement"}
+            </button>
+          )}
         </div>
 
         <div style={{ borderRadius: 16, padding: "18px 20px", marginBottom: 20,
