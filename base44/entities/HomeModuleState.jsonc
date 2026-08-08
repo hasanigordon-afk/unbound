@@ -11,6 +11,9 @@
     "module_title": {
       "type": "string"
     },
+    "user_email": {
+      "type": "string"
+    },
     "status": {
       "type": "string",
       "enum": [
@@ -35,6 +38,7 @@
   },
   "required": [
     "module_key",
-    "module_title"
+    "module_title",
+    "user_email"
   ]
 }
