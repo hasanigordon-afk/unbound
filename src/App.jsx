@@ -7,6 +7,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
+import { StaffRoute } from '@/components/auth/ProtectedRoute';
 
 import PilotHome from './pages/PilotHome.jsx';
 import JourneyRoadmap from './pages/JourneyRoadmap.jsx';
@@ -92,7 +93,7 @@ const AuthenticatedApp = () => {
         <Route path="/Community" element={<CommunityHub />} />
         <Route path="/AhHaMoments" element={<AhHaMomentsHub />} />
         <Route path="/Testimonials" element={<Navigate to="/AhHaMoments" replace />} />
-        <Route path="/AhHaMomentsAdmin" element={<AhHaMomentsAdmin />} />
+        <Route path="/AhHaMomentsAdmin" element={<StaffRoute><AhHaMomentsAdmin /></StaffRoute>} />
         <Route path="/TestimonialsAdmin" element={<Navigate to="/AhHaMomentsAdmin" replace />} />
         <Route path="/AhHaCommunity" element={<AhHaCommunity />} />
         <Route path="/SubmitAhHa" element={<SubmitAhHa />} />
@@ -104,13 +105,13 @@ const AuthenticatedApp = () => {
         <Route path="/AICompanion" element={<AICompanion />} />
         <Route path="/AskReZilientAI" element={<AICompanion />} />
         <Route path="/DailyCheckIn" element={<DailyCheckIn />} />
-        <Route path="/SEESuperAgent" element={<SEESuperAgent />} />
-        <Route path="/FacilityPilotDashboard" element={<FacilityPilotDashboard />} />
+        <Route path="/SEESuperAgent" element={<StaffRoute><SEESuperAgent /></StaffRoute>} />
+        <Route path="/FacilityPilotDashboard" element={<StaffRoute><FacilityPilotDashboard /></StaffRoute>} />
         <Route path="/PilotClientIntake" element={<PilotClientIntake />} />
-        <Route path="/PilotTreatmentPlan" element={<PilotTreatmentPlan />} />
+        <Route path="/PilotTreatmentPlan" element={<StaffRoute><PilotTreatmentPlan /></StaffRoute>} />
         <Route path="/PilotFeedback" element={<PilotFeedback />} />
-        <Route path="/CounselorDashboard" element={<CounselorDashboard />} />
-        <Route path="/CounselorMessaging" element={<CounselorMessaging />} />
+        <Route path="/CounselorDashboard" element={<StaffRoute><CounselorDashboard /></StaffRoute>} />
+        <Route path="/CounselorMessaging" element={<StaffRoute><CounselorMessaging /></StaffRoute>} />
         <Route path="/PositiveProgressHub" element={<PositiveProgressHub />} />
         <Route path="/CravingControlCenter" element={<CravingControlCenter />} />
         <Route path="/Lifeline" element={<Lifeline />} />
